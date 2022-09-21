@@ -1,0 +1,17 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /message/{messageId} {
+      allow read, create;
+      allow delete, update: if false;
+    }
+    match /test/{testId} {
+      allow read;
+      allow create, delete, update: if false;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

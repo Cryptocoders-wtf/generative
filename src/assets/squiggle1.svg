@@ -1,0 +1,9 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+<rect width="1024" height="1024" fill="#71BCE1" />
+<path d="M146,383 Q187,209,239,358,291,507,329,437,368,367,420,577,472,787,517,645,563,503,599,457,635,411,680,478,726,545,781,360,837,176,908,300" fill="transparent" stroke="#E50000" stroke-width="64" stroke-linecap="round" transform="translate(0,0)"/>
+<path d="M146,383 Q187,209,239,358,291,507,329,437,368,367,420,577,472,787,517,645,563,503,599,457,635,411,680,478,726,545,781,360,837,176,908,300" fill="transparent" stroke="#FF8D00" stroke-width="64" stroke-linecap="round" transform="translate(0,54)"/>
+<path d="M146,383 Q187,209,239,358,291,507,329,437,368,367,420,577,472,787,517,645,563,503,599,457,635,411,680,478,726,545,781,360,837,176,908,300" fill="transparent" stroke="#FFEE00" stroke-width="64" stroke-linecap="round" transform="translate(0,108)"/>
+<path d="M146,383 Q187,209,239,358,291,507,329,437,368,367,420,577,472,787,517,645,563,503,599,457,635,411,680,478,726,545,781,360,837,176,908,300" fill="transparent" stroke="#028121" stroke-width="64" stroke-linecap="round" transform="translate(0,162)"/>
+<path d="M146,383 Q187,209,239,358,291,507,329,437,368,367,420,577,472,787,517,645,563,503,599,457,635,411,680,478,726,545,781,360,837,176,908,300" fill="transparent" stroke="#004CFF" stroke-width="64" stroke-linecap="round" transform="translate(0,216)"/>
+<path d="M146,383 Q187,209,239,358,291,507,329,437,368,367,420,577,472,787,517,645,563,503,599,457,635,411,680,478,726,545,781,360,837,176,908,300" fill="transparent" stroke="#770088" stroke-width="64" stroke-linecap="round" transform="translate(0,270)"/>
+</svg>
