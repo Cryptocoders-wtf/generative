@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyCJP07F3ZmWLeiYiMLKrSeRcXQa__bkEAw",
-  authDomain: "assetstore-wtf.firebaseapp.com",
-  projectId: "assetstore-wtf",
-  storageBucket: "assetstore-wtf.appspot.com",
-  messagingSenderId: "991565220882",
-  appId: "1:991565220882:web:14ec3ebeaf58948c15dccb",
-  measurementId: "G-QP3Z4HZM1E",
+  apiKey: "AIzaSyBfsK-o2--b2vZsHrCD1Wv4isal1d-cKQQ",
+  authDomain: "fully-onchain.firebaseapp.com",
+  projectId: "fully-onchain",
+  storageBucket: "fully-onchain.appspot.com",
+  messagingSenderId: "492217753866",
+  appId: "1:492217753866:web:6aaa361786650123929af3",
+  measurementId: "G-K5Z5CZVSBG"
 };
