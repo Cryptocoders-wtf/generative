@@ -6,7 +6,7 @@
     <div class="flex items-center justify-start gap-1">
       <img src="@/assets/AssetStoreLogo.png" width="40" height="auto" />
       <div class="text-left font-bold leading-none">
-        <div>On-chain<br />Asset Store</div>
+        <div>Fully<br/>On-chain</div>
       </div>
     </div>
     <nav id="nav" class="flex flex-wrap items-center justify-start">
