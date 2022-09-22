@@ -11,17 +11,17 @@
       which helps you to understand what it takes to generate art in SVG format.
       It also helps you to refine your algorithm quickly (it takes a long time to do it in Solidity).</p>
     <p class="mb-2">Please run the following commands in your terminal.</p>
-    <pre>
+    <pre class="border border-gray-600 bg-gray-200 bg-opacity-60 rounded-md">
       git clone git@github.com:Cryptocoders-wtf/generative.git
       cd generative
       yarn install
       yarn run serve
     </pre>
-    <p class="mb-2">Then, open "localhost:8080" in your browser. You'll see the clone of this website.</p>
-    <p class="mb-2">Read src/views/Splatter.vue, and learn how it works (please go to the Splatter page to see its output). 
+    <p class="mb-2">Then, <code class="bg-gray-200">open "localhost:8080"</code> in your browser. You'll see the clone of this website.</p>
+    <p class="mb-2">Read <code class="bg-gray-200">src/views/Splatter.vue</code>, and learn how it works (please go to the Splatter page to see its output). 
       It generates a series of <i>control points</i>, generates an SVG path from them, and generates an SVG image.</p>
       <p class="mb-2">Once you understand it, duplicate Splatter.vue file, and party on it.
-        You need to modify src/router/index.ts and src/components/Header.vue appropriately to add your vue to the menu.
+        You need to modify <code class="bg-gray-200">src/router/index.ts</code> and <code class="bg-gray-200">src/components/Header.vue</code> appropriately to add your vue to the menu.
       </p>
     <p class="mb-2">I am going to describe how to port your JavaScript/TypeScript code to Solidity later.</p>
     <p class="mb-2">Meanwhile, please join <a href="https://discord.gg/4JGURQujXK" class="underline">our discord</a>, and feel free to ask any questions either in English or Japanese.</p>
