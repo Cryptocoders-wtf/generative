@@ -5,31 +5,32 @@
 - Node.js: version 14 or later.
 - yarn: version 1.22.19
 
-## WebUI
+## Frontend - Vue/Typescript
 
-Installation
+### Installation & Initialization
 
 ```
 git clone git@github.com:Cryptocoders-wtf/generative.git
 cd generative
 yarn install
 ```
-Running
+### Serving
 ```
 yarn run serve
-open http://localhost:8080
 ```
+### Running
+open http://localhost:8080
 
-## Solidity backend
+## Backend - Solidity
 
-Installation
+### Initialization
 
 ```
 cd contract
 npm install
 ```
 
-Deployment
+### Deployment
 ```
 npx hardhat run ./scripts/deploy_splatter.ts
 ```
