@@ -4,6 +4,9 @@ const lang = {
   header: {
     home: "ホーム",
   },
+  message: {
+    touchToUpdate: "イメージをクリックすると再度生成します。"
+  },
   languages,
 };
 

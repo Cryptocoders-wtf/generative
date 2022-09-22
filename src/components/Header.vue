@@ -13,6 +13,9 @@
       <router-link :to="localizedUrl('/')" class="text-md">{{
         $t("header.home")
       }}</router-link>
+      <router-link :to="localizedUrl('/splatter')" class="text-md">
+        Splatter
+      </router-link>
     </nav>
     <Languages />
   </header>
