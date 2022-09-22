@@ -24,7 +24,7 @@
         You need to modify src/router/index.ts and src/components/Header.vue appropriately to add your vue to the menu.
       </p>
     <p class="mb-2">I am going to describe how to port your JavaScript/TypeScript code to Solidity later.</p>
-    <p class="mb-2">Meanwhile, please join <a href="https://discord.gg/4JGURQujXK" class="underline">its discord</a>, and feel free to ask any questions either in English or Japanese.</p>
+    <p class="mb-2">Meanwhile, please join <a href="https://discord.gg/4JGURQujXK" class="underline">our discord</a>, and feel free to ask any questions either in English or Japanese.</p>
   </div>
 </template>
 
