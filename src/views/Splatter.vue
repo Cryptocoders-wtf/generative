@@ -23,7 +23,7 @@ export default defineComponent({
     const randomize = (value: number, ratio: number) => {
       return value + (Math.random() - 0.5) * value * ratio * 2;
     };
-    const generate = (
+    const generatePoints = (
       color: string,
       count: number,
       length: number,
@@ -92,7 +92,7 @@ export default defineComponent({
       return svgImageFromPath(path, color);
     };
     const updateImage = () => {
-      image.value = generate(
+      image.value = generatePoints(
         "green",
         randomize(30, 0.5),
         randomize(0.2, 0.5),
@@ -136,7 +136,7 @@ export default defineComponent({
         "#B2B200",
       ];
       images.value = color.map((color) => {
-        return generate(
+        return generatePoints(
           color,
           randomize(30, 0.5),
           randomize(0.2, 0.5),
