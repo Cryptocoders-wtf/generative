@@ -11,12 +11,11 @@
       which helps you to understand what it takes to generate art in SVG format.
       It also helps you to refine your algorithm quickly (it takes a long time to do it in Solidity).</p>
     <p class="mb-2">Please run the following commands in your terminal.</p>
-    <pre class="border border-gray-600 bg-gray-200 bg-opacity-60 rounded-md">
+    <pre class="border border-gray-600 bg-gray-200 bg-opacity-60 rounded-md mb-2">
       git clone git@github.com:Cryptocoders-wtf/generative.git
       cd generative
       yarn install
-      yarn run serve
-    </pre>
+      yarn run serve</pre>
     <p class="mb-2">Then, <code class="bg-gray-200">open "localhost:8080"</code> in your browser. You'll see the clone of this website.</p>
     <p class="mb-2">Read <code class="bg-gray-200">src/views/Splatter.vue</code>, and learn how it works (please go to the Splatter page to see its output). 
       It generates a series of <i>control points</i>, generates an SVG path from them, and generates an SVG image.</p>
