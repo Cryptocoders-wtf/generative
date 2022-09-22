@@ -1,12 +1,12 @@
 <template>
-  <div class="mx-auto max-w-4xl p-2 text-left">
-    <div>
+  <div class="mx-auto max-w-3xl p-2 text-left">
+    <p class="mb-2">{{ $t("message.touchToUpdate") }}</p>
+    <div @click="updateImage">
       <img
         v-for="image in images"
         :key="image"
         :src="image"
-        @click="updateImage"
-        class="mr-1 mb-1 inline-block w-32 rounded-xl"
+        class="mr-1 mb-1 inline-block w-32"
       />
     </div>
   </div>
@@ -23,7 +23,6 @@ export default defineComponent({
       return value + (Math.random() - 0.5) * value * ratio * 2;
     };
     const generatePoints = (
-      color: string,
       count: number,
       length: number,
       dot: number
@@ -86,8 +85,7 @@ export default defineComponent({
           });
         }
       }
-      const path = pathFromPoints(points);
-      return svgImageFromPath(path, color);
+      return points;
     };
     const updateImage = () => {
       const color = [
@@ -111,12 +109,13 @@ export default defineComponent({
         "#8B280D",
       ];
       images.value = color.map((color) => {
-        return generatePoints(
-          color,
+        const points = generatePoints(
           randomize(30, 0.5),
           randomize(0.2, 0.5),
           randomize(0.3, 0.5)
         );
+        const path = pathFromPoints(points);
+        return svgImageFromPath(path, color);
       });
     };
     updateImage();

@@ -1,7 +1,7 @@
 <template>
   <header
     id="header"
-    class="mx-auto flex max-w-xl items-center justify-between py-1.5"
+    class="mx-auto flex max-w-3xl items-center justify-between py-1.5"
   >
     <div class="flex items-center justify-start gap-1">
       <img src="@/assets/Splatter.svg" width="40" height="auto" />

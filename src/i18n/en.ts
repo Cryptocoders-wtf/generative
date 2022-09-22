@@ -4,6 +4,9 @@ const lang = {
   header: {
     home: "Home",
   },
+  message: {
+    touchToUpdate: "Click images to regenerate."
+  },
   languages,
 };
 
