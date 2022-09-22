@@ -18,7 +18,6 @@ import { Point, pathFromPoints, svgImageFromPath } from "@/models/point";
 
 export default defineComponent({
   setup() {
-    const image = ref<string>("");
     const images = ref<string[]>([]);
     const randomize = (value: number, ratio: number) => {
       return value + (Math.random() - 0.5) * value * ratio * 2;
@@ -92,19 +91,12 @@ export default defineComponent({
       return svgImageFromPath(path, color);
     };
     const updateImage = () => {
-      image.value = generatePoints(
-        "green",
-        randomize(30, 0.5),
-        randomize(0.2, 0.5),
-        randomize(0.3, 0.5)
-      );
       const color = [
         "#E26A6A",
         "#9C9C6A",
         "#6AE270",
         "#AEC7E3",
         "#6A7070",
-        "#EB6B56",
         "#E2706A",
         "#A7B8EB",
         "#6A89E2",
@@ -112,28 +104,12 @@ export default defineComponent({
         "#FF6961",
         "#77B6EA",
         "#6E6EFD",
-        "#69C9FF",
         "#69D2FF",
         "#D6B900",
         "#EFCP00",
-        "#8DB600",
-        "#88BB00",
         "#9EB500",
-        "#650005",
         "#625103",
         "#8B280D",
-        "#A1350B",
-        "#A1350B",
-        "#2B0202",
-        "#2B0202",
-        "#2B0202",
-        "#2B0202",
-        "#2B0202",
-        "#9B9200",
-        "#8B8B00",
-        "#B2B200",
-        "#B2B200",
-        "#B2B200",
       ];
       images.value = color.map((color) => {
         return generatePoints(
@@ -146,7 +122,6 @@ export default defineComponent({
     };
     updateImage();
     return {
-      image,
       images,
       updateImage,
     };
