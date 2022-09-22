@@ -17,7 +17,9 @@
         Splatter
       </router-link>
     </nav>
-    <Languages />
+    <div class="invisible">
+      <Languages />
+    </div>
   </header>
 </template>
 
