@@ -5,7 +5,7 @@ const lang = {
     home: "Home",
   },
   message: {
-    touchToUpdate: "Click images to regenerate."
+    touchToUpdate: "Click images to regenerate.",
   },
   languages,
 };

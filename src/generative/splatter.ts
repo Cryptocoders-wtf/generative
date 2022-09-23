@@ -1,13 +1,15 @@
-import { Point, randomize, pathFromPoints, svgImageFromPath } from "@/models/point";
+import {
+  Point,
+  randomize,
+  pathFromPoints,
+  svgImageFromPath,
+} from "@/models/point";
 
-const generatePoints = (
-  count: number,
-  length: number,
-  dot: number
-) => {
+const generatePoints = (count: number, length: number, dot: number) => {
   const points: Point[] = [];
   const [cx, cy] = [512, 512];
-  const r0 = 280, speed = Math.PI / count;
+  const r0 = 280,
+    speed = Math.PI / count;
   for (
     let i = speed, alt = 0, r1 = r0;
     i < Math.PI * 2;

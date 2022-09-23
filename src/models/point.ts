@@ -68,7 +68,7 @@ export const svgHead =
   '<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">\n';
 
 export const svgPartFromPath = (path: string, tag: string) => {
-  return `<defs><g id="${tag}"><path d="${path}" /></g></defs>`;
+  return `<g id="${tag}"><path d="${path}" /></g>`;
 };
 
 export const svgFromBody = (body: string) => {
@@ -76,13 +76,15 @@ export const svgFromBody = (body: string) => {
 };
 
 export const svgFromPath = (path: string, color: string) => {
-  const body = svgPartFromPath(path, "asset") + `<use href="#asset" fill="${color}" />`;
+  const body =
+    "<defs>" + svgPartFromPath(path, "asset") + "</defs>"
+    + `<use href="#asset" fill="${color}" />`;
   return svgFromBody(body);
 };
 
 export const svgImageFromSvg = (svg: string) => {
   return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
-}
+};
 
 export const svgImageFromPath = (path: string, color: string) => {
   return svgImageFromSvg(svgFromPath(path, color));

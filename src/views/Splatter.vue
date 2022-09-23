@@ -21,7 +21,7 @@ import ProviderView from "@/components/ProviderView.vue";
 
 export default defineComponent({
   components: {
-    ProviderView
+    ProviderView,
   },
   setup() {
     const images = ref<string[]>([]);

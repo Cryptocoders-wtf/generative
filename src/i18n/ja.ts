@@ -5,7 +5,7 @@ const lang = {
     home: "ホーム",
   },
   message: {
-    touchToUpdate: "イメージをクリックすると再度生成します。"
+    touchToUpdate: "イメージをクリックすると再度生成します。",
   },
   languages,
 };
