@@ -1,6 +1,7 @@
 <template>
   <p>Images from the on-chain asset provider ({{ assetProvider }}).</p>
   <div>
+    <p v-if="images.length == 0">(Fetching from the blockchain...)</p>
     <img
       v-for="image in images"
       :key="image"
