@@ -20,7 +20,7 @@ const generatePoints = (
     c: true,
     r: 0    
   });
-  const arm = 20;
+  const arm = 50;
   points.push({
     x: cx + arm,
     y: cy + r0 + arm,
@@ -43,7 +43,9 @@ export const generateSVGImage = (color: string) => {
     randomize(0.3, 0)
   );
   const path = pathFromPoints(points);
-  const body = svgPartFromPath(path, "asset") + `<use href="#asset" fill="${color}" />`;
+  const body = svgPartFromPath(path, "asset") 
+    + `<use href="#asset" fill="${color}" />\n`
+    + `<use href="#asset" fill="${color}" transform="scale(-1, 1) translate(-1024, 0) " />\n`;
   const svg = svgFromBody(body);
   return svgImageFromSvg(svg);
 };
