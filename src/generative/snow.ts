@@ -2,7 +2,7 @@ import { Point, randomize, pathFromPoints, svgPartFromPath, svgFromBody, svgImag
 
 const generatePoints = (
   count: number,
-  length: number,
+  thickness: number,
   dot: number
 ) => {
   const points: Point[] = [];
@@ -20,16 +20,17 @@ const generatePoints = (
     c: true,
     r: 0    
   });
-  const arm = 50;
+  const army = thickness;
+  const armx = army * 1.73;
   points.push({
-    x: cx + arm,
-    y: cy + r0 + arm,
-    c: true,
-    r: 0    
+    x: cx + armx,
+    y: cy + r0 + army,
+    c: false,
+    r: 1    
   });
   points.push({
-    x: cx + arm,
-    y: cy + arm,
+    x: cx + armx,
+    y: cy + army,
     c: true,
     r: 0    
   });
@@ -39,7 +40,7 @@ const generatePoints = (
 export const generateSVGImage = (color: string) => {
   const points = generatePoints(
     randomize(30, 0),
-    randomize(0.2, 0),
+    randomize(30, 0.5),
     randomize(0.3, 0)
   );
   const path = pathFromPoints(points);
