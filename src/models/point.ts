@@ -71,14 +71,21 @@ export const svgPartFromPath = (path: string, tag: string) => {
   return `<defs><g id="${tag}"><path d="${path}" /></g></defs>`;
 };
 
-export const svgFromPath = (path: string, color: string) => {
-  const svgTail = `<use href="#asset" fill="${color}" /></svg>`;
-  return svgHead + svgPartFromPath(path, "asset") + svgTail;
+export const svgFromBody = (body: string) => {
+  return svgHead + body + "</svg>";
 };
 
-export const svgImageFromPath = (path: string, color: string) => {
-  const svg = svgFromPath(path, color);
+export const svgFromPath = (path: string, color: string) => {
+  const body = svgPartFromPath(path, "asset") + `<use href="#asset" fill="${color}" />`;
+  return svgFromBody(body);
+};
+
+export const svgImageFromSvg = (svg: string) => {
   return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
+}
+
+export const svgImageFromPath = (path: string, color: string) => {
+  return svgImageFromSvg(svgFromPath(path, color));
 };
 
 export const randomize = (value: number, ratio: number) => {
