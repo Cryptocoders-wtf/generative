@@ -5,6 +5,7 @@ import NotFound from "../components/NotFound.vue";
 
 import Home from "../views/Home.vue";
 import Splatter from "../views/Splatter.vue";
+import Snow from "../views/Snow.vue";
 
 const routeChildren: Array<RouteRecordRaw> = [
   {
@@ -14,6 +15,10 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "splatter",
     component: Splatter,
+  },
+  {
+    path: "snow",
+    component: Snow,
   },
 ];
 
