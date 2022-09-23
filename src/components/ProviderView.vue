@@ -2,11 +2,11 @@
   <p>Images from the on-chain asset provider ({{ network }}).</p>
   <div>
     <img
-        v-for="image in images"
-        :key="image"
-        :src="image"
-        class="mr-1 mb-1 inline-block w-32"
-      />
+      v-for="image in images"
+      :key="image"
+      :src="image"
+      class="mr-1 mb-1 inline-block w-32"
+    />
   </div>
 </template>
 
@@ -41,10 +41,11 @@ export default defineComponent({
       IAssetProvider.wabi.abi,
       provider
     );
+    console.log("*** assetProvider", assetProvider.functions);
 
     const fetchImages = async () => {
       const newImages = [];
-      for (let i=0; i<sampleColors.length; i++) {
+      for (let i = 0; i < sampleColors.length; i++) {
         const [svgPart, tag] = await assetProvider.functions.generateSVGPart(i);
         const image = svgImageFromSvgPart(svgPart, tag, sampleColors[i]);
         newImages.push(image);
@@ -55,8 +56,8 @@ export default defineComponent({
 
     return {
       images,
-      network
-    }
+      network,
+    };
   },
 });
 </script>
