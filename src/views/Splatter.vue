@@ -9,15 +9,20 @@
         class="mr-1 mb-1 inline-block w-32"
       />
     </div>
+    <ProviderView />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, Component } from "vue";
 import { sampleColors } from "@/models/point";
 import { generateSVGImage } from "@/generative/splatter";
+import ProviderView from "@/components/ProviderView.vue";
 
 export default defineComponent({
+  components: {
+    ProviderView
+  },
   setup() {
     const images = ref<string[]>([]);
     const updateImages = () => {
