@@ -82,6 +82,14 @@ export const svgFromPath = (path: string, color: string) => {
   return svgFromBody(body);
 };
 
+export const svgImageFromSvgPart = (svgPart: string, tag: string, color: string) => {
+  const body =
+    `<defs>${svgPart}</defs>`
+    + `<use href="#${tag}" fill="${color}" />`;
+  const svg = svgFromBody(body);
+  return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
+};
+
 export const svgImageFromSvg = (svg: string) => {
   return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
 };

@@ -1,12 +1,21 @@
 <template>
-  <p>Provider</p>
+  <p>Images from on-chain asset provider</p>
+  <div>
+    <img
+        v-for="image in images"
+        :key="image"
+        :src="image"
+        class="mr-1 mb-1 inline-block w-32"
+      />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
 import { addresses } from "@/utils/addresses";
 import { ethers } from "ethers";
+import { svgImageFromSvgPart, sampleColors } from "@/models/point";
 
 const IAssetProvider = {
   wabi: require("@/abis/IAssetProvider.json"), // wrapped abi
@@ -14,6 +23,7 @@ const IAssetProvider = {
 
 export default defineComponent({
   setup() {
+    const images = ref<string[]>([]);
     const route = useRoute();
     const network =
       typeof route.query.network == "string" ? route.query.network : "rinkeby";
@@ -32,10 +42,18 @@ export default defineComponent({
     );
 
     const fetchImages = async () => {
-      const [svgPart, tag] = await assetProvider.functions.generateSVGPart(10);
-      console.log("**** fetch", svgPart, tag);
+      const newImages = [];
+      for (let i=0; i<sampleColors.length; i++) {
+        const [svgPart, tag] = await assetProvider.functions.generateSVGPart(i);
+        const image = svgImageFromSvgPart(svgPart, tag, sampleColors[i]);
+        newImages.push(image);
+      }
+      images.value = newImages;
     };
     fetchImages();
+    return {
+      images
+    }
   },
 });
 </script>
