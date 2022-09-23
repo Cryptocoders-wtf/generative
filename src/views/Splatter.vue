@@ -9,7 +9,7 @@
         class="mr-1 mb-1 inline-block w-32"
       />
     </div>
-    <ProviderView />
+    <ProviderView assetProvider="splatter" />
   </div>
 </template>
 

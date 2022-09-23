@@ -22,14 +22,15 @@ const IAssetProvider = {
 };
 
 export default defineComponent({
-  setup() {
+  props: ["assetProvider"],
+  setup(props) {
     const images = ref<string[]>([]);
     const route = useRoute();
     const network =
       typeof route.query.network == "string" ? route.query.network : "rinkeby";
     console.log("*** network", network);
 
-    const providerAddress = addresses["splatter"][network];
+    const providerAddress = addresses[props.assetProvider][network];
     console.log("*** address", providerAddress);
     const provider =
       network == "localhost"
@@ -51,6 +52,7 @@ export default defineComponent({
       images.value = newImages;
     };
     fetchImages();
+
     return {
       images
     }
