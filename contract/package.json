@@ -4,5 +4,9 @@
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@openzeppelin/contracts": "^4.7.3",
     "hardhat": "^2.11.2"
+  },
+  "dependencies": {
+    "base64-sol": "^1.1.0",
+    "erc721a": "^4.2.3"
   }
 }
