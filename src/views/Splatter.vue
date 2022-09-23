@@ -12,6 +12,7 @@
       />
     </div>
     <ProviderView assetProvider="splatter" />
+    <ProviderView assetProvider="splatterArt" />
   </div>
 </template>
 

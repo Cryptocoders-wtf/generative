@@ -1,5 +1,5 @@
 <template>
-  <p>Images from the on-chain asset provider ({{ network }}).</p>
+  <p>Images from the on-chain asset provider ({{ assetProvider }}).</p>
   <div>
     <img
       v-for="image in images"
