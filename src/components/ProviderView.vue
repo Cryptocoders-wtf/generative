@@ -1,5 +1,5 @@
 <template>
-  <p>Images from on-chain asset provider</p>
+  <p>Images from the on-chain asset provider ({{ network }}).</p>
   <div>
     <img
         v-for="image in images"
@@ -54,7 +54,8 @@ export default defineComponent({
     fetchImages();
 
     return {
-      images
+      images,
+      network
     }
   },
 });

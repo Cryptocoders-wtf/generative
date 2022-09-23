@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
-    <p class="mb-2">{{ $t("message.touchToUpdate") }}</p>
+    <p class="mb-2">Images from TypeScript prototype. {{ $t("message.touchToUpdate") }}</p>
     <div @click="updateImages">
       <img
         v-for="image in images"
