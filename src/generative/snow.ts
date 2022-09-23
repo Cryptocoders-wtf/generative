@@ -6,34 +6,35 @@ const generatePoints = (
 ) => {
   const points: Point[] = [];
   const [cx, cy] = [512, 512];
-  const r0 = 280;
+  const r0 = 511;
+  const army = thickness;
+  const armx = army * 1.73;
+  const dir = (style > 2) ? -1 : 1;
   points.push({
     x: cx,
     y: cy,
     c: true,
     r: 0    
   });
+  const r1 = r0 - army / 2 - dir * army / 2; 
   points.push({
     x: cx,
-    y: cy + r0,
+    y: cy + r1,
     c: true,
     r: 0    
   });
-  const army = thickness;
-  const armx = army * 1.73;
-  const dir = (style > 2) ? -1 : 1;
-  for (let r = r0, f = 1; r > 0; r -= army, f = (f % 2) + 1) {
+  for (let r = r1, f = 1; r > 0; r -= army, f = (f % 2) + 1) {
     points.push({
       x: cx + armx * f,
       y: cy + r + dir * army * f,
       c: false,
-      r: 1    
+      r: 0.588    
     });
     points.push({
       x: cx + armx * f,
       y: cy + r - army + dir * army * f,
       c: false,
-      r: 1    
+      r: 0.588    
     });
   }
   points.push({
@@ -48,7 +49,7 @@ const generatePoints = (
 export const generateSVGImage = (color: string) => {
   const points = generatePoints(
     randomize(2, 0.5),
-    randomize(30, 0.5),
+    randomize(45, 0.6),
   );
   const path = pathFromPoints(points);
   const uses = Array(6).fill(0).map((v, index) => {
