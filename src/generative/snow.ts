@@ -3,12 +3,13 @@ import { Point, randomize, pathFromPoints, svgPartFromPath, svgFromBody, svgImag
 const generatePoints = (
   style: number,
   thickness: number,
+  growth: number
 ) => {
   const points: Point[] = [];
   const [cx, cy] = [512, 512];
   const r0 = 511;
-  const army = thickness;
-  const armx = army * 1.73;
+  let army = thickness;
+  let armx = army * 1.73;
   const dir = (style > 2) ? -1 : 1;
   points.push({
     x: cx,
@@ -36,6 +37,8 @@ const generatePoints = (
       c: false,
       r: 0.588    
     });
+    armx *= 1 + growth;
+    army *= 1 + growth;
   }
   points.push({
     x: cx + armx,
@@ -49,7 +52,8 @@ const generatePoints = (
 export const generateSVGImage = (color: string) => {
   const points = generatePoints(
     randomize(2, 0.5),
-    randomize(45, 0.6),
+    randomize(40, 0.6),
+    randomize(0.05, 1.0)
   );
   const path = pathFromPoints(points);
   const uses = Array(6).fill(0).map((v, index) => {
