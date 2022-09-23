@@ -1,9 +1,8 @@
 import { Point, randomize, pathFromPoints, svgPartFromPath, svgFromBody, svgImageFromSvg } from "@/models/point";
 
 const generatePoints = (
-  count: number,
+  style: number,
   thickness: number,
-  dot: number
 ) => {
   const points: Point[] = [];
   const [cx, cy] = [512, 512];
@@ -22,16 +21,17 @@ const generatePoints = (
   });
   const army = thickness;
   const armx = army * 1.73;
+  const dir = (style > 2) ? -1 : 1;
   for (let r = r0, f = 1; r > 0; r -= army, f = (f % 2) + 1) {
     points.push({
       x: cx + armx * f,
-      y: cy + r + army * f,
+      y: cy + r + dir * army * f,
       c: false,
       r: 1    
     });
     points.push({
       x: cx + armx * f,
-      y: cy + r - army + army * f,
+      y: cy + r - army + dir * army * f,
       c: false,
       r: 1    
     });
@@ -47,9 +47,8 @@ const generatePoints = (
 
 export const generateSVGImage = (color: string) => {
   const points = generatePoints(
-    randomize(30, 0),
+    randomize(2, 0.5),
     randomize(30, 0.5),
-    randomize(0.3, 0)
   );
   const path = pathFromPoints(points);
   const uses = Array(6).fill(0).map((v, index) => {
