@@ -31,7 +31,7 @@ const generatePoints = (
     });
     points.push({
       x: cx + armx * (f + 1),
-      y: cy + r + army * f,
+      y: cy + r - army + army * (f + 1),
       c: false,
       r: 1    
     });
