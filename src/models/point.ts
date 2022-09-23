@@ -5,20 +5,6 @@ export interface Point {
   r: number; // ratio (0 to 1)
 }
 
-export enum LayerType {
-  NONE,
-  REMIX,
-  LAYER,
-  OVERLAY,
-}
-
-export interface Layer {
-  points: Point[];
-  color: string;
-  path: string;
-  svgImage: string;
-}
-
 export interface Transform {
   tx: number;
   ty: number;
@@ -56,46 +42,6 @@ export const transformStyle = (xf: Transform, ratio: number) => {
   );
 };
 
-export interface Overlay {
-  provider: string;
-  assetId: number;
-  fill: string;
-  transform: Transform;
-  image: string; // cached svg image (base64)
-  svgPart: string; // cached svg part
-  svgTag: string; // cached svg tag
-}
-
-export interface Remix {
-  tokenId: number; // remix tokenId
-  color?: string;
-  transform: Transform;
-  image?: string; // cached svg image
-  svgPart?: string; // cached svgPart
-  svgTag?: string; // cached svg tag
-}
-
-export interface Drawing {
-  remix: Remix;
-  layers: Layer[];
-  overlays: Overlay[];
-  stroke: number; // optional stroke width
-}
-
-// asset,
-// props.remixId, // remixId
-// "", // color
-// "", // transform
-// [] // overlays
-/*
-  [{
-    assetId: 54,
-    provider: "asset",
-    fill: "blue",
-    transform: "scale(0.4, 0.4)"
-  }]
-*/
-
 export const pathFromPoints = (points: Point[]) => {
   const length = points.length;
   return points.reduce((path, cursor, index) => {
@@ -128,37 +74,6 @@ export const svgImageFromPath = (path: string, color: string) => {
   const image =
     "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
   return image;
-};
-
-export const svgImageFromDrawing = (drawing: Drawing) => {
-  const paths = drawing.layers.map((layer) => {
-    return `<path d="${layer.path}" fill="${layer.color}" />`;
-  });
-  const svg = svgHead + "<g>\n" + paths.join("\n") + "</g>\n</svg>\n";
-  return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
-};
-
-export const togglePointType = (points: Point[], index: number) => {
-  return points.map((point, _index) => {
-    if (_index == index) {
-      return { x: point.x, y: point.y, c: !point.c, r: point.r };
-    }
-    return point;
-  });
-};
-
-export const splitPoint = (points: Point[], index: number) => {
-  const prev = points[index];
-  const next = points[(index + 1) % points.length];
-  const newItem = {
-    x: (prev.x + next.x) / 2,
-    y: (prev.y + next.y) / 2,
-    c: false,
-    r: prev.r,
-  };
-  const array = points.map((point) => point);
-  array.splice(index + 1, 0, newItem);
-  return array;
 };
 
 export const randomize = (value: number, ratio: number) => {
