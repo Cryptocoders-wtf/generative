@@ -22,16 +22,16 @@ const generatePoints = (
   });
   const army = thickness;
   const armx = army * 1.73;
-  for (let r = r0, f = 1; r > 0; r -= army, f = (f+1) % 2) {
+  for (let r = r0, f = 1; r > 0; r -= army, f = (f % 2) + 1) {
     points.push({
-      x: cx + armx * (f + 1),
-      y: cy + r + army * (f + 1),
+      x: cx + armx * f,
+      y: cy + r + army * f,
       c: false,
       r: 1    
     });
     points.push({
-      x: cx + armx * (f + 1),
-      y: cy + r - army + army * (f + 1),
+      x: cx + armx * f,
+      y: cy + r - army + army * f,
       c: false,
       r: 1    
     });
