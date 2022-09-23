@@ -14,18 +14,14 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { pathFromPoints, svgImageFromPath, sampleColors } from "@/models/point";
-import { generatePoints } from "@/generative/splatter";
+import { sampleColors } from "@/models/point";
+import { generateSVGImage } from "@/generative/splatter";
 
 export default defineComponent({
   setup() {
     const images = ref<string[]>([]);
     const updateImages = () => {
-      images.value = sampleColors.map((color) => {
-        const points = generatePoints();
-        const path = pathFromPoints(points);
-        return svgImageFromPath(path, color);
-      });
+      images.value = sampleColors.map((color) => generateSVGImage(color));
     };
     updateImages();
     return {

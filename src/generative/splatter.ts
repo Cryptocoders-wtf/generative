@@ -1,6 +1,6 @@
-import { Point, randomize } from "@/models/point";
+import { Point, randomize, pathFromPoints, svgImageFromPath } from "@/models/point";
 
-const generatePointsInternal = (
+const generatePoints = (
   count: number,
   length: number,
   dot: number
@@ -66,10 +66,12 @@ const generatePointsInternal = (
   return points;
 };
 
-export const generatePoints = () => {
-  return generatePointsInternal(
+export const generateSVGImage = (color: string) => {
+  const points = generatePoints(
     randomize(30, 0.5),
     randomize(0.2, 0.5),
     randomize(0.3, 0.5)
   );
+  const path = pathFromPoints(points);
+  return svgImageFromPath(path, color);
 };
