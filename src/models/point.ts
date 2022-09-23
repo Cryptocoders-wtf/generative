@@ -64,16 +64,20 @@ export const pathFromPoints = (points: Point[]) => {
   }, "");
 };
 
-const svgHead =
+export const svgHead =
   '<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">\n';
 
 export const svgPartFromPath = (path: string, tag: string) => {
   return `<defs><g id="${tag}"><path d="${path}" /></g></defs>`;
 };
-  
-export const svgImageFromPath = (path: string, color: string) => {
+
+export const svgFromPath = (path: string, color: string) => {
   const svgTail = `<use href="#asset" fill="${color}" /></svg>`;
-  const svg = svgHead + svgPartFromPath(path, "asset") + svgTail;
+  return svgHead + svgPartFromPath(path, "asset") + svgTail;
+};
+
+export const svgImageFromPath = (path: string, color: string) => {
+  const svg = svgFromPath(path, color);
   return "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
 };
 
