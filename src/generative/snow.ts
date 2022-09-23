@@ -43,9 +43,11 @@ export const generateSVGImage = (color: string) => {
     randomize(0.3, 0)
   );
   const path = pathFromPoints(points);
-  const body = svgPartFromPath(path, "asset") 
-    + `<use href="#asset" fill="${color}" />\n`
-    + `<use href="#asset" fill="${color}" transform="scale(-1, 1) translate(-1024, 0) " />\n`;
-  const svg = svgFromBody(body);
+  const uses = Array(6).fill(0).map((v, index) => {
+    return `<use href="#asset" fill="${color}" transform="rotate(${index * 60}, 512, 512)" />\n`
+    + `<use href="#asset" fill="${color}" transform="rotate(${index * 60}, 512, 512) scale(-1, 1) translate(-1024, 0) " />\n`;
+
+  }).join('');
+  const svg = svgFromBody(svgPartFromPath(path, "asset") + uses);
   return svgImageFromSvg(svg);
 };
