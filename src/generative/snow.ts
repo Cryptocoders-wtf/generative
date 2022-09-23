@@ -1,4 +1,4 @@
-import { Point, randomize, pathFromPoints, svgImageFromPath } from "@/models/point";
+import { Point, randomize, pathFromPoints, svgPartFromPath, svgFromBody, svgImageFromSvg } from "@/models/point";
 
 const generatePoints = (
   count: number,
@@ -43,5 +43,7 @@ export const generateSVGImage = (color: string) => {
     randomize(0.3, 0)
   );
   const path = pathFromPoints(points);
-  return svgImageFromPath(path, color);
+  const body = svgPartFromPath(path, "asset") + `<use href="#asset" fill="${color}" />`;
+  const svg = svgFromBody(body);
+  return svgImageFromSvg(svg);
 };
