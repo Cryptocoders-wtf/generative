@@ -1,4 +1,5 @@
 import { ethers, network } from "hardhat";
+import { writeFile } from "fs";
 
 async function main() {
   const factory = await ethers.getContractFactory("SplatterProvider");
@@ -10,6 +11,12 @@ async function main() {
   const contractArt = await factoryArt.deploy(contract.address);
   await contractArt.deployed();
   console.log(`      splatter_art="${contractArt.address}"`);
+
+  const addresses = `export const addresses = {\n`
+    + `  splatterAddress:"${contract.address}",\n`
+    + `  splatterArtAddress:"${contractArt.address}"\n`
+    + `}\n`;
+  await writeFile(`./cache/splatter_${network.name}.ts`, addresses, ()=>{});  
 }
 
 main().catch((error) => {
