@@ -160,3 +160,7 @@ export const splitPoint = (points: Point[], index: number) => {
   array.splice(index + 1, 0, newItem);
   return array;
 };
+
+export const randomize = (value: number, ratio: number) => {
+  return value + (Math.random() - 0.5) * value * ratio * 2;
+};
