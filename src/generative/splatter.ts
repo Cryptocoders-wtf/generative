@@ -1,6 +1,6 @@
 import { Point, randomize } from "@/models/point";
 
-export const generatePoints = (
+const generatePointsInternal = (
   count: number,
   length: number,
   dot: number
@@ -64,4 +64,12 @@ export const generatePoints = (
     }
   }
   return points;
+};
+
+export const generatePoints = () => {
+  return generatePointsInternal(
+    randomize(30, 0.5),
+    randomize(0.2, 0.5),
+    randomize(0.3, 0.5)
+  );
 };
