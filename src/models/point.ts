@@ -164,3 +164,24 @@ export const splitPoint = (points: Point[], index: number) => {
 export const randomize = (value: number, ratio: number) => {
   return value + (Math.random() - 0.5) * value * ratio * 2;
 };
+
+export const sampleColors = [
+  "#E26A6A",
+  "#9C9C6A",
+  "#6AE270",
+  "#AEC7E3",
+  "#6A7070",
+  "#E2706A",
+  "#A7B8EB",
+  "#6A89E2",
+  "#6B56EB",
+  "#FF6961",
+  "#77B6EA",
+  "#6E6EFD",
+  "#69D2FF",
+  "#D6B900",
+  "#EFCP00",
+  "#9EB500",
+  "#625103",
+  "#8B280D",
+];
