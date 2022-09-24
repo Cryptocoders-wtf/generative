@@ -18,7 +18,7 @@ abstract contract ProviderToken is Ownable, ERC721A {
   using Strings for uint256;
   using Strings for uint16;
 
-  uint256 constant _tokensPerAsset = 4;
+  uint256 public immutable tokensPerAsset;
 
   // description
   string public description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/).";
@@ -35,29 +35,30 @@ abstract contract ProviderToken is Ownable, ERC721A {
     IAssetProvider _assetProvider,
     address _developer,
     IProxyRegistry _proxyRegistry,
+    uint256 _tokensPerAsset,
     string memory _title,
     string memory _shortTitle
   ) ERC721A(_title, _shortTitle)  {
     assetProvider = _assetProvider;
     developer = _developer;
     proxyRegistry = _proxyRegistry;
+    tokensPerAsset = _tokensPerAsset;
   }
 
-
-  function _isPrimary(uint256 _tokenId) internal pure returns(bool) {
-    return _tokenId % _tokensPerAsset == 0;
+  function _isPrimary(uint256 _tokenId) internal view returns(bool) {
+    return _tokenId % tokensPerAsset == 0;
   }
 
   /**
    */
   function mint(uint256 _affiliate) external {
     uint256 tokenId = _nextTokenId(); 
-    _mint(msg.sender, _tokensPerAsset - 1);
+    _mint(msg.sender, tokensPerAsset - 1);
 
     // Specified affliate token must be one of the primary tokens and not owned by the minter.
     if (_affiliate > 0 && _isPrimary(_affiliate) && ownerOf(_affiliate) != msg.sender) {
       _mint(ownerOf(_affiliate), 1);
-    } else if ((tokenId / _tokensPerAsset) % 2 == 0) {
+    } else if ((tokenId / tokensPerAsset) % 2 == 0) {
       // 1 in 20 tokens of non-affiliated mints go to the developer
       _mint(developer, 1);
     } else {
@@ -105,7 +106,7 @@ abstract contract ProviderToken is Ownable, ERC721A {
     return string(image);
   }
 
-  function _generateTraits(uint256 _tokenId) internal pure returns (bytes memory) {
+  function _generateTraits(uint256 _tokenId) internal view returns (bytes memory) {
     return abi.encodePacked(
       '{'
         '"trait_type":"Primary",'
@@ -143,10 +144,6 @@ abstract contract ProviderToken is Ownable, ERC721A {
       )
     );
   }  
-
-  function tokensPerAsset() public pure returns(uint256) {
-    return _tokensPerAsset;
-  }
 }
 
 contract SplatterToken is ProviderToken {
@@ -154,6 +151,6 @@ contract SplatterToken is ProviderToken {
     IAssetProvider _assetProvider,
     address _developer,
     IProxyRegistry _proxyRegistry
-  ) ProviderToken(_assetProvider, _developer, _proxyRegistry, "Splatter", "SPLATTER") {
+  ) ProviderToken(_assetProvider, _developer, _proxyRegistry, 4, "Splatter", "SPLATTER") {
   }
 }
