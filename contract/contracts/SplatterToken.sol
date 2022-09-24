@@ -14,14 +14,14 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import { IProxyRegistry } from './external/opensea/IProxyRegistry.sol';
 import { IAssetProvider } from './interfaces/IAssetProvider.sol';
 
-contract SplatterToken is Ownable, ERC721A {
+abstract contract ProviderToken is Ownable, ERC721A {
   using Strings for uint256;
   using Strings for uint16;
 
   uint256 constant _tokensPerAsset = 4;
 
   // description
-  string public description = "This is ...";
+  string public description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/).";
 
   // developer address.
   address public developer;
@@ -31,17 +31,16 @@ contract SplatterToken is Ownable, ERC721A {
 
   IAssetProvider public immutable assetProvider;
 
-  /**
-   */
   constructor(
     IAssetProvider _assetProvider,
     address _developer,
     IProxyRegistry _proxyRegistry
-  ) ERC721A("Kamon Symbols by Hakko Daiodo", "KAMON") {
+  ) ERC721A("Kamon Symbols by Hakko Daiodo", "KAMON")  {
     assetProvider = _assetProvider;
     developer = _developer;
     proxyRegistry = _proxyRegistry;
   }
+
 
   function _isPrimary(uint256 _tokenId) internal pure returns(bool) {
     return _tokenId % _tokensPerAsset == 0;
@@ -145,5 +144,14 @@ contract SplatterToken is Ownable, ERC721A {
 
   function tokensPerAsset() public pure returns(uint256) {
     return _tokensPerAsset;
+  }
+}
+
+contract SplatterToken is ProviderToken {
+  constructor(
+    IAssetProvider _assetProvider,
+    address _developer,
+    IProxyRegistry _proxyRegistry
+  ) ProviderToken(_assetProvider, _developer, _proxyRegistry) {
   }
 }
