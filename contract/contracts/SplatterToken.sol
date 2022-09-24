@@ -34,8 +34,10 @@ abstract contract ProviderToken is Ownable, ERC721A {
   constructor(
     IAssetProvider _assetProvider,
     address _developer,
-    IProxyRegistry _proxyRegistry
-  ) ERC721A("Kamon Symbols by Hakko Daiodo", "KAMON")  {
+    IProxyRegistry _proxyRegistry,
+    string memory _title,
+    string memory _shortTitle
+  ) ERC721A(_title, _shortTitle)  {
     assetProvider = _assetProvider;
     developer = _developer;
     proxyRegistry = _proxyRegistry;
@@ -152,6 +154,6 @@ contract SplatterToken is ProviderToken {
     IAssetProvider _assetProvider,
     address _developer,
     IProxyRegistry _proxyRegistry
-  ) ProviderToken(_assetProvider, _developer, _proxyRegistry) {
+  ) ProviderToken(_assetProvider, _developer, _proxyRegistry, "Splatter", "SPLATTER") {
   }
 }
