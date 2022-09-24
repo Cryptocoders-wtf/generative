@@ -20,8 +20,7 @@ abstract contract ProviderToken is Ownable, ERC721A {
 
   uint256 public immutable tokensPerAsset;
 
-  // description
-  string public description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/).";
+  string public description;
 
   // developer address.
   address public developer;
@@ -152,5 +151,6 @@ contract SplatterToken is ProviderToken {
     address _developer,
     IProxyRegistry _proxyRegistry
   ) ProviderToken(_assetProvider, _developer, _proxyRegistry, 4, "Splatter", "SPLATTER") {
+    description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/).";
   }
 }
