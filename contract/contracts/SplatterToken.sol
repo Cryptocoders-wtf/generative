@@ -18,11 +18,10 @@ contract SplatterToken is Ownable, ERC721A {
   using Strings for uint256;
   using Strings for uint16;
 
-  uint256 constant _tokensPerAsset = 10;
+  uint256 constant _tokensPerAsset = 4;
 
   // description
-  string public description = "This is one of effts to create (On-Chain Asset Store)[https://assetstore.wtf]. "
-  " All kamon vectors were created and copyrighted by (Hakko Daiodo)[http://hakko-daiodo.com].";
+  string public description = "This is ...";
 
   // developer address.
   address public developer;
@@ -91,39 +90,21 @@ contract SplatterToken is Ownable, ERC721A {
    * A function of IAssetStoreToken interface.
    * It generates SVG with the specified style, using the given "SVG Part".
    */
-  function generateSVG(string memory _svgPart, uint256 _style, string memory _tag) public pure returns (string memory) {
+  function generateSVG(uint256 _assetId) internal view returns (string memory) {
     // Constants of non-value type not yet implemented by Solidity
-    string[10] memory backColors = [
-      "black", "white", "#EFE8AC", "#EFE5AF", "#5B3319", "#BF2E16", "#0963AD", "#3D5943", "black", "url(#gold)" 
-    ];
-    string[10] memory frontColors = [
-      "white", "black", "#0D95A0", "#58456B", "#EFE8AC", "#EFE8AC", "#FFFFFF", "#FFFFFF", "url(#gold)", "black"
-    ];
-
-    bytes memory assetTag = abi.encodePacked('#', _tag);
-    uint index = _style % _tokensPerAsset;
-    bytes memory image = abi.encodePacked(
-      SVGHeader,
-      _svgPart);
-    if (index >= 8) {
-      image = abi.encodePacked(
-        image, 
-        '<linearGradient id="gold" x1="0.2" x2="0" y1="0" y2="1">\n'
-        '  <stop offset="0%" stop-color="#CCAB09"/>\n'
-        ' <stop offset="50%" stop-color="#FFF186" />\n'
-        ' <stop offset="100%" stop-color="#CCAB09"/>\n'
-        '</linearGradient>\n');
-    }
+    string memory svgPart;
+    string memory tag;
+    (svgPart, tag) = assetProvider.generateSVGPart(_assetId);
+    bytes memory image = abi.encodePacked(SVGHeader, svgPart);
     image =  abi.encodePacked(
       image,
       '</defs>\n'
-      ' <rect x="0" y="0" width="100%" height="100%" fill="',backColors[index],'" />\n'
-      ' <use href="', assetTag, '" fill="',frontColors[index],'" />\n'
+      ' <use href="', tag, '" />\n'
       '</svg>\n');
     return string(image);
   }
 
-  function _generateTraits(uint256 _tokenId) internal view returns (bytes memory) {
+  function _generateTraits(uint256 _tokenId) internal pure returns (bytes memory) {
     return abi.encodePacked(
       '{'
         '"trait_type":"Primary",'
@@ -142,8 +123,7 @@ contract SplatterToken is Ownable, ERC721A {
     */
   function tokenURI(uint256 _tokenId) public view override returns (string memory) {
     require(_exists(_tokenId), 'KamonToken.tokenURI: nonexistent token');
-    string memory svgPart = "xxx";
-    bytes memory image = bytes(generateSVG(svgPart, _tokenId % _tokensPerAsset, "xxx"));
+    bytes memory image = bytes(generateSVG(_tokenId));
 
     return string(
       abi.encodePacked(
@@ -151,7 +131,7 @@ contract SplatterToken is Ownable, ERC721A {
         Base64.encode(
           bytes(
             abi.encodePacked(
-              '{"name":"', "xxx", 
+              '{"name":"', 'Splatter ', _tokenId.toString(), 
                 '","description":"', description, 
                 '","attributes":[', _generateTraits(_tokenId), 
                 '],"image":"data:image/svg+xml;base64,', 
