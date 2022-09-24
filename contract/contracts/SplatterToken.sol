@@ -132,7 +132,7 @@ abstract contract ProviderToken is Ownable, ERC721A {
         Base64.encode(
           bytes(
             abi.encodePacked(
-              '{"name":"', 'Splatter ', _tokenId.toString(), 
+              '{"name":"', tokenName(_tokenId), 
                 '","description":"', description, 
                 '","attributes":[', _generateTraits(_tokenId), 
                 '],"image":"data:image/svg+xml;base64,', 
@@ -142,6 +142,10 @@ abstract contract ProviderToken is Ownable, ERC721A {
         )
       )
     );
+  }
+
+  function tokenName(uint256 _tokenId) internal pure returns(string memory) {
+    return _tokenId.toString();
   }  
 }
 
