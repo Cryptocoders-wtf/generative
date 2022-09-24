@@ -6,13 +6,7 @@
 
 pragma solidity ^0.8.6;
 
-import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "erc721a/contracts/ERC721A.sol";
-import { Base64 } from 'base64-sol/base64.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
-import { IProxyRegistry } from './external/opensea/IProxyRegistry.sol';
-import { IAssetProvider } from './interfaces/IAssetProvider.sol';
 import './libs/ProviderToken.sol';
 
 contract SplatterToken is ProviderToken {
