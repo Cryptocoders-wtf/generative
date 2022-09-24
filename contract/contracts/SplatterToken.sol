@@ -1,16 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 /*
- * Kamon NFT (ERC721). The mint function takes IAssetStore.AssetInfo as a parameter.
- * It registers the specified asset to the AssetStore and mint a token which represents
- * the "minter" of the asset (who paid the gas fee), along with two additional bonus tokens.
- * 
- * It uses ERC721A as the base contract, which is quite efficent to mint multiple tokens
- * with a single transaction. 
- *
- * Once minted, the asset will beome available to other smart contract developers,
- * for free, either CC0, CC-BY-SA(Attribution-ShareAlike), Appache, MIT or similar.
- * 
  * Created by Satoshi Nakajima (@snakajima)
  */
 
@@ -22,6 +12,7 @@ import "erc721a/contracts/ERC721A.sol";
 import { Base64 } from 'base64-sol/base64.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import { IProxyRegistry } from './external/opensea/IProxyRegistry.sol';
+import { IAssetProvider } from './interfaces/IAssetProvider.sol';
 
 contract SplatterToken is Ownable, ERC721A {
   using Strings for uint256;
@@ -39,12 +30,16 @@ contract SplatterToken is Ownable, ERC721A {
   // OpenSea's Proxy Registry
   IProxyRegistry public immutable proxyRegistry;
 
+  IAssetProvider public immutable assetProvider;
+
   /**
    */
   constructor(
+    IAssetProvider _assetProvider,
     address _developer,
     IProxyRegistry _proxyRegistry
   ) ERC721A("Kamon Symbols by Hakko Daiodo", "KAMON") {
+    assetProvider = _assetProvider;
     developer = _developer;
     proxyRegistry = _proxyRegistry;
   }
