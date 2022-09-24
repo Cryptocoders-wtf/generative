@@ -144,12 +144,14 @@ abstract contract ProviderToken is Ownable, ERC721A {
     );
   }
 
-  function tokenName(uint256 _tokenId) internal pure returns(string memory) {
+  function tokenName(uint256 _tokenId) internal view virtual returns(string memory) {
     return _tokenId.toString();
   }  
 }
 
 contract SplatterToken is ProviderToken {
+  using Strings for uint256;
+
   constructor(
     IAssetProvider _assetProvider,
     address _developer,
@@ -157,4 +159,8 @@ contract SplatterToken is ProviderToken {
   ) ProviderToken(_assetProvider, _developer, _proxyRegistry, 4, "Splatter", "SPLATTER") {
     description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/).";
   }
+
+  function tokenName(uint256 _tokenId) internal pure override returns(string memory) {
+    return string(abi.encodePacked('Splatter ', _tokenId.toString()));
+  }  
 }
