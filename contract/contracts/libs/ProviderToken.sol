@@ -23,15 +23,17 @@ import { IAssetProvider } from '../interfaces/IAssetProvider.sol';
  * ProviderToken is an abstract implentation of ERC721, which is built on top of an asset provider.
  * The specified asset provider is responsible in providing images for NFTs in SVG format,
  * which turns them into fully on-chain NFTs.
+ *
+ * When implementing the mint method, and it should call processPayout method of the asset provider like this:
+ *
+ *   provider.processPayout{value:msg.value}(assetId)
+ *
  */
 abstract contract ProviderToken is Ownable, ERC721A {
   using Strings for uint256;
   using Strings for uint16;
 
   string public description;
-
-  // developer address.
-  address public developer;
 
   // OpenSea's Proxy Registry
   IProxyRegistry public immutable proxyRegistry;
@@ -40,13 +42,11 @@ abstract contract ProviderToken is Ownable, ERC721A {
 
   constructor(
     IAssetProvider _assetProvider,
-    address _developer,
     IProxyRegistry _proxyRegistry,
     string memory _title,
     string memory _shortTitle
   ) ERC721A(_title, _shortTitle)  {
     assetProvider = _assetProvider;
-    developer = _developer;
     proxyRegistry = _proxyRegistry;
   }
 

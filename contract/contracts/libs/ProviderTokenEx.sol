@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-/*
+/**
+ * This is a part of an effort to create a decentralized autonomous marketplace for digital assets,
+ * which allows artists and developers to sell their arts and generative arts.
+ *
+ * Please see "https://fullyonchain.xyz/" for details. 
+ *
  * Created by Satoshi Nakajima (@snakajima)
  */
 
@@ -10,6 +15,7 @@ import "./ProviderToken.sol";
 
 abstract contract ProviderTokenEx is ProviderToken {
   uint256 public immutable tokensPerAsset;
+  address public developer;
 
   constructor(
     IAssetProvider _assetProvider,
@@ -18,13 +24,18 @@ abstract contract ProviderTokenEx is ProviderToken {
     uint256 _tokensPerAsset,
     string memory _title,
     string memory _shortTitle
-  ) ProviderToken(_assetProvider, _developer, _proxyRegistry, _title, _shortTitle) {
+  ) ProviderToken(_assetProvider, _proxyRegistry, _title, _shortTitle) {
     tokensPerAsset = _tokensPerAsset;
+    developer = _developer;
   }
 
   /**
+   * For non-free minting,
+   * 1. Override this method
+   * 2. Check for the required payment
+   * 3. Call the processPayout method of the asset provider with appropriate value
    */
-  function mint(uint256 _affiliate) external {
+  function mint(uint256 _affiliate) external virtual payable {
     uint256 tokenId = _nextTokenId(); 
     _mint(msg.sender, tokensPerAsset - 1);
 
