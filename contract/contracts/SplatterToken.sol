@@ -9,14 +9,14 @@ pragma solidity ^0.8.6;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import './libs/ProviderToken.sol';
 
-contract SplatterToken is ProviderToken {
+contract SplatterToken is ProviderTokenEx {
   using Strings for uint256;
 
   constructor(
     IAssetProvider _assetProvider,
     address _developer,
     IProxyRegistry _proxyRegistry
-  ) ProviderToken(_assetProvider, _developer, _proxyRegistry, 4, "Splatter", "SPLATTER") {
+  ) ProviderTokenEx(_assetProvider, _developer, _proxyRegistry, 4, "Splatter", "SPLATTER") {
     description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/).";
   }
 

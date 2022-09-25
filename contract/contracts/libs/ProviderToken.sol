@@ -148,3 +148,15 @@ abstract contract ProviderToken is Ownable, ERC721A {
     return _tokenId.toString();
   }  
 }
+
+abstract contract ProviderTokenEx is ProviderToken {
+  constructor(
+    IAssetProvider _assetProvider,
+    address _developer,
+    IProxyRegistry _proxyRegistry,
+    uint256 _tokensPerAsset,
+    string memory _title,
+    string memory _shortTitle
+  ) ProviderToken(_assetProvider, _developer, _proxyRegistry, _tokensPerAsset, _title, _shortTitle) {
+  }
+}
