@@ -71,13 +71,12 @@ abstract contract ProviderToken is Ownable, ERC721A {
     string memory svgPart;
     string memory tag;
     (svgPart, tag) = assetProvider.generateSVGPart(_assetId);
-    bytes memory image = abi.encodePacked(SVGHeader, svgPart);
-    image =  abi.encodePacked(
-      image,
+    return string(abi.encodePacked(
+      SVGHeader, 
+      svgPart,
       '</defs>\n'
       ' <use href="', tag, '" />\n'
-      '</svg>\n');
-    return string(image);
+      '</svg>\n'));
   }
 
   function generateTraits(uint256 _tokenId) internal view virtual returns (bytes memory) {
