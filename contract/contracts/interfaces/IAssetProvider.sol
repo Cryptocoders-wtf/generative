@@ -1,5 +1,13 @@
 // SPDX-License-Identifier: MIT
 
+/**
+ * This is a part of an effort to create a decentralized autonomous marketplace for digital assets,
+ * which allows artists and developers to sell their arts and generative arts.
+ *
+ * Please see "https://fullyonchain.xyz/" for details. 
+ *
+ * Created by Satoshi Nakajima (@snakajima)
+ */
 pragma solidity ^0.8.6;
 
 /**
