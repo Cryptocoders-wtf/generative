@@ -18,8 +18,6 @@ abstract contract ProviderToken is Ownable, ERC721A {
   using Strings for uint256;
   using Strings for uint16;
 
-  uint256 public immutable tokensPerAsset;
-
   string public description;
 
   // developer address.
@@ -34,37 +32,14 @@ abstract contract ProviderToken is Ownable, ERC721A {
     IAssetProvider _assetProvider,
     address _developer,
     IProxyRegistry _proxyRegistry,
-    uint256 _tokensPerAsset,
     string memory _title,
     string memory _shortTitle
   ) ERC721A(_title, _shortTitle)  {
     assetProvider = _assetProvider;
     developer = _developer;
     proxyRegistry = _proxyRegistry;
-    tokensPerAsset = _tokensPerAsset;
   }
 
-  function _isPrimary(uint256 _tokenId) internal view returns(bool) {
-    return _tokenId % tokensPerAsset == 0;
-  }
-
-  /**
-   */
-  function mint(uint256 _affiliate) external {
-    uint256 tokenId = _nextTokenId(); 
-    _mint(msg.sender, tokensPerAsset - 1);
-
-    // Specified affliate token must be one of the primary tokens and not owned by the minter.
-    if (_affiliate > 0 && _isPrimary(_affiliate) && ownerOf(_affiliate) != msg.sender) {
-      _mint(ownerOf(_affiliate), 1);
-    } else if ((tokenId / tokensPerAsset) % 2 == 0) {
-      // 1 in 20 tokens of non-affiliated mints go to the developer
-      _mint(developer, 1);
-    } else {
-      // the rest goes to the owner for distribution
-      _mint(owner(), 1);
-    }
-  }
   /*
    * @notice get next tokenId.
    */
@@ -105,11 +80,11 @@ abstract contract ProviderToken is Ownable, ERC721A {
     return string(image);
   }
 
-  function _generateTraits(uint256 _tokenId) internal view returns (bytes memory) {
+  function generateTraits(uint256 _tokenId) internal view virtual returns (bytes memory) {
     return abi.encodePacked(
       '{'
-        '"trait_type":"Primary",'
-        '"value":"', _isPrimary(_tokenId) ? 'Yes':'No', '"' 
+        '"trait_type":"TokenId",'
+        '"value":"', _tokenId.toString(), '"' 
       '}'
     );
   }
@@ -134,7 +109,7 @@ abstract contract ProviderToken is Ownable, ERC721A {
             abi.encodePacked(
               '{"name":"', tokenName(_tokenId), 
                 '","description":"', description, 
-                '","attributes":[', _generateTraits(_tokenId), 
+                '","attributes":[', generateTraits(_tokenId), 
                 '],"image":"data:image/svg+xml;base64,', 
                 Base64.encode(image), 
               '"}')
@@ -150,6 +125,8 @@ abstract contract ProviderToken is Ownable, ERC721A {
 }
 
 abstract contract ProviderTokenEx is ProviderToken {
+  uint256 public immutable tokensPerAsset;
+
   constructor(
     IAssetProvider _assetProvider,
     address _developer,
@@ -157,6 +134,38 @@ abstract contract ProviderTokenEx is ProviderToken {
     uint256 _tokensPerAsset,
     string memory _title,
     string memory _shortTitle
-  ) ProviderToken(_assetProvider, _developer, _proxyRegistry, _tokensPerAsset, _title, _shortTitle) {
+  ) ProviderToken(_assetProvider, _developer, _proxyRegistry, _title, _shortTitle) {
+    tokensPerAsset = _tokensPerAsset;
+  }
+
+  /**
+   */
+  function mint(uint256 _affiliate) external {
+    uint256 tokenId = _nextTokenId(); 
+    _mint(msg.sender, tokensPerAsset - 1);
+
+    // Specified affliate token must be one of the primary tokens and not owned by the minter.
+    if (_affiliate > 0 && _isPrimary(_affiliate) && ownerOf(_affiliate) != msg.sender) {
+      _mint(ownerOf(_affiliate), 1);
+    } else if ((tokenId / tokensPerAsset) % 2 == 0) {
+      // 1 in 20 tokens of non-affiliated mints go to the developer
+      _mint(developer, 1);
+    } else {
+      // the rest goes to the owner for distribution
+      _mint(owner(), 1);
+    }
+  }
+
+  function _isPrimary(uint256 _tokenId) internal view returns(bool) {
+    return _tokenId % tokensPerAsset == 0;
+  }
+
+  function generateTraits(uint256 _tokenId) internal view override returns (bytes memory) {
+    return abi.encodePacked(
+      '{'
+        '"trait_type":"Primary",'
+        '"value":"', _isPrimary(_tokenId) ? 'Yes':'No', '"' 
+      '}'
+    );
   }
 }
