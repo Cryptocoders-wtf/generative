@@ -68,9 +68,7 @@ abstract contract ProviderToken is Ownable, ERC721A {
    */
   function generateSVG(uint256 _assetId) internal view returns (string memory) {
     // Constants of non-value type not yet implemented by Solidity
-    string memory svgPart;
-    string memory tag;
-    (svgPart, tag) = assetProvider.generateSVGPart(_assetId);
+    (string memory svgPart, string memory tag) = assetProvider.generateSVGPart(_assetId);
     return string(abi.encodePacked(
       SVGHeader, 
       svgPart,
