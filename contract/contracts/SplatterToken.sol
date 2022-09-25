@@ -7,7 +7,7 @@
 pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
-import './libs/ProviderToken.sol';
+import './libs/ProviderTokenEx.sol';
 
 contract SplatterToken is ProviderTokenEx {
   using Strings for uint256;
