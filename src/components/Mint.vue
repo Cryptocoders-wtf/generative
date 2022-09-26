@@ -12,9 +12,11 @@
     <p><a :href="EtherscanToken" class="underline"
         target="_blank">{{ tokenAddress }}</a> </p>
     <p>
-      <a :href="`${OpenSeaPath}/0`" target="_blank">
-      <img v-for="image in images" :src="image" class="mr-1 mb-1 inline-block w-32" :key="image"/>
-      </a>
+      <span v-for="token in tokens" :key="token.tokenId">
+        <a :href="`${OpenSeaPath}/0`" target="_blank">
+        <img :src="token.image" class="mr-1 mb-1 inline-block w-32" />
+        </a>
+    </span>
     </p>
   </div>
 </template>
@@ -31,6 +33,11 @@ import { getAddresses } from "@/utils/const";
 const ProviderTokenEx = {
   wabi: require("@/abis/ProviderTokenEx.json"), // wrapped abi
 };
+
+interface Token {
+  tokenId: number;
+  image: string;
+}
 
 export default defineComponent({
   props: ["network", "tokenAddress"],
@@ -51,25 +58,25 @@ export default defineComponent({
       ProviderTokenEx.wabi.abi,
       provider
     );
-    const images = ref<string[]>([]);
+    const tokens = ref<Token[]>([]);
     const debugFetch = async () => {
       const [count] = await contractRO.functions.totalSupply();
       console.log("totalSupply", count.toNumber());
-      const updatedImages = [];
-      for (var i=Math.max(0, count - 4); i< count; i++) {
-        const [tokenURI] = await contractRO.functions.tokenURI(i);
+      const updatedTokens = [];
+      for (var tokenId=Math.max(0, count - 4); tokenId< count; tokenId++) {
+        const [tokenURI] = await contractRO.functions.tokenURI(tokenId);
         //console.log("tokenURI", tokenURI);
         const data = tokenURI.substring(29); // HACK: hardcoded
         const decoded = Buffer.from(data, 'base64');
         const json = JSON.parse(decoded.toString());
-        updatedImages.push(json.image);
+        updatedTokens.push({tokenId, image: json.image});
         const svgData = json.image.substring(26); // hardcoded
         const svg = Buffer.from(svgData, 'base64').toString();
         // console.log("data", svg);
         delete json.image;
         console.log("***json", json);
       }
-      images.value = updatedImages;
+      tokens.value = updatedTokens;
     };
     debugFetch();
 
@@ -109,7 +116,7 @@ export default defineComponent({
     return {
       chainId,
       mint,
-      images,
+      tokens,
       EtherscanToken,
       OpenSeaPath,
     };
