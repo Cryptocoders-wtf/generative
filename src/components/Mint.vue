@@ -11,7 +11,11 @@
     </NetworkGate>
     <p><a :href="EtherscanToken" class="underline"
         target="_blank">{{ tokenAddress }}</a> </p>
-    <p><img v-for="image in images" :src="image" class="mr-1 mb-1 inline-block w-32" :key="image"/></p>
+    <p>
+      <a :href="`${OpenSeaPath}/0`" target="_blank">
+      <img v-for="image in images" :src="image" class="mr-1 mb-1 inline-block w-32" :key="image"/>
+      </a>
+    </p>
   </div>
 </template>
 
