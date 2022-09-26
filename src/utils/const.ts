@@ -1,6 +1,5 @@
 export const getAddresses = (
   network: string,
-  storeAddress: string,
   contentAddress: string
 ) => {
   const EtherscanBase =
@@ -11,14 +10,12 @@ export const getAddresses = (
     network == "rinkeby"
       ? "https://testnets.opensea.io/assets/rinkeby"
       : "https://opensea.io/assets/ethereum";
-  const EtherscanStore = `${EtherscanBase}/${storeAddress}`;
   const EtherscanToken = `${EtherscanBase}/${contentAddress}`;
   const OpenSeaPath = `${OpenSeaBase}/${contentAddress}`;
 
   return {
     EtherscanBase,
     OpenSeaBase,
-    EtherscanStore,
     EtherscanToken,
     OpenSeaPath,
   };

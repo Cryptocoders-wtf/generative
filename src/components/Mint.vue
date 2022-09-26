@@ -9,7 +9,8 @@
         {{ $t("mint.mint") }}
       </button>
     </NetworkGate>
-    <p>{{ tokenAddress }}</p>
+    <p><a :href="EtherscanToken" class="underline"
+        target="_blank">{{ tokenAddress }}</a> </p>
     <p><img v-for="image in images" :src="image" class="mr-1 mb-1 inline-block w-32" :key="image"/></p>
   </div>
 </template>
@@ -21,6 +22,7 @@ import { useRoute } from "vue-router";
 import { ethers } from "ethers";
 import { ChainIdMap } from "../utils/MetaMask";
 import NetworkGate from "@/components/NetworkGate.vue";
+import { getAddresses } from "@/utils/const";
 
 const ProviderTokenEx = {
   wabi: require("@/abis/ProviderTokenEx.json"), // wrapped abi
@@ -96,10 +98,16 @@ export default defineComponent({
       const result = await tx.wait();
       console.log("mint:gasUsed", result.gasUsed.toNumber());
     };
+    const { EtherscanToken, OpenSeaPath } = getAddresses(
+      props.network,
+      props.tokenAddress
+    );
     return {
       chainId,
       mint,
       images,
+      EtherscanToken,
+      OpenSeaPath,
     };
   },
 });
