@@ -12,16 +12,14 @@ import { useRoute } from "vue-router";
 import { ethers } from "ethers";
 import NetworkGate from "@/components/NetworkGate.vue";
 
-const SplatterToken = {
-  wabi: require("@/abis/SplatterToken.json"), // wrapped abi
+const ProviderTokenEx = {
+  wabi: require("@/abis/ProviderTokenEx.json"), // wrapped abi
 };
 
 export default defineComponent({
   props: [
     "chainId",
-    "addresses",
-    "tokensPerAsset",
-    "tokenAbi",
+    "tokenAddress",
   ],
   components: {
     NetworkGate,
@@ -36,15 +34,15 @@ export default defineComponent({
     const networkContext = computed(() => {
       if (
         store.state.account &&
-        store.state.chainId == props.addresses.chainId
+        store.state.chainId == props.chainId
       ) {
         const provider = new ethers.providers.Web3Provider(
           store.state.ethereum
         );
         const signer = provider.getSigner();
         const contract = new ethers.Contract(
-          props.addresses.tokenAddress,
-          props.tokenAbi,
+          props.tokenAddress,
+          ProviderTokenEx.wabi.abi,
           signer
         );
 

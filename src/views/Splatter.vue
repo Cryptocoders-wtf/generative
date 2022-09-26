@@ -11,7 +11,7 @@
         class="mr-1 mb-1 inline-block w-32"
       />
     </div>
-    <Mint :chainId="chainId" />
+    <Mint :chainId="chainId" :tokenAddress="tokenAddress" />
   </div>
 </template>
 
@@ -40,7 +40,8 @@ export default defineComponent({
       typeof route.query.network == "string" ? route.query.network : "rinkeby";
     const chainId = ChainIdMap[network];
     const addresses = allAddresses[network];
-    console.log("*** chainId", chainId, addresses);
+    const tokenAddress = addresses.splatterToken;
+    console.log("*** chainId", chainId, tokenAddress);
     const images = ref<string[]>([]);
     const updateImages = () => {
       images.value = sampleColors.map((color) => generateSVGImage(color));
@@ -49,7 +50,8 @@ export default defineComponent({
     return {
       images,
       updateImages,
-      chainId
+      chainId,
+      tokenAddress
     };
   },
 });
