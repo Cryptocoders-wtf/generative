@@ -10,7 +10,7 @@
       </button>
     </NetworkGate>
     <p>{{ tokenAddress }}</p>
-    <p>xx<img :src="debugImage" class="mr-1 mb-1 inline-block w-32" />yy</p>
+    <p><img :src="debugImage" class="mr-1 mb-1 inline-block w-32" /></p>
   </div>
 </template>
 
@@ -55,7 +55,9 @@ export default defineComponent({
       debugImage.value = json.image;
       const svgData = json.image.substring(26); // hardcoded
       const svg = Buffer.from(svgData, 'base64').toString();
-      console.log("data", svg);
+      // console.log("data", svg);
+      delete json.image;
+      console.log("***json", json);
     };
     debugFetch();
 
