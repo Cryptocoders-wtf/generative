@@ -13,7 +13,7 @@
         target="_blank">{{ tokenAddress }}</a> </p>
     <p>
       <span v-for="token in tokens" :key="token.tokenId">
-        <a :href="`${OpenSeaPath}/0`" target="_blank">
+        <a :href="`${OpenSeaPath}/${token.tokenId}`" target="_blank">
         <img :src="token.image" class="mr-1 mb-1 inline-block w-32" />
         </a>
     </span>
