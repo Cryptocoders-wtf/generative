@@ -9,6 +9,7 @@
           {{ $t("mint.mint") }}
       </button>
     </NetworkGate>
+    <p>{{ tokenAddress }}</p>
   </div>
 </template>
 
@@ -57,13 +58,15 @@ export default defineComponent({
       }
       return null;
     });
-    const mint = () => {
+    const mint = async () => {
       if (networkContext.value == null) {
         return;
       }
       const { provider, signer, contract } = networkContext.value;
       console.log("***mint", contract);
-
+      const tx = await contract.functions.mint(affiliateId);
+      const result = await tx.wait();
+      console.log("mint:gasUsed", result.gasUsed.toNumber());
     }
     return {
       mint
