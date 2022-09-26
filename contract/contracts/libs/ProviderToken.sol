@@ -105,7 +105,7 @@ abstract contract ProviderToken is Ownable, ERC721A {
     * @dev See {IERC721Metadata-tokenURI}.
     */
   function tokenURI(uint256 _tokenId) public view override returns (string memory) {
-    require(_exists(_tokenId), 'KamonToken.tokenURI: nonexistent token');
+    require(_exists(_tokenId), 'ProviderToken.tokenURI: nonexistent token');
     bytes memory image = bytes(generateSVG(_tokenId));
 
     return string(
