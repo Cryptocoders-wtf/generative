@@ -155,7 +155,7 @@ contract SplatterProvider is IAssetProvider, IERC165, Ownable {
     (seed, props.count) = seed.randomize(props.count, 50); // +/- 50%
     (seed, props.length) = seed.randomize(props.length, 50); // +/- 50%
     (seed, props.dot) = seed.randomize(props.dot, 50);
-    props.count = props.count / 3 * 3; // always multiple of 3
+    props.count = 6; // props.count / 3 * 3; // always multiple of 3
   }
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
