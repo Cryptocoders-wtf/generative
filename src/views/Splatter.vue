@@ -11,8 +11,7 @@
         class="mr-1 mb-1 inline-block w-32"
       />
     </div>
-    <ProviderView assetProvider="splatter" />
-    <ProviderView assetProvider="splatterArt" />
+    <Mint />
   </div>
 </template>
 
@@ -20,11 +19,11 @@
 import { defineComponent, ref, Component } from "vue";
 import { sampleColors } from "@/models/point";
 import { generateSVGImage } from "@/generative/splatter";
-import ProviderView from "@/components/ProviderView.vue";
+import Mint from "@/components/Mint.vue";
 
 export default defineComponent({
   components: {
-    ProviderView,
+    Mint,
   },
   setup() {
     const images = ref<string[]>([]);
