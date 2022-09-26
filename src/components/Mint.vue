@@ -10,11 +10,12 @@
       </button>
     </NetworkGate>
     <p>{{ tokenAddress }}</p>
+    <p>xx<img :src="debugImage" class="mr-1 mb-1 inline-block w-32" />yy</p>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { ethers } from "ethers";
@@ -44,12 +45,15 @@ export default defineComponent({
       ProviderTokenEx.wabi.abi,
       provider
     );
+    const debugImage = ref<string>("");
     const debugFetch = async () => {
       const [tokenURI] = await contractRO.functions.tokenURI(0);
       console.log("tokenURI", tokenURI);
       const data = tokenURI.substring(29); // HACK: hardcoded
       const decoded = Buffer.from(data, 'base64');
-      console.log("data", decoded);
+      const json = JSON.parse(decoded.toString());
+      console.log("data", json.image);
+      debugImage.value = json.image;
     };
     debugFetch();
 
@@ -85,6 +89,7 @@ export default defineComponent({
     return {
       chainId,
       mint,
+      debugImage,
     };
   },
 });
