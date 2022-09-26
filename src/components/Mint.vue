@@ -39,6 +39,19 @@ export default defineComponent({
       props.network == "localhost"
         ? new ethers.providers.JsonRpcProvider()
         : new ethers.providers.AlchemyProvider(props.network);
+    const contractRO = new ethers.Contract(
+      props.tokenAddress,
+      ProviderTokenEx.wabi.abi,
+      provider
+    );
+    const debugFetch = async () => {
+      const [tokenURI] = await contractRO.functions.tokenURI(0);
+      console.log("tokenURI", tokenURI);
+      const data = tokenURI.substring(29); // HACK: hardcoded
+      const decoded = Buffer.from(data, 'base64');
+      console.log("data", decoded);
+    };
+    debugFetch();
 
     const affiliateId =
       typeof route.query.ref == "string" ? parseInt(route.query.ref) || 0 : 0;
