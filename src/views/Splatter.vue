@@ -20,6 +20,11 @@ import { defineComponent, ref, Component } from "vue";
 import { sampleColors } from "@/models/point";
 import { generateSVGImage } from "@/generative/splatter";
 import Mint from "@/components/Mint.vue";
+import { ChainIds } from "../utils/MetaMask";
+import { addresses as mainnet } from "@/utils/addresses/splatter_mainnet";
+import { addresses as localhost } from "@/utils/addresses/splatter_localhost";
+import { addresses as rinkeby } from "@/utils/addresses/splatter_rinkeby";
+import { addresses as goerli } from "@/utils/addresses/splatter_goerli";
 
 export default defineComponent({
   components: {
