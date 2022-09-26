@@ -3,8 +3,8 @@
     <h1 class="mt-2 mb-2 text-xl font-bold">Fully On-Chain Generative Art</h1>
     <p class="mb-2">
       This is a website for developers who are interested in
-      <b>on-chain generative art</b>, which means <u>you write Solidity code to
-      generate art in SVG format</u>.
+      <b>on-chain generative art</b>, which means
+      <u>you write Solidity code to generate art in SVG format</u>.
     </p>
     <p class="mb-2">
       Unlike images stored on HTTP servers or IPFS, on-chain generative arts are
@@ -50,19 +50,23 @@
     </p>
     <h1 class="mt-2 mb-2 text-xl font-bold">Porting it to Solidity</h1>
     <p class="mb-2">
-      The Soidity version of Splatter is avaiable at 
-      <code class="bg-gray-200">contract/contracts/SplatterProvider.sol</code>. 
-      Please compare it to TypeScript version. Although there are some differences
-      because of languages, they are build with the same algorithm and similar libraries.
+      The Soidity version of Splatter is avaiable at
+      <code class="bg-gray-200">contract/contracts/SplatterProvider.sol</code>.
+      Please compare it to TypeScript version. Although there are some
+      differences because of languages, they are build with the same algorithm
+      and similar libraries.
     </p>
     <p class="mb-2">
-      Please notice that the Solidity version generates art deterministically based on the given assetId.
-      This is why some internal functions takes Randomizer.seed as the first parameter and returns the updated one,
-      which creates a pseudo state variable (or a closure) in read-only methods.
+      Please notice that the Solidity version generates art deterministically
+      based on the given assetId. This is why some internal functions takes
+      Randomizer.seed as the first parameter and returns the updated one, which
+      creates a pseudo state variable (or a closure) in read-only methods.
     </p>
     <p class="mb-2">
-      The Solidity verison also pre-allocate memory (<code class="bg-gray-200">points</code>) 
-      instead of dynamically push elements into the array, which is also necessary to keep those methods read-only. 
+      The Solidity verison also pre-allocate memory (<code class="bg-gray-200"
+        >points</code
+      >) instead of dynamically push elements into the array, which is also
+      necessary to keep those methods read-only.
     </p>
     <p class="mb-2">
       Please join

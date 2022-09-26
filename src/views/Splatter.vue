@@ -11,7 +11,7 @@
         class="mr-1 mb-1 inline-block w-32"
       />
     </div>
-    <Mint :chainId="chainId" :tokenAddress="tokenAddress" />
+    <Mint :network="network" :tokenAddress="tokenAddress" />
   </div>
 </template>
 
@@ -21,13 +21,15 @@ import { useRoute } from "vue-router";
 import { sampleColors } from "@/models/point";
 import { generateSVGImage } from "@/generative/splatter";
 import Mint from "@/components/Mint.vue";
-import { ChainIdMap } from "../utils/MetaMask";
 import { addresses as mainnet } from "@/utils/addresses/splatter_mainnet";
 import { addresses as localhost } from "@/utils/addresses/splatter_localhost";
 import { addresses as rinkeby } from "@/utils/addresses/splatter_rinkeby";
 import { addresses as goerli } from "@/utils/addresses/splatter_goerli";
-const allAddresses:any = {
-  mainnet, localhost, rinkeby, goerli
+const allAddresses: any = {
+  mainnet,
+  localhost,
+  rinkeby,
+  goerli,
 };
 
 export default defineComponent({
@@ -38,10 +40,9 @@ export default defineComponent({
     const route = useRoute();
     const network =
       typeof route.query.network == "string" ? route.query.network : "rinkeby";
-    const chainId = ChainIdMap[network];
     const addresses = allAddresses[network];
     const tokenAddress = addresses.splatterToken;
-    console.log("*** chainId", chainId, tokenAddress);
+    console.log("*** chainId", network, tokenAddress);
     const images = ref<string[]>([]);
     const updateImages = () => {
       images.value = sampleColors.map((color) => generateSVGImage(color));
@@ -50,8 +51,8 @@ export default defineComponent({
     return {
       images,
       updateImages,
-      chainId,
-      tokenAddress
+      network,
+      tokenAddress,
     };
   },
 });
