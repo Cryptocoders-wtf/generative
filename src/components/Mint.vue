@@ -52,8 +52,10 @@ export default defineComponent({
       const data = tokenURI.substring(29); // HACK: hardcoded
       const decoded = Buffer.from(data, 'base64');
       const json = JSON.parse(decoded.toString());
-      console.log("data", json.image);
       debugImage.value = json.image;
+      const svgData = json.image.substring(26); // hardcoded
+      const svg = Buffer.from(svgData, 'base64').toString();
+      console.log("data", svg);
     };
     debugFetch();
 

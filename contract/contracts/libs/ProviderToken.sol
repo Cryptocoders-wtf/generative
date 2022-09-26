@@ -83,7 +83,7 @@ abstract contract ProviderToken is Ownable, ERC721A {
       SVGHeader, 
       svgPart,
       '</defs>\n'
-      ' <use href="', tag, '" />\n'
+      '<use href="#', tag, '" />\n'
       '</svg>\n'));
   }
 
