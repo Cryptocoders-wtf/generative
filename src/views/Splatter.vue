@@ -8,7 +8,7 @@
         v-for="image in images"
         :key="image"
         :src="image"
-        class="mr-1 mb-1 inline-block w-32"
+        class="mr-1 mb-1 inline-block w-20"
       />
     </div>
     <Mint :network="network" :tokenAddress="tokenAddress" />
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Component } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
 import { sampleColors } from "@/models/point";
 import { generateSVGImage } from "@/generative/splatter";

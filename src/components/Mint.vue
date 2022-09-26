@@ -47,18 +47,23 @@ export default defineComponent({
     );
     const images = ref<string[]>([]);
     const debugFetch = async () => {
-
-      const [tokenURI] = await contractRO.functions.tokenURI(0);
-      console.log("tokenURI", tokenURI);
-      const data = tokenURI.substring(29); // HACK: hardcoded
-      const decoded = Buffer.from(data, 'base64');
-      const json = JSON.parse(decoded.toString());
-      images.value = [json.image];
-      const svgData = json.image.substring(26); // hardcoded
-      const svg = Buffer.from(svgData, 'base64').toString();
-      // console.log("data", svg);
-      delete json.image;
-      console.log("***json", json);
+      const [count] = await contractRO.functions.totalSupply();
+      console.log("totalSupply", count.toNumber());
+      const updatedImages = [];
+      for (var i=Math.max(0, count - 4); i< count; i++) {
+        const [tokenURI] = await contractRO.functions.tokenURI(i);
+        //console.log("tokenURI", tokenURI);
+        const data = tokenURI.substring(29); // HACK: hardcoded
+        const decoded = Buffer.from(data, 'base64');
+        const json = JSON.parse(decoded.toString());
+        updatedImages.push(json.image);
+        const svgData = json.image.substring(26); // hardcoded
+        const svg = Buffer.from(svgData, 'base64').toString();
+        // console.log("data", svg);
+        delete json.image;
+        console.log("***json", json);
+      }
+      images.value = updatedImages;
     };
     debugFetch();
 
