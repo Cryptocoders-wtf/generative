@@ -1,6 +1,6 @@
 <template>
   <p>Mint</p>
-  <NetworkGate :expectedNetwork="'0x4'">
+  <NetworkGate :expectedNetwork="chainId">
     <p>Contents</p>
   </NetworkGate>
 </template>
@@ -18,6 +18,7 @@ const SplatterToken = {
 
 export default defineComponent({
   props: [
+    "chainId",
     "addresses",
     "tokensPerAsset",
     "tokenAbi",

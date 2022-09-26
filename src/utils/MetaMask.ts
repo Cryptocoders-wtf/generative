@@ -39,6 +39,14 @@ export const ChainIds = {
   Localhost: "0x7a69", // not sure
 };
 
+export const ChainIdMap:any = {
+  "mainnet": "0x1",
+  "rinkeby": "0x4",
+  "goerli": "0x5",
+  "polygon": "0x89",
+  "localhost": "0x7a69", // not sure
+};
+
 export const initializeEthereum = () => {
   const setEthereum = () => {
     const ethereum = (window as any).ethereum;
