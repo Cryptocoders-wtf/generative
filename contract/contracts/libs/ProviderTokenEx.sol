@@ -63,4 +63,10 @@ abstract contract ProviderTokenEx is ProviderToken {
       '}'
     );
   }
+
+  function debugTokenURI(uint256 _tokenId) public view returns (string memory uri, uint256 gas) {
+    gas = gasleft();
+    uri = tokenURI(_tokenId);
+    gas -= gasleft();
+  }
 }
