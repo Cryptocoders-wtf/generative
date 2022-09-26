@@ -11,6 +11,7 @@ const lang = {
     switchNetwork: "Please switch the network.",
     switchNetworkButton: "Switch Network.",
     connectMetamask: "Please connect with Metamask.",
+    mint: "Mint",
   },
   languages,
 };
