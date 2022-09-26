@@ -10,7 +10,7 @@
       </button>
     </NetworkGate>
     <p>{{ tokenAddress }}</p>
-    <p><img :src="debugImage" class="mr-1 mb-1 inline-block w-32" /></p>
+    <p><img v-for="image in images" :src="image" class="mr-1 mb-1 inline-block w-32" :key="image"/></p>
   </div>
 </template>
 
@@ -45,14 +45,15 @@ export default defineComponent({
       ProviderTokenEx.wabi.abi,
       provider
     );
-    const debugImage = ref<string>("");
+    const images = ref<string[]>([]);
     const debugFetch = async () => {
+
       const [tokenURI] = await contractRO.functions.tokenURI(0);
       console.log("tokenURI", tokenURI);
       const data = tokenURI.substring(29); // HACK: hardcoded
       const decoded = Buffer.from(data, 'base64');
       const json = JSON.parse(decoded.toString());
-      debugImage.value = json.image;
+      images.value = [json.image];
       const svgData = json.image.substring(26); // hardcoded
       const svg = Buffer.from(svgData, 'base64').toString();
       // console.log("data", svg);
@@ -93,7 +94,7 @@ export default defineComponent({
     return {
       chainId,
       mint,
-      debugImage,
+      images,
     };
   },
 });
