@@ -26,7 +26,7 @@ import { addresses as mainnet } from "@/utils/addresses/splatter_mainnet";
 import { addresses as localhost } from "@/utils/addresses/splatter_localhost";
 import { addresses as rinkeby } from "@/utils/addresses/splatter_rinkeby";
 import { addresses as goerli } from "@/utils/addresses/splatter_goerli";
-const addresses = {
+const allAddresses:any = {
   mainnet, localhost, rinkeby, goerli
 };
 
@@ -39,7 +39,8 @@ export default defineComponent({
     const network =
       typeof route.query.network == "string" ? route.query.network : "rinkeby";
     const chainId = ChainIdMap[network];
-    console.log("*** chainId", chainId);
+    const addresses = allAddresses[network];
+    console.log("*** chainId", chainId, addresses);
     const images = ref<string[]>([]);
     const updateImages = () => {
       images.value = sampleColors.map((color) => generateSVGImage(color));
