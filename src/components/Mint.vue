@@ -64,8 +64,8 @@ export default defineComponent({
       console.log("totalSupply", count.toNumber());
       const updatedTokens = [];
       for (var tokenId=Math.max(0, count - 4); tokenId< count; tokenId++) {
-        const [tokenURI] = await contractRO.functions.tokenURI(tokenId);
-        //console.log("tokenURI", tokenURI);
+        const [tokenURI, gas] = await contractRO.functions.debugTokenURI(tokenId);
+        console.log("gas", tokenId, gas.toNumber());
         const data = tokenURI.substring(29); // HACK: hardcoded
         const decoded = Buffer.from(data, 'base64');
         const json = JSON.parse(decoded.toString());
