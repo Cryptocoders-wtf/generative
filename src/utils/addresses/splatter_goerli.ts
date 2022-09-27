@@ -1,5 +1,5 @@
 export const addresses = {
-  splatterAddress:"0x3E2722e578eA07cf7bBcB446Bc849785CD31E3A0",
-  splatterArtAddress:"0x02Ef8b9D7F19828D784eDA7D2fE7A75f0fBe1eCB",
-  splatterToken:"0xc0b556C0F0382ae22C494a65DD2B4FbDf8f668b7"
+  splatterAddress:"0xd55b6fa1D626C4f7783713165cE325d079a4b579",
+  splatterArtAddress:"0xc42F9d8c08b1AE03CE62d8C8D626BDCD1ca8d8dd",
+  splatterToken:"0x163B3906884df904EFF51bf21E7Ee3D3f87098D3"
 }
