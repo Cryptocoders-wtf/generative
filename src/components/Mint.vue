@@ -59,7 +59,7 @@ export default defineComponent({
       provider
     );
     const tokens = ref<Token[]>([]);
-    const debugFetch = async () => {
+    const fetchTokens = async () => {
       const [count] = await contractRO.functions.totalSupply();
       console.log("totalSupply", count.toNumber());
       const updatedTokens = [];
@@ -72,13 +72,10 @@ export default defineComponent({
         updatedTokens.push({tokenId, image: json.image});
         const svgData = json.image.substring(26); // hardcoded
         const svg = Buffer.from(svgData, 'base64').toString();
-        // console.log("data", svg);
-        delete json.image;
-        console.log("***json", json);
       }
       tokens.value = updatedTokens;
     };
-    debugFetch();
+    fetchTokens();
 
     const affiliateId =
       typeof route.query.ref == "string" ? parseInt(route.query.ref) || 0 : 0;
