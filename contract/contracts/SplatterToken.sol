@@ -17,7 +17,7 @@ contract SplatterToken is ProviderTokenEx {
     address _developer,
     IProxyRegistry _proxyRegistry
   ) ProviderTokenEx(_assetProvider, _developer, _proxyRegistry, 4, "Splatter", "SPLATTER") {
-    description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/).";
+    description = "This is a part of Fully On-chain Generative Art project.";
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns(string memory) {

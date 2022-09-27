@@ -64,7 +64,7 @@ export default defineComponent({
       console.log("totalSupply", count.toNumber());
       const updatedTokens = [];
       for (var tokenId=Math.max(0, count - 4); tokenId< count; tokenId++) {
-        const [tokenURI] = await contractRO.functions.tokenURI(tokenId);
+        const [tokenURI, gas] = await contractRO.functions.debugTokenURI(tokenId);
         //console.log("tokenURI", tokenURI);
         const data = tokenURI.substring(29); // HACK: hardcoded
         const decoded = Buffer.from(data, 'base64');
@@ -74,7 +74,7 @@ export default defineComponent({
         const svg = Buffer.from(svgData, 'base64').toString();
         // console.log("data", svg);
         delete json.image;
-        console.log("***json", json);
+        console.log("***json", gas.toNumber(), json);
       }
       tokens.value = updatedTokens;
     };
