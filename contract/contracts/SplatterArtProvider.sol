@@ -82,11 +82,11 @@ contract SplatterArtProvider is IAssetProvider, IERC165, Ownable {
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId/stylesPerSeed, 0);
-    SplatterProvider.Props memory props;
-    (seed, props) = splatter.generateProps(seed);
-
     string[] memory scheme;
     (seed, scheme) = getColorScheme(seed);
+
+    SplatterProvider.Props memory props;
+    (seed, props) = splatter.generateProps(seed);
     
     bytes memory path;
     bytes memory body;
