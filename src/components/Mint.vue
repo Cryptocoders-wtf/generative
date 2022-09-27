@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Mint</p>
+    <p class="mt-2">Free Mint ({{ network }})</p>
     <NetworkGate :expectedNetwork="chainId">
       <button
         @click="mint"
@@ -9,15 +9,16 @@
         {{ $t("mint.mint") }}
       </button>
     </NetworkGate>
-    <p><a :href="EtherscanToken" class="underline"
-        target="_blank">{{ tokenAddress }}</a> </p>
-    <p>
+    <p class="mt-2">
       <span v-for="token in tokens" :key="token.tokenId">
         <a :href="`${OpenSeaPath}/${token.tokenId}`" target="_blank">
         <img :src="token.image" class="mr-1 mb-1 inline-block w-32" />
         </a>
     </span>
     </p>
+    <p class="mt-2">
+    Etherscan: <a :href="EtherscanToken" class="underline"
+        target="_blank">{{ tokenAddress }}</a> </p>
   </div>
 </template>
 
