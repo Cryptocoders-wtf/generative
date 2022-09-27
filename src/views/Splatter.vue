@@ -40,7 +40,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const network =
-      typeof route.query.network == "string" ? route.query.network : "rinkeby";
+      typeof route.query.network == "string" ? route.query.network : "goerli";
     const addresses = allAddresses[network];
     const tokenAddress = addresses.splatterToken;
     console.log("*** chainId", network, tokenAddress);
