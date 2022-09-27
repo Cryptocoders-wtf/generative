@@ -4,8 +4,12 @@ const lang = {
   header: {
     home: "Home",
   },
+  menu: {
+    connect: "Connect",
+  },
   message: {
     touchToUpdate: "Click images to regenerate.",
+    processing: "Processing...",
   },
   mint: {
     switchNetwork: "Please switch the network.",
