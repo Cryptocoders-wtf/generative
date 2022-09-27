@@ -28,6 +28,9 @@ contract SplatterArtProvider is IAssetProvider, IERC165, Ownable {
 
   string constant providerKey = "spltart";
   uint constant stylesPerSeed = 4;
+  uint constant schemeCount = 11;
+  uint constant colorCount = 5;
+
   SplatterProvider public splatter;
 
   constructor(SplatterProvider _splatter) {
@@ -57,7 +60,7 @@ contract SplatterArtProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function getColorScheme(Randomizer.Seed memory _seed) internal pure returns(Randomizer.Seed memory seed, string[] memory scheme) {
-    string[5][11] memory schemes = [
+    string[colorCount][schemeCount] memory schemes = [
       ["E9B4DB", "6160B0", "EB77A6", "3E3486", "E23D80"], // love
       ["FFDE91", "FF9D75", "DE6868", "494580", "BDA8FF"], // bright
       ["EDC9AF", "A0E2BD", "53CBCF", "0DA3BA", "046E94"], // beach
@@ -71,12 +74,12 @@ contract SplatterArtProvider is IAssetProvider, IERC165, Ownable {
       ["5A261B", "C81125", "F15B4A", "FFAB63", "FADB6A"] // fall
     ];
     uint schemeIndex;
-    (seed, schemeIndex) = _seed.random(schemes.length);
-    scheme = new string[](5);
+    (seed, schemeIndex) = _seed.random(schemeCount);
+    scheme = new string[](colorCount);
     uint offset;
-    (seed, offset) = seed.random(scheme.length);
-    for (uint i = 0; i < 5 ; i++) {
-      scheme[i] = schemes[schemeIndex][(i + offset) % 5];
+    (seed, offset) = seed.random(colorCount);
+    for (uint i = 0; i < colorCount ; i++) {
+      scheme[i] = schemes[schemeIndex][(i + offset) % colorCount];
     }
   }
 
