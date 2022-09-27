@@ -59,7 +59,7 @@ contract SplatterArtProvider is IAssetProvider, IERC165, Ownable {
     splatter.processPayout(_assetId);
   }
 
-  function getColorScheme(Randomizer.Seed memory _seed) internal pure returns(Randomizer.Seed memory seed, string[] memory scheme) {
+  function getColorScheme(Randomizer.Seed memory _seed, uint256 _schemeIndex) internal pure returns(Randomizer.Seed memory seed, string[] memory scheme) {
     string[colorCount][schemeCount] memory schemes = [
       ["E9B4DB", "6160B0", "EB77A6", "3E3486", "E23D80"], // love
       ["FFDE91", "FF9D75", "DE6868", "494580", "BDA8FF"], // bright
@@ -73,20 +73,21 @@ contract SplatterArtProvider is IAssetProvider, IERC165, Ownable {
       ["627AA3", "D8D0C5", "DAAE46", "7AAB9C", "9F4F4C"], // vintage
       ["5A261B", "C81125", "F15B4A", "FFAB63", "FADB6A"] // fall
     ];
-    uint schemeIndex;
-    (seed, schemeIndex) = _seed.random(schemeCount);
     scheme = new string[](colorCount);
     uint offset;
-    (seed, offset) = seed.random(colorCount);
+    (seed, offset) = _seed.random(colorCount);
     for (uint i = 0; i < colorCount ; i++) {
-      scheme[i] = schemes[schemeIndex][(i + offset) % colorCount];
+      scheme[i] = schemes[_schemeIndex][(i + offset) % colorCount];
     }
   }
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId/stylesPerSeed, 0);
+    uint schemeIndex;
+    (seed, schemeIndex) = seed.random(schemeCount);
+
     string[] memory scheme;
-    (seed, scheme) = getColorScheme(seed);
+    (seed, scheme) = getColorScheme(seed, schemeIndex);
 
     SplatterProvider.Props memory props;
     (seed, props) = splatter.generateProps(seed);
