@@ -6,6 +6,7 @@ const lang = {
   },
   menu: {
     connect: "Connect",
+    nometamask: "No Metamask",
   },
   message: {
     touchToUpdate: "Click images to regenerate.",

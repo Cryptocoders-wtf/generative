@@ -8,8 +8,8 @@
     </p>
     <p class="mb-2">
       Unlike images stored on HTTP servers or IPFS, on-chain generative arts are
-      truly decentralized and composable and can generate revenue autonomously
-      (we will release a <b>decentralized autonomous marketplace</b> of
+      truly decentralized and composable. It can even generate revenue autonomously
+      (we will release a <b>decentralized autonomous marketplace</b> for
       generative arts soon).
     </p>
     <p class="mb-2">
@@ -19,8 +19,8 @@
     <h1 class="mt-2 mb-2 text-xl font-bold">TypeScript/Javascript Prototype</h1>
     <p class="mb-2">
       First of all, please learn how to write JavaScript/TypeScript code to
-      generate art in SVG format, which helps you to understand what it takes to
-      generate art in SVG format. It also helps you to refine your algorithm
+      generate art in SVG format, which will make it easy for you to develop Solidity-based 
+      generative art later. It also helps you to refine your algorithm
       quickly (it takes a long time to do it in Solidity).
     </p>
     <p class="mb-2">Please run the following commands in your terminal.</p>
@@ -33,7 +33,7 @@
       yarn run serve</pre
     >
     <p class="mb-2">
-      Then, open <code class="bg-gray-200">"localhost:8080"</code> in your
+      Then, open "localhost:8080" in your
       browser. You'll see the clone of this website.
     </p>
     <p class="mb-2">
