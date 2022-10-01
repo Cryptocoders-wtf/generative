@@ -73,12 +73,17 @@
       <a href="https://discord.gg/4JGURQujXK" class="underline">our discord</a>,
       and feel free to ask any questions either in English or Japanese.
     </p>
+    <References />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import References from "@/components/References.vue";
 export default defineComponent({
+  components: {
+    References,
+  },
   setup() {
     return {};
   },

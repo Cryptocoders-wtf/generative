@@ -11,6 +11,7 @@ const lang = {
   message: {
     touchToUpdate: "Click images to regenerate.",
     processing: "Processing...",
+    resources: "Resources",
   },
   mint: {
     switchNetwork: "Please switch the network.",

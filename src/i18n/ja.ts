@@ -6,6 +6,7 @@ const lang = {
   },
   message: {
     touchToUpdate: "イメージをクリックすると再度生成します。",
+    resources: "Resources",
   },
   mint: {
     switchNetwork: "ネットワークを切り替えて下さい。",
