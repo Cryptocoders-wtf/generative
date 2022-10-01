@@ -3,11 +3,10 @@
     <div class="mb-2">
       <p class="font-bold">{{ $t("message.resources") }}</p>
     </div>
-    <p v-if="EtherscanStore">
+    <p v-if="EtherscanToken">
       Etherscan:
-      <a :href="EtherscanStore" class="underline" target="_blank">AssetStore</a>
       <span v-if="TokenName"
-        >,
+        >
         <a :href="EtherscanToken" class="underline" target="_blank">{{
           TokenName
         }}</a>

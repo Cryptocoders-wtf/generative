@@ -12,6 +12,7 @@
       />
     </div>
     <Mint :network="network" :tokenAddress="tokenAddress" />
+    <References />
   </div>
 </template>
 

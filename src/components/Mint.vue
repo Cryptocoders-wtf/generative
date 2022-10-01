@@ -16,9 +16,11 @@
         </a>
     </span>
     </p>
-    <p class="mt-2">
-    Etherscan: <a :href="EtherscanToken" class="underline"
-        target="_blank">{{ tokenAddress }}</a> </p>
+    <References
+      :EtherscanToken="EtherscanToken"
+      :TokenName="tokenName"
+    />
+    
   </div>
 </template>
 
@@ -30,6 +32,7 @@ import { ethers } from "ethers";
 import { ChainIdMap } from "../utils/MetaMask";
 import NetworkGate from "@/components/NetworkGate.vue";
 import { getAddresses } from "@/utils/const";
+import References from "@/components/References.vue";
 
 const ProviderTokenEx = {
   wabi: require("@/abis/ProviderTokenEx.json"), // wrapped abi
@@ -44,6 +47,7 @@ export default defineComponent({
   props: ["network", "tokenAddress"],
   components: {
     NetworkGate,
+    References,
   },
   setup(props) {
     const route = useRoute();
@@ -135,6 +139,7 @@ export default defineComponent({
       tokens,
       EtherscanToken,
       OpenSeaPath,
+      tokenName: "ERC721",
     };
   },
 });
