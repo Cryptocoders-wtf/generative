@@ -76,14 +76,15 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
 
   function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal returns(Randomizer.Seed memory, ISVGHelper.Point[] memory) {
     Randomizer.Seed memory seed = _seed;
-    int32 army = int32(int256(_props.thickness));
+    int32 thickness = int32(int256(_props.thickness));
+    int32 army = thickness / 10;
     int32 armx = (army * 173) / 100;
     int32 r = 512;
     if (_props.style == 0) {
       r -= army * 2;
     }
     int32 dir = (_props.style == 0)? int32(1) : int32(-1);
-    uint count = uint(int(r / army));
+    uint count = uint(int(r / army)) - 1;
     ISVGHelper.Point[] memory points = new ISVGHelper.Point[](count * 2 + 2);
     points[0].x = 512;
     points[0].y = 512;
@@ -104,6 +105,9 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
       } else {
         point.y = 512 + r + dir * m * army - army;
         r -= army;
+        thickness = thickness * int32(int(_props.growth)) / 100;
+        army = thickness / 10;
+        armx = (army * 173) / 100;
       }
       // Work-around a compiler bug (points[i+2] = point)
       points[i + 2].x = point.x;
@@ -122,10 +126,10 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
 
   function generateProps(Randomizer.Seed memory _seed) public pure returns(Randomizer.Seed memory seed, Props memory props) {
     seed = _seed;
-    props = Props(40, 40, 100);
+    props = Props(400, 40, 100);
     (seed, props.thickness) = seed.randomize(props.thickness, 60); // +/- 60%
     (seed, props.style) = seed.random(2); // 0 or 1
-    (seed, props.growth) = seed.random(10);
+    (seed, props.growth) = seed.random(7);
     props.growth += 100;
   }
 
