@@ -117,8 +117,14 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
 
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
     svgPart = string(abi.encodePacked(
-      '<g id="', tag, '">\n'
+      '<g id="', tag, 'part">\n'
       '<path d="', path, '"/>\n'
+      '</g>\n'
+    ));
+    svgPart = string(abi.encodePacked(
+      svgPart,
+      '<g id="', tag, '">\n'
+      '<use href="#', tag, 'part"/>\n'
       '</g>\n'
     ));
   }
