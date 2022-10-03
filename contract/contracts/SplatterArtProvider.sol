@@ -26,15 +26,19 @@ contract SplatterArtProvider is IAssetProvider, IERC165, Ownable {
   using Randomizer for Randomizer.Seed;
   using Trigonometry for uint;
 
-  string constant providerKey = "spltart";
+  string providerKey;
+  string providerName;
+
   uint constant stylesPerSeed = 4;
   uint constant schemeCount = 11;
   uint constant colorCount = 5;
 
   IAssetProviderEx public provider;
 
-  constructor(IAssetProviderEx _provider) {
+  constructor(IAssetProviderEx _provider, string memory _key, string memory _name) {
     provider = _provider;
+    providerKey = _key;
+    providerName = _name;
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -48,7 +52,7 @@ contract SplatterArtProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function getProviderInfo() external view override returns(ProviderInfo memory) {
-    return ProviderInfo(providerKey, "Splatter Art", this);
+    return ProviderInfo(providerKey, providerName, this);
   }
 
   function totalSupply() external pure override returns(uint256) {
