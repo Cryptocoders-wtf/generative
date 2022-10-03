@@ -28,7 +28,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
 
   struct Props {
     uint thickness; 
-    uint length; // average length fo arm
+    uint style; // 0 or 1
     uint dot; // average size of dot
   }
 
@@ -78,7 +78,11 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     Randomizer.Seed memory seed = _seed;
     int32 army = int32(int256(_props.thickness));
     int32 armx = (army * 173) / 100;
-    int32 r = 512 - army * 2;
+    int32 r = 512;
+    if (_props.style == 0) {
+      r -= army * 2;
+    }
+    int32 dir = (_props.style == 0)? int32(1) : int32(-1);
     uint count = uint(int(r / army));
     ISVGHelper.Point[] memory points = new ISVGHelper.Point[](count * 2 + 2);
     points[0].x = 512;
@@ -96,9 +100,9 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
       int32 m = (i % 4 < 2) ? int32(2) : int32(1); 
       point.x = 512 + m * armx; //  * (1 + int32(int(i % 2)));
       if (i % 2 == 0) {
-        point.y = 512 + r + m * army;
+        point.y = 512 + r + dir * m * army;
       } else {
-        point.y = 512 + r + (m - 1) * army;
+        point.y = 512 + r + dir * m * army - army;
         r -= army;
       }
       // Work-around a compiler bug (points[i+2] = point)
@@ -120,7 +124,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     seed = _seed;
     props = Props(40, 40, 100);
     (seed, props.thickness) = seed.randomize(props.thickness, 60); // +/- 60%
-    (seed, props.length) = seed.randomize(props.length, 50); // +/- 50%
+    (seed, props.style) = seed.random(2); // 0 or 1
     (seed, props.dot) = seed.randomize(props.dot, 50);
   }
 
@@ -161,7 +165,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
   function generateRandomProps(Randomizer.Seed memory _seed) external override pure returns(Randomizer.Seed memory seed, uint256 prop) {
     Props memory props;
     (seed, props) = generateProps(_seed);
-    prop = props.thickness + props.length * 0x10000 + props.dot * 0x100000000;
+    prop = props.thickness + props.style * 0x10000 + props.dot * 0x100000000;
   }
 
   /**
@@ -170,7 +174,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
   function generatePathWithProps(Randomizer.Seed memory _seed, uint256 _prop) external override view returns(Randomizer.Seed memory seed, bytes memory svgPart) {
     Props memory props;
     props.thickness = _prop & 0xffff;
-    props.length = (_prop / 0x10000) & 0xffff;
+    props.style = (_prop / 0x10000) & 0xffff;
     props.dot = (_prop / 0x100000000) & 0xffff;
     return generatePath(_seed, props);
   }
