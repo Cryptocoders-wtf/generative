@@ -127,7 +127,8 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     for (uint i = 0; i < 360; i += 60) {
       part = abi.encodePacked(
         part,
-        '<use href="#', tag, 'part" transform="rotate(', i.toString(),', 512, 512)"/>\n'
+        '<use href="#', tag, 'part" transform="rotate(', i.toString(),', 512, 512)"/>\n',
+        '<use href="#', tag, 'part" transform="rotate(', i.toString(),', 512, 512) scale(-1, 1) translate(-1024, 0)"/>\n'
       );
     }
     part = abi.encodePacked(
