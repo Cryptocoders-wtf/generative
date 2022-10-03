@@ -82,11 +82,11 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     points[0].c = true;
     points[0].r = 0;
     points[1].x = 512;
-    points[1].y = 512 + 250;
+    points[1].y = 512 + 500;
     points[1].c = true;
     points[1].r = 0;
     points[2].x = 512 + 40;
-    points[2].y = 512 + 250;
+    points[2].y = 512 + 500;
     points[2].c = true;
     points[2].r = 0;
     return (seed, points);
