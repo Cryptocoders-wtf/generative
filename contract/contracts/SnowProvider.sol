@@ -76,10 +76,10 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
 
   function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal returns(Randomizer.Seed memory, ISVGHelper.Point[] memory) {
     Randomizer.Seed memory seed = _seed;
-    int32 r = 480;
-    int32 army = int32(int256(_props.thickness));
-    int32 armx = (army * 173) / 100;
-    uint count = uint(int(r / army));
+    int32 r = 400;
+    int32 army = 50; // int32(int256(_props.thickness));
+    int32 armx = 100; // (army * 173) / 100;
+    uint count = 1; // uint(int(r / army));
     ISVGHelper.Point[] memory points = new ISVGHelper.Point[](count * 2 + 2);
     points[0].x = 512;
     points[0].y = 512;
@@ -90,15 +90,21 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     points[1].c = true;
     points[1].r = 0;
     ISVGHelper.Point memory point;
-    point.c = false;
+    point.c = true;
     point.r = 566;
-    for (uint i=0; i<count; i++) {
-      point.x = 512 + armx * (1 + int32(int(i % 2)));
-      point.y = 512 + r + army;
-      points[2 + i * 2] = point;
-      point.y = 512 + r;
-      points[3 + i * 2] = point;
-      r -= army;
+    for (uint i=0; i < count * 2; i++) {
+      point.x = 512 + armx; //  * (1 + int32(int(i % 2)));
+      if (i % 2 == 0) {
+        point.y = 512 + r + army;
+      } else {
+        point.y = 512 + r - army;
+        r -= army;
+      }
+      // Work-around a compiler bug (points[i+2] = point)
+      points[i + 2].x = point.x;
+      points[i + 2].y = point.y;
+      points[i + 2].c = point.c;
+      points[i + 2].r = point.r;
     }
     return (seed, points);
   }
