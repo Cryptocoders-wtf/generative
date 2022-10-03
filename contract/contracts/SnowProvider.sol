@@ -76,10 +76,11 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
 
   function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal returns(Randomizer.Seed memory, ISVGHelper.Point[] memory) {
     Randomizer.Seed memory seed = _seed;
-    ISVGHelper.Point[] memory points = new ISVGHelper.Point[](3);
     int32 r = 480;
     int32 army = int32(int256(_props.thickness));
     int32 armx = (army * 173) / 100;
+    uint count = uint(int(r / army));
+    ISVGHelper.Point[] memory points = new ISVGHelper.Point[](count * 2 + 2);
     points[0].x = 512;
     points[0].y = 512;
     points[0].c = true;
@@ -88,10 +89,17 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     points[1].y = 512 + r;
     points[1].c = true;
     points[1].r = 0;
-    points[2].x = 512 + armx;
-    points[2].y = 512 + r + army;
-    points[2].c = true;
-    points[2].r = 0;
+    ISVGHelper.Point memory point;
+    point.c = false;
+    point.r = 566;
+    for (uint i=0; i<count; i++) {
+      point.x = 512 + armx * (1 + int32(int(i % 2)));
+      point.y = 512 + r + army;
+      points[2 + i * 2] = point;
+      point.y = 512 + r;
+      points[3 + i * 2] = point;
+      r -= army;
+    }
     return (seed, points);
   }
 
