@@ -11,6 +11,7 @@ pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { IAssetProvider } from './interfaces/IAssetProvider.sol';
+import { IAssetProviderEx } from './interfaces/IAssetProviderEx.sol';
 import { ISVGHelper } from './interfaces/ISVGHelper.sol';
 import './libs/Trigonometry.sol';
 import './libs/Randomizer.sol';
@@ -19,7 +20,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "hardhat/console.sol";
 
-contract SplatterProvider is IAssetProvider, IERC165, Ownable {
+contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
   using Strings for uint32;
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
@@ -43,6 +44,7 @@ contract SplatterProvider is IAssetProvider, IERC165, Ownable {
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
     return
       interfaceId == type(IAssetProvider).interfaceId ||
+      interfaceId == type(IAssetProviderEx).interfaceId ||
       interfaceId == type(IERC165).interfaceId;
   }
 
@@ -172,5 +174,19 @@ contract SplatterProvider is IAssetProvider, IERC165, Ownable {
       '<path d="', path, '"/>\n'
       '</g>\n'
     ));
+  }
+
+  function generateRandomProps(Randomizer.Seed memory _seed) external override pure returns(Randomizer.Seed memory seed, uint256 prop) {
+    Props memory props;
+    (seed, props) = generateProps(_seed);
+    prop = props.count + props.length * 0x10000 + props.dot * 0x100000000;
+  }
+
+  function generatePathWithProps(Randomizer.Seed memory _seed, uint256 _prop) external override view returns(Randomizer.Seed memory seed, bytes memory svgPart) {
+    Props memory props;
+    props.count = _prop & 0xffff;
+    props.length = (_prop / 0x10000) & 0xffff;
+    props.dot = (_prop / 0x100000000) & 0xffff;
+    return generatePath(_seed, props);
   }
 }

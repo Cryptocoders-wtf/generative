@@ -14,6 +14,6 @@ import { IAssetProvider } from '../interfaces/IAssetProvider.sol';
 import { Randomizer } from '../libs/Randomizer.sol';
 
 interface IAssetProviderEx is IAssetProvider {
-  function generateRandomProp(Randomizer.Seed memory _seed) external pure returns(Randomizer.Seed memory, uint256);
-  function generatePathWithProp(Randomizer.Seed memory _seed, uint256 _prop) external view returns(Randomizer.Seed memory seed, bytes memory svgPart);
+  function generateRandomProps(Randomizer.Seed memory _seed) external pure returns(Randomizer.Seed memory, uint256);
+  function generatePathWithProps(Randomizer.Seed memory _seed, uint256 _prop) external view returns(Randomizer.Seed memory seed, bytes memory svgPart);
 }
