@@ -11,6 +11,7 @@
         class="mr-1 mb-1 inline-block w-20"
       />
     </div>
+    <ProviderView assetProvider="splatter" />
     <Mint :network="network" :tokenAddress="tokenAddress" />
   </div>
 </template>
@@ -21,6 +22,7 @@ import { useRoute } from "vue-router";
 import { sampleColors } from "@/models/point";
 import { generateSVGImage } from "@/generative/splatter";
 import Mint from "@/components/Mint.vue";
+import ProviderView from "@/components/ProviderView.vue";
 import { addresses as mainnet } from "@/utils/addresses/splatter_mainnet";
 import { addresses as localhost } from "@/utils/addresses/splatter_localhost";
 import { addresses as rinkeby } from "@/utils/addresses/splatter_rinkeby";
@@ -36,6 +38,7 @@ const allAddresses: any = {
 export default defineComponent({
   components: {
     Mint,
+    ProviderView
   },
   setup() {
     const route = useRoute();

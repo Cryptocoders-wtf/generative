@@ -6,7 +6,7 @@
       v-for="image in images"
       :key="image"
       :src="image"
-      class="mr-1 mb-1 inline-block w-32"
+      class="mr-1 mb-1 inline-block w-20"
     />
   </div>
 </template>
