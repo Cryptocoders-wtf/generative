@@ -28,7 +28,7 @@ export default defineComponent({
     const images = ref<string[]>([]);
     const route = useRoute();
     const network =
-      typeof route.query.network == "string" ? route.query.network : "rinkeby";
+      typeof route.query.network == "string" ? route.query.network : "goerli";
     console.log("*** network", network);
 
     const providerAddress = addresses[props.assetProvider][network];

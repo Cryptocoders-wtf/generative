@@ -25,13 +25,11 @@ import Mint from "@/components/Mint.vue";
 import ProviderView from "@/components/ProviderView.vue";
 import { addresses as mainnet } from "@/utils/addresses/splatter_mainnet";
 import { addresses as localhost } from "@/utils/addresses/splatter_localhost";
-import { addresses as rinkeby } from "@/utils/addresses/splatter_rinkeby";
 import { addresses as goerli } from "@/utils/addresses/splatter_goerli";
 
 const allAddresses: any = {
   mainnet,
   localhost,
-  rinkeby,
   goerli,
 };
 

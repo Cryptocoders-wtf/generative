@@ -1,13 +1,13 @@
 import { addresses as splatter_goerli } from "./addresses/splatter_goerli";
-import { addresses as splatter_rinkeby } from "./addresses/splatter_rinkeby";
+import { addresses as splatter_localhost } from "./addresses/splatter_localhost";
 
 export const addresses: any = {
   splatter: {
     goerli: splatter_goerli.splatterAddress,
-    rinkeby: splatter_rinkeby.splatterAddress,
+    localhost: splatter_localhost.splatterAddress,
   },
   splatterArt: {
     goerli: splatter_goerli.splatterArtAddress,
-    rinkeby: splatter_rinkeby.splatterArtAddress,
+    localhost: splatter_localhost.splatterArtAddress,
   },
 };
