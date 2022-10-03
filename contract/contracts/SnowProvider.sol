@@ -27,7 +27,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
   using Trigonometry for uint;
 
   struct Props {
-    uint count; // number of control points
+    uint thickness; 
     uint length; // average length fo arm
     uint dot; // average size of dot
   }
@@ -77,16 +77,19 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
   function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal returns(Randomizer.Seed memory, ISVGHelper.Point[] memory) {
     Randomizer.Seed memory seed = _seed;
     ISVGHelper.Point[] memory points = new ISVGHelper.Point[](3);
+    int32 r = 480;
+    int32 army = int32(int256(_props.thickness));
+    int32 armx = (army * 173) / 100;
     points[0].x = 512;
     points[0].y = 512;
     points[0].c = true;
     points[0].r = 0;
     points[1].x = 512;
-    points[1].y = 512 + 500;
+    points[1].y = 512 + r;
     points[1].c = true;
     points[1].r = 0;
-    points[2].x = 512 + 40;
-    points[2].y = 512 + 500;
+    points[2].x = 512 + armx;
+    points[2].y = 512 + r + army;
     points[2].c = true;
     points[2].r = 0;
     return (seed, points);
@@ -100,11 +103,10 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
 
   function generateProps(Randomizer.Seed memory _seed) public pure returns(Randomizer.Seed memory seed, Props memory props) {
     seed = _seed;
-    props = Props(30, 40, 100);
-    (seed, props.count) = seed.randomize(props.count, 50); // +/- 50%
+    props = Props(40, 40, 100);
+    (seed, props.thickness) = seed.randomize(props.thickness, 60); // +/- 60%
     (seed, props.length) = seed.randomize(props.length, 50); // +/- 50%
     (seed, props.dot) = seed.randomize(props.dot, 50);
-    props.count = props.count / 3 * 3; // always multiple of 3
   }
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
@@ -144,7 +146,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
   function generateRandomProps(Randomizer.Seed memory _seed) external override pure returns(Randomizer.Seed memory seed, uint256 prop) {
     Props memory props;
     (seed, props) = generateProps(_seed);
-    prop = props.count + props.length * 0x10000 + props.dot * 0x100000000;
+    prop = props.thickness + props.length * 0x10000 + props.dot * 0x100000000;
   }
 
   /**
@@ -152,7 +154,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
    */
   function generatePathWithProps(Randomizer.Seed memory _seed, uint256 _prop) external override view returns(Randomizer.Seed memory seed, bytes memory svgPart) {
     Props memory props;
-    props.count = _prop & 0xffff;
+    props.thickness = _prop & 0xffff;
     props.length = (_prop / 0x10000) & 0xffff;
     props.dot = (_prop / 0x100000000) & 0xffff;
     return generatePath(_seed, props);
