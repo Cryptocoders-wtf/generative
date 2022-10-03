@@ -8,9 +8,10 @@
         v-for="image in images"
         :key="image"
         :src="image"
-        class="mr-1 mb-1 inline-block w-32"
+        class="mr-1 mb-1 inline-block w-24"
       />
     </div>
+    <ProviderView assetProvider="snow" />
   </div>
 </template>
 
@@ -18,8 +19,12 @@
 import { defineComponent, ref } from "vue";
 import { sampleColors } from "@/models/point";
 import { generateSVGImage } from "@/generative/snow";
+import ProviderView from "@/components/ProviderView.vue";
 
 export default defineComponent({
+  components: {
+    ProviderView
+  },
   setup() {
     const images = ref<string[]>([]);
     const updateImages = () => {
