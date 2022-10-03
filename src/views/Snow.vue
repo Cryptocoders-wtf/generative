@@ -8,7 +8,7 @@
         v-for="image in images"
         :key="image"
         :src="image"
-        class="mr-1 mb-1 inline-block w-24"
+        class="mr-1 mb-1 inline-block w-20"
       />
     </div>
     <ProviderView assetProvider="snow" />
