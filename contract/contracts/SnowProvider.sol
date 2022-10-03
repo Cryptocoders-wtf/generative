@@ -29,7 +29,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
   struct Props {
     uint thickness; 
     uint style; // 0 or 1
-    uint dot; // average size of dot
+    uint growth; // average size of growth
   }
 
   string constant providerKey = "snow";
@@ -125,7 +125,8 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     props = Props(40, 40, 100);
     (seed, props.thickness) = seed.randomize(props.thickness, 60); // +/- 60%
     (seed, props.style) = seed.random(2); // 0 or 1
-    (seed, props.dot) = seed.randomize(props.dot, 50);
+    (seed, props.growth) = seed.random(10);
+    props.growth += 100;
   }
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
@@ -165,7 +166,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
   function generateRandomProps(Randomizer.Seed memory _seed) external override pure returns(Randomizer.Seed memory seed, uint256 prop) {
     Props memory props;
     (seed, props) = generateProps(_seed);
-    prop = props.thickness + props.style * 0x10000 + props.dot * 0x100000000;
+    prop = props.thickness + props.style * 0x10000 + props.growth * 0x100000000;
   }
 
   /**
@@ -175,7 +176,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     Props memory props;
     props.thickness = _prop & 0xffff;
     props.style = (_prop / 0x10000) & 0xffff;
-    props.dot = (_prop / 0x100000000) & 0xffff;
+    props.growth = (_prop / 0x100000000) & 0xffff;
     return generatePath(_seed, props);
   }
 }
