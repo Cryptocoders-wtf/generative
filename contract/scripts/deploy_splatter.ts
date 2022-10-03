@@ -12,7 +12,7 @@ async function main() {
   await contract.deployed();
   console.log(`      splatter="${contract.address}"`);
 
-  const factoryArt = await ethers.getContractFactory("SplatterArtProvider");
+  const factoryArt = await ethers.getContractFactory("MultiplexProvider");
   const contractArt = await factoryArt.deploy(contract.address, "spltart", "Splatter Art");
   await contractArt.deployed();
   console.log(`      splatter_art="${contractArt.address}"`);

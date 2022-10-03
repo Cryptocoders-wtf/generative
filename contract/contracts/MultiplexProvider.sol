@@ -20,7 +20,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "hardhat/console.sol";
 
-contract SplatterArtProvider is IAssetProvider, IERC165, Ownable {
+contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint32;
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
