@@ -27,7 +27,7 @@ async function main() {
     + `  splatterArtAddress:"${contractArt.address}",\n`
     + `  splatterToken:"${token.address}"\n`
     + `}\n`;
-  await writeFile(`./cache/splatter_${network.name}.ts`, addresses, ()=>{});  
+  await writeFile(`../src/utils/addresses/splatter_${network.name}.ts`, addresses, ()=>{});  
 }
 
 main().catch((error) => {
