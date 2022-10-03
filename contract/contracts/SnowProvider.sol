@@ -76,72 +76,19 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
 
   function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal returns(Randomizer.Seed memory, ISVGHelper.Point[] memory) {
     Randomizer.Seed memory seed = _seed;
-    uint[] memory degrees = new uint[](_props.count);
-    uint total;
-    for (uint i = 0; i < _props.count; i++) {
-      uint degree;
-      (seed, degree) = seed.randomize(100, 90);
-      degrees[i] = total;
-      total += degree;
-    }
-
-    uint r0 = 220;
-    uint r1 = r0;
-    ISVGHelper.Point[] memory points = new ISVGHelper.Point[](_props.count  + _props.count /3 * 5);
-    uint j = 0;
-    for (uint i = 0; i < _props.count; i++) {
-      {
-        uint angle = degrees[i] * 0x4000 / total + 0x4000;
-        if (i % 3 == 0) {
-          uint extra;
-          (seed, extra) = seed.randomize(_props.length, 100);
-          uint arc;
-          (seed, arc) = seed.randomize(_props.dot, 50); 
-
-          points[j].x = int32(512 + (angle - 30).cos() * int(r1) / 0x8000);
-          points[j].y = int32(512 + (angle - 30).sin() * int(r1) / 0x8000);
-          points[j].c = false;
-          points[j].r = 1024;
-          j++;
-          points[j].x = int32(512 + (angle - 30).cos() * int(r1 + extra) / 0x8000);
-          points[j].y = int32(512 + (angle - 30).sin() * int(r1 + extra) / 0x8000);
-          points[j].c = false;
-          points[j].r = 566;
-          j++;
-          points[j].x = int32(512 + (angle - arc).cos() * int(r1 + extra * (150 + arc) / 150) / 0x8000);
-          points[j].y = int32(512 + (angle - arc).sin() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
-          points[j].c = false;
-          points[j].r = 566;
-          j++;
-          points[j].x = int32(512 + (angle + arc).cos() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
-          points[j].y = int32(512 + (angle + arc).sin() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
-          points[j].c = false;
-          points[j].r = 566;
-          j++;
-          points[j].x = int32(512 + (angle + 30).cos() * int(r1 + extra) / 0x8000);
-          points[j].y = int32(512 + (angle + 30).sin() * int(r1 + extra) / 0x8000);
-          points[j].c = false;
-          points[j].r = 566;
-          j++;
-          points[j].x = int32(512 + (angle + 30).cos() * int(r1) / 0x8000);
-          points[j].y = int32(512 + (angle + 30).sin() * int(r1) / 0x8000);
-          points[j].c = false;
-          points[j].r = 1024;
-          j++;
-        } else {
-          points[j].x = int32(512 + angle.cos() * int(r1) / 0x8000);
-          points[j].y = int32(512 + angle.sin() * int(r1) / 0x8000);
-          points[j].c = false;
-          points[j].r = 566;
-          j++;
-        }
-      }
-      {
-        uint r2;
-        (seed, r2) = seed.randomize(r1, 20);
-        r1 = (r2 * 2 + r0) / 3;
-      }
-    }
+    ISVGHelper.Point[] memory points = new ISVGHelper.Point[](3);
+    points[0].x = 512;
+    points[0].y = 512;
+    points[0].c = true;
+    points[0].r = 0;
+    points[1].x = 512;
+    points[1].y = 512 + 250;
+    points[1].c = true;
+    points[1].r = 0;
+    points[2].x = 512 + 40;
+    points[2].y = 512 + 250;
+    points[2].c = true;
+    points[2].r = 0;
     return (seed, points);
   }
 
