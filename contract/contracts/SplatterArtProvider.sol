@@ -11,8 +11,8 @@ pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { IAssetProvider } from './interfaces/IAssetProvider.sol';
+import { IAssetProviderEx } from './interfaces/IAssetProviderEx.sol';
 import { ISVGHelper } from './interfaces/ISVGHelper.sol';
-import { SplatterProvider } from './SplatterProvider.sol';
 import './libs/Trigonometry.sol';
 import './libs/Randomizer.sol';
 import './libs/SVGHelper.sol';
@@ -31,10 +31,10 @@ contract SplatterArtProvider is IAssetProvider, IERC165, Ownable {
   uint constant schemeCount = 11;
   uint constant colorCount = 5;
 
-  SplatterProvider public splatter;
+  IAssetProviderEx public provider;
 
-  constructor(SplatterProvider _splatter) {
-    splatter = _splatter;
+  constructor(IAssetProviderEx _provider) {
+    provider = _provider;
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -56,7 +56,7 @@ contract SplatterArtProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function processPayout(uint256 _assetId) external override payable {
-    splatter.processPayout(_assetId);
+    provider.processPayout(_assetId);
   }
 
   function getColorScheme(Randomizer.Seed memory _seed, uint256 _schemeIndex) internal pure returns(Randomizer.Seed memory seed, string[] memory scheme) {
@@ -89,19 +89,19 @@ contract SplatterArtProvider is IAssetProvider, IERC165, Ownable {
     string[] memory scheme;
     (seed, scheme) = getColorScheme(seed, schemeIndex);
 
-    SplatterProvider.Props memory props;
-    (seed, props) = splatter.generateProps(seed);
+    uint256 props;
+    (seed, props) = provider.generateRandomProps(seed);
     
     bytes memory path;
     bytes memory body;
 
     if (_assetId % stylesPerSeed == 0) {
-      (seed, path) = splatter.generatePath(seed, props);
+      (seed, path) = provider.generatePathWithProps(seed, props);
       body = abi.encodePacked('<path d="', path, '" fill="#', scheme[0], '" />\n');
     } else {
       seed = Randomizer.Seed(_assetId, 0);
       for (uint i = 0; i < scheme.length * 10; i++) {
-        (seed, path) = splatter.generatePath(seed, props);
+        (seed, path) = provider.generatePathWithProps(seed, props);
         body = abi.encodePacked(body, '<path d="', path, '" fill="#', scheme[i / 10]);
 
         uint size;
