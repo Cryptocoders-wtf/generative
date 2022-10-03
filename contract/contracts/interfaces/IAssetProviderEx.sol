@@ -13,6 +13,11 @@ pragma solidity ^0.8.6;
 import { IAssetProvider } from '../interfaces/IAssetProvider.sol';
 import { Randomizer } from '../libs/Randomizer.sol';
 
+/**
+ * This interface makes it easy to create a new provider from another provider.
+ * generateRandomProps geneartes a set of provider-specific properties (packed in 256bits).
+ * generatePathWithProps generates a random path using the seed and properties. 
+ */
 interface IAssetProviderEx is IAssetProvider {
   function generateRandomProps(Randomizer.Seed memory _seed) external pure returns(Randomizer.Seed memory, uint256);
   function generatePathWithProps(Randomizer.Seed memory _seed, uint256 _prop) external view returns(Randomizer.Seed memory seed, bytes memory svgPart);

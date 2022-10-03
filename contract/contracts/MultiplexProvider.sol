@@ -20,6 +20,10 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "hardhat/console.sol";
 
+/**
+ * MultiplexProvider create a new asset provider from another asset provider,
+ * which draws multiple assets with the same set of provider-specific properties.
+ */
 contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint32;
   using Strings for uint256;

@@ -176,12 +176,18 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
     ));
   }
 
+  /**
+   * An optional method, which allows MultplexProvider to create a new set of assets.
+   */
   function generateRandomProps(Randomizer.Seed memory _seed) external override pure returns(Randomizer.Seed memory seed, uint256 prop) {
     Props memory props;
     (seed, props) = generateProps(_seed);
     prop = props.count + props.length * 0x10000 + props.dot * 0x100000000;
   }
 
+  /**
+   * An optional method, which allows MultplexProvider to create a new set of assets.
+   */
   function generatePathWithProps(Randomizer.Seed memory _seed, uint256 _prop) external override view returns(Randomizer.Seed memory seed, bytes memory svgPart) {
     Props memory props;
     props.count = _prop & 0xffff;
