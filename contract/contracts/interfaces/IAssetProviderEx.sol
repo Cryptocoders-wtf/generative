@@ -20,7 +20,6 @@ import { Randomizer } from '../libs/Randomizer.sol';
  */
 interface IAssetProviderEx is IAssetProvider {
   function generateRandomProps(Randomizer.Seed memory _seed) external pure returns(Randomizer.Seed memory, uint256);
-  function generatePathWithProps(Randomizer.Seed memory _seed, uint256 _prop) external view returns(Randomizer.Seed memory seed, bytes memory svgPart);
   function generateSVGPartWithProps(Randomizer.Seed memory _seed, uint256 _prop, string memory _tag) external view 
     returns(Randomizer.Seed memory seed, string memory svgPart);
 }

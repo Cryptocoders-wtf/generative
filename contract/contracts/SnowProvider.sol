@@ -176,17 +176,6 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
   /**
    * An optional method, which allows MultplexProvider to create a new set of assets.
    */
-  function generatePathWithProps(Randomizer.Seed memory _seed, uint256 _prop) external override view returns(Randomizer.Seed memory seed, bytes memory svgPart) {
-    Props memory props;
-    props.thickness = _prop & 0xffff;
-    props.style = (_prop / 0x10000) & 0xffff;
-    props.growth = (_prop / 0x100000000) & 0xffff;
-    return generatePath(_seed, props);
-  }
-
-  /**
-   * An optional method, which allows MultplexProvider to create a new set of assets.
-   */
   function generateSVGPartWithProps(Randomizer.Seed memory _seed, uint256 _prop, string memory _tag) external override view 
     returns(Randomizer.Seed memory seed, string memory svgPart) {
     Props memory props;
@@ -195,10 +184,26 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     props.growth = (_prop / 0x100000000) & 0xffff;
     bytes memory path;
     (seed, path) = generatePath(_seed, props);
-    svgPart = string(abi.encodePacked(
-      '<g id="', _tag, '">\n'
+
+    bytes memory part = abi.encodePacked(
+      '<g id="', _tag, 'part">\n'
       '<path d="', path, '"/>\n'
       '</g>\n'
-    ));
+    );
+    part = abi.encodePacked(
+      part,
+      '<g id="', _tag, '">\n');
+    for (uint i = 0; i < 360; i += 60) {
+      part = abi.encodePacked(
+        part,
+        '<use href="#', _tag, 'part" transform="rotate(', i.toString(),', 512, 512)"/>\n',
+        '<use href="#', _tag, 'part" transform="rotate(', i.toString(),', 512, 512) scale(-1, 1) translate(-1024, 0)"/>\n'
+      );
+    }
+    part = abi.encodePacked(
+      part,
+      '</g>\n'
+    );
+    svgPart = string(part);
   }
 }
