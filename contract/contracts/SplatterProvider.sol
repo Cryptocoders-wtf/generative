@@ -15,7 +15,7 @@ import { IAssetProviderEx } from './interfaces/IAssetProviderEx.sol';
 import { ISVGHelper } from './interfaces/ISVGHelper.sol';
 import "trigonometry.sol/Trigonometry.sol";
 import "randomizer.sol/Randomizer.sol";
-import './libs/SVGHelperA.sol';
+import './libs/SVGHelper.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "hardhat/console.sol";
@@ -38,7 +38,7 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
 
   constructor() {
     receiver = owner();
-    svgHelper = new SVGHelperA(); // default helper
+    svgHelper = new SVGHelper(); // default helper
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
