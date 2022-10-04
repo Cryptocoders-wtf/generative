@@ -195,4 +195,22 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
     props.dot = (_prop / 0x100000000) & 0xffff;
     return generatePath(_seed, props);
   }
+
+  /**
+   * An optional method, which allows MultplexProvider to create a new set of assets.
+   */
+  function generateSVGPartWithProps(Randomizer.Seed memory _seed, uint256 _prop, string memory _tag) external override view 
+    returns(Randomizer.Seed memory seed, string memory svgPart) {
+    Props memory props;
+    props.count = _prop & 0xffff;
+    props.length = (_prop / 0x10000) & 0xffff;
+    props.dot = (_prop / 0x100000000) & 0xffff;
+    bytes memory path;
+    (seed, path) = generatePath(_seed, props);
+    svgPart = string(abi.encodePacked(
+      '<g id="', _tag, '">\n'
+      '<path d="', path, '"/>\n'
+      '</g>\n'
+    ));
+  }
 }
