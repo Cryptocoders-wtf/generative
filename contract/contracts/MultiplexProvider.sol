@@ -100,17 +100,23 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
     uint256 props;
     (seed, props) = provider.generateRandomProps(seed);
     
-    bytes memory path;
+    bytes memory defs;
     bytes memory body;
+    tag = string(abi.encodePacked(providerKey, _assetId.toString()));
+    string memory tagPart;
 
     if (_assetId % stylesPerSeed == 0) {
-      (seed, path) = provider.generatePathWithProps(seed, props);
-      body = abi.encodePacked('<path d="', path, '" fill="#', scheme[0], '" />\n');
+      tagPart = string(abi.encodePacked(tag, "_0"));
+      (seed, svgPart) = provider.generateSVGPartWithProps(seed, props, tagPart);
+      defs = bytes(svgPart);
+      body = abi.encodePacked('<use href="#', tagPart, '" fill="#', scheme[0], '" />\n');
     } else {
       seed = Randomizer.Seed(_assetId, 0);
       for (uint i = 0; i < scheme.length * 10; i++) {
-        (seed, path) = provider.generatePathWithProps(seed, props);
-        body = abi.encodePacked(body, '<path d="', path, '" fill="#', scheme[i / 10]);
+        tagPart = string(abi.encodePacked(tag, "_", i.toString()));
+        (seed, svgPart) = provider.generateSVGPartWithProps(seed, props, tagPart);
+        defs = abi.encodePacked(defs, svgPart);
+        body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', scheme[i / 10]);
 
         uint size;
         (seed, size) = seed.random(400);
@@ -126,8 +132,8 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
       }
     }
 
-    tag = string(abi.encodePacked(providerKey, _assetId.toString()));
     svgPart = string(abi.encodePacked(
+      defs,
       '<g id="', tag, '">\n',
       body,
       '</g>\n'
