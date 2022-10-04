@@ -1,0 +1,41 @@
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+<defs><g id="snowart0_0part">
+<path d="M605,572L512,512,512,728L512,944,581,984C619,1006,650,1015,650,1004C650,993,634,975,616,964C598,954,582,935,582,924C582,913,600,914,621,926C642,938,660,939,660,927C660,916,643,896,624,885C605,874,589,854,589,842C589,830,607,831,629,843C651,856,670,856,670,844C670,832,653,811,632,799C612,787,595,766,595,753C595,740,615,741,639,755C663,769,684,769,684,756C684,743,665,720,642,707C620,694,601,671,601,657C601,643,623,644,649,659C676,674,698,674,698,660C698,646,656,605,605,572"/>
+</g>
+<g id="snowart0_0"   transform="scale(0.1, 0.1)">
+<use href="#snowart0_0part" transform="rotate(0, 512, 512)"/>
+<use href="#snowart0_0part" transform="rotate(0, 512, 512) scale(-1, 1) translate(-1024, 0)"/>
+<use href="#snowart0_0part" transform="rotate(60, 512, 512)"/>
+<use href="#snowart0_0part" transform="rotate(60, 512, 512) scale(-1, 1) translate(-1024, 0)"/>
+<use href="#snowart0_0part" transform="rotate(120, 512, 512)"/>
+<use href="#snowart0_0part" transform="rotate(120, 512, 512) scale(-1, 1) translate(-1024, 0)"/>
+<use href="#snowart0_0part" transform="rotate(180, 512, 512)"/>
+<use href="#snowart0_0part" transform="rotate(180, 512, 512) scale(-1, 1) translate(-1024, 0)"/>
+<use href="#snowart0_0part" transform="rotate(240, 512, 512)"/>
+<use href="#snowart0_0part" transform="rotate(240, 512, 512) scale(-1, 1) translate(-1024, 0)"/>
+<use href="#snowart0_0part" transform="rotate(300, 512, 512)"/>
+<use href="#snowart0_0part" transform="rotate(300, 512, 512) scale(-1, 1) translate(-1024, 0)"/>
+</g>
+<g id="snowart0">
+<use href="#snowart0_0" fill="#FB2020">
+<animate
+      attributeName="x"
+      dur="4s"
+      calcMode="spline"
+      repeatCount="indefinite"
+      values="60; 110; 60; 10; 60"
+      keyTimes="0; 0.25; 0.5; 0.75; 1"
+      keySplines="0.5 0 0.5 1; 0.5 0 0.5 1; 0.5 0 0.5 1; 0.5 0 0.5 1" />
+ <animate
+      attributeName="y"
+      dur="4s"
+      calcMode="linear"
+      repeatCount="indefinite"
+      values="0; 1024; -1024; 0"
+      keyTimes="0; 0.5;0.5; 1"
+      />
+</use>
+</g>
+</defs>
+<use href="#snowart0" fill="#E26A6A" />
+</svg>
