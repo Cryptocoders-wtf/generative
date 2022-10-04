@@ -11,7 +11,7 @@
 pragma solidity ^0.8.6;
 
 import { IAssetProvider } from '../interfaces/IAssetProvider.sol';
-import { Randomizer } from '../libs/Randomizer.sol';
+import "randomizer.sol/Randomizer.sol";
 
 /**
  * This interface makes it easy to create a new provider from another provider.

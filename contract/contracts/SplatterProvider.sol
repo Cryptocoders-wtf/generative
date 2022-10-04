@@ -14,7 +14,7 @@ import { IAssetProvider } from './interfaces/IAssetProvider.sol';
 import { IAssetProviderEx } from './interfaces/IAssetProviderEx.sol';
 import { ISVGHelper } from './interfaces/ISVGHelper.sol';
 import './libs/Trigonometry.sol';
-import './libs/Randomizer.sol';
+import "randomizer.sol/Randomizer.sol";
 import './libs/SVGHelper.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
