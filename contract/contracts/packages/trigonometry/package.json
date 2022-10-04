@@ -1,6 +1,6 @@
 {
   "name": "trigonometry.sol",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Basic trigonometric cuntions, sine and cosine",
   "main": "index.js",
   "scripts": {
