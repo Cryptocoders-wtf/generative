@@ -54,16 +54,3 @@ interface IAssetProvider {
 
   event Payout(string providerKey, uint256 assetId, address payable to, uint256 amount);
 }
-
-/**
- * This is an extended interface of IAssetProvider for those providers,
- * which offers categorized assets, such as AssetStoreProvider. 
- */
-interface ICategorizedAssetProvider is IAssetProvider {
-  function getGroupCount() external view returns(uint32);
-  function getGroupNameAtIndex(uint32 _groupIndex) external view returns(string memory);
-  function getCategoryCount(string memory _group) external view returns(uint32);
-  function getCategoryNameAtIndex(string memory _group, uint32 _categoryIndex) external view returns(string memory);
-  function getAssetCountInCategory(string memory _group, string memory _category) external view returns(uint32);
-  function getAssetIdInCategory(string memory _group, string memory _category, uint32 _assetIndex) external view returns(uint256);
-}
