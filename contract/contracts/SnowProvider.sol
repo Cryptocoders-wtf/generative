@@ -133,6 +133,29 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     props.growth += 100;
   }
 
+  function SVGPartFromPath(bytes memory _path, string memory _tag) internal pure returns(string memory svgPart) {
+    bytes memory part = abi.encodePacked(
+      '<g id="', _tag, 'part">\n'
+      '<path d="', _path, '"/>\n'
+      '</g>\n'
+    );
+    part = abi.encodePacked(
+      part,
+      '<g id="', _tag, '">\n');
+    for (uint i = 0; i < 360; i += 60) {
+      part = abi.encodePacked(
+        part,
+        '<use href="#', _tag, 'part" transform="rotate(', i.toString(),', 512, 512)"/>\n',
+        '<use href="#', _tag, 'part" transform="rotate(', i.toString(),', 512, 512) scale(-1, 1) translate(-1024, 0)"/>\n'
+      );
+    }
+    part = abi.encodePacked(
+      part,
+      '</g>\n'
+    );
+    svgPart = string(part);
+  }
+
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
     Props memory props;
@@ -142,26 +165,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     (,path) = generatePath(seed, props);
 
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
-    bytes memory part = abi.encodePacked(
-      '<g id="', tag, 'part">\n'
-      '<path d="', path, '"/>\n'
-      '</g>\n'
-    );
-    part = abi.encodePacked(
-      part,
-      '<g id="', tag, '">\n');
-    for (uint i = 0; i < 360; i += 60) {
-      part = abi.encodePacked(
-        part,
-        '<use href="#', tag, 'part" transform="rotate(', i.toString(),', 512, 512)"/>\n',
-        '<use href="#', tag, 'part" transform="rotate(', i.toString(),', 512, 512) scale(-1, 1) translate(-1024, 0)"/>\n'
-      );
-    }
-    part = abi.encodePacked(
-      part,
-      '</g>\n'
-    );
-    svgPart = string(part);
+    svgPart = SVGPartFromPath(path, tag);
   }
 
   /**
@@ -184,26 +188,6 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     props.growth = (_prop / 0x100000000) & 0xffff;
     bytes memory path;
     (seed, path) = generatePath(_seed, props);
-
-    bytes memory part = abi.encodePacked(
-      '<g id="', _tag, 'part">\n'
-      '<path d="', path, '"/>\n'
-      '</g>\n'
-    );
-    part = abi.encodePacked(
-      part,
-      '<g id="', _tag, '">\n');
-    for (uint i = 0; i < 360; i += 60) {
-      part = abi.encodePacked(
-        part,
-        '<use href="#', _tag, 'part" transform="rotate(', i.toString(),', 512, 512)"/>\n',
-        '<use href="#', _tag, 'part" transform="rotate(', i.toString(),', 512, 512) scale(-1, 1) translate(-1024, 0)"/>\n'
-      );
-    }
-    part = abi.encodePacked(
-      part,
-      '</g>\n'
-    );
-    svgPart = string(part);
+    svgPart = SVGPartFromPath(path, _tag);
   }
 }
