@@ -13,7 +13,6 @@ import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { IAssetProvider } from './interfaces/IAssetProvider.sol';
 import { IAssetProviderEx } from './interfaces/IAssetProviderEx.sol';
 import { ISVGHelper } from './interfaces/ISVGHelper.sol';
-import './libs/Trigonometry.sol';
 import "randomizer.sol/Randomizer.sol";
 import './libs/SVGHelper.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -24,7 +23,6 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
   using Strings for uint32;
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
-  using Trigonometry for uint;
 
   struct Props {
     uint thickness; 

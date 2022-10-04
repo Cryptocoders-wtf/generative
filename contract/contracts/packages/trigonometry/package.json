@@ -15,7 +15,8 @@
     "sin",
     "cos",
     "sine",
-    "cosine"
+    "cosine",
+    "solidity"
   ],
   "author": "snakajima",
   "license": "MIT",

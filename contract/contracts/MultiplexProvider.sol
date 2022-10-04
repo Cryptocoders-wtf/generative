@@ -14,7 +14,6 @@ import { IAssetProvider } from './interfaces/IAssetProvider.sol';
 import { IAssetProviderEx } from './interfaces/IAssetProviderEx.sol';
 import { ISVGHelper } from './interfaces/ISVGHelper.sol';
 import "randomizer.sol/Randomizer.sol";
-import './libs/Trigonometry.sol';
 import './libs/SVGHelper.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
@@ -28,7 +27,6 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint32;
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
-  using Trigonometry for uint;
 
   string providerKey;
   string providerName;
