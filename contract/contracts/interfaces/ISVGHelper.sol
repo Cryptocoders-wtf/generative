@@ -12,8 +12,8 @@ interface ISVGHelper {
   struct Point {
     int32 x;
     int32 y;
-    bool c;   // true:line, false:bezier
     int32 r; // ratio (0 to 1024)
+    bool c; // true:line, false:bezier
   }
   function PathFromPoints(Point[] memory points) external pure returns(bytes memory);
 }
