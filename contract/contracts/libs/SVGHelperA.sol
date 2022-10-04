@@ -11,7 +11,7 @@ pragma solidity ^0.8.6;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "../interfaces/ISVGHelper.sol";
 
-contract SVGHelper is ISVGHelper {
+contract SVGHelperA is ISVGHelper {
   using Strings for uint32;
 
   /**
@@ -21,6 +21,26 @@ contract SVGHelper is ISVGHelper {
    */
   function PathFromPoints(Point[] memory points) external override pure returns(bytes memory path) {
     uint256 length = points.length;
+    assembly {
+      path := mload(0x40)
+      let wbuf := add(path, 0x20)
+      let rbuf := add(points, 0x20)
+      for { let i:=0 } lt(i, length) { i := add(i,1)} {
+        /*
+        let point := mload(rbuf)
+        let x := and(point, 0xffffffff)
+        point := shr(32, point)
+        let y := and(point, 0xffffffff)
+        */
+        let cmd := 0x3132
+        cmd := shl(254, cmd)
+        mstore(wbuf, cmd)
+        wbuf := add(wbuf, 2)
+      }
+      mstore(path, sub(sub(wbuf, path), 0x20))
+      mstore(0x40, wbuf)
+    }
+    /*
     for(uint256 i = 0; i < length; i++) {
       Point memory point = points[i];
       Point memory prev = points[(i + length - 1) % length];
@@ -45,5 +65,6 @@ contract SVGHelper is ISVGHelper {
           uint32(ex).toString(), ",", uint32(ey).toString());
       }
     }
+    */
   }  
 }

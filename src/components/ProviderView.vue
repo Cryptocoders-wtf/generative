@@ -48,6 +48,7 @@ export default defineComponent({
       const newImages = [];
       for (let i = 0; i < sampleColors.length; i++) {
         const [svgPart, tag] = await assetProvider.functions.generateSVGPart(i);
+        console.log("svgPart", svgPart);
         const image = svgImageFromSvgPart(svgPart, tag, sampleColors[i]);
         newImages.push(image);
       }
