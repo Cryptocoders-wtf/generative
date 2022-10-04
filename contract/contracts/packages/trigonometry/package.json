@@ -1,0 +1,26 @@
+{
+  "name": "trigonometry.sol",
+  "version": "1.0.0",
+  "description": "Basic trigonometric cuntions, sine and cosine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cryptocoders-wtf/generative.git"
+  },
+  "keywords": [
+    "trigonometry",
+    "sin",
+    "cos",
+    "sine",
+    "cosine"
+  ],
+  "author": "snakajima",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cryptocoders-wtf/generative/issues"
+  },
+  "homepage": "https://github.com/Cryptocoders-wtf/generative#readme"
+}
