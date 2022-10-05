@@ -36,7 +36,7 @@ contract SVGHelper is ISVGHelper {
       point.x = int16(uint16(word & 0xffff));
       point.y = int16(uint16(word >> 16 & 0xffff));
       point.r = int16(uint16(word >> 32 & 0xffff));
-      point.c = int16(uint16(word >> 48 & 0x1));
+      point.c = (word >> 48 & 0x1) == 0x1;
       word = points[(i + length - 1) % length];
       prev.x = int16(uint16(word & 0xffff));
       prev.y = int16(uint16(word >> 16 & 0xffff));
