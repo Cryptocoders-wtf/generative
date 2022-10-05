@@ -20,6 +20,7 @@ contract SVGHelperA is ISVGHelper {
    * Note: It is possible to significantly improve this using assembly (see SVGPathDecoderA). 
    */
   function PathFromPoints(Point[] memory points) external override pure returns(bytes memory ret) {
+    uint length = points.length;
     assembly{
       function toString(_wbuf, _value) -> wbuf {
         let len := 2
@@ -45,11 +46,14 @@ contract SVGHelperA is ISVGHelper {
         wbuf := add(_wbuf, len)
       }
 
+      // dynamic allocation
       ret := mload(0x40)
       let wbuf := add(ret, 0x20)
 
-      wbuf := toString(wbuf, 4321)
-      wbuf := toString(wbuf, 9876)
+      for {let i := 0} lt(i, length) {i := add(i, 1)} {
+        wbuf := toString(wbuf, 4321)
+        wbuf := toString(wbuf, 9876)
+      }
 
       mstore(ret, sub(sub(wbuf, ret), 0x20))
       mstore(0x40, wbuf)
