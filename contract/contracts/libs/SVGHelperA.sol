@@ -22,15 +22,18 @@ contract SVGHelperA is ISVGHelper {
   function PathFromPoints(Point[] memory points) external override pure returns(bytes memory) {
     bytes memory ret;
     assembly{
-      function foo() -> cmd {
-        cmd := 0x4243
+      function foo() -> cmd, bar {
+        cmd := 0x434445
+        bar := 3
       }
       ret := mload(0x40)
       let retMemory := add(ret, 0x20)
 
-      let cmd := foo()
-      mstore(retMemory, shl(240, cmd))
-      retMemory := add(retMemory, 2)
+      let cmd 
+      let lenCmd
+      cmd, lenCmd := foo()
+      mstore(retMemory, shl(sub(256, mul(lenCmd, 8)), cmd))
+      retMemory := add(retMemory, lenCmd)
 
       mstore(ret, sub(sub(retMemory, ret), 0x20))
       mstore(0x40, retMemory)
