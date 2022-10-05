@@ -20,7 +20,7 @@ import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "hardhat/console.sol";
 
 contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
-  using Strings for uint16;
+  using Strings for uint;
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
   using Trigonometry for uint;
@@ -71,8 +71,8 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
 
   // Work-around stack too deep issue
   struct StackFrame {
-    int16 x;
-    int16 y;
+    int x;
+    int y;
   }
 
   function setHelper(ISVGHelper _svgHelper) external onlyOwner {
@@ -104,34 +104,34 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
           uint arc;
           (seed, arc) = seed.randomize(_props.dot, 50);
 
-          stack.x = int16(512 + (angle - 30).cos() * int(r1) / 0x8000);
-          stack.y = int16(512 + (angle - 30).sin() * int(r1) / 0x8000);
-          points[j] = uint(uint16(stack.x)) + (uint(uint16(stack.y)) << 16) + (1024 << 32);
+          stack.x = int(512 + (angle - 30).cos() * int(r1) / 0x8000);
+          stack.y = int(512 + (angle - 30).sin() * int(r1) / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (1024 << 32);
           j++;
-          stack.x = int16(512 + (angle - 30).cos() * int(r1 + extra) / 0x8000);
-          stack.y = int16(512 + (angle - 30).sin() * int(r1 + extra) / 0x8000);
-          points[j] = uint(uint16(stack.x)) + (uint(uint16(stack.y)) << 16) + (566 << 32);
+          stack.x = int(512 + (angle - 30).cos() * int(r1 + extra) / 0x8000);
+          stack.y = int(512 + (angle - 30).sin() * int(r1 + extra) / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
-          stack.x = int16(512 + (angle - arc).cos() * int(r1 + extra * (150 + arc) / 150) / 0x8000);
-          stack.y = int16(512 + (angle - arc).sin() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
-          points[j] = uint(uint16(stack.x)) + (uint(uint16(stack.y)) << 16) + (566 << 32);
+          stack.x = int(512 + (angle - arc).cos() * int(r1 + extra * (150 + arc) / 150) / 0x8000);
+          stack.y = int(512 + (angle - arc).sin() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
-          stack.x = int16(512 + (angle + arc).cos() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
-          stack.y = int16(512 + (angle + arc).sin() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
-          points[j] = uint(uint16(stack.x)) + (uint(uint16(stack.y)) << 16) + (566 << 32);
+          stack.x = int(512 + (angle + arc).cos() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
+          stack.y = int(512 + (angle + arc).sin() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
-          stack.x = int16(512 + (angle + 30).cos() * int(r1 + extra) / 0x8000);
-          stack.y = int16(512 + (angle + 30).sin() * int(r1 + extra) / 0x8000);
-          points[j] = uint(uint16(stack.x)) + (uint(uint16(stack.y)) << 16) + (566 << 32);
+          stack.x = int(512 + (angle + 30).cos() * int(r1 + extra) / 0x8000);
+          stack.y = int(512 + (angle + 30).sin() * int(r1 + extra) / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
-          stack.x = int16(512 + (angle + 30).cos() * int(r1) / 0x8000);
-          stack.y = int16(512 + (angle + 30).sin() * int(r1) / 0x8000);
-          points[j] = uint(uint16(stack.x)) + (uint(uint16(stack.y)) << 16) + (1024 << 32);
+          stack.x = int(512 + (angle + 30).cos() * int(r1) / 0x8000);
+          stack.y = int(512 + (angle + 30).sin() * int(r1) / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (1024 << 32);
           j++;
         } else {
-          stack.x = int16(512 + angle.cos() * int(r1) / 0x8000);
-          stack.y = int16(512 + angle.sin() * int(r1) / 0x8000);
-          points[j] = uint(uint16(stack.x)) + (uint(uint16(stack.y)) << 16) + (566 << 32);
+          stack.x = int(512 + angle.cos() * int(r1) / 0x8000);
+          stack.y = int(512 + angle.sin() * int(r1) / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
         }
       }
