@@ -1,4 +1,4 @@
 export const addresses = {
-  snowAddress:"0xA899118f4BCCb62F8c6A37887a4F450D8a4E92E0",
-  snowArtAddress:"0xb60971942E4528A811D24826768Bc91ad1383D21",
+  snowAddress:"0xAB8Eb9F37bD460dF99b11767aa843a8F27FB7A6e",
+  snowArtAddress:"0x205Cfc23ef26922E116135500abb4B12Ab6d4668",
 }

@@ -90,7 +90,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     int y;
     for (uint i=0; i < count * 2; i++) {
       int m = (i % 4 < 2) ? int(2) : int(1); 
-      x = m * armx; //  * (1 + int(int(i % 2)));
+      x = 512 + m * armx; //  * (1 + int(int(i % 2)));
       if (i % 2 == 0) {
         y = 512 + r + dir * m * army;
       } else {
