@@ -100,7 +100,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
         army = thickness / 10;
         armx = (army * 173) / 100;
       }
-      points[i + 2] = x * y << 16 + 566 << 32;
+      points[i + 2] = x + y << 16 + 566 << 32;
     }
     return (seed, points);
   }
