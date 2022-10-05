@@ -46,7 +46,7 @@ export default defineComponent({
 
     const fetchImages = async () => {
       const newImages = [];
-      for (let i = 0; i < sampleColors.length; i++) {
+      for (let i = 0; i < ((network == "localhost") ? 1 : sampleColors.length); i++) {
         const [svgPart, tag] = await assetProvider.functions.generateSVGPart(i);
         const image = svgImageFromSvgPart(svgPart, tag, sampleColors[i]);
         newImages.push(image);
