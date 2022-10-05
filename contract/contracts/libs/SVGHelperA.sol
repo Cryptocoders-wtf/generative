@@ -49,10 +49,23 @@ contract SVGHelperA is ISVGHelper {
       // dynamic allocation
       ret := mload(0x40)
       let wbuf := add(ret, 0x20)
+      let rbuf := add(points, 0x20)
+      let charM := shl(248, 0x4D)
+      let charL := shl(248, 0x4C)
 
       for {let i := 0} lt(i, length) {i := add(i, 1)} {
-        wbuf := toString(wbuf, 4321)
-        wbuf := toString(wbuf, 9876)
+        mstore(wbuf, charL)          
+        if eq(i, 0) {
+          mstore(wbuf, charM)
+        }
+        wbuf := add(wbuf, 1)
+
+        let addr := mload(rbuf)
+        let x := mload(addr)
+        let y := mload(add(addr,0x20))
+        wbuf := toString(wbuf, x)
+        wbuf := toString(wbuf, y)
+        rbuf := add(rbuf, 0x20)
       }
 
       mstore(ret, sub(sub(wbuf, ret), 0x20))
