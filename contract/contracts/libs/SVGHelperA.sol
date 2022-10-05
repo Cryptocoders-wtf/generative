@@ -26,7 +26,7 @@ contract SVGHelperA is ISVGHelper {
       let retMemory := add(ret, 0x20)
 
       let cmd := 0x4142
-      mstore(retMemory, shl(248, cmd))
+      mstore(retMemory, shl(240, cmd))
       retMemory := add(retMemory, 2)
 
       mstore(ret, sub(sub(retMemory, ret), 0x20))
