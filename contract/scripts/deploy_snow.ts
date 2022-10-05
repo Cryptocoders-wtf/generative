@@ -13,7 +13,7 @@ async function main() {
   console.log(`      snow="${contract.address}"`);
 
   const result = await contract.generateSVGPart(0);
-  console.log("svg", result.gas.toNumber());
+  console.log("svg", result.tag);
 
   const factoryArt = await ethers.getContractFactory("MultiplexProvider");
   const contractArt = await factoryArt.deploy(contract.address, "snowart", "Snow Art");

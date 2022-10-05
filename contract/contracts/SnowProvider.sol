@@ -85,7 +85,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     uint count = uint(int(r / army)) - 1;
     uint[] memory points = new uint[](count * 2 + 2);
     points[0] = 512 + (512 << 16) + (1 << 48);
-    points[1] = 512 + ((512 + uint(uint(r))) << 16) + (1 << 48);
+    points[1] = 512 + ((512 + uint(r)) << 16) + (1 << 48);
     int x;
     int y;
     for (uint i=0; i < count * 2; i++) {
@@ -96,7 +96,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
       } else {
         y = 512 + r + dir * m * army - army;
         r -= army;
-        thickness = thickness * int(int(_props.growth)) / 100;
+        thickness = thickness * int(_props.growth) / 100;
         army = thickness / 10;
         armx = (army * 173) / 100;
       }
