@@ -23,25 +23,27 @@ contract SVGHelperA is ISVGHelper {
     bytes memory ret;
     assembly{
       function toString(_wbuf, _value) -> wbuf {
-        let lenCmd := 1
+        let len := 2
         let cmd := 0
         if gt(_value,9) {
           if gt(_value,99) {
             if gt(_value,999) {
               cmd := or(shl(8, cmd), add(48, div(_value, 1000))) 
-              lenCmd := add(1, lenCmd)
+              len := add(1, len)
               _value := mod(_value, 1000)
             }
             cmd := or(shl(8, cmd), add(48, div(_value, 100)))
-            lenCmd := add(1, lenCmd)
+            len := add(1, len)
             _value := mod(_value, 100)
           }
           cmd := or(shl(8, cmd), add(48, div(_value, 10)))
-          lenCmd := add(1, lenCmd)
+          len := add(1, len)
           _value := mod(_value, 10)
         }
-        mstore(_wbuf, shl(sub(256, mul(lenCmd, 8)), cmd))
-        wbuf := add(_wbuf, lenCmd)
+        cmd := or(or(shl(16, cmd), shl(8, add(48, _value))), 32)
+
+        mstore(_wbuf, shl(sub(256, mul(len, 8)), cmd))
+        wbuf := add(_wbuf, len)
       }
       ret := mload(0x40)
       let wbuf := add(ret, 0x20)
