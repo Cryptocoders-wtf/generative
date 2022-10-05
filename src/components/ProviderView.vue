@@ -55,7 +55,7 @@ export default defineComponent({
 
     const fetchImages = async () => {
       const newImages = [];
-      for (let i = 0; i < ((network != "xlocalhost") ? 1 : sampleColors.length); i++) {
+      for (let i = 0; i < ((network == "localhost") ? 1 : sampleColors.length); i++) {
         const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(providerAddress, i+1);
         console.log("gas", gas.toNumber());
         const image = svgImageFromSvgPart(svgPart, tag, sampleColors[i]);

@@ -35,23 +35,11 @@ contract SVGHelper is ISVGHelper {
       word = points[i];
       point.x = int16(uint16(word & 0xffff));
       point.y = int16(uint16(word >> 16 & 0xffff));
-      if (point.x < 0) {
-        point.x = 0;
-      }
-      if (point.y < 0) {
-        point.y = 0;
-      }
       point.r = int16(uint16(word >> 32 & 0xffff));
       point.c = (word >> 48 & 0x1) == 0x1;
       word = points[(i + length - 1) % length];
       prev.x = int16(uint16(word & 0xffff));
       prev.y = int16(uint16(word >> 16 & 0xffff));
-      if (prev.x < 0) {
-        prev.x = 0;
-      }
-      if (prev.y < 0) {
-        prev.y = 0;
-      }
       int16 sx = (point.x + prev.x) / 2;
       int16 sy = (point.y + prev.y) / 2;
       if (i == 0) {
@@ -61,12 +49,6 @@ contract SVGHelper is ISVGHelper {
       word = points[(i + 1) % length];
       next.x = int16(uint16(word & 0xffff));
       next.y = int16(uint16(word >> 16 & 0xffff));
-      if (next.x < 0) {
-        next.x = 0;
-      }
-      if (next.y < 0) {
-        next.y = 0;
-      }
       int16 ex = (point.x + next.x) / 2;
       int16 ey = (point.y + next.y) / 2;
       if (point.c) {
