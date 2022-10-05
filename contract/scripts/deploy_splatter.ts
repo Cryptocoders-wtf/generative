@@ -17,6 +17,9 @@ async function main() {
   await contract.deployed();
   console.log(`      splatter="${contract.address}"`);
 
+  const result = await contractHelper.functions.generateSVGPart(contract.address, 0);
+  console.log("svg", result.tag, result.gas.toNumber());
+  
   const factoryArt = await ethers.getContractFactory("MultiplexProvider");
   const contractArt = await factoryArt.deploy(contract.address, "spltart", "Splatter Art");
   await contractArt.deployed();
