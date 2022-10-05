@@ -20,7 +20,7 @@ import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "hardhat/console.sol";
 
 contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
-  using Strings for uint32;
+  using Strings for uint;
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
 
@@ -72,52 +72,41 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     svgHelper = _svgHelper;
   }
 
-  function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal returns(Randomizer.Seed memory, ISVGHelper.Point[] memory) {
+  function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal returns(Randomizer.Seed memory, uint[] memory) {
     Randomizer.Seed memory seed = _seed;
-    int32 thickness = int32(int256(_props.thickness));
-    int32 army = thickness / 10;
-    int32 armx = (army * 173) / 100;
-    int32 r = 512;
+    int thickness = int(int256(_props.thickness));
+    int army = thickness / 10;
+    int armx = (army * 173) / 100;
+    int r = 512;
     if (_props.style == 0) {
       r -= army * 2;
     }
-    int32 dir = (_props.style == 0)? int32(1) : int32(-1);
+    int dir = (_props.style == 0)? int(1) : int(-1);
     uint count = uint(int(r / army)) - 1;
-    ISVGHelper.Point[] memory points = new ISVGHelper.Point[](count * 2 + 2);
-    points[0].x = 512;
-    points[0].y = 512;
-    points[0].c = true;
-    points[0].r = 0;
-    points[1].x = 512;
-    points[1].y = 512 + r;
-    points[1].c = true;
-    points[1].r = 0;
-    ISVGHelper.Point memory point;
-    point.c = false;
-    point.r = 566;
+    uint[] memory points = new uint[](count * 2 + 2);
+    points[0] = 512 + (512 << 16) + (1 << 48);
+    points[1] = 512 + ((512 + uint(r)) << 16) + (1 << 48);
+    int x;
+    int y;
     for (uint i=0; i < count * 2; i++) {
-      int32 m = (i % 4 < 2) ? int32(2) : int32(1); 
-      point.x = 512 + m * armx; //  * (1 + int32(int(i % 2)));
+      int m = (i % 4 < 2) ? int(2) : int(1); 
+      x = 512 + m * armx; //  * (1 + int(int(i % 2)));
       if (i % 2 == 0) {
-        point.y = 512 + r + dir * m * army;
+        y = 512 + r + dir * m * army;
       } else {
-        point.y = 512 + r + dir * m * army - army;
+        y = 512 + r + dir * m * army - army;
         r -= army;
-        thickness = thickness * int32(int(_props.growth)) / 100;
+        thickness = thickness * int(_props.growth) / 100;
         army = thickness / 10;
         armx = (army * 173) / 100;
       }
-      // Work-around a compiler bug (points[i+2] = point)
-      points[i + 2].x = point.x;
-      points[i + 2].y = point.y;
-      points[i + 2].c = point.c;
-      points[i + 2].r = point.r;
+      points[i + 2] = uint(uint16(int16(x))) + (uint(uint16(int16(y))) << 16) + (566 << 32);
     }
     return (seed, points);
   }
 
   function generatePath(Randomizer.Seed memory _seed, Props memory _props) public view returns(Randomizer.Seed memory seed, bytes memory svgPart) {
-    ISVGHelper.Point[] memory points;
+    uint[] memory points;
     (seed, points) = generatePoints(_seed, _props);
     svgPart = svgHelper.PathFromPoints(points);
   }

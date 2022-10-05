@@ -20,7 +20,7 @@ import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "hardhat/console.sol";
 
 contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
-  using Strings for uint32;
+  using Strings for uint;
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
   using Trigonometry for uint;
@@ -69,11 +69,17 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
     receiver = _receiver;
   }
 
+  // Work-around stack too deep issue
+  struct StackFrame {
+    int x;
+    int y;
+  }
+
   function setHelper(ISVGHelper _svgHelper) external onlyOwner {
     svgHelper = _svgHelper;
   }
 
-  function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal returns(Randomizer.Seed memory, ISVGHelper.Point[] memory) {
+  function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal returns(Randomizer.Seed memory, uint[] memory) {
     Randomizer.Seed memory seed = _seed;
     uint[] memory degrees = new uint[](_props.count);
     uint total;
@@ -86,7 +92,8 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
 
     uint r0 = 220;
     uint r1 = r0;
-    ISVGHelper.Point[] memory points = new ISVGHelper.Point[](_props.count  + _props.count /3 * 5);
+    uint[] memory points = new uint[](_props.count  + _props.count /3 * 5);
+    StackFrame memory stack;
     uint j = 0;
     for (uint i = 0; i < _props.count; i++) {
       {
@@ -95,43 +102,36 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
           uint extra;
           (seed, extra) = seed.randomize(_props.length, 100);
           uint arc;
-          (seed, arc) = seed.randomize(_props.dot, 50); 
+          (seed, arc) = seed.randomize(_props.dot, 50);
 
-          points[j].x = int32(512 + (angle - 30).cos() * int(r1) / 0x8000);
-          points[j].y = int32(512 + (angle - 30).sin() * int(r1) / 0x8000);
-          points[j].c = false;
-          points[j].r = 1024;
+          stack.x = int(512 + (angle - 30).cos() * int(r1) / 0x8000);
+          stack.y = int(512 + (angle - 30).sin() * int(r1) / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (1024 << 32);
           j++;
-          points[j].x = int32(512 + (angle - 30).cos() * int(r1 + extra) / 0x8000);
-          points[j].y = int32(512 + (angle - 30).sin() * int(r1 + extra) / 0x8000);
-          points[j].c = false;
-          points[j].r = 566;
+          stack.x = int(512 + (angle - 30).cos() * int(r1 + extra) / 0x8000);
+          stack.y = int(512 + (angle - 30).sin() * int(r1 + extra) / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
-          points[j].x = int32(512 + (angle - arc).cos() * int(r1 + extra * (150 + arc) / 150) / 0x8000);
-          points[j].y = int32(512 + (angle - arc).sin() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
-          points[j].c = false;
-          points[j].r = 566;
+          stack.x = int(512 + (angle - arc).cos() * int(r1 + extra * (150 + arc) / 150) / 0x8000);
+          stack.y = int(512 + (angle - arc).sin() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
-          points[j].x = int32(512 + (angle + arc).cos() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
-          points[j].y = int32(512 + (angle + arc).sin() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
-          points[j].c = false;
-          points[j].r = 566;
+          stack.x = int(512 + (angle + arc).cos() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
+          stack.y = int(512 + (angle + arc).sin() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
-          points[j].x = int32(512 + (angle + 30).cos() * int(r1 + extra) / 0x8000);
-          points[j].y = int32(512 + (angle + 30).sin() * int(r1 + extra) / 0x8000);
-          points[j].c = false;
-          points[j].r = 566;
+          stack.x = int(512 + (angle + 30).cos() * int(r1 + extra) / 0x8000);
+          stack.y = int(512 + (angle + 30).sin() * int(r1 + extra) / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
-          points[j].x = int32(512 + (angle + 30).cos() * int(r1) / 0x8000);
-          points[j].y = int32(512 + (angle + 30).sin() * int(r1) / 0x8000);
-          points[j].c = false;
-          points[j].r = 1024;
+          stack.x = int(512 + (angle + 30).cos() * int(r1) / 0x8000);
+          stack.y = int(512 + (angle + 30).sin() * int(r1) / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (1024 << 32);
           j++;
         } else {
-          points[j].x = int32(512 + angle.cos() * int(r1) / 0x8000);
-          points[j].y = int32(512 + angle.sin() * int(r1) / 0x8000);
-          points[j].c = false;
-          points[j].r = 566;
+          stack.x = int(512 + angle.cos() * int(r1) / 0x8000);
+          stack.y = int(512 + angle.sin() * int(r1) / 0x8000);
+          points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
         }
       }
@@ -145,7 +145,7 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
   }
 
   function generatePath(Randomizer.Seed memory _seed, Props memory _props) public view returns(Randomizer.Seed memory seed, bytes memory svgPart) {
-    ISVGHelper.Point[] memory points;
+    uint[] memory points;
     (seed, points) = generatePoints(_seed, _props);
     svgPart = svgHelper.PathFromPoints(points);
   }
