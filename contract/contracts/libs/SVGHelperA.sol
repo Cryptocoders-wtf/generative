@@ -22,35 +22,35 @@ contract SVGHelperA is ISVGHelper {
   function PathFromPoints(Point[] memory points) external override pure returns(bytes memory) {
     bytes memory ret;
     assembly{
-      function foo(value) -> cmd, lenCmd {
-        lenCmd := 1
-        if gt(value,9) {
-          if gt(value,99) {
-            if gt(value,999) {
-              cmd := or(shl(8, cmd), add(48, div(value, 1000))) 
+      function toString(_wbuf, _value) -> wbuf {
+        let lenCmd := 1
+        let cmd := 0
+        if gt(_value,9) {
+          if gt(_value,99) {
+            if gt(_value,999) {
+              cmd := or(shl(8, cmd), add(48, div(_value, 1000))) 
               lenCmd := add(1, lenCmd)
-              value := mod(value, 1000)
+              _value := mod(_value, 1000)
             }
-            cmd := or(shl(8, cmd), add(48, div(value, 100)))
+            cmd := or(shl(8, cmd), add(48, div(_value, 100)))
             lenCmd := add(1, lenCmd)
-            value := mod(value, 100)
+            _value := mod(_value, 100)
           }
-          cmd := or(shl(8, cmd), add(48, div(value, 10)))
+          cmd := or(shl(8, cmd), add(48, div(_value, 10)))
           lenCmd := add(1, lenCmd)
-          value := mod(value, 10)
+          _value := mod(_value, 10)
         }
+        mstore(_wbuf, shl(sub(256, mul(lenCmd, 8)), cmd))
+        wbuf := add(_wbuf, lenCmd)
       }
       ret := mload(0x40)
-      let retMemory := add(ret, 0x20)
+      let wbuf := add(ret, 0x20)
 
-      let cmd 
-      let lenCmd
-      cmd, lenCmd := foo(3234)
-      mstore(retMemory, shl(sub(256, mul(lenCmd, 8)), cmd))
-      retMemory := add(retMemory, lenCmd)
+      wbuf := toString(wbuf, 5432)
+      wbuf := toString(wbuf, 9876)
 
-      mstore(ret, sub(sub(retMemory, ret), 0x20))
-      mstore(0x40, retMemory)
+      mstore(ret, sub(sub(wbuf, ret), 0x20))
+      mstore(0x40, wbuf)
     }
     return ret;
 /*
