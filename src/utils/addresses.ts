@@ -4,6 +4,10 @@ import { addresses as snow_goerli } from "./addresses/snow_goerli";
 import { addresses as snow_localhost } from "./addresses/snow_localhost";
 
 export const addresses: any = {
+  svgHelper: {
+    goerli: splatter_goerli.svgHelperAddress,
+    localhost: splatter_localhost.svgHelperAddress,
+  },
   splatter: {
     goerli: splatter_goerli.splatterAddress,
     localhost: splatter_localhost.splatterAddress,

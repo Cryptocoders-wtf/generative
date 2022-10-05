@@ -7,8 +7,13 @@ export const proxy = (network.name == "rinkeby") ?
     "0xa5409ec958c83c3f309868babaca7c86dcb077c1"; // openSea proxy
 
 async function main() {
+  const factoryHelper = await ethers.getContractFactory("SVGHelper");
+  const contractHelper = await factoryHelper.deploy();
+  await contractHelper.deployed();
+  console.log(`      helper="${contractHelper.address}"`);
+
   const factory = await ethers.getContractFactory("SplatterProvider");
-  const contract = await factory.deploy();
+  const contract = await factory.deploy(contractHelper.address);
   await contract.deployed();
   console.log(`      splatter="${contract.address}"`);
 
@@ -23,6 +28,7 @@ async function main() {
   console.log(`      token="${token.address}"`);
 
   const addresses = `export const addresses = {\n`
+    + `  svgHelperAddress:"${contractHelper.address}",\n`
     + `  splatterAddress:"${contract.address}",\n`
     + `  splatterArtAddress:"${contractArt.address}",\n`
     + `  splatterToken:"${token.address}"\n`

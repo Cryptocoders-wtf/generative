@@ -21,6 +21,9 @@ import { svgImageFromSvgPart, sampleColors } from "@/models/point";
 const IAssetProvider = {
   wabi: require("@/abis/IAssetProvider.json"), // wrapped abi
 };
+const ISVGHelper = {
+  wabi: require("@/abis/ISVGHelper.json"), // wrapped abi
+};
 
 export default defineComponent({
   props: ["assetProvider"],
@@ -32,7 +35,8 @@ export default defineComponent({
     console.log("*** network", network);
 
     const providerAddress = addresses[props.assetProvider][network];
-    console.log("*** address", providerAddress);
+    const svgHelperAddress = addresses["svgHelper"][network];
+    console.log("*** address", providerAddress, svgHelperAddress);
     const provider =
       network == "localhost"
         ? new ethers.providers.JsonRpcProvider()
@@ -42,13 +46,18 @@ export default defineComponent({
       IAssetProvider.wabi.abi,
       provider
     );
+    const svgHelper = new ethers.Contract(
+      svgHelperAddress,
+      ISVGHelper.wabi.abi,
+      provider
+    );
     console.log("*** assetProvider", assetProvider.functions);
 
     const fetchImages = async () => {
       const newImages = [];
-      for (let i = 0; i < sampleColors.length/sampleColors.length; i++) {
-        const [svgPart, tag] = await assetProvider.functions.generateSVGPart(i);
-        console.log("***svgPart", svgPart);
+      for (let i = 0; i < ((network != "xlocalhost") ? 1 : sampleColors.length); i++) {
+        const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(providerAddress, i+1);
+        console.log("gas", gas.toNumber());
         const image = svgImageFromSvgPart(svgPart, tag, sampleColors[i]);
         newImages.push(image);
       }

@@ -63,5 +63,14 @@ contract SVGHelper is ISVGHelper {
           uint16(ex).toString(), ",", uint16(ey).toString());
       }
     }
-  }  
+  } 
+
+  /**
+   * Benchmarking
+   */
+  function generateSVGPart(IAssetProvider provider, uint256 _assetId) external view override returns(string memory svgPart, string memory tag, uint256 gas) {
+    gas = gasleft();
+    (svgPart, tag) = provider.generateSVGPart(_assetId);
+    gas -= gasleft();
+  }
 }
