@@ -19,28 +19,22 @@ contract SVGHelperA is ISVGHelper {
    *
    * Note: It is possible to significantly improve this using assembly (see SVGPathDecoderA). 
    */
-  function PathFromPoints(Point[] memory points) external override pure returns(bytes memory path) {
-    uint256 length = points.length;
-    assembly {
-      path := mload(0x40)
-      let wbuf := add(path, 0x20)
-      let rbuf := add(points, 0x20)
-      for { let i:=0 } lt(i, length) { i := add(i,1)} {
-        /*
-        let point := mload(rbuf)
-        let x := and(point, 0xffffffff)
-        point := shr(32, point)
-        let y := and(point, 0xffffffff)
-        */
-        let cmd := 0x3132
-        cmd := shl(254, cmd)
-        mstore(wbuf, cmd)
-        wbuf := add(wbuf, 2)
-      }
-      mstore(path, sub(sub(wbuf, path), 0x20))
-      mstore(0x40, wbuf)
+  function PathFromPoints(Point[] memory points) external override pure returns(bytes memory) {
+    bytes memory ret;
+    assembly{
+      ret := mload(0x40)
+      let retMemory := add(ret, 0x20)
+
+      let cmd := 0x4142
+      mstore(retMemory, shl(248, cmd))
+      retMemory := add(retMemory, 2)
+
+      mstore(ret, sub(sub(retMemory, ret), 0x20))
+      mstore(0x40, retMemory)
     }
-    /*
+    return ret;
+/*
+    uint length = points.length;
     for(uint256 i = 0; i < length; i++) {
       Point memory point = points[i];
       Point memory prev = points[(i + length - 1) % length];
@@ -65,6 +59,6 @@ contract SVGHelperA is ISVGHelper {
           uint32(ex).toString(), ",", uint32(ey).toString());
       }
     }
-    */
+*/
   }  
 }
