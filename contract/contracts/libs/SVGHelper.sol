@@ -74,10 +74,10 @@ contract SVGHelper is ISVGHelper {
           ",", uint16(ex).toString(), ",", uint16(ey).toString());
       } else {
         path = abi.encodePacked(path, "C",
-          uint16(sx + point.r * (point.x - sx) / 1024).toString(), ",",
-          uint16(sy + point.r * (point.y - sy) / 1024).toString(), ",",
-          uint16(ex + point.r * (point.x - ex) / 1024).toString(), ",",
-          uint16(ey + point.r * (point.y - ey) / 1024).toString(), ",",
+          uint16(sx + int16(int(point.r) * int(point.x - sx) / 1024)).toString(), ",",
+          uint16(sy + int16(int(point.r) * int(point.y - sy) / 1024)).toString(), ",",
+          uint16(ex + int16(int(point.r) * int(point.x - ex) / 1024)).toString(), ",",
+          uint16(ey + int16(int(point.r) * int(point.y - ey) / 1024)).toString(), ",",
           uint16(ex).toString(), ",", uint16(ey).toString());
       }
     }
