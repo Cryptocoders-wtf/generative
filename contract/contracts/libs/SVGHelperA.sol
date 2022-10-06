@@ -73,7 +73,7 @@ contract SVGHelperA is ISVGHelper {
           let ex := div(add(x, and(wordN, 0xffff)),2)
           let ey := div(add(y, and(shr(16, wordN), 0xffff)),2)
 
-          switch mload(and(shr(48, word),0x01)) 
+          switch and(shr(48, word), 0x01) 
             case 0 {
               mstore(wbuf, shl(248, 0x43)) // C
               wbuf := add(wbuf, 1)
@@ -85,6 +85,8 @@ contract SVGHelperA is ISVGHelper {
             default {
               mstore(wbuf, shl(248, 0x4C)) // L
               wbuf := add(wbuf, 1)
+              wbuf := toString(wbuf, x)
+              wbuf := toString(wbuf, y)
             }
           wbuf := toString(wbuf, ex)
           wbuf := toString(wbuf, ey)
