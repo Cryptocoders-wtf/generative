@@ -75,10 +75,10 @@ contract SVGHelperA is ISVGHelper {
             case 0 {
               mstore(wbuf, shl(248, 0x43)) // C
               wbuf := add(wbuf, 1)
-              wbuf := toString(wbuf, x)
-              wbuf := toString(wbuf, y)
-              wbuf := toString(wbuf, x)
-              wbuf := toString(wbuf, y)
+              wbuf := toString(wbuf, div(add(mul(x, r), mul(sx, sub(1024, r))),1024))
+              wbuf := toString(wbuf, div(add(mul(y, r), mul(sy, sub(1024, r))),1024))
+              wbuf := toString(wbuf, div(add(mul(x, r), mul(ex, sub(1024, r))),1024))
+              wbuf := toString(wbuf, div(add(mul(y, r), mul(ey, sub(1024, r))),1024))
             }
             default {
               mstore(wbuf, shl(248, 0x4C)) // L
