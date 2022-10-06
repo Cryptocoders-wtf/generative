@@ -55,11 +55,11 @@ contract SVGHelperA is ISVGHelper {
       let word := mload(rbuf)
       for {let i := 0} lt(i, length) {i := add(i, 1)} {
         let x := and(word, 0xffff)
-        let y := and(shr(word, 16), 0xffff)
-        let r := and(shr(word, 32), 0xffff)
+        let y := and(shr(16, word), 0xffff)
+        let r := and(shr(32, word), 0xffff)
         {
           let sx := div(add(x, and(wordP, 0xffff)),2)
-          let sy := div(add(y, and(shr(wordP, 16), 0xffff)),2)
+          let sy := div(add(y, and(shr(16, wordP), 0xffff)),2)
           if eq(i, 0) {
             mstore(wbuf, shl(248, 0x4D)) // M
             wbuf := add(wbuf, 1)
@@ -71,9 +71,9 @@ contract SVGHelperA is ISVGHelper {
         let wordN := mload(add(rbuf, mul(mod(add(i,1), length), 0x20)))
         {
           let ex := div(add(x, and(wordN, 0xffff)),2)
-          let ey := div(add(y, and(shr(wordN, 16), 0xffff)),2)
+          let ey := div(add(y, and(shr(16, wordN), 0xffff)),2)
 
-          switch mload(and(shr(word,48),0x01)) 
+          switch mload(and(shr(48, word),0x01)) 
             case 0 {
               mstore(wbuf, shl(248, 0x43)) // C
               wbuf := add(wbuf, 1)

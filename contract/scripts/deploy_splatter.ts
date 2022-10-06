@@ -7,7 +7,7 @@ export const proxy = (network.name == "rinkeby") ?
     "0xa5409ec958c83c3f309868babaca7c86dcb077c1"; // openSea proxy
 
 async function main() {
-  const factoryHelper = await ethers.getContractFactory("SVGHelper");
+  const factoryHelper = await ethers.getContractFactory("SVGHelperA");
   const contractHelper = await factoryHelper.deploy();
   await contractHelper.deployed();
   console.log(`      helper="${contractHelper.address}"`);
