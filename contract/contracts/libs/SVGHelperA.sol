@@ -57,15 +57,13 @@ contract SVGHelperA is ISVGHelper {
         let x := and(word, 0xffff)
         let y := and(shr(16, word), 0xffff)
         let r := and(shr(32, word), 0xffff)
-        {
-          let sx := div(add(x, and(wordP, 0xffff)),2)
-          let sy := div(add(y, and(shr(16, wordP), 0xffff)),2)
-          if eq(i, 0) {
-            mstore(wbuf, shl(248, 0x4D)) // M
-            wbuf := add(wbuf, 1)
-            wbuf := toString(wbuf, sx)
-            wbuf := toString(wbuf, sy)
-          }
+        let sx := div(add(x, and(wordP, 0xffff)),2)
+        let sy := div(add(y, and(shr(16, wordP), 0xffff)),2)
+        if eq(i, 0) {
+          mstore(wbuf, shl(248, 0x4D)) // M
+          wbuf := add(wbuf, 1)
+          wbuf := toString(wbuf, sx)
+          wbuf := toString(wbuf, sy)
         }
         
         let wordN := mload(add(rbuf, mul(mod(add(i,1), length), 0x20)))
