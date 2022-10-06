@@ -1,5 +1,9 @@
 import { ethers, network } from "hardhat";
 import { writeFile } from "fs";
+import { addresses } from "../../src/utils/addresses";
+
+const svgHelperAddress = addresses["svgHelper"][network.name];
+console.log("svgHelperAddress", svgHelperAddress);
 
 export const developer = "0x6a615Ca8D7053c0A0De2d11CACB6f321CA63BD62"; // sn2
 export const proxy = (network.name == "rinkeby") ?
