@@ -12,7 +12,7 @@ export const proxy = (network.name == "rinkeby") ?
 
 async function main() {
   const factory = await ethers.getContractFactory("SnowProvider");
-  const contract = await factory.deploy();
+  const contract = await factory.deploy(svgHelperAddress);
   await contract.deployed();
   console.log(`      snow="${contract.address}"`);
 

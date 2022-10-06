@@ -14,7 +14,6 @@ import { IAssetProvider } from './interfaces/IAssetProvider.sol';
 import { IAssetProviderEx } from './interfaces/IAssetProviderEx.sol';
 import { ISVGHelper } from './interfaces/ISVGHelper.sol';
 import "randomizer.sol/Randomizer.sol";
-import './libs/SVGHelper.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "hardhat/console.sol";
@@ -34,9 +33,9 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
   address public receiver;
   ISVGHelper svgHelper;
 
-  constructor() {
+  constructor(ISVGHelper _svgHelper) {
     receiver = owner();
-    svgHelper = new SVGHelper(); // default helper
+    svgHelper = _svgHelper; // default helper
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
