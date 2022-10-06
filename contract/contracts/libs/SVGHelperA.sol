@@ -75,12 +75,13 @@ contract SVGHelperA is ISVGHelper {
             case 0 {
               mstore(wbuf, shl(248, 0x43)) // C
               wbuf := add(wbuf, 1)
-              // WISH: Figure out how to avoid those repeated operations
-              // without causing the "stack too deep" error.
-              wbuf := toString(wbuf, div(add(mul(x, r), mul(sx, sub(1024, r))),1024))
-              wbuf := toString(wbuf, div(add(mul(y, r), mul(sy, sub(1024, r))),1024))
-              wbuf := toString(wbuf, div(add(mul(x, r), mul(ex, sub(1024, r))),1024))
-              wbuf := toString(wbuf, div(add(mul(y, r), mul(ey, sub(1024, r))),1024))
+              x := mul(x, r)
+              y := mul(y, r)
+              r := sub(1024, r)
+              wbuf := toString(wbuf, div(add(x, mul(sx, r)),1024))
+              wbuf := toString(wbuf, div(add(y, mul(sy, r)),1024))
+              wbuf := toString(wbuf, div(add(x, mul(ex, r)),1024))
+              wbuf := toString(wbuf, div(add(y, mul(ey, r)),1024))
             }
             default {
               mstore(wbuf, shl(248, 0x4C)) // L
