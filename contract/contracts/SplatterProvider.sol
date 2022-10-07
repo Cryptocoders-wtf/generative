@@ -104,12 +104,12 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
           uint arc;
           (seed, arc) = seed.randomize(_props.dot, 50);
 
-          stack.x = int(512 + (angle - 30).cos() * int(r1) / 0x8000);
-          stack.y = int(512 + (angle - 30).sin() * int(r1) / 0x8000);
+          stack.x = int(512 + (angle - 80).cos() * int(r1) / 0x8000);
+          stack.y = int(512 + (angle - 80).sin() * int(r1) / 0x8000);
           points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (1024 << 32);
           j++;
-          stack.x = int(512 + (angle - 30).cos() * int(r1 + extra) / 0x8000);
-          stack.y = int(512 + (angle - 30).sin() * int(r1 + extra) / 0x8000);
+          stack.x = int(512 + (angle - 80).cos() * int(r1 + extra) / 0x8000);
+          stack.y = int(512 + (angle - 80).sin() * int(r1 + extra) / 0x8000);
           points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
           stack.x = int(512 + (angle - arc).cos() * int(r1 + extra * (150 + arc) / 150) / 0x8000);
@@ -120,12 +120,12 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
           stack.y = int(512 + (angle + arc).sin() * int(r1 + extra * (150 + arc) / 150)  / 0x8000);
           points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
-          stack.x = int(512 + (angle + 30).cos() * int(r1 + extra) / 0x8000);
-          stack.y = int(512 + (angle + 30).sin() * int(r1 + extra) / 0x8000);
+          stack.x = int(512 + (angle + 80).cos() * int(r1 + extra) / 0x8000);
+          stack.y = int(512 + (angle + 80).sin() * int(r1 + extra) / 0x8000);
           points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (566 << 32);
           j++;
-          stack.x = int(512 + (angle + 30).cos() * int(r1) / 0x8000);
-          stack.y = int(512 + (angle + 30).sin() * int(r1) / 0x8000);
+          stack.x = int(512 + (angle + 80).cos() * int(r1) / 0x8000);
+          stack.y = int(512 + (angle + 80).sin() * int(r1) / 0x8000);
           points[j] = uint(uint16(int16(stack.x))) + (uint(uint16(int16(stack.y))) << 16) + (1024 << 32);
           j++;
         } else {
@@ -152,10 +152,10 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
 
   function generateProps(Randomizer.Seed memory _seed) public pure returns(Randomizer.Seed memory seed, Props memory props) {
     seed = _seed;
-    props = Props(30, 40, 100);
+    props = Props(30, 40, 140);
     (seed, props.count) = seed.randomize(props.count, 50); // +/- 50%
     (seed, props.length) = seed.randomize(props.length, 50); // +/- 50%
-    (seed, props.dot) = seed.randomize(props.dot, 50);
+    (seed, props.dot) = seed.randomize(props.dot + 1000 / props.count, 50);
     props.count = props.count / 3 * 3; // always multiple of 3
   }
 
