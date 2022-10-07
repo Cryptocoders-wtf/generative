@@ -71,8 +71,8 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     svgHelper = _svgHelper;
   }
 
-  function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal returns(Randomizer.Seed memory, uint[] memory) {
-    Randomizer.Seed memory seed = _seed;
+  function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal 
+                returns(Randomizer.Seed memory, uint[] memory) {
     int thickness = int(int256(_props.thickness));
     int army = thickness / 10;
     int armx = (army * 173) / 100;
@@ -101,7 +101,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
       }
       points[i + 2] = uint(uint16(int16(x))) + (uint(uint16(int16(y))) << 16) + (566 << 32);
     }
-    return (seed, points);
+    return (_seed, points);
   }
 
   function generatePath(Randomizer.Seed memory _seed, Props memory _props) public view returns(Randomizer.Seed memory seed, bytes memory svgPart) {
