@@ -73,7 +73,7 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
 
   function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal 
                 returns(Randomizer.Seed memory, uint[] memory) {
-    int thickness = int(int256(_props.thickness));
+    int thickness = int(_props.thickness);
     int army = thickness / 10;
     int armx = (army * 173) / 100;
     int r = 512;
