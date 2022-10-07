@@ -18,7 +18,7 @@ async function main() {
 
   const result2 = await contract.hasWhitelistToken(owner.address);
   console.log("result2", result2);
-  const result3 = await contract.hasWhitelistToken("0x6a615Ca8D7053c0A0De2d11CACB6f321CA63BD62");
+  const result3 = await contract.hasWhitelistToken("0xf05a0497994a33f18aa378630BC674eFC77Ad557");
   console.log("result3", result3);
 
   const addresses = `export const addresses = {\n`
