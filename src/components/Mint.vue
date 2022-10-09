@@ -57,10 +57,14 @@ export default defineComponent({
     const store = useStore();
 
     const isConnected = computed(() => {
-      console.log("### isConnected");
       if (store.state.account == null) {
         return false;
       }
+      const checkTokenGate = async () => {
+        const [result] = await tokenGate.functions.hasWhitelistToken(store.state.account);
+        console.log("###", result);
+      };
+      checkTokenGate();
       return true;
     });
 
@@ -73,6 +77,11 @@ export default defineComponent({
     const contractRO = new ethers.Contract(
       props.tokenAddress,
       ProviderTokenEx.wabi.abi,
+      provider
+    );
+    const tokenGate = new ethers.Contract(
+      addresses.tokenGate[props.network],
+      AssetTokenGate.wabi.abi,
       provider
     );
     const tokens = ref<Token[]>([]);
