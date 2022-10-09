@@ -1,3 +1,3 @@
 export const addresses = {
-  contractArt:"0x260033e3292C5adc1D37a7a8E01154dec508b5E8",
+  tokenGate:"0x852A07c9bdF4802E6A4ad3c0af7ea6Bd4232351E",
 }

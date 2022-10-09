@@ -22,7 +22,7 @@ async function main() {
   console.log("result3", result3);
 
   const addresses = `export const addresses = {\n`
-    + `  contractArt:"${contract.address}",\n`
+    + `  tokenGate:"${contract.address}",\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/tokenGate_${network.name}.ts`, addresses, ()=>{});  
 }
