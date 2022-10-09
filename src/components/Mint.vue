@@ -73,7 +73,6 @@ export default defineComponent({
       return true;
     });
 
-    const tokensPerAsset = ref<number>(1);
     const chainId = ChainIdMap[props.network];
     const provider =
       props.network == "localhost"
@@ -110,9 +109,11 @@ export default defineComponent({
     };
     fetchTokens();
     const once = async () => {
+      /*
       const [value] = await contractRO.functions.tokensPerAsset();
       console.log("tokensPerAsset", value.toNumber());
       tokensPerAsset.value = value;
+      */
     };
     once();
 
@@ -120,10 +121,8 @@ export default defineComponent({
       contractRO.on(
         contractRO.filters.Transfer(),
         async (from, to, tokenId) => {
-          if (tokenId % tokensPerAsset.value == tokensPerAsset.value - 1) {
-            console.log("*** event.Transfer calling fetchTokens");
-            fetchTokens();
-          }
+          console.log("*** event.Transfer calling fetchTokens");
+          fetchTokens();
         }
       );
     });
@@ -153,7 +152,7 @@ export default defineComponent({
       }
       const { provider, signer, contract } = networkContext.value;
       console.log("minting", contract);
-      const tx = await contract.functions.mint(affiliateId);
+      const tx = await contract.functions.mint();
       console.log("mint:tx");
       const result = await tx.wait();
       console.log("mint:gasUsed", result.gasUsed.toNumber());

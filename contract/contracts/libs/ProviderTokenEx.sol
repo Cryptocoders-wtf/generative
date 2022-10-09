@@ -37,6 +37,10 @@ abstract contract ProviderTokenEx is ProviderToken {
     _safeMint(msg.sender, tokenId);
   }
 
+  function totalSupply() public view returns (uint256) {
+    return nextTokenId;
+  }
+
   function generateTraits(uint256 _tokenId) internal pure override returns (bytes memory) {
     return abi.encodePacked(
       '{'

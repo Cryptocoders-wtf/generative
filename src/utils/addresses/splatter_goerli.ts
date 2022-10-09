@@ -1,6 +1,6 @@
 export const addresses = {
-  svgHelperAddress:"0xF9b1Ca8Ea806F5dc50A6D3b99EEDb96e704379AD",
-  splatterAddress:"0xd7B2Ff12D0b371A937CF8a2ad72f6e6F0Baa6B2A",
-  splatterArtAddress:"0x8D7dd11028C84D403bD8b019A63f7D28C2AA5b76",
-  splatterToken:"0xC50645DEc05bEF064e4408C546CB2023AC947B01"
+  svgHelperAddress:"0xF2827c8aE8Ea91604a41e33156fad884D065afc8",
+  splatterAddress:"0x6A5e5AAdfFeC4295c4f43aBFb49DEB771baC8384",
+  splatterArtAddress:"0x28EA384701c2DaA61339e3fdcE231bc91EA0f311",
+  splatterToken:"0xa2100ba5c493565A27F7E20b11a91470C663fA85"
 }
