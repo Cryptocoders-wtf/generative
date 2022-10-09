@@ -16,19 +16,14 @@ import "./ProviderToken.sol";
 abstract contract ProviderTokenEx is ProviderToken {
   using Strings for uint256;
   
-  uint256 public immutable tokensPerSeed;
-  address public developer;
+  uint256 nextTokenId;
 
   constructor(
     IAssetProvider _assetProvider,
-    address _developer,
     IProxyRegistry _proxyRegistry,
-    uint256 _tokensPerSeed,
     string memory _title,
     string memory _shortTitle
   ) ProviderToken(_assetProvider, _proxyRegistry, _title, _shortTitle) {
-    tokensPerSeed = _tokensPerSeed;
-    developer = _developer;
   }
 
   /**
@@ -37,34 +32,16 @@ abstract contract ProviderTokenEx is ProviderToken {
    * 2. Check for the required payment
    * 3. Call the processPayout method of the asset provider with appropriate value
    */
-  function mint(uint256 _affiliate) external virtual payable {
-    uint256 tokenId = _nextTokenId(); 
-    _mint(msg.sender, tokensPerSeed - 1);
-
-    // Specified affliate token must be one of the primary tokens and not owned by the minter.
-    if (_affiliate > 0 && _isPrimary(_affiliate) && ownerOf(_affiliate) != msg.sender) {
-      _mint(ownerOf(_affiliate), 1);
-    } else if ((tokenId / tokensPerSeed) % 2 == 0) {
-      // 1 in 20 tokens of non-affiliated mints go to the developer
-      _mint(developer, 1);
-    } else {
-      // the rest goes to the owner for distribution
-      _mint(owner(), 1);
-    }
+  function mint() external virtual payable {
+    uint256 tokenId = nextTokenId++; 
+    _safeMint(msg.sender, tokenId);
   }
 
-  function _isPrimary(uint256 _tokenId) internal view returns(bool) {
-    return _tokenId % tokensPerSeed == 0;
-  }
-
-  function generateTraits(uint256 _tokenId) internal view override returns (bytes memory) {
+  function generateTraits(uint256 _tokenId) internal pure override returns (bytes memory) {
     return abi.encodePacked(
       '{'
-        '"trait_type":"Primary",'
-        '"value":"', _isPrimary(_tokenId) ? 'Yes':'No', '"' 
-      '},{'
         '"trait_type":"Seed",'
-        '"value":"', (_tokenId / tokensPerSeed).toString(), '"' 
+        '"value":"', _tokenId.toString(), '"' 
       '}'
     );
   }

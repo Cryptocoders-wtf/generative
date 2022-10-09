@@ -14,9 +14,8 @@ contract SplatterToken is ProviderTokenEx {
 
   constructor(
     IAssetProvider _assetProvider,
-    address _developer,
     IProxyRegistry _proxyRegistry
-  ) ProviderTokenEx(_assetProvider, _developer, _proxyRegistry, 4, "Splatter", "SPLATTER") {
+  ) ProviderTokenEx(_assetProvider, _proxyRegistry, "Splatter", "SPLATTER") {
     description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/).";
   }
 

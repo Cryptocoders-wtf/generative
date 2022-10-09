@@ -13,7 +13,6 @@ pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "erc721a/contracts/ERC721A.sol";
 import { Base64 } from 'base64-sol/base64.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import { IProxyRegistry } from '../external/opensea/IProxyRegistry.sol';
@@ -29,7 +28,7 @@ import { IAssetProvider } from '../interfaces/IAssetProvider.sol';
  *   provider.processPayout{value:msg.value}(assetId)
  *
  */
-abstract contract ProviderToken is Ownable, ERC721A {
+abstract contract ProviderToken is Ownable, ERC721 {
   using Strings for uint256;
   using Strings for uint16;
 
@@ -45,16 +44,9 @@ abstract contract ProviderToken is Ownable, ERC721A {
     IProxyRegistry _proxyRegistry,
     string memory _title,
     string memory _shortTitle
-  ) ERC721A(_title, _shortTitle)  {
+  ) ERC721(_title, _shortTitle)  {
     assetProvider = _assetProvider;
     proxyRegistry = _proxyRegistry;
-  }
-
-  /*
-   * @notice get next tokenId.
-   */
-  function getCurrentToken() external view returns (uint256) {                  
-    return _nextTokenId();
   }
 
   /**
