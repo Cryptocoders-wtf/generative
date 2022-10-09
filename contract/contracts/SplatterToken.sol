@@ -17,9 +17,15 @@ contract SplatterToken is ProviderToken {
     IProxyRegistry _proxyRegistry
   ) ProviderToken(_assetProvider, _proxyRegistry, "Splatter", "SPLATTER") {
     description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/).";
+    mintPrice = 1e16; //0.01 ether 
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns(string memory) {
     return string(abi.encodePacked('Splatter ', _tokenId.toString()));
-  }  
+  }
+
+  function mint() public override virtual payable {
+    require(msg.value >= mintPrice, 'Must send the mint price');
+    super.mint();
+  }
 }
