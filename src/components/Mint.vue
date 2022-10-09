@@ -35,7 +35,7 @@ import References from "@/components/References.vue";
 import { addresses } from "@/utils/addresses";
 
 const ProviderTokenEx = {
-  wabi: require("@/abis/ProviderTokenEx.json"), // wrapped abi
+  wabi: require("@/abis/ProviderToken.json"), // wrapped abi
 };
 const AssetTokenGate = {
   wabi: require("@/abis/AssetTokenGate.json"), // wrapped abi
