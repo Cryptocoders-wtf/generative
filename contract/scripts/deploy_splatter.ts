@@ -1,10 +1,14 @@
 import { ethers, network } from "hardhat";
 import { writeFile } from "fs";
+import { addresses } from "../../src/utils/addresses";
 
 export const developer = "0x6a615Ca8D7053c0A0De2d11CACB6f321CA63BD62"; // sn2
 export const proxy = (network.name == "rinkeby") ?
     "0xf57b2c51ded3a29e6891aba85459d600256cf317":
     "0xa5409ec958c83c3f309868babaca7c86dcb077c1"; // openSea proxy
+
+const tokenGateAddress = addresses["tokenGate"][network.name];
+console.log("tokenGateAddress", tokenGateAddress);
 
 async function main() {
   const factoryHelper = await ethers.getContractFactory("SVGHelperA");
