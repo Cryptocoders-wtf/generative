@@ -3,8 +3,8 @@
     <p class="mt-2">Free Mint ({{ network }})</p>
     <p v-if="isConnected">Wallet: {{ account }}</p>
     <NetworkGate :expectedNetwork="chainId">
-      <p v-if="hasWhitelistToken">You have a whitelist token.</p>
-      <p v-else>You don't have a whitelist token.</p>
+      <p v-if="totalBalance > 0">You have {{ totalBalance }} whitelist token(s).</p>
+      <p v-else>You have no whitelist token.</p>
       <button
         @click="mint"
         class="mt-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
@@ -57,16 +57,17 @@ export default defineComponent({
   setup(props) {
     const route = useRoute();
     const store = useStore();
-    const hasWhitelistToken = ref<boolean>(false);
+    const totalBalance = ref<number>(0);
 
     const isConnected = computed(() => {
       if (store.state.account == null) {
         return false;
       }
       const checkTokenGate = async () => {
-        const [result] = await tokenGate.functions.hasWhitelistToken(store.state.account);
+        console.log("### calling totalBalanceOf");
+        const [result] = await tokenGate.functions.totalBalanceOf(store.state.account);
         console.log("###", result);
-        hasWhitelistToken.value = result;
+        totalBalance.value = result.toNumber();
       };
       checkTokenGate();
       return true;
@@ -170,7 +171,7 @@ export default defineComponent({
       tokenName: "ERC721",
       isConnected,
       account: store.state.account,
-      hasWhitelistToken,
+      totalBalance,
     };
   },
 });
