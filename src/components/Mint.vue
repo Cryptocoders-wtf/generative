@@ -12,15 +12,11 @@
     <p class="mt-2">
       <span v-for="token in tokens" :key="token.tokenId">
         <a :href="`${OpenSeaPath}/${token.tokenId}`" target="_blank">
-        <img :src="token.image" class="mr-1 mb-1 inline-block w-32" />
+          <img :src="token.image" class="mr-1 mb-1 inline-block w-32" />
         </a>
-    </span>
+      </span>
     </p>
-    <References
-      :EtherscanToken="EtherscanToken"
-      :TokenName="tokenName"
-    />
-    
+    <References :EtherscanToken="EtherscanToken" :TokenName="tokenName" />
   </div>
 </template>
 
@@ -53,7 +49,7 @@ export default defineComponent({
     const route = useRoute();
     const store = useStore();
 
-    const tokensPerAsset = ref<number>(1); 
+    const tokensPerAsset = ref<number>(1);
     const chainId = ChainIdMap[props.network];
     const provider =
       props.network == "localhost"
@@ -69,15 +65,17 @@ export default defineComponent({
       const [count] = await contractRO.functions.totalSupply();
       console.log("totalSupply", count.toNumber());
       const updatedTokens = [];
-      for (var tokenId=Math.max(0, count - 4); tokenId< count; tokenId++) {
-        const [tokenURI, gas] = await contractRO.functions.debugTokenURI(tokenId);
+      for (var tokenId = Math.max(0, count - 4); tokenId < count; tokenId++) {
+        const [tokenURI, gas] = await contractRO.functions.debugTokenURI(
+          tokenId
+        );
         console.log("gas", tokenId, gas.toNumber());
         const data = tokenURI.substring(29); // HACK: hardcoded
-        const decoded = Buffer.from(data, 'base64');
+        const decoded = Buffer.from(data, "base64");
         const json = JSON.parse(decoded.toString());
-        updatedTokens.push({tokenId, image: json.image});
+        updatedTokens.push({ tokenId, image: json.image });
         const svgData = json.image.substring(26); // hardcoded
-        const svg = Buffer.from(svgData, 'base64').toString();
+        const svg = Buffer.from(svgData, "base64").toString();
       }
       tokens.value = updatedTokens;
     };
@@ -86,18 +84,20 @@ export default defineComponent({
       const [value] = await contractRO.functions.tokensPerAsset();
       console.log("tokensPerAsset", value.toNumber());
       tokensPerAsset.value = value;
-    }
+    };
     once();
 
     provider.once("block", () => {
-      contractRO.on(contractRO.filters.Transfer(), async (from, to, tokenId) => {
-        if (tokenId % tokensPerAsset.value == tokensPerAsset.value - 1) {
-          console.log("*** event.Transfer calling fetchTokens");
-          fetchTokens();
+      contractRO.on(
+        contractRO.filters.Transfer(),
+        async (from, to, tokenId) => {
+          if (tokenId % tokensPerAsset.value == tokensPerAsset.value - 1) {
+            console.log("*** event.Transfer calling fetchTokens");
+            fetchTokens();
+          }
         }
-      });
+      );
     });
-
 
     const affiliateId =
       typeof route.query.ref == "string" ? parseInt(route.query.ref) || 0 : 0;

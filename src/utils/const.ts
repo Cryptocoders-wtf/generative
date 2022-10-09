@@ -1,7 +1,4 @@
-export const getAddresses = (
-  network: string,
-  contentAddress: string
-) => {
+export const getAddresses = (network: string, contentAddress: string) => {
   const EtherscanBase = (() => {
     if (network == "rinkeby") {
       return "https://rinkeby.etherscan.io/address";
@@ -10,13 +7,13 @@ export const getAddresses = (
     }
     return "https://etherscan.io/address";
   })();
-  const OpenSeaBase = (()=>{
+  const OpenSeaBase = (() => {
     if (network == "rinkeby") {
       return "https://testnets.opensea.io/assets/rinkeby";
     } else if (network == "goerli") {
       return "https://testnets.opensea.io/assets/goerli";
     }
-    return  "https://opensea.io/assets/ethereum";
+    return "https://opensea.io/assets/ethereum";
   })();
   const EtherscanToken = `${EtherscanBase}/${contentAddress}`;
   const OpenSeaPath = `${OpenSeaBase}/${contentAddress}`;

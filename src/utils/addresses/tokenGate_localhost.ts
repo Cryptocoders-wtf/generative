@@ -1,3 +1,3 @@
 export const addresses = {
-  tokenGate:"to be filled",
-}
+  tokenGate: "to be filled",
+};

@@ -5,8 +5,7 @@
     </div>
     <p v-if="EtherscanToken">
       Etherscan:
-      <span v-if="TokenName"
-        >
+      <span v-if="TokenName">
         <a :href="EtherscanToken" class="underline" target="_blank">{{
           TokenName
         }}</a>

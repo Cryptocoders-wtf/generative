@@ -28,6 +28,6 @@ export const addresses: any = {
   },
   tokenGate: {
     goerli: tokenGate_goerli.tokenGate,
-    localhost: tokenGate_localhost.tokenGate
-  }
+    localhost: tokenGate_localhost.tokenGate,
+  },
 };

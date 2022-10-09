@@ -12,7 +12,11 @@
       />
     </div>
     <ProviderView assetProvider="splatter" />
-    <Mint :network="network" :tokenAddress="tokenAddress" />
+    <Mint
+      v-if="network != 'localhost'"
+      :network="network"
+      :tokenAddress="tokenAddress"
+    />
   </div>
 </template>
 
@@ -36,7 +40,7 @@ const allAddresses: any = {
 export default defineComponent({
   components: {
     Mint,
-    ProviderView
+    ProviderView,
   },
   setup() {
     const route = useRoute();
