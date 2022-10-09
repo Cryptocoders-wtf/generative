@@ -1,6 +1,7 @@
 <template>
   <div>
     <p class="mt-2">Free Mint ({{ network }})</p>
+    <p v-if="isConnected">Wallet: {{ account }}</p>
     <NetworkGate :expectedNetwork="chainId">
       <button
         @click="mint"
@@ -21,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from "vue";
+import { defineComponent, computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { ethers } from "ethers";
@@ -29,10 +30,16 @@ import { ChainIdMap } from "../utils/MetaMask";
 import NetworkGate from "@/components/NetworkGate.vue";
 import { getAddresses } from "@/utils/const";
 import References from "@/components/References.vue";
+import { addresses } from "@/utils/addresses";
 
 const ProviderTokenEx = {
   wabi: require("@/abis/ProviderTokenEx.json"), // wrapped abi
 };
+const AssetTokenGate = {
+  wabi: require("@/abis/AssetTokenGate.json"), // wrapped abi
+};
+
+console.log("*** addresses", addresses);
 
 interface Token {
   tokenId: number;
@@ -48,6 +55,14 @@ export default defineComponent({
   setup(props) {
     const route = useRoute();
     const store = useStore();
+
+    const isConnected = computed(() => {
+      console.log("### isConnected");
+      if (store.state.account == null) {
+        return false;
+      }
+      return true;
+    });
 
     const tokensPerAsset = ref<number>(1);
     const chainId = ChainIdMap[props.network];
@@ -140,6 +155,8 @@ export default defineComponent({
       EtherscanToken,
       OpenSeaPath,
       tokenName: "ERC721",
+      isConnected,
+      account: store.state.account,
     };
   },
 });
