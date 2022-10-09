@@ -25,7 +25,11 @@ contract SplatterToken is ProviderToken {
   }
 
   function mint() public override virtual payable {
-    require(msg.value >= mintPrice, 'Must send the mint price');
+    require(msg.value >= mintPriceFor(msg.sender), 'Must send the mint price');
     super.mint();
+  }
+
+  function mintPriceFor(address) public override view   virtual returns(uint256) {
+    return mintPrice;
   }
 }

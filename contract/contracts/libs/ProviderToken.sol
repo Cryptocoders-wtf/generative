@@ -126,6 +126,10 @@ abstract contract ProviderToken is Ownable, ERC721 {
     _safeMint(msg.sender, tokenId);
   }
 
+  function mintPriceFor(address) public virtual view returns(uint256) {
+    return mintPrice;
+  }
+
   function totalSupply() public view returns (uint256) {
     return nextTokenId;
   }

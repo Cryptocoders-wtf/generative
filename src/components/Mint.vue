@@ -33,6 +33,7 @@ import NetworkGate from "@/components/NetworkGate.vue";
 import { getAddresses } from "@/utils/const";
 import References from "@/components/References.vue";
 import { addresses } from "@/utils/addresses";
+import { weiToEther } from "@/utils/currency";
 
 const ProviderTokenEx = {
   wabi: require("@/abis/ProviderToken.json"), // wrapped abi
@@ -151,8 +152,13 @@ export default defineComponent({
         return;
       }
       const { provider, signer, contract } = networkContext.value;
-      console.log("minting", contract);
-      const tx = await contract.functions.mint();
+      const mintPrice = await contract.mintPriceFor(store.state.account);
+            console.log(
+              "*** minting",
+              weiToEther(mintPrice)
+            );
+      const txParams = { value: mintPrice};
+      const tx = await contract.functions.mint(txParams);
       console.log("mint:tx");
       const result = await tx.wait();
       console.log("mint:gasUsed", result.gasUsed.toNumber());
