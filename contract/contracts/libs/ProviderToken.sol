@@ -134,13 +134,17 @@ abstract contract ProviderToken is Ownable, ERC721 {
     return nextTokenId;
   }
 
-  function generateTraits(uint256 _tokenId) internal pure returns (bytes memory) {
-    return abi.encodePacked(
+  function generateTraits(uint256 _tokenId) internal view returns (bytes memory traits) {
+    traits = abi.encodePacked(
       '{'
         '"trait_type":"Seed",'
         '"value":"', _tokenId.toString(), '"' 
       '}'
     );
+    bytes memory subTraits = bytes(assetProvider.generateTraits(_tokenId));
+    if (subTraits.length > 0) {
+      traits = abi.encodePacked(traits, ',', subTraits);
+    }
   }
 
   function debugTokenURI(uint256 _tokenId) public view returns (string memory uri, uint256 gas) {

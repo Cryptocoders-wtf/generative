@@ -35,6 +35,12 @@ interface IAssetProvider {
   function generateSVGPart(uint256 _assetId) external view returns(string memory svgPart, string memory tag);
 
   /**
+   * This is an optional function, which returns various traits of the image for ERC721 token.
+   * Format: {"trait_type":"TRAIL_TYPE","value":"VALUE"},{...}
+   */
+  function generateTraits(uint256 _assetId) external pure returns (string memory);
+  
+  /**
    * This function returns the number of assets available from this provider. 
    * If the total supply is 100, assetIds of available assets are 0,1,...99.
    * The generative providers may returns 0, which indicates the provider dynamically but

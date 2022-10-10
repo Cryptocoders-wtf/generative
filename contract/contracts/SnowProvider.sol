@@ -176,4 +176,8 @@ contract SnowProvider is IAssetProviderEx, IERC165, Ownable {
     (seed, path) = generatePath(_seed, props);
     svgPart = SVGPartFromPath(path, _tag);
   }
+
+  function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
+    // nothing to return
+  }
 }

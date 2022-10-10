@@ -202,4 +202,8 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
       '</g>\n'
     ));
   }
+
+  function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
+    // nothing to return
+  }
 }
