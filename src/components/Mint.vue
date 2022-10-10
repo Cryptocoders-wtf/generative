@@ -5,7 +5,7 @@
     <NetworkGate :expectedNetwork="chainId">
       <p v-if="totalBalance > 0">You have {{ totalBalance }} whitelist token(s).</p>
       <p v-else>You have no whitelist token.</p>
-      <p>Price: {{ mintPrice }}</p>
+      <p>Price: {{ mintPriceString }}</p>
       <button
         @click="mint"
         class="mt-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
@@ -61,6 +61,7 @@ export default defineComponent({
     const store = useStore();
     const totalBalance = ref<number>(0);
     const mintPrice = ref<BigNumber>(BigNumber.from(0));
+    const mintPriceString = computed(() => `${weiToEther(mintPrice.value)}ETH`);
 
     const account = computed(() => {
       if (store.state.account == null) {
@@ -183,7 +184,7 @@ export default defineComponent({
       tokenName: "ERC721",
       account,
       totalBalance,
-      mintPrice: `${weiToEther(mintPrice.value)}ETH`,
+      mintPriceString,
     };
   },
 });
