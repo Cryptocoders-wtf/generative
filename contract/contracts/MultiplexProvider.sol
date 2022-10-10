@@ -84,6 +84,21 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
     }
   }
 
+  function generateTraits(uint256 _assetId) external pure returns (bytes memory) {
+    Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
+    uint schemeIndex;
+    (seed, schemeIndex) = seed.random(schemeCount);
+    string[schemeCount] memory colorNames = [
+      "Love", "Bright", "Beach", "Jungle", "Light", "Hair", "Retro", "Sprint", "Summer", "Vintage", "Fall"
+    ];
+    return abi.encodePacked(
+      '{'
+        '"trait_type":"Color Scheme",'
+        '"value":"', colorNames[schemeIndex], '"' 
+      '}'
+    );
+  }
+
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
     uint schemeIndex;
