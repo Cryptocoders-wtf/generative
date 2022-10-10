@@ -1,10 +1,11 @@
 <template>
   <div>
     <p class="mt-2">Free Mint ({{ network }})</p>
-    <p v-if="isConnected">Wallet: {{ account }}</p>
+    <p>Wallet: {{ account }}</p>
     <NetworkGate :expectedNetwork="chainId">
       <p v-if="totalBalance > 0">You have {{ totalBalance }} whitelist token(s).</p>
       <p v-else>You have no whitelist token.</p>
+      <p>Price: {{ mintPrice }}</p>
       <button
         @click="mint"
         class="mt-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
@@ -27,7 +28,7 @@
 import { defineComponent, computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { ChainIdMap } from "../utils/MetaMask";
 import NetworkGate from "@/components/NetworkGate.vue";
 import { getAddresses } from "@/utils/const";
@@ -59,19 +60,26 @@ export default defineComponent({
     const route = useRoute();
     const store = useStore();
     const totalBalance = ref<number>(0);
+    const mintPrice = ref<BigNumber>(BigNumber.from(0));
 
-    const isConnected = computed(() => {
+    const account = computed(() => {
       if (store.state.account == null) {
-        return false;
+        return null;
       }
       const checkTokenGate = async () => {
         console.log("### calling totalBalanceOf");
         const [result] = await tokenGate.functions.balanceOf(store.state.account);
-        console.log("###", result.toNumber());
         totalBalance.value = result.toNumber();
+        const [value] = await contractRO.functions.mintPriceFor(store.state.account);
+        mintPrice.value = value;
+        console.log(
+        "*** checkTokenGate",
+        result.toNumber(),
+        weiToEther(mintPrice.value)
+      );
       };
       checkTokenGate();
-      return true;
+      return store.state.account;
     });
 
     const chainId = ChainIdMap[props.network];
@@ -152,12 +160,11 @@ export default defineComponent({
         return;
       }
       const { provider, signer, contract } = networkContext.value;
-      const mintPrice = await contract.mintPriceFor(store.state.account);
-            console.log(
-              "*** minting",
-              weiToEther(mintPrice)
-            );
-      const txParams = { value: mintPrice};
+      console.log(
+        "*** minting",
+        weiToEther(mintPrice.value)
+      );
+      const txParams = { value: mintPrice.value};
       const tx = await contract.functions.mint(txParams);
       console.log("mint:tx");
       const result = await tx.wait();
@@ -174,9 +181,9 @@ export default defineComponent({
       EtherscanToken,
       OpenSeaPath,
       tokenName: "ERC721",
-      isConnected,
-      account: store.state.account,
+      account,
       totalBalance,
+      mintPrice: `${weiToEther(mintPrice.value)}ETH`,
     };
   },
 });
