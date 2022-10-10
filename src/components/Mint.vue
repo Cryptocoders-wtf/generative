@@ -3,7 +3,6 @@
     <NetworkGate :expectedNetwork="chainId">
       <p>Wallet: {{ account }}</p>
       <p v-if="totalBalance > 0">You have {{ totalBalance }} whitelist token(s).</p>
-      <p v-else>You have no whitelist token.</p>
       <p>Price: {{ mintPriceString }}</p>
       <button
         @click="mint"
