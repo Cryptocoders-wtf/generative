@@ -38,8 +38,8 @@ import { weiToEther } from "@/utils/currency";
 const ProviderTokenEx = {
   wabi: require("@/abis/ProviderToken.json"), // wrapped abi
 };
-const AssetTokenGate = {
-  wabi: require("@/abis/AssetTokenGate.json"), // wrapped abi
+const ITokenGate = {
+  wabi: require("@/abis/ITokenGate.json"), // wrapped abi
 };
 
 console.log("*** addresses", addresses);
@@ -66,8 +66,8 @@ export default defineComponent({
       }
       const checkTokenGate = async () => {
         console.log("### calling totalBalanceOf");
-        const [result] = await tokenGate.functions.totalBalanceOf(store.state.account);
-        console.log("###", result);
+        const [result] = await tokenGate.functions.balanceOf(store.state.account);
+        console.log("###", result.toNumber());
         totalBalance.value = result.toNumber();
       };
       checkTokenGate();
@@ -86,7 +86,7 @@ export default defineComponent({
     );
     const tokenGate = new ethers.Contract(
       addresses.tokenGate[props.network],
-      AssetTokenGate.wabi.abi,
+      ITokenGate.wabi.abi,
       provider
     );
     const tokens = ref<Token[]>([]);

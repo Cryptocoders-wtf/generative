@@ -16,9 +16,9 @@ async function main() {
   const tx = await contract.setWhitelist(whitelist);
   await tx.wait();
 
-  const result2 = await contract.totalBalanceOf(owner.address);
+  const result2 = await contract.balanceOf(owner.address);
   console.log("result2", result2);
-  const result3 = await contract.totalBalanceOf("0xf05a0497994a33f18aa378630BC674eFC77Ad557");
+  const result3 = await contract.balanceOf("0xf05a0497994a33f18aa378630BC674eFC77Ad557");
   console.log("result3", result3);
 
   const addresses = `export const addresses = {\n`

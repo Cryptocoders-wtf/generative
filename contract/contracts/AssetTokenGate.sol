@@ -16,7 +16,7 @@ contract AssetTokenGate is Ownable {
     whitelist = _whitelist;
   }
 
-  function totalBalanceOf(address _wallet) external view returns(uint balance) {
+  function balanceOf(address _wallet) external view returns(uint balance) {
     for (uint i=0; i<whitelist.length; i++) {
       balance += whitelist[i].balanceOf(_wallet);
     }
