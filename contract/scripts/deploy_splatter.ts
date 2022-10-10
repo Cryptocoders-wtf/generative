@@ -30,7 +30,7 @@ async function main() {
   console.log(`      splatter_art="${contractArt.address}"`);
 
   const factoryToken = await ethers.getContractFactory("SplatterToken");
-  const token = await factoryToken.deploy(contractArt.address, proxy);
+  const token = await factoryToken.deploy(tokenGateAddress, contractArt.address, proxy);
   await token.deployed();
   console.log(`      token="${token.address}"`);
 

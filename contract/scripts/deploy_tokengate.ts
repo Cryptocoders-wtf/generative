@@ -5,7 +5,6 @@ import { whitelistTokens } from "../../src/utils/assetTokens";
 const whitelist = whitelistTokens[network.name];
 console.log("whitelist", whitelist);
 
-
 async function main() {
   const [owner] = await ethers.getSigners();
   const factory = await ethers.getContractFactory("AssetTokenGate");
