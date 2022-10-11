@@ -57,16 +57,18 @@ export default defineComponent({
       const newImages = [];
       for (
         let i = 0;
-        i < (network == "localhost" ? 6 : sampleColors.length);
+        i < (network == "localhost" ? 6 : sampleColors.length * 3);
         i++
       ) {
         const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(
           providerAddress,
           i
         );
-        console.log("gas", gas.toNumber());
+        const [traits] = await assetProvider.functions.generateTraits(i);
+        console.log("gas", gas.toNumber(),traits);
         const image = svgImageFromSvgPart(svgPart, tag, sampleColors[i]);
         newImages.push(image);
+        images.value = newImages.map(image => image);
       }
       images.value = newImages;
     };
