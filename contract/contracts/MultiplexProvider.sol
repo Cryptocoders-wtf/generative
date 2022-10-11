@@ -65,12 +65,12 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
   function getColorScheme(Randomizer.Seed memory _seed, uint256 _schemeIndex) internal pure returns(Randomizer.Seed memory seed, string[] memory scheme) {
     string[colorCount][schemeCount] memory schemes = [
       ["E9B4DB", "6160B0", "EB77A6", "3E3486", "E23D80"], // love
-      ["FFDE91", "FF9D75", "DE6868", "494580", "BDA8FF"], // bright
+      ["2c4269", "eabc67", "4b545e", "f98650", "0d120f"], // edo
       ["EDC9AF", "A0E2BD", "53CBCF", "0DA3BA", "046E94"], // beach
       ["FFE889", "88E7C5", "53BD99", "01767D", "034F4D"], // jungle
-      ["D7F9F8", "FFFFEA", "FFF0D5", "FBE0E0", "E5D4EF"], // light
+      ["61B852", "A0CA4B", "F0E0CE", "F7DB66", "F47A91"], // Fresh
       ["801818", "3D0C02", "631934", "79224D", "682860"], // hair
-      ["B3617B", "494C7D", "D0CEAC", "9BB797", "5C9A95"], // retro
+      ["E28199", "D6637E", "ADDF82", "5A421B", "392713"], // sakura
       ["159F67", "66CA96", "EBFFF4", "F9BDB3", "F39385"], // sprint
       ["F9CC6C", "FD9A9C", "FEE4C6", "9DD067", "3D7F97"], // summer
       ["627AA3", "D8D0C5", "DAAE46", "7AAB9C", "9F4F4C"], // vintage
@@ -89,7 +89,7 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
     uint schemeIndex;
     (seed, schemeIndex) = seed.random(schemeCount);
     string[schemeCount] memory colorNames = [
-      "Love", "Bright", "Beach", "Jungle", "Light", "Hair", "Retro", "Sprint", "Summer", "Vintage", "Fall"
+      "Love", "Edo", "Beach", "Jungle", "Fresh", "Hair", "Sakura", "Sprint", "Summer", "Vintage", "Fall"
     ];
     return string(abi.encodePacked(
       '{'
