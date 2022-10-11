@@ -148,7 +148,7 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
   function generatePath(Randomizer.Seed memory _seed, Props memory _props) public view returns(Randomizer.Seed memory seed, bytes memory svgPart) {
     uint[] memory points;
     (seed, points) = generatePoints(_seed, _props);
-    svgPart = svgHelper.PathFromPoints(points);
+    svgPart = svgHelper.pathFromPoints(points);
   }
 
   function generateProps(Randomizer.Seed memory _seed) public pure returns(Randomizer.Seed memory seed, Props memory props) {

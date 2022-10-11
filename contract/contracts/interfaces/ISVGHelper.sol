@@ -16,6 +16,6 @@ interface ISVGHelper {
   // 16-31: int y
   // 32-47: uint r
   // 48: bool c
-  function PathFromPoints(uint[] memory points) external pure returns(bytes memory);
+  function pathFromPoints(uint[] memory points) external pure returns(bytes memory);
   function generateSVGPart(IAssetProvider provider, uint256 _assetId) external view returns(string memory svgPart, string memory tag, uint256 gas);
 }

@@ -25,7 +25,7 @@ contract SVGHelper is ISVGHelper {
    *
    * Note: It is possible to significantly improve this using assembly (see SVGPathDecoderA). 
    */
-  function PathFromPoints(uint[] memory points) external override pure returns(bytes memory path) {
+  function pathFromPoints(uint[] memory points) external override pure returns(bytes memory path) {
     uint256 length = points.length;
     uint word;
     Point memory point;
