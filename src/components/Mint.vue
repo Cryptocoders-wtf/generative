@@ -4,7 +4,8 @@
       <p>Wallet: {{ account }}</p>
       <p v-if="totalBalance > 0">You have {{ totalBalance }} whitelist token(s).</p>
       <p>Price: {{ mintPriceString }}</p>
-      <button
+      <p v-if="isMinting">Processing...</p>
+      <button v-else
         @click="mint"
         class="mt-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
       >
@@ -60,6 +61,7 @@ export default defineComponent({
     const totalBalance = ref<number>(0);
     const mintPrice = ref<BigNumber>(BigNumber.from(0));
     const mintPriceString = computed(() => `${weiToEther(mintPrice.value)}ETH`);
+    const isMinting = ref<boolean>(false);
 
     const account = computed(() => {
       if (store.state.account == null) {
@@ -164,10 +166,16 @@ export default defineComponent({
         weiToEther(mintPrice.value)
       );
       const txParams = { value: mintPrice.value};
-      const tx = await contract.functions.mint(txParams);
-      console.log("mint:tx");
-      const result = await tx.wait();
-      console.log("mint:gasUsed", result.gasUsed.toNumber());
+      isMinting.value = true;
+      try {
+        const tx = await contract.functions.mint(txParams);
+        console.log("mint:tx");
+        const result = await tx.wait();
+        console.log("mint:gasUsed", result.gasUsed.toNumber());
+      } catch(e) {
+        console.error(e);
+      }
+      isMinting.value = false;
     };
     const { EtherscanToken, OpenSeaPath } = getAddresses(
       props.network,
@@ -183,6 +191,7 @@ export default defineComponent({
       account,
       totalBalance,
       mintPriceString,
+      isMinting
     };
   },
 });
