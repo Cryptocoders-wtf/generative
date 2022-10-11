@@ -121,8 +121,8 @@ abstract contract ProviderToken is Ownable, ERC721 {
    * 2. Check for the required payment
    * 3. Call the processPayout method of the asset provider with appropriate value
    */
-  function mint() public virtual payable {
-    uint256 tokenId = nextTokenId++; 
+  function mint() public virtual payable returns(uint256 tokenId) {
+    tokenId = nextTokenId++; 
     _safeMint(msg.sender, tokenId);
   }
 

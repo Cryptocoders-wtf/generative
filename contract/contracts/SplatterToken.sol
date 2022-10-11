@@ -28,9 +28,10 @@ contract SplatterToken is ProviderToken {
     return string(abi.encodePacked('Splatter ', _tokenId.toString()));
   }
 
-  function mint() public override virtual payable {
+  function mint() public override virtual payable returns(uint256 tokenId) {
     require(msg.value >= mintPriceFor(msg.sender), 'Must send the mint price');
-    super.mint();
+    tokenId = super.mint();
+    assetProvider.processPayout{value:msg.value}(tokenId); // 100% distribution to the asset provider
   }
 
   function mintPriceFor(address _wallet) public override view   virtual returns(uint256) {

@@ -59,7 +59,7 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function processPayout(uint256 _assetId) external override payable {
-    provider.processPayout(_assetId);
+    provider.processPayout{value:msg.value}(_assetId);
   }
 
   function getColorScheme(Randomizer.Seed memory _seed, uint256 _schemeIndex) internal pure returns(Randomizer.Seed memory seed, string[] memory scheme) {
