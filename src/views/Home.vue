@@ -16,6 +16,14 @@
       Because this is such a new field, I am going to guide you to get there
       step by step.
     </p>
+    <h1 class="mt-2 mb-2 text-xl font-bold">Architecture</h1>
+    <p class="mb-2">Here is the rough architecture diagram of a sample generative art NFT collection, SplatterToken.</p>
+    <img class="mb-4" src="@/assets/architecture_gen.png" />
+    <p class="mb-2">SplatterToken implements tokenURI by calling generateSVGPart() of MultiplexProvider.
+      MultiplexProvider implements generateSVGPart() of SplatterProvider multiple times to create an art.
+      SplatterProvider implements generateSVGPart() by generating a series of control points and turning
+      them into a SVG path by calling pathFromPoints() of SVGHelper.
+    </p>
     <h1 class="mt-2 mb-2 text-xl font-bold">TypeScript/Javascript Prototype</h1>
     <p class="mb-2">
       First of all, please learn how to write JavaScript/TypeScript code to
