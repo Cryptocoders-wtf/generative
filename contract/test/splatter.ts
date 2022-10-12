@@ -6,15 +6,12 @@ export const proxy = "0xa5409ec958c83c3f309868babaca7c86dcb077c1";
 let assetTokenGate:any;
 let contractHelper:any;
 let contractSplatter:any;
+let testToken:any; // dummy token to test tokenGate
 let contractArt:any;
 let token:any;
 let owner:any;
 
 before(async() => {
-  const tokenGateFactory = await ethers.getContractFactory("AssetTokenGate");
-  assetTokenGate = await tokenGateFactory.deploy();
-  await assetTokenGate.deployed();
-
   const factoryHelper = await ethers.getContractFactory("SVGHelperA");
   contractHelper = await factoryHelper.deploy();
   await contractHelper.deployed();
@@ -23,9 +20,20 @@ before(async() => {
   contractSplatter = await factory.deploy(contractHelper.address);
   await contractSplatter.deployed();
   
+  const testFactory = await ethers.getContractFactory("TestToken");
+  testToken = await testFactory.deploy(contractSplatter.address, proxy);
+  await testToken.deployed();
+
   const factoryArt = await ethers.getContractFactory("MultiplexProvider");
   contractArt = await factoryArt.deploy(contractSplatter.address, "spltart", "Splatter Art");
   await contractArt.deployed();
+
+  const tokenGateFactory = await ethers.getContractFactory("AssetTokenGate");
+  assetTokenGate = await tokenGateFactory.deploy();
+  await assetTokenGate.deployed();
+
+  const tx = await assetTokenGate.functions.setWhitelist([testToken.address]);
+  await tx.wait();
 
   const factoryToken = await ethers.getContractFactory("SplatterToken");
   token = await factoryToken.deploy(assetTokenGate.address, contractArt.address, proxy);
@@ -79,5 +87,17 @@ describe("Test 1", function () {
     expect(count1.toNumber()).equal(1);
     const [count2] = await token.functions.totalSupply();
     expect(count2.toNumber()).equal(1);
+  });
+  it("mint with whitelist token", async function() {
+    const tx0 = await testToken.mint();
+    await tx0.wait();
+
+    const [mintPrice] = await token.functions.mintPrice();
+    const halfPrice = mintPrice.div(ethers.BigNumber.from(2));
+    const [myMintPrice] = await token.functions.mintPriceFor(owner.address);
+    expect(myMintPrice).equal(halfPrice);
+
+    const tx = await token.functions.mint({value:halfPrice});
+    await tx.wait();
   });
 });
