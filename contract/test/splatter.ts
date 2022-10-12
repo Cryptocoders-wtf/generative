@@ -98,6 +98,20 @@ describe("Test 1", function () {
     const [count2] = await token.functions.totalSupply();
     expect(count2.toNumber()).equal(1);
   });
+  it("sold out error", async function() {
+    const [count] = await token.functions.totalSupply();
+    const tx = await token.setMintLimit(count);
+    await tx.wait();
+    const [mintPrice] = await token.functions.mintPrice();
+    const err = await catchError(async () => {
+      const tx2 = await token.functions.mint({value:mintPrice});
+      await tx2.wait();
+    });
+    expect(err).equal(true);
+
+    const tx3 = await token.setMintLimit(250);
+    await tx3.wait();
+  });
   it("mint with wrong price", async function() {
     const [mintPrice] = await token.functions.mintPrice();
     const halfPrice = mintPrice.div(ethers.BigNumber.from(2));
