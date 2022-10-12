@@ -42,6 +42,16 @@ before(async() => {
   [owner] = await ethers.getSigners();
 });
 
+const catchError = async (callback: any) => {
+  try {
+    await callback();
+    console.log("unexpected success");
+    return false;
+  } catch(e:any) {
+    return true;
+  }
+};
+
 describe("Test 1", function () {
   it("contractHelper", async function() {
     const result = await contractHelper.functions.generateSVGPart(contractSplatter.address, 1);
@@ -87,6 +97,15 @@ describe("Test 1", function () {
     expect(count1.toNumber()).equal(1);
     const [count2] = await token.functions.totalSupply();
     expect(count2.toNumber()).equal(1);
+  });
+  it("mint with wrong price", async function() {
+    const [mintPrice] = await token.functions.mintPrice();
+    const halfPrice = mintPrice.div(ethers.BigNumber.from(2));
+    const err = await catchError(async () => {
+      const tx = await token.functions.mint({value:halfPrice});
+      await tx.wait();
+    });
+    expect(err).equal(true);
   });
   it("mint with whitelist token", async function() {
     const tx0 = await testToken.mint();
