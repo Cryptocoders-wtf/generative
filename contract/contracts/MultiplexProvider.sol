@@ -72,7 +72,7 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
       ["61B852", "A0CA4B", "F0E0CE", "F7DB66", "F47A91"], // fresh
       ["744981", "CB6573", "FFAC00", "ED3F37", "0577A1"], // backson
       ["E28199", "D6637E", "ADDF82", "5A421B", "392713"], // sakura
-      ["159F67", "66CA96", "EBFFF4", "F9BDB3", "F39385"], // sprint
+      ["159F67", "66CA96", "EBFFF4", "F9BDB3", "F39385"], // spring
       ["F9CC6C", "FD9A9C", "FEE4C6", "9DD067", "3D7F97"], // summer
       ["627AA3", "D8D0C5", "DAAE46", "7AAB9C", "9F4F4C"], // vintage
       ["5A261B", "C81125", "F15B4A", "FFAB63", "FADB6A"] // fall
@@ -90,7 +90,7 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
     uint schemeIndex;
     (seed, schemeIndex) = seed.random(schemeCount);
     string[schemeCount] memory colorNames = [
-      "Ukraine", "Love", "Edo", "Beach", "Jungle", "Fresh", "Backson", "Sakura", "Sprint", "Summer", "Vintage", "Fall"
+      "Ukraine", "Love", "Edo", "Beach", "Jungle", "Fresh", "Backson", "Sakura", "Spring", "Summer", "Vintage", "Fall"
     ];
     return string(abi.encodePacked(
       '{'
