@@ -35,7 +35,7 @@ abstract contract ProviderToken is Ownable, ERC721 {
   string public description;
   uint public nextTokenId;
   uint public mintPrice; // specified and enforced by the concrete contract
-  uint public maxCount;
+  uint public mintLimit;
 
   // OpenSea's Proxy Registry
   IProxyRegistry public immutable proxyRegistry;
@@ -50,6 +50,18 @@ abstract contract ProviderToken is Ownable, ERC721 {
   ) ERC721(_title, _shortTitle)  {
     assetProvider = _assetProvider;
     proxyRegistry = _proxyRegistry;
+  }
+
+  function setDescription(string memory _description) external onlyOwner {
+      description = _description;
+  }
+
+  function setMintPrice(uint256 _price) external onlyOwner {
+    mintPrice = _price;
+  }
+
+  function setMintLimit(uint256 _limit) external onlyOwner {
+    mintLimit = _limit;
   }
 
   /**
@@ -80,14 +92,6 @@ abstract contract ProviderToken is Ownable, ERC721 {
       '</defs>\n'
       '<use href="#', tag, '" />\n'
       '</svg>\n'));
-  }
-
-  function setDescription(string memory _description) external onlyOwner {
-      description = _description;
-  }
-
-  function setPrice(uint256 _price) external onlyOwner {
-    mintPrice = _price;
   }
 
   /**
@@ -127,7 +131,7 @@ abstract contract ProviderToken is Ownable, ERC721 {
    * 3. Call the processPayout method of the asset provider with appropriate value
    */
   function mint() public virtual payable returns(uint256 tokenId) {
-    require(nextTokenId < maxCount, "Sold out");
+    require(nextTokenId < mintLimit, "Sold out");
     tokenId = nextTokenId++; 
     _safeMint(msg.sender, tokenId);
   }
