@@ -8,6 +8,7 @@ let contractHelper:any;
 let contractSplatter:any;
 let contractArt:any;
 let token:any;
+let owner:any;
 
 before(async() => {
   const tokenGateFactory = await ethers.getContractFactory("AssetTokenGate");
@@ -29,6 +30,8 @@ before(async() => {
   const factoryToken = await ethers.getContractFactory("SplatterToken");
   token = await factoryToken.deploy(assetTokenGate.address, contractArt.address, proxy);
   await token.deployed();
+
+  [owner] = await ethers.getSigners();
 });
 
 describe("Test 1", function () {
@@ -59,5 +62,10 @@ describe("Test 1", function () {
     expect(mintPrice2).equal(halfPrice);
     const tx2 = await token.setMintPrice(mintPrice);
     await tx2.wait();
+  });
+  it("mintPriceFor", async function() {
+    const [mintPrice] = await token.functions.mintPrice();
+    const [myMintPrice] = await token.functions.mintPriceFor(owner.address);
+    expect(mintPrice).equal(myMintPrice);
   });
 });
