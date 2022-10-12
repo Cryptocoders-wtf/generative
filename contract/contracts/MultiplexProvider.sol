@@ -29,7 +29,7 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
   string providerKey;
   string providerName;
 
-  uint constant schemeCount = 11;
+  uint constant schemeCount = 12;
   uint constant colorCount = 5;
 
   IAssetProviderEx public provider;
@@ -64,6 +64,7 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
 
   function getColorScheme(Randomizer.Seed memory _seed, uint256 _schemeIndex) internal pure returns(Randomizer.Seed memory seed, string[] memory scheme) {
     string[colorCount][schemeCount] memory schemes = [
+      ["005bbb", "0072ea", "258fff", "ffd500", "ffe040"], // ukraine
       ["E9B4DB", "6160B0", "EB77A6", "3E3486", "E23D80"], // love
       ["2c4269", "eabc67", "4b545e", "f98650", "0d120f"], // edo
       ["EDC9AF", "A0E2BD", "53CBCF", "0DA3BA", "046E94"], // beach
@@ -89,7 +90,7 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
     uint schemeIndex;
     (seed, schemeIndex) = seed.random(schemeCount);
     string[schemeCount] memory colorNames = [
-      "Love", "Edo", "Beach", "Jungle", "Fresh", "Backson", "Sakura", "Sprint", "Summer", "Vintage", "Fall"
+      "Ukraine", "Love", "Edo", "Beach", "Jungle", "Fresh", "Backson", "Sakura", "Sprint", "Summer", "Vintage", "Fall"
     ];
     return string(abi.encodePacked(
       '{'
