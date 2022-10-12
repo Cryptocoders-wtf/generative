@@ -7,6 +7,7 @@ let assetTokenGate:any;
 let contractHelper:any;
 let contractSplatter:any;
 let contractArt:any;
+let token:any;
 
 before(async() => {
   const tokenGateFactory = await ethers.getContractFactory("AssetTokenGate");
@@ -26,7 +27,7 @@ before(async() => {
   await contractArt.deployed();
 
   const factoryToken = await ethers.getContractFactory("SplatterToken");
-  const token = await factoryToken.deploy(assetTokenGate.address, contractArt.address, proxy);
+  token = await factoryToken.deploy(assetTokenGate.address, contractArt.address, proxy);
   await token.deployed();
 });
 
@@ -38,5 +39,25 @@ describe("Test 1", function () {
   it("contractSplatter", async function() {
     const result = await contractSplatter.functions.generateSVGPart(1);
     expect(result.tag).equal("splt1");
+  });
+  it("mintLimit", async function() {
+    const [mintLimit] = await token.functions.mintLimit();
+    expect(mintLimit.toNumber()).equal(250);
+    const tx = await token.setMintLimit(500);
+    await tx.wait();
+    const [mintLimit2] = await token.functions.mintLimit();
+    expect(mintLimit2.toNumber()).equal(500);
+    const tx2 = await token.setMintLimit(250);
+    await tx2.wait();
+  });
+  it("mintPrice", async function() {
+    const [mintPrice] = await token.functions.mintPrice();
+    const halfPrice = mintPrice.div(ethers.BigNumber.from(2));
+    const tx = await token.setMintPrice(halfPrice);
+    await tx.wait();
+    const [mintPrice2] = await token.functions.mintPrice();
+    expect(mintPrice2).equal(halfPrice);
+    const tx2 = await token.setMintPrice(mintPrice);
+    await tx2.wait();
   });
 });
