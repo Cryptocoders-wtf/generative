@@ -35,4 +35,8 @@ describe("Test 1", function () {
     const result = await contractHelper.functions.generateSVGPart(contractSplatter.address, 1);
     expect(result.tag).equal("splt1");
   });
+  it("contractSplatter", async function() {
+    const result = await contractSplatter.functions.generateSVGPart(1);
+    expect(result.tag).equal("splt1");
+  });
 });
