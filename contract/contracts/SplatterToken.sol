@@ -22,6 +22,7 @@ contract SplatterToken is ProviderToken {
     tokenGate = _tokenGate;
     description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/).";
     mintPrice = 1e16; //0.01 ether 
+    maxCount = 1000;
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns(string memory) {
