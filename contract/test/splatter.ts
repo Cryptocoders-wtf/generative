@@ -68,4 +68,16 @@ describe("Test 1", function () {
     const [myMintPrice] = await token.functions.mintPriceFor(owner.address);
     expect(mintPrice).equal(myMintPrice);
   });
+
+  it("mint", async function() {
+    const [count] = await token.functions.totalSupply();
+    expect(count.toNumber()).equal(0);
+    const [mintPrice] = await token.functions.mintPrice();
+    const tx = await token.functions.mint({value:mintPrice});
+    await tx.wait();
+    const [count1] = await token.functions.balanceOf(owner.address);
+    expect(count1.toNumber()).equal(1);
+    const [count2] = await token.functions.totalSupply();
+    expect(count2.toNumber()).equal(1);
+  });
 });
