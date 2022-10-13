@@ -45,8 +45,8 @@
       website.
     </p>
     <p class="mb-2">
-      Read <code class="bg-gray-200">src/views/Splatter.vue</code>, and learn
-      how it works (please go to the Splatter page to see its output). It
+      Read <code class="bg-gray-200">src/views/Sample.vue</code>, and learn
+      how it works (please go to the Sample page to see its output). It
       generates a series of <i>control points</i>, generates an SVG path from
       them, and generates an SVG image.
     </p>
