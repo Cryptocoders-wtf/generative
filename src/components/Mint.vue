@@ -7,14 +7,24 @@
       </p>
       <p>Price: {{ mintPriceString }}</p>
       <p>Supply: {{ `${totalSupply}/${mintLimit}` }}</p>
-      <p v-if="isMinting">Processing...</p>
-      <button
-        v-else
-        @click="mint"
-        class="mt-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
-      >
-        {{ $t("mint.mint") }}
-      </button>
+      <div v-if="totalSupply < mintLimit">
+        <p v-if="isMinting" class="mt-4 mb-4 pl-4 bg-slate-200">Processing...</p>
+        <button
+          v-else
+          @click="mint"
+          class="mt-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+        >
+          {{ $t("mint.mint") }}
+        </button>
+      </div>
+      <div v-else>
+        <button
+          disabled
+          class="mt-2 inline-block rounded bg-red-600 px-6 py-2.5 leading-tight text-white shadow-md"
+        >
+          Sold Out
+        </button>
+      </div>
     </NetworkGate>
     <p class="mt-2">
       <span v-for="token in tokens" :key="token.tokenId">
