@@ -29,7 +29,7 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
   string providerKey;
   string providerName;
 
-  uint constant schemeCount = 14;
+  uint constant schemeCount = 15;
   uint constant colorCount = 5;
 
   IAssetProviderEx public provider;
@@ -68,6 +68,7 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
       ["DBF8FF", "C8FFC3", "FFB86D", "FFC6B6", "FFF4BD"], // pastel
       ["005bbb", "0072ea", "258fff", "ffd500", "ffe040"], // ukraine
       ["5f7de8", "d179b9", "e6b422", "38b48b", "fef4f4"], // nippon
+      ["B51802", "05933A", "0B7B48", "634D2D", "A6AAAE"], // Xmas
       ["E9B4DB", "6160B0", "EB77A6", "3E3486", "E23D80"], // love
       ["2c4269", "eabc67", "4b545e", "f98650", "0d120f"], // edo
       ["EDC9AF", "A0E2BD", "53CBCF", "0DA3BA", "046E94"], // beach
@@ -92,7 +93,7 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
     uint schemeIndex;
     (seed, schemeIndex) = seed.random(schemeCount);
     string[schemeCount] memory colorNames = [
-      "Genki", "Pastel", "Ukraine", "Nippon",
+      "Genki", "Pastel", "Ukraine", "Nippon", "Xmas",
       "Love", "Edo", "Beach", "Jungle", "Backson", "Sakura", "Spring", "Summer", "Vintage", "Fall"
     ];
     return string(abi.encodePacked(

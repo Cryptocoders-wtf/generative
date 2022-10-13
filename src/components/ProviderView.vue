@@ -54,7 +54,7 @@ export default defineComponent({
 
     const fetchImages = async () => {
       const newImages = [];
-      for (let i = 0; i < sampleColors.length; i++) {
+      for (let i = 0; i < sampleColors.length * 3; i++) {
         const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(
           providerAddress,
           i
