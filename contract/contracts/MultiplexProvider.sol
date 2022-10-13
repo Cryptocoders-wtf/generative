@@ -67,11 +67,11 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
       ["FFE33A", "7FAE2E", "B1661A", "DB3F14", "F9BE02"], // genki
       ["DBF8FF", "C8FFC3", "FFB86D", "FFC6B6", "FFF4BD"], // pastel
       ["005bbb", "0072ea", "258fff", "ffd500", "ffe040"], // ukraine
+      ["5f7de8", "d179b9", "e6b422", "38b48b", "fef4f4"], // nippon
       ["E9B4DB", "6160B0", "EB77A6", "3E3486", "E23D80"], // love
       ["2c4269", "eabc67", "4b545e", "f98650", "0d120f"], // edo
       ["EDC9AF", "A0E2BD", "53CBCF", "0DA3BA", "046E94"], // beach
       ["FFE889", "88E7C5", "53BD99", "01767D", "034F4D"], // jungle
-      ["61B852", "A0CA4B", "F0E0CE", "F7DB66", "F47A91"], // fresh
       ["744981", "CB6573", "FFAC00", "ED3F37", "0577A1"], // backson
       ["E28199", "D6637E", "ADDF82", "5A421B", "392713"], // sakura
       ["159F67", "66CA96", "EBFFF4", "F9BDB3", "F39385"], // spring
@@ -92,7 +92,8 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
     uint schemeIndex;
     (seed, schemeIndex) = seed.random(schemeCount);
     string[schemeCount] memory colorNames = [
-      "Genki", "Pastel", "Ukraine", "Love", "Edo", "Beach", "Jungle", "Fresh", "Backson", "Sakura", "Spring", "Summer", "Vintage", "Fall"
+      "Genki", "Pastel", "Ukraine", "Nippon",
+      "Love", "Edo", "Beach", "Jungle", "Backson", "Sakura", "Spring", "Summer", "Vintage", "Fall"
     ];
     return string(abi.encodePacked(
       '{'

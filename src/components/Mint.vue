@@ -30,7 +30,7 @@
       </div>
     </NetworkGate>
     <div class="mt-4">
-      <p>Recently Minted NFTs</p>
+      <p>Recently minted NFTs</p>
       <span v-for="token in tokens" :key="token.tokenId">
         <a :href="`${OpenSeaPath}/${token.tokenId}`" target="_blank">
           <img :src="token.image" class="mr-1 mb-1 inline-block w-32" />
