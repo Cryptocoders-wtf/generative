@@ -55,20 +55,16 @@ export default defineComponent({
 
     const fetchImages = async () => {
       const newImages = [];
-      for (
-        let i = 0;
-        i < sampleColors.length;
-        i++
-      ) {
+      for (let i = 0; i < sampleColors.length; i++) {
         const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(
           providerAddress,
           i
         );
         const [traits] = await assetProvider.functions.generateTraits(i);
-        console.log("gas", gas.toNumber(),traits);
+        console.log("gas", gas.toNumber(), traits);
         const image = svgImageFromSvgPart(svgPart, tag, sampleColors[i]);
         newImages.push(image);
-        images.value = newImages.map(image => image);
+        images.value = newImages.map((image) => image);
       }
       images.value = newImages;
     };

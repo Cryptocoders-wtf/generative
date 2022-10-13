@@ -12,10 +12,7 @@
       />
     </div>
     <ProviderView assetProvider="sample" />
-    <Mint
-      :network="network"
-      :tokenAddress="tokenAddress"
-    />
+    <Mint :network="network" :tokenAddress="tokenAddress" />
   </div>
 </template>
 

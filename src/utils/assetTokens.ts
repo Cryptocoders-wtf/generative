@@ -35,6 +35,5 @@ export const whitelistTokens: any = {
     kamon_mainnet.kamonAddress,
     flag_mainnet.emojiFlagAddress,
   ],
-  localhost: [
-  ],
+  localhost: [],
 };

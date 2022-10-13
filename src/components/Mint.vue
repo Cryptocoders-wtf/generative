@@ -2,10 +2,13 @@
   <div>
     <NetworkGate :expectedNetwork="chainId">
       <p>Wallet: {{ wallet }}</p>
-      <p v-if="totalBalance > 0">You have {{ totalBalance }} whitelist token(s).</p>
+      <p v-if="totalBalance > 0">
+        You have {{ totalBalance }} whitelist token(s).
+      </p>
       <p>Price: {{ mintPriceString }}</p>
       <p v-if="isMinting">Processing...</p>
-      <button v-else
+      <button
+        v-else
         @click="mint"
         class="mt-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
       >
@@ -60,7 +63,9 @@ export default defineComponent({
     const store = useStore();
     const totalBalance = ref<number>(0);
     const mintPrice = ref<BigNumber>(BigNumber.from(0));
-    const mintPriceString = computed(() => `${weiToEther(mintPrice.value)} ETH`);
+    const mintPriceString = computed(
+      () => `${weiToEther(mintPrice.value)} ETH`
+    );
     const isMinting = ref<boolean>(false);
 
     const account = computed(() => {
@@ -70,15 +75,16 @@ export default defineComponent({
       const checkTokenGate = async () => {
         console.log("### calling totalBalanceOf");
         if (props.tokenGated) {
-          const [result] = await tokenGate.functions.balanceOf(store.state.account);
+          const [result] = await tokenGate.functions.balanceOf(
+            store.state.account
+          );
           totalBalance.value = result.toNumber();
         }
-        const [value] = await contractRO.functions.mintPriceFor(store.state.account);
-        mintPrice.value = value;
-        console.log(
-        "*** checkTokenGate",
-        weiToEther(mintPrice.value)
+        const [value] = await contractRO.functions.mintPriceFor(
+          store.state.account
         );
+        mintPrice.value = value;
+        console.log("*** checkTokenGate", weiToEther(mintPrice.value));
       };
       checkTokenGate();
       return store.state.account;
@@ -163,18 +169,15 @@ export default defineComponent({
         return;
       }
       const { provider, signer, contract } = networkContext.value;
-      console.log(
-        "*** minting",
-        weiToEther(mintPrice.value)
-      );
-      const txParams = { value: mintPrice.value};
+      console.log("*** minting", weiToEther(mintPrice.value));
+      const txParams = { value: mintPrice.value };
       isMinting.value = true;
       try {
         const tx = await contract.functions.mint(txParams);
         console.log("mint:tx");
         const result = await tx.wait();
         console.log("mint:gasUsed", result.gasUsed.toNumber());
-      } catch(e) {
+      } catch (e) {
         console.error(e);
       }
       isMinting.value = false;
@@ -193,7 +196,7 @@ export default defineComponent({
       wallet,
       totalBalance,
       mintPriceString,
-      isMinting
+      isMinting,
     };
   },
 });

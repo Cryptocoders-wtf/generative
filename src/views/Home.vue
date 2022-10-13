@@ -17,12 +17,17 @@
       step by step.
     </p>
     <h1 class="mt-2 mb-2 text-xl font-bold">Architecture</h1>
-    <p class="mb-2">Here is the rough architecture diagram of a sample generative art NFT collection, SplatterToken.</p>
+    <p class="mb-2">
+      Here is the rough architecture diagram of a sample generative art NFT
+      collection, SplatterToken.
+    </p>
     <img class="mb-4" src="@/assets/architecture_gen.png" />
-    <p class="mb-2">SplatterToken implements tokenURI by calling generateSVGPart() of MultiplexProvider.
-      MultiplexProvider implements it by calling generateSVGPart() of SplatterProvider multiple times to create an art.
-      SplatterProvider implements it by generating a series of control points and turning
-      them into a SVG path by calling pathFromPoints() of SVGHelper.
+    <p class="mb-2">
+      SplatterToken implements tokenURI by calling generateSVGPart() of
+      MultiplexProvider. MultiplexProvider implements it by calling
+      generateSVGPart() of SplatterProvider multiple times to create an art.
+      SplatterProvider implements it by generating a series of control points
+      and turning them into a SVG path by calling pathFromPoints() of SVGHelper.
     </p>
     <h1 class="mt-2 mb-2 text-xl font-bold">TypeScript/Javascript Prototype</h1>
     <p class="mb-2">
@@ -45,10 +50,10 @@
       website.
     </p>
     <p class="mb-2">
-      Read <code class="bg-gray-200">src/views/Sample.vue</code>, and learn
-      how it works (please go to the Sample page to see its output). It
-      generates a series of <i>control points</i>, generates an SVG path from
-      them, and generates an SVG image.
+      Read <code class="bg-gray-200">src/views/Sample.vue</code>, and learn how
+      it works (please go to the Sample page to see its output). It generates a
+      series of <i>control points</i>, generates an SVG path from them, and
+      generates an SVG image.
     </p>
     <p class="mb-2">
       Once you understand it, duplicate Splatter.vue file, and party on it. You
