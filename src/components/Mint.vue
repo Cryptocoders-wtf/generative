@@ -2,6 +2,7 @@
   <div>
     <NetworkGate :expectedNetwork="chainId">
       <p>Wallet: {{ wallet }}</p>
+      <p>Network: {{ network }}</p>
       <p v-if="totalBalance > 0">
         You have {{ totalBalance }} whitelist token(s).
       </p>
