@@ -11,9 +11,8 @@
         class="mr-1 mb-1 inline-block w-20"
       />
     </div>
-    <ProviderView assetProvider="splatterArt" />
+    <ProviderView assetProvider="splatter" />
     <Mint
-      v-if="network != 'localhost'"
       :network="network"
       :tokenAddress="tokenAddress"
     />

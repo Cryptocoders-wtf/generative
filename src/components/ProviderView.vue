@@ -57,7 +57,7 @@ export default defineComponent({
       const newImages = [];
       for (
         let i = 0;
-        i < (network == "localhost" ? 6 : sampleColors.length * 3);
+        i < sampleColors.length;
         i++
       ) {
         const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(
