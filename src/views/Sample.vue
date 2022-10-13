@@ -26,12 +26,10 @@ import { sampleColors } from "@/models/point";
 import { generateSVGImage } from "@/generative/splatter";
 import Mint from "@/components/Mint.vue";
 import ProviderView from "@/components/ProviderView.vue";
-import { addresses as mainnet } from "@/utils/addresses/splatter_mainnet";
-import { addresses as localhost } from "@/utils/addresses/splatter_localhost";
-import { addresses as goerli } from "@/utils/addresses/splatter_goerli";
+import { addresses as localhost } from "@/utils/addresses/sample_localhost";
+import { addresses as goerli } from "@/utils/addresses/sample_goerli";
 
 const allAddresses: any = {
-  mainnet,
   localhost,
   goerli,
 };
@@ -46,7 +44,7 @@ export default defineComponent({
     const network =
       typeof route.query.network == "string" ? route.query.network : "goerli";
     const addresses = allAddresses[network];
-    const tokenAddress = addresses.splatterToken;
+    const tokenAddress = addresses.sampleToken;
     console.log("*** chainId", network, tokenAddress);
     const images = ref<string[]>([]);
     const updateImages = () => {
