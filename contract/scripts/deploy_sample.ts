@@ -11,18 +11,18 @@ async function main() {
   console.log(`      helper="${contractHelper.address}"`);
 
   const factory = await ethers.getContractFactory("SplatterProvider");
-  const contractSplatter = await factory.deploy(contractHelper.address);
-  await contractSplatter.deployed();
-  console.log(`      splatter="${contractSplatter.address}"`);
+  const contractProvider = await factory.deploy(contractHelper.address);
+  await contractProvider.deployed();
+  console.log(`      provider="${contractProvider.address}"`);
 
   const factoryToken = await ethers.getContractFactory("SampleToken");
-  const token = await factoryToken.deploy(contractSplatter.address, proxy);
+  const token = await factoryToken.deploy(contractProvider.address, proxy);
   await token.deployed();
   console.log(`      token="${token.address}"`);
 
   const addresses = `export const addresses = {\n`
     + `  svgHelperAddress:"${contractHelper.address}",\n`
-    + `  splatterAddress:"${contractSplatter.address}",\n`
+    + `  providerAddress:"${contractProvider.address}",\n`
     + `  sampleToken:"${token.address}"\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/sample_${network.name}.ts`, addresses, ()=>{});  
