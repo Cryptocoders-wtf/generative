@@ -1,7 +1,7 @@
 <template>
   <div>
     <NetworkGate :expectedNetwork="chainId">
-      <p>Wallet: {{ account }}</p>
+      <p>Wallet: {{ wallet }}</p>
       <p v-if="totalBalance > 0">You have {{ totalBalance }} whitelist token(s).</p>
       <p>Price: {{ mintPriceString }}</p>
       <p v-if="isMinting">Processing...</p>
@@ -28,7 +28,7 @@ import { defineComponent, computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { BigNumber, ethers } from "ethers";
-import { ChainIdMap } from "../utils/MetaMask";
+import { ChainIdMap, displayAddress } from "../utils/MetaMask";
 import NetworkGate from "@/components/NetworkGate.vue";
 import { getAddresses } from "@/utils/const";
 import References from "@/components/References.vue";
@@ -60,7 +60,7 @@ export default defineComponent({
     const store = useStore();
     const totalBalance = ref<number>(0);
     const mintPrice = ref<BigNumber>(BigNumber.from(0));
-    const mintPriceString = computed(() => `${weiToEther(mintPrice.value)}ETH`);
+    const mintPriceString = computed(() => `${weiToEther(mintPrice.value)} ETH`);
     const isMinting = ref<boolean>(false);
 
     const account = computed(() => {
@@ -83,6 +83,7 @@ export default defineComponent({
       checkTokenGate();
       return store.state.account;
     });
+    const wallet = computed(() => displayAddress(account.value));
 
     const chainId = ChainIdMap[props.network];
     const provider =
@@ -189,7 +190,7 @@ export default defineComponent({
       EtherscanToken,
       OpenSeaPath,
       tokenName: "ERC721",
-      account,
+      wallet,
       totalBalance,
       mintPriceString,
       isMinting
