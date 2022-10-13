@@ -1,8 +1,11 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
-    <p class="mb-2">Splatter is a fully on-chain generative art collection. Unlike most NFTs in the market, 
-      it dynamically generates images on the blockchain. Since it does not rely on either HTTP server or IPFT,
-      it is fully decentralized and composable, and its availably is guaranteed by the blockchain itself.</p>
+    <p class="mb-2">
+      Splatter is a fully on-chain generative art collection. Unlike most NFTs
+      in the market, it dynamically generates images on the blockchain. Since it
+      does not rely on either HTTP server or IPFT, it is fully decentralized and
+      composable, and its availably is guaranteed by the blockchain itself.
+    </p>
     <ProviderView assetProvider="splatterArt" />
     <Mint
       v-if="network != 'localhost'"

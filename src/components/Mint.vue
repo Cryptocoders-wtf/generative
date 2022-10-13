@@ -9,7 +9,9 @@
       <p>Price: {{ mintPriceString }}</p>
       <p>Supply: {{ `${totalSupply}/${mintLimit}` }}</p>
       <div v-if="totalSupply < mintLimit">
-        <p v-if="isMinting" class="mt-4 mb-4 pl-4 bg-slate-200">Processing...</p>
+        <p v-if="isMinting" class="mt-4 mb-4 bg-slate-200 pl-4">
+          Processing...
+        </p>
         <button
           v-else
           @click="mint"
@@ -27,13 +29,14 @@
         </button>
       </div>
     </NetworkGate>
-    <p class="mt-2">
+    <div class="mt-4">
+      <p>Recently Minted NFTs</p>
       <span v-for="token in tokens" :key="token.tokenId">
         <a :href="`${OpenSeaPath}/${token.tokenId}`" target="_blank">
           <img :src="token.image" class="mr-1 mb-1 inline-block w-32" />
         </a>
       </span>
-    </p>
+    </div>
     <References :EtherscanToken="EtherscanToken" :TokenName="tokenName" />
   </div>
 </template>
