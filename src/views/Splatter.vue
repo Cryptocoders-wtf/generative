@@ -1,16 +1,5 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
-    <p class="mb-2">
-      Images from TypeScript prototype. {{ $t("message.touchToUpdate") }}
-    </p>
-    <div @click="updateImages">
-      <img
-        v-for="image in images"
-        :key="image"
-        :src="image"
-        class="mr-1 mb-1 inline-block w-20"
-      />
-    </div>
     <ProviderView assetProvider="splatterArt" />
     <Mint
       v-if="network != 'localhost'"
@@ -50,14 +39,7 @@ export default defineComponent({
     const addresses = allAddresses[network];
     const tokenAddress = addresses.splatterToken;
     console.log("*** chainId", network, tokenAddress);
-    const images = ref<string[]>([]);
-    const updateImages = () => {
-      images.value = sampleColors.map((color) => generateSVGImage(color));
-    };
-    updateImages();
     return {
-      images,
-      updateImages,
       network,
       tokenAddress,
     };

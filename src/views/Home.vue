@@ -4,12 +4,12 @@
     <p class="mb-2">
       This is a website for developers who are interested in
       <b>on-chain generative art</b>, which means
-      <u>you write Solidity code to generate art in SVG format</u>.
+      <u>you write Solidity code to dynamically generate art in SVG</u>.
     </p>
     <p class="mb-2">
       Unlike images stored on HTTP servers or IPFS, on-chain generative arts are
       truly decentralized and composable. It can even generate revenue
-      autonomously (we will release a
+      autonomously (we will launch a
       <b>decentralized autonomous marketplace</b> for generative arts soon).
     </p>
     <p class="mb-2">
