@@ -15,6 +15,7 @@
     <Mint
       v-if="network != 'localhost'"
       :network="network"
+      :tokenGated="true"
       :tokenAddress="tokenAddress"
     />
   </div>

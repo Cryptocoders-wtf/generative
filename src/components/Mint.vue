@@ -50,7 +50,7 @@ interface Token {
 }
 
 export default defineComponent({
-  props: ["network", "tokenAddress"],
+  props: ["network", "tokenAddress", "tokenGated"],
   components: {
     NetworkGate,
     References,
@@ -69,15 +69,16 @@ export default defineComponent({
       }
       const checkTokenGate = async () => {
         console.log("### calling totalBalanceOf");
-        const [result] = await tokenGate.functions.balanceOf(store.state.account);
-        totalBalance.value = result.toNumber();
+        if (props.tokenGated) {
+          const [result] = await tokenGate.functions.balanceOf(store.state.account);
+          totalBalance.value = result.toNumber();
+        }
         const [value] = await contractRO.functions.mintPriceFor(store.state.account);
         mintPrice.value = value;
         console.log(
         "*** checkTokenGate",
-        result.toNumber(),
         weiToEther(mintPrice.value)
-      );
+        );
       };
       checkTokenGate();
       return store.state.account;
