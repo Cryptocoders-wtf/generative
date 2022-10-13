@@ -11,6 +11,7 @@
         class="mr-1 mb-1 inline-block w-20"
       />
     </div>
+    <p>Images from the on-chain asset provider.</p>
     <ProviderView assetProvider="sample" />
     <Mint :network="network" :tokenAddress="tokenAddress" />
   </div>

@@ -1,5 +1,8 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
+    <p class="mb-2">Splatter is a fully on-chain generative art collection. Unlike most NFTs in the market, 
+      it dynamically generates images on the blockchain. Since it does not rely on either HTTP server or IPFT,
+      it is fully decentralized and composable, and its availably is guaranteed by the blockchain itself.</p>
     <ProviderView assetProvider="splatterArt" />
     <Mint
       v-if="network != 'localhost'"
@@ -13,8 +16,6 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
-import { sampleColors } from "@/models/point";
-import { generateSVGImage } from "@/generative/splatter";
 import Mint from "@/components/Mint.vue";
 import ProviderView from "@/components/ProviderView.vue";
 import { addresses as mainnet } from "@/utils/addresses/splatter_mainnet";
