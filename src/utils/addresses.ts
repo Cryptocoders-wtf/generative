@@ -4,6 +4,8 @@ import { addresses as snow_goerli } from "./addresses/snow_goerli";
 import { addresses as snow_localhost } from "./addresses/snow_localhost";
 import { addresses as tokenGate_goerli } from "./addresses/tokenGate_goerli";
 import { addresses as tokenGate_localhost } from "./addresses/tokenGate_localhost";
+import { addresses as sample_goerli } from "./addresses/sample_goerli";
+import { addresses as sample_localhost } from "./addresses/sample_localhost";
 
 export const addresses: any = {
   svgHelper: {
@@ -29,5 +31,9 @@ export const addresses: any = {
   tokenGate: {
     goerli: tokenGate_goerli.tokenGate,
     localhost: tokenGate_localhost.tokenGate,
+  },
+  sample: {
+    goerli: sample_goerli.providerAddress,
+    localhost: sample_localhost.providerAddress,
   },
 };
