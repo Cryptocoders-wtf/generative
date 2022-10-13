@@ -6,6 +6,7 @@
         You have {{ totalBalance }} whitelist token(s).
       </p>
       <p>Price: {{ mintPriceString }}</p>
+      <p>Supply: {{ `${totalSupply}/${mintLimit}` }}</p>
       <p v-if="isMinting">Processing...</p>
       <button
         v-else
@@ -62,6 +63,8 @@ export default defineComponent({
     const route = useRoute();
     const store = useStore();
     const totalBalance = ref<number>(0);
+    const totalSupply = ref<number>(0);
+    const mintLimit = ref<number>(0);
     const mintPrice = ref<BigNumber>(BigNumber.from(0));
     const mintPriceString = computed(
       () => `${weiToEther(mintPrice.value)} ETH`
@@ -108,10 +111,13 @@ export default defineComponent({
     );
     const tokens = ref<Token[]>([]);
     const fetchTokens = async () => {
-      const [count] = await contractRO.functions.totalSupply();
-      console.log("totalSupply", count.toNumber());
+      const [supply] = await contractRO.functions.totalSupply();
+      totalSupply.value = supply.toNumber();
+      const [limit] = await contractRO.functions.mintLimit();
+      mintLimit.value = limit.toNumber();
+      console.log("totalSupply/mintLimit", totalSupply.value, mintLimit.value);
       const updatedTokens = [];
-      for (var tokenId = Math.max(0, count - 4); tokenId < count; tokenId++) {
+      for (var tokenId = Math.max(0, supply - 4); tokenId < supply; tokenId++) {
         const [tokenURI, gas] = await contractRO.functions.debugTokenURI(
           tokenId
         );
@@ -197,6 +203,8 @@ export default defineComponent({
       totalBalance,
       mintPriceString,
       isMinting,
+      totalSupply,
+      mintLimit,
     };
   },
 });
