@@ -29,7 +29,7 @@
         </button>
       </div>
     </NetworkGate>
-    <div class="mt-4">
+    <div v-if="tokens.length > 0" class="mt-4">
       <p>Recently minted NFTs</p>
       <span v-for="token in tokens" :key="token.tokenId">
         <a :href="`${OpenSeaPath}/${token.tokenId}`" target="_blank">
