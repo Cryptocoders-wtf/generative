@@ -1,5 +1,5 @@
 export const addresses = {
-  svgHelperAddress: "0xBa006e5E310fBe0Edb253AA2d73775d182e4D9b8",
-  providerAddress: "0x5597C68dB4B164048FA4A6dA028CF6DdcAF25602",
-  sampleToken: "0x6D48Ea9D447309CfA3Ce5D9715e094278bcBb737",
-};
+  svgHelperAddress:"0xF7608dD08bdF07229FA3aa5703BFDDe9bc909f25",
+  providerAddress:"0x7072e8bfF38EB37c9b197F7921Fecb84c2ac1121",
+  sampleToken:"0x51CCdac3F0b999bC2d2ab298c3e1Ad5e4BF83842"
+}

@@ -18,7 +18,7 @@ contract SplatterToken is ProviderToken {
     ITokenGate _tokenGate,
     IAssetProvider _assetProvider,
     IProxyRegistry _proxyRegistry
-  ) ProviderToken(_assetProvider, _proxyRegistry, "Splatter", "SPLATTER") {
+  ) ProviderToken(_assetProvider, _proxyRegistry, "On-Chain Splatter", "SPLATTER") {
     tokenGate = _tokenGate;
     description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/).";
     mintPrice = 1e16; //0.01 ether, updatable
