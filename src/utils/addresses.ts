@@ -6,6 +6,7 @@ import { addresses as tokenGate_goerli } from "./addresses/tokenGate_goerli";
 import { addresses as tokenGate_localhost } from "./addresses/tokenGate_localhost";
 import { addresses as sample_goerli } from "./addresses/sample_goerli";
 import { addresses as sample_localhost } from "./addresses/sample_localhost";
+import { addresses as nouns_goerli } from "./addresses/nouns_goerli";
 
 export const addresses: any = {
   svgHelper: {
@@ -31,6 +32,10 @@ export const addresses: any = {
   tokenGate: {
     goerli: tokenGate_goerli.tokenGate,
     localhost: tokenGate_localhost.tokenGate,
+  },
+  nouns: {
+    goerli: nouns_goerli.providerAddress,
+    localhost: nouns_goerli.providerAddress, // hack
   },
   sample: {
     goerli: sample_goerli.providerAddress,
