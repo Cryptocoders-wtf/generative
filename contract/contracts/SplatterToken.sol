@@ -20,7 +20,7 @@ contract SplatterToken is ProviderToken {
     IProxyRegistry _proxyRegistry
   ) ProviderToken(_assetProvider, _proxyRegistry, "On-Chain Splatter", "SPLATTER") {
     tokenGate = _tokenGate;
-    description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/).";
+    description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/). All images are dymically generated on the blockchain.";
     mintPrice = 1e16; //0.01 ether, updatable
     mintLimit = 250; // initial limit, updatable with a hard limit of 1,000
   }

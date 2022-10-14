@@ -32,10 +32,12 @@ abstract contract ProviderToken is Ownable, ERC721 {
   using Strings for uint256;
   using Strings for uint16;
 
-  string public description;
   uint public nextTokenId;
-  uint public mintPrice; // specified and enforced by the concrete contract
-  uint public mintLimit;
+
+  // To be specified by the concrete contract
+  string public description; 
+  uint public mintPrice; 
+  uint public mintLimit; 
 
   // OpenSea's Proxy Registry
   IProxyRegistry public immutable proxyRegistry;
@@ -127,7 +129,7 @@ abstract contract ProviderToken is Ownable, ERC721 {
   /**
    * For non-free minting,
    * 1. Override this method
-   * 2. Check for the required payment
+   * 2. Check for the required payment, by calling mintPriceFor()
    * 3. Call the processPayout method of the asset provider with appropriate value
    */
   function mint() public virtual payable returns(uint256 tokenId) {
@@ -136,6 +138,10 @@ abstract contract ProviderToken is Ownable, ERC721 {
     _safeMint(msg.sender, tokenId);
   }
 
+  /**
+   * The concreate contract may override to offer custom pricing,
+   * such as token-gated discount. 
+   */
   function mintPriceFor(address) public virtual view returns(uint256) {
     return mintPrice;
   }
