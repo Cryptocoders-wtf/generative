@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p>Available: {{ `${mintLimit-totalSupply}/${mintLimit}` }}</p>
     <NetworkGate :expectedNetwork="chainId">
       <p>Wallet: {{ wallet }}</p>
       <p>Network: {{ network }}</p>
@@ -7,7 +8,6 @@
         You have {{ totalBalance }} whitelist token(s).
       </p>
       <p>Price: {{ mintPriceString }}</p>
-      <p>Available: {{ `${mintLimit-totalSupply}/${mintLimit}` }}</p>
       <div v-if="totalSupply < mintLimit">
         <p v-if="isMinting" class="mt-4 mb-4 bg-slate-200 pl-4">
           Processing...
