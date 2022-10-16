@@ -137,9 +137,12 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
       uint y;
       (seed, x) = seed.randomize(margin, 100);
       (seed, y) = seed.randomize(margin, 100);
+      uint angle;
+      (seed, angle) = seed.random(60);
+      angle *= 60;
       body = abi.encodePacked(body, '" transform="translate(',
         x.toString(), ',', y.toString(),
-        ') scale(0.',zero, size.toString(),', 0.',zero, size.toString(),')" />\n');
+        ') scale(0.',zero, size.toString(),', 0.',zero, size.toString(),') rotate(',angle.toString(),', 512, 512)" />\n');
     }
 
     svgPart = string(abi.encodePacked(

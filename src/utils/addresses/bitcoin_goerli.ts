@@ -1,5 +1,5 @@
 export const addresses = {
-  assetStoreProvider:"0x05aDD70026876666B8Ba0306fE8DaE0A478ea760",
-  coinProvider:"0xe4463EC96059735b3eCf9726d17f98c4f0a2225e",
-  bitcoinArtProvider:"0xb33F4C07c5798b5fc2157a0B76D6DcA5068c457b",
+  assetStoreProvider:"0x28241dD9DC85251A45B147893E4f8cFe42366F7f",
+  coinProvider:"0x09E24F1252dD12c8148Db3b3163FF68750537118",
+  bitcoinArtProvider:"0x5dF51B44EE0e4eF04A6431BEaE677a6Ee7c44b1b",
 }
