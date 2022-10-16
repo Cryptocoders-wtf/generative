@@ -127,7 +127,7 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
       uint size2;
       (seed, size) = seed.random(12);
       (seed, size2) = seed.random(12);
-      size = 50 + size * size2;
+      size = 72 + size * size2;
       string memory zero;
       if (size < 100) {
         zero = '0';
