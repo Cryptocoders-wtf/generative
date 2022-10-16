@@ -60,13 +60,13 @@ contract CoinProvider is IAssetProvider, IERC165, Ownable {
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     (svgPart, tag) = provider.generateSVGPart(_assetId);
     svgPart = string(abi.encodePacked(svgPart,    
-      '<mask id="foo2">'
+      '<mask id="', tag, '_mask">'
       '<rect x="0" y="0" width="1024" height="1024" fill="white" />'
       '<use href="#', tag, '" fill="black"/>'
       '</mask>'
-      '<g id="bar">'
-      '<circle cx="511" cy="511" r="511" mask="url(#foo2)"/>'
+      '<g id="', tag, '_coin">'
+      '<circle cx="511" cy="511" r="511" mask="url(#',tag,'_mask)"/>'
       '</g>'));
-    tag = 'bar';  
+    tag = string(abi.encodePacked(tag, '_coin'));  
   }
 }
