@@ -52,5 +52,6 @@ export const addresses: any = {
   assetStore: {
     goerli: store_goerli.storeAddress,
     mainnet: store_mainnet.storeAddress,
+    localhost: store_goerli.storeAddress, // hack
   }
 };
