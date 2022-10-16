@@ -121,7 +121,7 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
 
     seed = Randomizer.Seed(_assetId, 0);
     uint limit = 8;
-    uint cell = 1024 / limit;
+    uint cell = 1024 / (limit + limit + 1) * 2;
     uint colorIndex;
     for (uint j = 0; j < limit; j++) {
       for (uint i = 0; i < limit; i++) {
@@ -130,7 +130,7 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
         colorIndex = (colorIndex + offset + 1) % scheme.length;        
         body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', scheme[colorIndex]);
         uint size = cell;
-        uint x = cell * i;
+        uint x = (j % 2) * cell / 2 + cell * i;
         uint y = cell * j;
         body = abi.encodePacked(body, '" transform="translate(',
           x.toString(), ',', y.toString(),
