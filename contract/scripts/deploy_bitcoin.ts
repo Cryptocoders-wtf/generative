@@ -11,17 +11,23 @@ async function main() {
   await contract.deployed();
   console.log(`      assetStoreProvider="${contract.address}"`);
 
+  const factoryCoin = await ethers.getContractFactory("CoinProvider");
+  const contractCoin = await factoryCoin.deploy(contract.address);
+  await contractCoin.deployed();
+  console.log(`      coinProvider="${contractCoin.address}"`);
+
   const assetId = (network.name == "goerli") ? 80 : 1505;
-  const result = await contract.generateSVGPart(assetId);
+  const result = await contractCoin.generateSVGPart(assetId);
   console.log("svg", result);
 
   const factoryArt = await ethers.getContractFactory("RepeatProvider");
-  const contractArt = await factoryArt.deploy(contract.address, assetId, "bitcoinArt", "On-chain Bitcoin");
+  const contractArt = await factoryArt.deploy(contractCoin.address, assetId, "bitcoinArt", "On-chain Bitcoin");
   await contractArt.deployed();
   console.log(`      bitcoinArt="${contractArt.address}"`);
 
   const addresses = `export const addresses = {\n`
     + `  assetStoreProvider:"${contract.address}",\n`
+    + `  coinProvider:"${contractCoin.address}",\n`
     + `  bitcoinArtProvider:"${contractArt.address}",\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/bitcoin_${network.name}.ts`, addresses, ()=>{});  
