@@ -11,6 +11,7 @@ import { addresses as sample_localhost } from "./addresses/sample_localhost";
 import { addresses as nouns_goerli } from "./addresses/nouns_goerli";
 import { addresses as store_goerli } from "./addresses/addresses_goerli";
 import { addresses as store_mainnet } from "./addresses/addresses_mainnet";
+import { addresses as bitcoin_goerli } from "./addresses/bitcoin_goerli";
 
 export const addresses: any = {
   svgHelper: {
@@ -53,5 +54,8 @@ export const addresses: any = {
     goerli: store_goerli.storeAddress,
     mainnet: store_mainnet.storeAddress,
     localhost: store_goerli.storeAddress, // hack
-  }
+  },
+  bitcoin: {
+    goerli: bitcoin_goerli.bitcoinArtProvider,
+  },
 };

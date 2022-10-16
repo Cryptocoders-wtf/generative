@@ -19,6 +19,9 @@
       <router-link :to="localizedUrl('/snow')" class="text-md">
         Snow
       </router-link>
+      <router-link :to="localizedUrl('/bitcoin')" class="text-md">
+        Bitcoin
+      </router-link>
       <router-link :to="localizedUrl('/nouns')" class="text-md">
         Nouns
       </router-link>
