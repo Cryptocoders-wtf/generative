@@ -27,16 +27,18 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
 
   string providerKey;
   string providerName;
+  uint256 immutable providerAssetId;
 
   uint constant schemeCount = 15;
   uint constant colorCount = 5;
 
   IAssetProvider public provider;
 
-  constructor(IAssetProvider _provider, string memory _key, string memory _name) {
+  constructor(IAssetProvider _provider, uint256 _assetId, string memory _key, string memory _name) {
     provider = _provider;
     providerKey = _key;
     providerName = _name;
+    providerAssetId = _assetId;
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -113,7 +115,7 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
     
     string memory defs;
     string memory tagPart;
-    (defs, tagPart) = provider.generateSVGPart(80);
+    (defs, tagPart) = provider.generateSVGPart(providerAssetId);
     bytes memory body;
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
 

@@ -11,11 +11,12 @@ async function main() {
   await contract.deployed();
   console.log(`      assetStoreProvider="${contract.address}"`);
 
-  const result = await contract.generateSVGPart(80);
+  const assetId = (network.name == "goerli") ? 80 : 1505;
+  const result = await contract.generateSVGPart(assetId);
   console.log("svg", result);
 
   const factoryArt = await ethers.getContractFactory("RepeatProvider");
-  const contractArt = await factoryArt.deploy(contract.address, "currency", "On-chain Currency");
+  const contractArt = await factoryArt.deploy(contract.address, assetId, "currency", "On-chain Currency");
   await contractArt.deployed();
   console.log(`      bitcoinArt="${contractArt.address}"`);
 
