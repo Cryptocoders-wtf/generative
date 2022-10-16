@@ -16,7 +16,7 @@ async function main() {
   console.log("svg", result);
 
   const factoryArt = await ethers.getContractFactory("RepeatProvider");
-  const contractArt = await factoryArt.deploy(contract.address, assetId, "currency", "On-chain Currency");
+  const contractArt = await factoryArt.deploy(contract.address, assetId, "bitcoinArt", "On-chain Bitcoin");
   await contractArt.deployed();
   console.log(`      bitcoinArt="${contractArt.address}"`);
 
