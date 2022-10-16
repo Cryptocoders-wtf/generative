@@ -11,7 +11,6 @@ pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { IAssetProvider } from './interfaces/IAssetProvider.sol';
-import { IAssetProviderEx } from './interfaces/IAssetProviderEx.sol';
 import "randomizer.sol/Randomizer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
@@ -32,9 +31,9 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
   uint constant schemeCount = 15;
   uint constant colorCount = 5;
 
-  IAssetProviderEx public provider;
+  IAssetProvider public provider;
 
-  constructor(IAssetProviderEx _provider, string memory _key, string memory _name) {
+  constructor(IAssetProvider _provider, string memory _key, string memory _name) {
     provider = _provider;
     providerKey = _key;
     providerName = _name;
@@ -111,20 +110,15 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
 
     string[] memory scheme;
     (seed, scheme) = getColorScheme(seed, schemeIndex);
-
-    uint256 props;
-    (seed, props) = provider.generateRandomProps(seed);
     
-    bytes memory defs;
+    string memory defs;
+    string memory tagPart;
+    (defs, tagPart) = provider.generateSVGPart(1506);
     bytes memory body;
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
-    string memory tagPart;
 
     seed = Randomizer.Seed(_assetId, 0);
     for (uint i = 0; i < scheme.length * 10; i++) {
-      tagPart = string(abi.encodePacked(tag, "_", i.toString()));
-      (seed, svgPart) = provider.generateSVGPartWithProps(seed, props, tagPart);
-      defs = abi.encodePacked(defs, svgPart);
       body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', scheme[i / 10]);
 
       uint size;
