@@ -120,25 +120,20 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
 
     seed = Randomizer.Seed(_assetId, 0);
-    uint limit = 20;
-    for (uint y = 0; y < limit; y++) {
-      for (uint x = 0; x < limit; x++) {
-      }
-    }
-    for (uint i = 0; i < scheme.length * 10; i++) {
-      body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', scheme[i / 10]);
-
-      uint size;
-      (seed, size) = seed.random(400);
-      size += 100;
-      uint margin = (1024 - 1024 * size / 1000) / 2;
-      uint x;
-      uint y;
-      (seed, x) = seed.randomize(margin, 100);
-      (seed, y) = seed.randomize(margin, 100);
-      body = abi.encodePacked(body, '" transform="translate(',
-        x.toString(), ',', y.toString(),
-        ') scale(0.',size.toString(),', 0.',size.toString(),')" />\n');
+    uint limit = 10;
+    uint cell = 1024 / limit;
+    for (uint j = 0; j < limit; j++) {
+      for (uint i = 0; i < limit; i++) {
+        uint colorIndex;
+        (seed, colorIndex) = seed.random(scheme.length);        
+        body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', scheme[colorIndex]);
+        uint size = cell;
+        uint x = cell * i;
+        uint y = cell * j;
+        body = abi.encodePacked(body, '" transform="translate(',
+          x.toString(), ',', y.toString(),
+          ') scale(0.',size.toString(),', 0.',size.toString(),')" />\n');
+        }
     }
 
     svgPart = string(abi.encodePacked(
