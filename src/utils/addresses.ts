@@ -9,6 +9,8 @@ import { addresses as tokenGate_mainnet } from "./addresses/tokenGate_mainnet";
 import { addresses as sample_goerli } from "./addresses/sample_goerli";
 import { addresses as sample_localhost } from "./addresses/sample_localhost";
 import { addresses as nouns_goerli } from "./addresses/nouns_goerli";
+import { addresses as store_goerli } from "./addresses/addresses_goerli";
+import { addresses as store_mainnet } from "./addresses/addresses_mainnet";
 
 export const addresses: any = {
   svgHelper: {
@@ -47,4 +49,8 @@ export const addresses: any = {
     goerli: sample_goerli.providerAddress,
     localhost: sample_localhost.providerAddress,
   },
+  assetStore: {
+    goerli: store_goerli.storeAddress,
+    mainnet: store_mainnet.storeAddress,
+  }
 };
