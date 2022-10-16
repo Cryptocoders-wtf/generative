@@ -113,7 +113,7 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
     
     string memory defs;
     string memory tagPart;
-    (defs, tagPart) = provider.generateSVGPart(81);
+    (defs, tagPart) = provider.generateSVGPart(80);
     bytes memory body;
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
 

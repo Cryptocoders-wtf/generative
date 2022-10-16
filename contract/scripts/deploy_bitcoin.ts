@@ -11,7 +11,7 @@ async function main() {
   await contract.deployed();
   console.log(`      assetStoreProvider="${contract.address}"`);
 
-  const result = await contract.generateSVGPart(81);
+  const result = await contract.generateSVGPart(80);
   console.log("svg", result);
 
   const factoryArt = await ethers.getContractFactory("RepeatProvider");

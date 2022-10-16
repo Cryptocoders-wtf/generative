@@ -1,4 +1,4 @@
 export const addresses = {
-  assetStoreProvider:"0x34E5d6c393f05458BaEe4f2a865ba7a174b594e2",
-  bitcoinArtProvider:"0xB70Ac5b44842d21729dFA213d1c4C92d262C904d",
+  assetStoreProvider:"0x5F353C46168a90F888fc17463d958AEC9Db870E3",
+  bitcoinArtProvider:"0x156Fe0e4ffF9E1C46463DD6Ff032b6e9390DF3dF",
 }
