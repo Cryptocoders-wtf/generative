@@ -17,8 +17,14 @@ async function main() {
   await contractProvider.deployed();
   console.log(`      provider="${contractProvider.address}"`);
 
+  const factoryArt = await ethers.getContractFactory("RepeatProvider");
+  const contractArt = await factoryArt.deploy(contractProvider.address, 10, "nounsArt", "Nouns Art");
+  await contractArt.deployed();
+  console.log(`      bitcoinArt="${contractArt.address}"`);  
+
   const addresses = `export const addresses = {\n`
     + `  providerAddress:"${contractProvider.address}",\n`
+    + `  nounsArt:"${contractArt.address}",\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/nouns_${network.name}.ts`, addresses, ()=>{});  
 }

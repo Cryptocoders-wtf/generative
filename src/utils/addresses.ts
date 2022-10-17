@@ -46,7 +46,9 @@ export const addresses: any = {
   },
   nouns: {
     goerli: nouns_goerli.providerAddress,
-    localhost: nouns_goerli.providerAddress, // hack
+  },
+  nounsArt: {
+    goerli: nouns_goerli.nounsArt,
   },
   sample: {
     goerli: sample_goerli.providerAddress,

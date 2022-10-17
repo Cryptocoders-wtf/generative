@@ -120,8 +120,8 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
 
     seed = Randomizer.Seed(_assetId, 0);
-    for (uint i = 0; i < scheme.length * 12; i++) {
-      body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', scheme[i / 12]);
+    for (uint i = 0; i < scheme.length * 20; i++) {
+      body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', scheme[i / 20]);
 
       uint size;
       uint size2;

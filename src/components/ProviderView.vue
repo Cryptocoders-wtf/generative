@@ -59,7 +59,7 @@ export default defineComponent({
           providerAddress,
           i
         );
-        console.log("svgPart", svgPart);
+        // console.log("svgPart", svgPart);
         const [traits] = await assetProvider.functions.generateTraits(i);
         console.log("gas", gas.toNumber(), traits);
         const image = svgImageFromSvgPart(svgPart, tag, sampleColors[i]);
