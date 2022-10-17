@@ -12,7 +12,7 @@ async function main() {
   console.log(`      assetStoreProvider="${contract.address}"`);
 
   const factoryCoin = await ethers.getContractFactory("CoinProvider");
-  const contractCoin = await factoryCoin.deploy(contract.address);
+  const contractCoin = await factoryCoin.deploy(contract.address, "#FFF");
   await contractCoin.deployed();
   console.log(`      coinProvider="${contractCoin.address}"`);
 
