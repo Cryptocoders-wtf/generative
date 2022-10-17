@@ -16,7 +16,7 @@ async function main() {
   await contractCoin.deployed();
   console.log(`      coinProvider="${contractCoin.address}"`);
 
-  const assetId = (network.name == "goerli") ? 80 : 1; // 1505;
+  const assetId = (network.name == "goerli") ? 80 : 20; // 1505;
   const result = await contractCoin.generateSVGPart(assetId);
   console.log("svg", result);
 
