@@ -117,9 +117,9 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
     Properties memory props;
     (seed, props.schemeIndex) = seed.random(schemeCount);
     (seed, props.scheme) = getColorScheme(seed, props.schemeIndex);
-    (seed, props.count) = seed.random(12);
-    props.count += 10;
-    props.sizeVar = 15 - (props.count - 10) / 2;
+    (seed, props.count) = seed.random(14);
+    props.count += 8;
+    props.sizeVar = 16 - (props.count - 8) / 2;
     
     string memory defs;
     string memory tagPart;
