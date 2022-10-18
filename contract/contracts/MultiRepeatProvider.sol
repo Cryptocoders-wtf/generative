@@ -31,6 +31,7 @@ contract MultiRepeatProvider is IAssetProvider, IERC165, Ownable {
 
   uint constant schemeCount = 15;
   uint constant colorCount = 5;
+  uint assetCount = 3; // LATER: Make it configurable
 
   IAssetProvider public provider;
 
@@ -115,18 +116,19 @@ contract MultiRepeatProvider is IAssetProvider, IERC165, Ownable {
     
     string memory body;
     string memory defs;
-    string[] memory tags = new string[](3);
-    (defs, tags[0]) = provider.generateSVGPart(providerAssetId);
-    (body, tags[1]) = provider.generateSVGPart(providerAssetId + 1);
-    defs = string(abi.encodePacked(defs, body));
-    (body, tags[2]) = provider.generateSVGPart(providerAssetId + 2);
-    defs = string(abi.encodePacked(defs, body));
+    string[] memory tags = new string[](assetCount);
+    uint i;
+    for (i=0; i < assetCount; i++) {
+      (body, tags[i]) = provider.generateSVGPart(providerAssetId);
+      defs = string(abi.encodePacked(defs, body));
+    }
+
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
     body = "";
 
     seed = Randomizer.Seed(_assetId, 0);
-    for (uint i = 0; i < scheme.length * 10; i++) {
-      body = string(abi.encodePacked(body, '<use href="#', tags[i % 3], '" fill="#', scheme[i / 10]));
+    for (i = 0; i < scheme.length * 10; i++) {
+      body = string(abi.encodePacked(body, '<use href="#', tags[i % assetCount], '" fill="#', scheme[i / 10]));
 
       uint size;
       uint size2;
