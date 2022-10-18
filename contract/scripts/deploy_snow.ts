@@ -19,8 +19,8 @@ async function main() {
   const result = await contract.generateSVGPart(0);
   console.log("svg", result.tag);
 
-  const factoryArt = await ethers.getContractFactory("MultiplexProvider");
-  const contractArt = await factoryArt.deploy(contract.address, "snowart", "Snow Art");
+  const factoryArt = await ethers.getContractFactory("RepeatProvider");
+  const contractArt = await factoryArt.deploy(contract.address, 2, "snowart", "Snow Art");
   await contractArt.deployed();
   console.log(`      snow_art="${contractArt.address}"`);
 

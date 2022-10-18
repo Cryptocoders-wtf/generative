@@ -13,6 +13,7 @@
     </div>
     <p>Images from the on-chain asset provider.</p>
     <ProviderView assetProvider="snow" />
+    <ProviderView assetProvider="snowArt" />
   </div>
 </template>
 
