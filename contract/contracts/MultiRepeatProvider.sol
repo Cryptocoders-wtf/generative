@@ -119,8 +119,14 @@ contract MultiRepeatProvider is IAssetProvider, IERC165, Ownable {
     string[] memory tags = new string[](assetCount);
     uint i;
     for (i=0; i < assetCount; i++) {
-      (body, tags[i]) = provider.generateSVGPart(providerAssetId);
-      defs = string(abi.encodePacked(defs, body));
+      (body, tags[i]) = provider.generateSVGPart(providerAssetId + i);
+      defs = string(abi.encodePacked(defs,
+        body,    
+        '<g id="', tags[i], '_coin">'
+        '<circle cx="511" cy="511" r="650" />'
+        '<use href="#', tags[i], '" />'
+        '</g>'));
+      tags[i] = string(abi.encodePacked(tags[i], '_coin'));
     }
 
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
