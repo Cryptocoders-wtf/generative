@@ -105,13 +105,16 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
     ));
   }
 
+  struct Properties {
+    uint schemeIndex;
+    string[] scheme;
+  }
+
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
-    uint schemeIndex;
-    (seed, schemeIndex) = seed.random(schemeCount);
-
-    string[] memory scheme;
-    (seed, scheme) = getColorScheme(seed, schemeIndex);
+    Properties memory props;
+    (seed, props.schemeIndex) = seed.random(schemeCount);
+    (seed, props.scheme) = getColorScheme(seed, props.schemeIndex);
     
     string memory defs;
     string memory tagPart;
@@ -120,8 +123,8 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
 
     seed = Randomizer.Seed(_assetId, 0);
-    for (uint i = 0; i < scheme.length * 20; i++) {
-      body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', scheme[i / 20]);
+    for (uint i = 0; i < props.scheme.length * 20; i++) {
+      body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', props.scheme[i / 20]);
 
       uint size;
       uint size2;
