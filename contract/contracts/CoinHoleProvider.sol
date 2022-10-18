@@ -54,7 +54,8 @@ contract CoinHoleProvider is IAssetProvider, IERC165, Ownable {
     provider.processPayout{value:msg.value}(_assetId);
   }
 
-  function generateTraits(uint256 _assetId) external pure returns (string memory traits) {
+  function generateTraits(uint256 _assetId) external view returns (string memory traits) {
+    traits = provider.generateTraits(_assetId);
   }
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {

@@ -113,15 +113,20 @@ contract MultiRepeatProvider is IAssetProvider, IERC165, Ownable {
     string[] memory scheme;
     (seed, scheme) = getColorScheme(seed, schemeIndex);
     
+    string memory body;
     string memory defs;
-    string memory tagPart;
-    (defs, tagPart) = provider.generateSVGPart(providerAssetId);
-    bytes memory body;
+    string[] memory tags = new string[](3);
+    (defs, tags[0]) = provider.generateSVGPart(providerAssetId);
+    (body, tags[1]) = provider.generateSVGPart(providerAssetId + 1);
+    defs = string(abi.encodePacked(defs, body));
+    (body, tags[2]) = provider.generateSVGPart(providerAssetId + 2);
+    defs = string(abi.encodePacked(defs, body));
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
+    body = "";
 
     seed = Randomizer.Seed(_assetId, 0);
     for (uint i = 0; i < scheme.length * 10; i++) {
-      body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', scheme[i / 10]);
+      body = string(abi.encodePacked(body, '<use href="#', tags[i % 3], '" fill="#', scheme[i / 10]));
 
       uint size;
       uint size2;
@@ -140,9 +145,9 @@ contract MultiRepeatProvider is IAssetProvider, IERC165, Ownable {
       uint angle;
       (seed, angle) = seed.random(60);
       angle *= 60;
-      body = abi.encodePacked(body, '" transform="translate(',
+      body = string(abi.encodePacked(body, '" transform="translate(',
         x.toString(), ',', y.toString(),
-        ') scale(0.',zero, size.toString(),', 0.',zero, size.toString(),') rotate(',angle.toString(),', 512, 512)" />\n');
+        ') scale(0.',zero, size.toString(),', 0.',zero, size.toString(),') rotate(',angle.toString(),', 512, 512)" />\n'));
     }
 
     svgPart = string(abi.encodePacked(
