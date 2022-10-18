@@ -108,6 +108,8 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
   struct Properties {
     uint schemeIndex;
     string[] scheme;
+    uint count;
+    uint sizeVar;
   }
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
@@ -115,6 +117,9 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
     Properties memory props;
     (seed, props.schemeIndex) = seed.random(schemeCount);
     (seed, props.scheme) = getColorScheme(seed, props.schemeIndex);
+    (seed, props.count) = seed.random(10);
+    props.count += 10;
+    props.sizeVar = 9 + (props.count - 10) / 2;
     
     string memory defs;
     string memory tagPart;
@@ -123,13 +128,13 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
 
     seed = Randomizer.Seed(_assetId, 0);
-    for (uint i = 0; i < props.scheme.length * 20; i++) {
-      body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', props.scheme[i / 20]);
+    for (uint i = 0; i < props.scheme.length * props.count; i++) {
+      body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', props.scheme[i / props.count]);
 
       uint size;
       uint size2;
-      (seed, size) = seed.random(9);
-      (seed, size2) = seed.random(9);
+      (seed, size) = seed.random(props.sizeVar);
+      (seed, size2) = seed.random(props.sizeVar);
       size = 72 + size * size2;
       string memory zero;
       if (size < 100) {
