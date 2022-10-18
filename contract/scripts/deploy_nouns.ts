@@ -17,7 +17,7 @@ async function main() {
   await contractProvider.deployed();
   console.log(`      provider="${contractProvider.address}"`);
 
-  const factoryArt = await ethers.getContractFactory("RepeatProvider");
+  const factoryArt = await ethers.getContractFactory("MultiRepeatProvider");
   const contractArt = await factoryArt.deploy(contractProvider.address, 10, "nounsArt", "Nouns Art");
   await contractArt.deployed();
   console.log(`      bitcoinArt="${contractArt.address}"`);  

@@ -38,7 +38,7 @@ interface IAssetProvider {
    * This is an optional function, which returns various traits of the image for ERC721 token.
    * Format: {"trait_type":"TRAIL_TYPE","value":"VALUE"},{...}
    */
-  function generateTraits(uint256 _assetId) external pure returns (string memory);
+  function generateTraits(uint256 _assetId) external view returns (string memory);
   
   /**
    * This function returns the number of assets available from this provider. 
