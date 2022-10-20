@@ -20,14 +20,20 @@ async function main() {
   const result = await contractCoin.generateSVGPart(assetId);
   console.log("svg", result);
 
+  const factorySchemes = await ethers.getContractFactory("ColorSchemes");
+  const contractSchemes = await factorySchemes.deploy();
+  await contractSchemes.deployed();
+  console.log(`      colorSchemes="${contractSchemes.address}"`);
+
   const factoryArt = await ethers.getContractFactory("RepeatProvider");
-  const contractArt = await factoryArt.deploy(contractCoin.address, assetId, "bitcoinArt", "On-chain Bitcoin");
+  const contractArt = await factoryArt.deploy(contractCoin.address, contractSchemes.address, assetId, "bitcoinArt", "On-chain Bitcoin");
   await contractArt.deployed();
   console.log(`      bitcoinArt="${contractArt.address}"`);
 
   const addresses = `export const addresses = {\n`
     + `  assetStoreProvider:"${contract.address}",\n`
     + `  coinProvider:"${contractCoin.address}",\n`
+    + `  colorSchemes:"${contractSchemes.address}",\n`
     + `  bitcoinArtProvider:"${contractArt.address}",\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/bitcoin_${network.name}.ts`, addresses, ()=>{});  
