@@ -10,7 +10,7 @@
  */
 pragma solidity ^0.8.6;
 
-import { IAssetProvider } from '../interfaces/IAssetProvider.sol';
+import "assetprovider.sol/IAssetProvider.sol";
 
 /**
  * This is an extended interface of IAssetProvider for those providers,

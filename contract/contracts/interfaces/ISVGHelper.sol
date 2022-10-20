@@ -8,7 +8,7 @@
 
 pragma solidity ^0.8.6;
 
-import { IAssetProvider } from './IAssetProvider.sol';
+import "assetprovider.sol/IAssetProvider.sol";
 
 interface ISVGHelper {
   // point

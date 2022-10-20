@@ -16,7 +16,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import { Base64 } from 'base64-sol/base64.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import { IProxyRegistry } from '../external/opensea/IProxyRegistry.sol';
-import { IAssetProvider } from '../interfaces/IAssetProvider.sol';
+import "assetprovider.sol/IAssetProvider.sol";
 
 /**
  * ProviderToken is an abstract implentation of ERC721, which is built on top of an asset provider.
