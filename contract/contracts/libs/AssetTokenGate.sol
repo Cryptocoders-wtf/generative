@@ -8,7 +8,7 @@ pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "./interfaces/ITokenGate.sol";
+import "../interfaces/ITokenGate.sol";
 
 contract AssetTokenGate is Ownable, ITokenGate {
   IERC721[] whitelist;
