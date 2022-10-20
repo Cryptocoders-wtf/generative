@@ -12,7 +12,7 @@ pragma solidity ^0.8.6;
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "assetstore.sol/IAssetStore.sol";
 import "assetprovider.sol/IAssetProvider.sol";
-import { ICategorizedAssetProvider } from './interfaces/ICategorizedAssetProvider.sol';
+import { ICategorizedAssetProvider } from '../interfaces/ICategorizedAssetProvider.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 

@@ -15,7 +15,7 @@ import "randomizer.sol/Randomizer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "hardhat/console.sol";
-import "./interfaces/IColorSchemes.sol";
+import "../interfaces/IColorSchemes.sol";
 
 /**
  * MultiplexProvider create a new asset provider from another asset provider,
