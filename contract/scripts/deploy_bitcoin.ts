@@ -3,9 +3,26 @@ import { writeFile } from "fs";
 import { addresses } from "../../src/utils/addresses";
 
 const assetStoreAddress = addresses.assetStore[network.name];
+const tokenGateAddress = addresses.tokenGate[network.name];
+export const proxy = (network.name == "goerli") ?
+    "0x3143867c145F73AF4E03a13DdCbdB555210e2027": // dummy proxy
+    "0xa5409ec958c83c3f309868babaca7c86dcb077c1"; // openSea proxy
+
 console.log("assetStoreAddress", assetStoreAddress);
+console.log("tokenGateAddress", tokenGateAddress);
+console.log("proxyAddress", proxy);
+
+const waitForUserInput = (text: string) => {
+  return new Promise((resolve, reject) => {
+    process.stdin.resume()
+    process.stdout.write(text)
+    process.stdin.once('data', data => resolve(data.toString().trim()))
+  })
+};
 
 async function main() {
+  await waitForUserInput("Continue?");
+
   const factory = await ethers.getContractFactory("AssetStoreProvider");
   const contract = await factory.deploy(assetStoreAddress);
   await contract.deployed();

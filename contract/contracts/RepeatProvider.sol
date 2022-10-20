@@ -30,9 +30,6 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
   string providerName;
   uint256 immutable providerAssetId;
 
-  uint constant schemeCount = 15;
-  uint constant colorCount = 5;
-
   IAssetProvider public provider;
   IColorSchemes public colorSchemes;
 
