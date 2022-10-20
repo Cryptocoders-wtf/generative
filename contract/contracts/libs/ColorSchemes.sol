@@ -7,7 +7,6 @@
 pragma solidity ^0.8.6;
 
 import "../interfaces/IColorSchemes.sol";
-import "../MultiplexProvider.sol";
 
 /**
  * It makes it easy to reuse the color palette in MultiplexProvider.
@@ -17,11 +16,6 @@ contract ColorSchemes is IColorSchemes {
 
   uint constant schemeCount = 15; // Same as MultiplexProvider
   uint constant colorCount = 5;
-  MultiplexProvider multiplex;  
-
-  constructor(MultiplexProvider _multiplex) {
-    multiplex = _multiplex;
-  }
 
   function getColorScheme(uint256 _assetId) external pure override returns(Randomizer.Seed memory seed, string[] memory scheme) {
     seed = Randomizer.Seed(_assetId, 0);
@@ -31,11 +25,11 @@ contract ColorSchemes is IColorSchemes {
     string[colorCount][schemeCount] memory schemes = [
       ["FFE33A", "7FAE2E", "B1661A", "DB3F14", "F9BE02"], // genki
       ["DBF8FF", "C8FFC3", "FFB86D", "FFC6B6", "FFF4BD"], // pastel
-      ["005bbb", "0072ea", "258fff", "ffd500", "ffe040"], // ukraine
-      ["5f7de8", "d179b9", "e6b422", "38b48b", "fef4f4"], // nippon
+      ["005BBB", "0072EA", "258FFF", "FFD500", "FFE040"], // ukraine
+      ["5F7DE8", "D179b9", "E6B422", "38b48B", "FEF4F4"], // nippon
       ["B51802", "05933A", "0B7B48", "634D2D", "A6AAAE"], // Xmas
       ["E9B4DB", "6160B0", "EB77A6", "3E3486", "E23D80"], // love
-      ["2c4269", "eabc67", "4b545e", "f98650", "0d120f"], // edo
+      ["2C4269", "EABC67", "4B545E", "F98650", "0D120F"], // edo
       ["EDC9AF", "A0E2BD", "53CBCF", "0DA3BA", "046E94"], // beach
       ["FFE889", "88E7C5", "53BD99", "01767D", "034F4D"], // jungle
       ["744981", "CB6573", "FFAC00", "ED3F37", "0577A1"], // backson
