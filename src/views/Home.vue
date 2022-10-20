@@ -64,7 +64,7 @@
     <h1 class="mt-2 mb-2 text-xl font-bold">Porting it to Solidity</h1>
     <p class="mb-2">
       The Soidity version of Splatter is avaiable at
-      <code class="bg-gray-200">contract/contracts/SplatterProvider.sol</code>.
+      <code class="bg-gray-200">contract/contracts/providers/SplatterProvider.sol</code>.
       Please compare it to TypeScript version. Although there are some
       differences because of languages, they are build with the same algorithm
       and similar libraries.
