@@ -4,12 +4,14 @@ import { addresses } from "../../src/utils/addresses";
 
 const assetStoreAddress = addresses.assetStore[network.name];
 const tokenGateAddress = addresses.tokenGate[network.name];
+const splatterToken = addresses.splatterToken[network.name];
 export const proxy = (network.name == "goerli") ?
     "0x3143867c145F73AF4E03a13DdCbdB555210e2027": // dummy proxy
     "0xa5409ec958c83c3f309868babaca7c86dcb077c1"; // openSea proxy
 
 console.log("assetStoreAddress", assetStoreAddress);
 console.log("tokenGateAddress", tokenGateAddress);
+console.log("splatterToken", splatterToken);
 console.log("proxyAddress", proxy);
 
 const waitForUserInput = (text: string) => {
