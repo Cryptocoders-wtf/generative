@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Available: {{ `${mintLimit-totalSupply}/${mintLimit}` }}</p>
+    <p>Available: {{ `${mintLimit - totalSupply}/${mintLimit}` }}</p>
     <NetworkGate :expectedNetwork="chainId">
       <p>Wallet: {{ wallet }}</p>
       <p>Network: {{ network }}</p>

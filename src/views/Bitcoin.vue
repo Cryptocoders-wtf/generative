@@ -2,11 +2,7 @@
   <div class="mx-auto max-w-3xl p-2 text-left">
     <p>Images from the on-chain asset provider.</p>
     <ProviderView assetProvider="bitcoin" />
-    <Mint
-      :network="network"
-      :tokenGated="true"
-      :tokenAddress="tokenAddress"
-    />
+    <Mint :network="network" :tokenGated="true" :tokenAddress="tokenAddress" />
   </div>
 </template>
 
@@ -20,7 +16,7 @@ import { addresses } from "@/utils/addresses";
 export default defineComponent({
   components: {
     ProviderView,
-    Mint
+    Mint,
   },
   setup() {
     const route = useRoute();
