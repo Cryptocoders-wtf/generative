@@ -68,4 +68,8 @@ export const addresses: any = {
     goerli: bitcoin_goerli.bitcoinArtProvider,
     localhost: bitcoin_localhost.bitcoinArtProvider,
   },
+  bitcoinToken: {
+    goerli: bitcoin_goerli.bitcoinToken,
+    localhost: bitcoin_localhost.bitcoinToken,
+  },
 };
