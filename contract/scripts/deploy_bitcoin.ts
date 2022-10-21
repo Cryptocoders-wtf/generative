@@ -23,7 +23,7 @@ const waitForUserInput = (text: string) => {
 };
 
 async function main() {
-  await waitForUserInput("Continue?");
+  // await waitForUserInput("Continue?");
 
   const factory = await ethers.getContractFactory("AssetStoreProvider");
   const contract = await factory.deploy(assetStoreAddress);
@@ -49,13 +49,20 @@ async function main() {
   await contractArt.deployed();
   console.log(`      bitcoinArt="${contractArt.address}"`);
 
+  const factoryToken = await ethers.getContractFactory("BitcoinToken");
+  const token = await factoryToken.deploy(splatterToken, contractArt.address, proxy);
+  await token.deployed();
+  console.log(`      token="${token.address}"`);
+
   const addresses = `export const addresses = {\n`
     + `  assetStoreProvider:"${contract.address}",\n`
     + `  coinProvider:"${contractCoin.address}",\n`
     + `  colorSchemes:"${contractSchemes.address}",\n`
     + `  bitcoinArtProvider:"${contractArt.address}",\n`
+    + `  bitcoinToken:"${token.address}"\n`
     + `}\n`;
-  await writeFile(`../src/utils/addresses/bitcoin_${network.name}.ts`, addresses, ()=>{});  
+  await writeFile(`../src/utils/addresses/bitcoin_${network.name}.ts`, addresses, ()=>{});
+  console.log("Complete");  
 }
 
 main().catch((error) => {

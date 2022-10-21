@@ -34,6 +34,7 @@ export const addresses: any = {
   splatterToken: {
     goerli: splatter_goerli.splatterToken,
     mainnet: splatter_mainnet.splatterToken,
+    localhost: splatter_localhost.splatterToken,
   },
   snow: {
     goerli: snow_goerli.snowAddress,
