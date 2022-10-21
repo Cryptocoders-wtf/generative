@@ -39,7 +39,7 @@ export default defineComponent({
     const provider =
       network == "localhost"
         ? new ethers.providers.JsonRpcProvider()
-        : new ethers.providers.AlchemyProvider(network);
+        : new ethers.providers.InfuraProvider(network);
     const assetProvider = new ethers.Contract(
       providerAddress,
       IAssetProvider.wabi.abi,
