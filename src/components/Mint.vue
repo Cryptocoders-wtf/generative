@@ -109,10 +109,13 @@ export default defineComponent({
     const wallet = computed(() => displayAddress(account.value));
 
     const chainId = ChainIdMap[props.network];
+    const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider =
       props.network == "localhost"
         ? new ethers.providers.JsonRpcProvider()
-        : new ethers.providers.InfuraProvider(props.network);
+        : alchemyKey ? new ethers.providers.AlchemyProvider(props.network, alchemyKey)
+          : new ethers.providers.InfuraProvider(props.network)
+        
     const contractRO = new ethers.Contract(
       props.tokenAddress,
       ProviderTokenEx.wabi.abi,

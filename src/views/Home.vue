@@ -99,6 +99,7 @@ export default defineComponent({
     References,
   },
   setup() {
+    console.log("*** env", process.env.VUE_APP_ALCHEMY_API_KEY);
     return {};
   },
 });
