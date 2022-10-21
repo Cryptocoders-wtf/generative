@@ -22,6 +22,7 @@ const config: HardhatUserConfig = {
     },
     goerli: {
       url: "https://eth-goerli.g.alchemy.com/v2/" + process.env.ALCHEMY_API_KEY,
+      gasMultiplier: 1.4,
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },

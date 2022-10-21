@@ -9,7 +9,7 @@
 pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "../interfaces/ISVGHelper.sol";
+import "assetprovider.sol/ISVGHelper.sol";
 
 contract SVGHelperA is ISVGHelper {
   using Strings for uint32;
