@@ -12,6 +12,7 @@
       :network="network"
       :tokenGated="true"
       :tokenAddress="tokenAddress"
+      :tokenGateAddress="tokenGateAddress"
     />
   </div>
 </template>
@@ -21,15 +22,7 @@ import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
 import Mint from "@/components/Mint.vue";
 import ProviderView from "@/components/ProviderView.vue";
-import { addresses as mainnet } from "@/utils/addresses/splatter_mainnet";
-import { addresses as localhost } from "@/utils/addresses/splatter_localhost";
-import { addresses as goerli } from "@/utils/addresses/splatter_goerli";
-
-const allAddresses: any = {
-  mainnet,
-  localhost,
-  goerli,
-};
+import { addresses } from "@/utils/addresses";
 
 export default defineComponent({
   components: {
@@ -40,12 +33,13 @@ export default defineComponent({
     const route = useRoute();
     const network =
       typeof route.query.network == "string" ? route.query.network : "mainnet";
-    const addresses = allAddresses[network];
-    const tokenAddress = addresses.splatterToken;
+    const tokenAddress = addresses.splatterToken[network];
+    const tokenGateAddress = addresses.tokenGate[network];
     console.log("*** chainId", network, tokenAddress);
     return {
       network,
       tokenAddress,
+      tokenGateAddress,
     };
   },
 });

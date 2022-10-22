@@ -68,7 +68,7 @@ interface Token {
 }
 
 export default defineComponent({
-  props: ["network", "tokenAddress", "tokenGated"],
+  props: ["network", "tokenAddress", "tokenGated", "tokenGateAddress"],
   components: {
     NetworkGate,
     References,
@@ -123,7 +123,7 @@ export default defineComponent({
       provider
     );
     const tokenGate = new ethers.Contract(
-      addresses.tokenGate[props.network],
+      props.tokenGateAddress, // 
       ITokenGate.wabi.abi,
       provider
     );
