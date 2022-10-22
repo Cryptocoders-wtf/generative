@@ -37,8 +37,8 @@ contract BitcoinToken is ProviderToken {
   }
 
   function mintPriceFor(address _wallet) public override view virtual returns(uint256) {
-    if (tokenGate.balanceOf(_wallet) > 0) {
-      return mintPrice / 2; // 50% off
+    if (balanceOf(_wallet) < 1 && tokenGate.balanceOf(_wallet) > 0) {
+      return mintPrice / 2; // 50% off only for the first one
     }
     return mintPrice;
   }

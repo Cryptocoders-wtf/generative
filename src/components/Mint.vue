@@ -85,24 +85,25 @@ export default defineComponent({
     );
     const isMinting = ref<boolean>(false);
 
+    const checkTokenGate = async () => {
+      console.log("### calling totalBalanceOf");
+      if (props.tokenGated) {
+        const [result] = await tokenGate.functions.balanceOf(
+          store.state.account
+        );
+        totalBalance.value = result.toNumber();
+      }
+      const [value] = await contractRO.functions.mintPriceFor(
+        store.state.account
+      );
+      mintPrice.value = value;
+      console.log("*** checkTokenGate", weiToEther(mintPrice.value));
+    };
+    
     const account = computed(() => {
       if (store.state.account == null) {
         return null;
       }
-      const checkTokenGate = async () => {
-        console.log("### calling totalBalanceOf");
-        if (props.tokenGated) {
-          const [result] = await tokenGate.functions.balanceOf(
-            store.state.account
-          );
-          totalBalance.value = result.toNumber();
-        }
-        const [value] = await contractRO.functions.mintPriceFor(
-          store.state.account
-        );
-        mintPrice.value = value;
-        console.log("*** checkTokenGate", weiToEther(mintPrice.value));
-      };
       checkTokenGate();
       return store.state.account;
     });
@@ -201,6 +202,7 @@ export default defineComponent({
         console.log("mint:tx");
         const result = await tx.wait();
         console.log("mint:gasUsed", result.gasUsed.toNumber());
+        await checkTokenGate();
       } catch (e) {
         console.error(e);
       }
