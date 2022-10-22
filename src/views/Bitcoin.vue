@@ -2,7 +2,12 @@
   <div class="mx-auto max-w-3xl p-2 text-left">
     <p>Images from the on-chain asset provider.</p>
     <ProviderView assetProvider="bitcoin" />
-    <Mint :network="network" :tokenGated="true" :tokenAddress="tokenAddress" :tokenGateAddress="tokenGateAddress" />
+    <Mint
+      :network="network"
+      :tokenGated="true"
+      :tokenAddress="tokenAddress"
+      :tokenGateAddress="tokenGateAddress"
+    />
   </div>
 </template>
 

@@ -123,7 +123,7 @@ export default defineComponent({
       provider
     );
     const tokenGate = new ethers.Contract(
-      props.tokenGateAddress, // 
+      props.tokenGateAddress, //
       ITokenGate.wabi.abi,
       provider
     );
