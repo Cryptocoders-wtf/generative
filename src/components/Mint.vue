@@ -113,9 +113,10 @@ export default defineComponent({
     const provider =
       props.network == "localhost"
         ? new ethers.providers.JsonRpcProvider()
-        : alchemyKey ? new ethers.providers.AlchemyProvider(props.network, alchemyKey)
-          : new ethers.providers.InfuraProvider(props.network)
-        
+        : alchemyKey
+        ? new ethers.providers.AlchemyProvider(props.network, alchemyKey)
+        : new ethers.providers.InfuraProvider(props.network);
+
     const contractRO = new ethers.Contract(
       props.tokenAddress,
       ProviderTokenEx.wabi.abi,

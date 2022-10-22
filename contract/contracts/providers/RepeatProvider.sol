@@ -59,8 +59,9 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
     return 0; 
   }
 
-  function processPayout(uint256 _assetId) external override payable {
-    provider.processPayout{value:msg.value}(_assetId);
+  function processPayout(uint256) external override payable {
+    // Notice that we don't use the specified _assetId. 
+    provider.processPayout{value:msg.value}(providerAssetId);
   }
 
   function generateTraits(uint256 _assetId) external view returns (string memory) {

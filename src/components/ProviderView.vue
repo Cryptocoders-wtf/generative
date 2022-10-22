@@ -40,8 +40,9 @@ export default defineComponent({
     const provider =
       network == "localhost"
         ? new ethers.providers.JsonRpcProvider()
-        : alchemyKey ? new ethers.providers.AlchemyProvider(network, alchemyKey)
-          : new ethers.providers.InfuraProvider(network)
+        : alchemyKey
+        ? new ethers.providers.AlchemyProvider(network, alchemyKey)
+        : new ethers.providers.InfuraProvider(network);
     const assetProvider = new ethers.Contract(
       providerAddress,
       IAssetProvider.wabi.abi,
