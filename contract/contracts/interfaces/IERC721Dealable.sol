@@ -18,7 +18,7 @@ interface IERC721Dealer {
   // Make an offer to a specific token
   function makeAnOffer(IERC721Dealable _contract, uint256 _tokenId, uint256 _price) external payable;
   // Withdraw an offer to a specific token (onlyOfferMaker)
-  function withdrawAnOffer(IERC721Dealable _contract, uint256 _tokenId) external payable;
+  function withdrawAnOffer(IERC721Dealable _contract, uint256 _tokenId) external;
   // Get the current offer to the specifiedToken
   function getTheBestOffer(IERC721Dealable _contract, uint256 _tokenId) external view 
       returns(uint256, address);
