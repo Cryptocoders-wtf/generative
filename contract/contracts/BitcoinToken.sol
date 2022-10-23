@@ -18,7 +18,7 @@ contract BitcoinToken is ProviderToken {
     ITokenGate _tokenGate,
     IAssetProvider _assetProvider,
     IProxyRegistry _proxyRegistry
-  ) ProviderToken(_assetProvider, _proxyRegistry, "On-Chain Bitcoin", "BITCOIN") {
+  ) ProviderToken(_assetProvider, _proxyRegistry, "On-Chain Bitcoin Art", "BITCOIN") {
     tokenGate = _tokenGate;
     description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/). All images are dymically generated on the blockchain.";
     mintPrice = 1e16; //0.01 ether, updatable

@@ -26,7 +26,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const network =
-      typeof route.query.network == "string" ? route.query.network : "goerli";
+      typeof route.query.network == "string" ? route.query.network : "mainnet";
     const tokenAddress = addresses.bitcoinToken[network];
     const tokenGateAddress = addresses.splatterToken[network];
     console.log("*** chainId", network, tokenAddress);
