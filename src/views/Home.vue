@@ -8,13 +8,13 @@
     </p>
     <p class="mb-2">
       Unlike images stored on HTTP servers or IPFS, on-chain generative arts are
-      truly decentralized and composable (i.e., re-use image from other smart contracts). 
-      It can even generate revenue autonomously (we will launch a
+      truly decentralized and composable (i.e., re-use image from other smart
+      contracts). It can even generate revenue autonomously (we will launch a
       <b>decentralized autonomous marketplace</b> for generative arts soon).
     </p>
     <p class="mb-2">
-      Traditional on-chain NFTs, such as Nouns, had very poor graphics (see below),
-      and this project was born to solve this problem. 
+      Traditional on-chain NFTs, such as Nouns, had very poor graphics (see
+      below), and this project was born to solve this problem.
     </p>
     <img class="mb-4" src="https://i.imgur.com/R9aTx5N.png" />
     <p class="mb-2">

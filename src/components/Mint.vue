@@ -10,7 +10,8 @@
       <p>Price: {{ mintPriceString }}</p>
       <div v-if="totalSupply < mintLimit">
         <div v-if="restricted && totalBalance == 0" class="text-red-500">
-          Sorry, minting is available only to "{{ restricted }}" NFT holders at this moment.
+          Sorry, minting is available only to "{{ restricted }}" NFT holders at
+          this moment.
         </div>
         <div v-else>
           <p v-if="isMinting" class="mt-4 mb-4 bg-slate-200 pl-4">
@@ -73,7 +74,13 @@ interface Token {
 }
 
 export default defineComponent({
-  props: ["network", "tokenAddress", "tokenGated", "tokenGateAddress", "restricted"],
+  props: [
+    "network",
+    "tokenAddress",
+    "tokenGated",
+    "tokenGateAddress",
+    "restricted",
+  ],
   components: {
     NetworkGate,
     References,
@@ -104,7 +111,7 @@ export default defineComponent({
       mintPrice.value = value;
       console.log("*** checkTokenGate", weiToEther(mintPrice.value));
     };
-    
+
     const account = computed(() => {
       if (store.state.account == null) {
         return null;
