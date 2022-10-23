@@ -7,6 +7,7 @@
       :tokenGated="true"
       :tokenAddress="tokenAddress"
       :tokenGateAddress="tokenGateAddress"
+      :restricted="'On-Chain Splatter'"
     />
   </div>
 </template>
