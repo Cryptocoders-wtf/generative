@@ -33,9 +33,8 @@ async function main() {
 
   const assetId = (network.name == "mainnet") ? 1516 : 24; // reddit
   console.log("assetId", assetId);
-  await waitForUserInput("Continue?");
 
-  const factoryArt = await ethers.getContractFactory("RepeatProvider");
+  const factoryArt = await ethers.getContractFactory("MatrixProvider");
   const contractArt = await factoryArt.deploy(contractCoin, contractSchemes, assetId, "redditArt", "On-chain Reddit");
   await contractArt.deployed();
   console.log(`      redditArt="${contractArt.address}"`);
