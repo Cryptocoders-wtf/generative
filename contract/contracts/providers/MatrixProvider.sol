@@ -91,13 +91,19 @@ contract MatrixProvider is IAssetProvider, IERC165, Ownable {
     bytes memory body;
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
 
+    bool[16][16] memory filled;
+
     for (uint j = 0; j < 16; j++) {
       uint y = j * 64;
       for (uint i = 0; i < 16; i++) {
-        uint colorIndex;
-        (seed, colorIndex) = seed.random(props.scheme.length * 3);
-        body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', props.scheme[colorIndex % props.scheme.length]);
-        if (colorIndex > props.scheme.length) {
+        if (filled[i][j]) {
+          continue;
+        }
+        
+        uint index;
+        (seed, index) = seed.random(props.scheme.length * 3);
+        body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', props.scheme[index % props.scheme.length]);
+        if (index > props.scheme.length) {
           body = abi.encodePacked(body, '" filter="url(#grayscale)');          
         }
         uint x = i * 64;
