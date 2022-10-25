@@ -106,13 +106,25 @@ contract MatrixProvider is IAssetProvider, IERC165, Ownable {
         if (index > props.scheme.length) {
           body = abi.encodePacked(body, '" filter="url(#grayscale)');          
         }
+
+        string memory scale;
+        (seed, index) = seed.random(100);
+        if (i % 2 ==0 && j % 2 == 0 && index<10) {
+          scale = '0.125, 0.125';
+          filled[i+1][j] = true;
+          filled[i][j+1] = true;
+          filled[i+1][j+1] = true;
+        } else {
+          scale = '0.0625, 0.0625';
+        }
+        
         uint x = i * 64;
         uint angle;
         (seed, angle) = seed.random(60);
         angle *= 60;
         body = abi.encodePacked(body, '" transform="translate(',
           x.toString(), ',', y.toString(),
-          ') scale(0.0626, 0.0625) rotate(',angle.toString(),', 512, 512)" />\n');
+          ') scale(', scale, ') rotate(',angle.toString(),', 512, 512)" />\n');
       }
     }
     svgPart = string(abi.encodePacked(
