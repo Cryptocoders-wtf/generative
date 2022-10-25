@@ -15,6 +15,7 @@ import { addresses as store_mainnet } from "./addresses/addresses_mainnet";
 import { addresses as bitcoin_goerli } from "./addresses/bitcoin_goerli";
 import { addresses as bitcoin_localhost } from "./addresses/bitcoin_localhost";
 import { addresses as bitcoin_mainnet } from "./addresses/bitcoin_mainnet";
+import { addresses as reddit_goerli } from "./addresses/reddit_goerli";
 
 export const addresses: any = {
   svgHelper: {
@@ -89,5 +90,9 @@ export const addresses: any = {
     goerli: bitcoin_goerli.colorSchemes,
     localhost: bitcoin_localhost.colorSchemes,
     mainnet: bitcoin_mainnet.colorSchemes,
+  },
+  reddit: {
+    goerli: reddit_goerli.redditArtProvider,
+    mainnet: reddit_goerli.redditArtProvider, // HACK
   },
 };

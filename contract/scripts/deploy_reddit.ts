@@ -31,7 +31,7 @@ const waitForUserInput = (text: string) => {
 
 async function main() {
 
-  const assetId = (network.name == "mainnet") ? 1516 : 21; // reddit
+  const assetId = (network.name == "mainnet") ? 1516 : 24; // reddit
   console.log("assetId", assetId);
   await waitForUserInput("Continue?");
 
