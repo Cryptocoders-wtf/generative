@@ -85,6 +85,9 @@ contract MatrixProvider is IAssetProvider, IERC165, Ownable {
     string memory defs;
     string memory tagPart;
     (defs, tagPart) = provider.generateSVGPart(providerAssetId);
+    defs = string(abi.encodePacked(defs, '<filter id="grayscale">\n'
+      '  <feColorMatrix type="saturate" values="0.00"/>\n'
+      '</filter>\n'));
     bytes memory body;
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
 
@@ -92,9 +95,11 @@ contract MatrixProvider is IAssetProvider, IERC165, Ownable {
       uint y = j * 64;
       for (uint i = 0; i < 16; i++) {
         uint colorIndex;
-        (seed, colorIndex) = seed.random(props.scheme.length);
-        body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', props.scheme[colorIndex]);
-
+        (seed, colorIndex) = seed.random(props.scheme.length * 3);
+        body = abi.encodePacked(body, '<use href="#', tagPart, '" fill="#', props.scheme[colorIndex % props.scheme.length]);
+        if (colorIndex > props.scheme.length) {
+          body = abi.encodePacked(body, '" filter="url(#grayscale)');          
+        }
         uint x = i * 64;
         uint angle;
         (seed, angle) = seed.random(60);
