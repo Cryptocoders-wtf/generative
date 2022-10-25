@@ -1,3 +1,3 @@
 export const addresses = {
-  redditArtProvider:"0xfCB54063DeEE9641aDd1e79300a30f91FD4539A7",
+  redditArtProvider:"0xB0d9D9900c476972618903Ee5431539F339EAc78",
 }

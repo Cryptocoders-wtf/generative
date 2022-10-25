@@ -107,15 +107,20 @@ contract MatrixProvider is IAssetProvider, IERC165, Ownable {
           body = abi.encodePacked(body, '" filter="url(#grayscale)');          
         }
 
-        string memory scale;
+        string memory scale = '0.0625, 0.0625';
         (seed, index) = seed.random(100);
-        if (i % 2 ==0 && j % 2 == 0 && index<10) {
-          scale = '0.125, 0.125';
-          filled[i+1][j] = true;
-          filled[i][j+1] = true;
-          filled[i+1][j+1] = true;
-        } else {
-          scale = '0.0625, 0.0625';
+        if (i % 2 ==0 && j % 2 == 0) {
+          if (i % 4 ==0 && j % 4 == 0 && index<20) {
+            scale = '0.25, 0.25';
+            for (uint k=0; k<16; k++) {
+              filled[i + k % 4][j + k / 4] = true;
+            }
+          } else if (index<50) {
+            scale = '0.125, 0.125';
+            filled[i+1][j] = true;
+            filled[i][j+1] = true;
+            filled[i+1][j+1] = true;
+          }
         }
         
         uint x = i * 64;
