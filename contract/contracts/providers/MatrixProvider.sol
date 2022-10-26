@@ -70,17 +70,12 @@ contract MatrixProvider is IAssetProvider, IERC165, Ownable {
 
   struct Properties {
     string[] scheme;
-    uint count;
-    uint sizeVar;
   }
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     Properties memory props;
     Randomizer.Seed memory seed;
     (seed, props.scheme) = colorSchemes.getColorScheme(_assetId);
-    (seed, props.count) = seed.random(18);
-    props.count += 6;
-    props.sizeVar = 18 - (props.count - 6) / 2;
     
     string memory defs;
     string memory tagPart;
