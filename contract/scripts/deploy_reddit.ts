@@ -15,10 +15,10 @@ console.log("splatterToken", splatterToken);
 console.log("proxyAddress", proxy);
 
 const contract = addresses.assetStoreProvider[network.name];
-const contractCoin = addresses.coinProvider[network.name];
+//const contractCoin = addresses.coinProvider[network.name];
 const contractSchemes = addresses.colorSchemes[network.name];
 console.log("contract", contract);
-console.log("contractCoin", contractCoin);
+//console.log("contractCoin", contractCoin);
 console.log("contractSchemes", contractSchemes);
 
 const waitForUserInput = (text: string) => {
@@ -33,8 +33,13 @@ async function main() {
   const assetId = (network.name == "mainnet") ? 1516 : 24; // reddit
   console.log("assetId", assetId);
 
+  const factoryCoin = await ethers.getContractFactory("CoinHoleProvider");
+  const contractCoin = await factoryCoin.deploy(contract);
+  await contractCoin.deployed();
+  console.log(`      coinProvider="${contractCoin.address}"`);
+
   const factoryArt = await ethers.getContractFactory("MatrixProvider");
-  const contractArt = await factoryArt.deploy(contractCoin, contractSchemes, assetId, "redditArt", "On-chain Reddit");
+  const contractArt = await factoryArt.deploy(contractCoin.address, contractSchemes, assetId, "redditArt", "On-chain Reddit");
   await contractArt.deployed();
   console.log(`      redditArt="${contractArt.address}"`);
 
@@ -44,6 +49,7 @@ async function main() {
   console.log(`      token="${token.address}"`);
 
   const addresses = `export const addresses = {\n`
+    + `  coinHoleProvider:"${contractCoin.address}",\n`
     + `  redditArtProvider:"${contractArt.address}",\n`
     + `  redditToken:"${token.address}"\n`
     + `}\n`;

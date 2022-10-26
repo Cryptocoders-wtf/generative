@@ -67,7 +67,7 @@ contract CoinHoleProvider is IAssetProvider, IERC165, Ownable {
       '</mask>'
       '<g id="', tag, '_coin">'
       '<circle cx="511" cy="511" r="511" mask="url(#',tag,'_mask)"/>'
-      '</g>'));
+      '</g>\n'));
     tag = string(abi.encodePacked(tag, '_coin'));  
   }
 }
