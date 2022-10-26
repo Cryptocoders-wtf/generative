@@ -110,17 +110,17 @@ contract MatrixProvider is IAssetProvider, IERC165, Ownable {
         string memory scale = '0.0625, 0.0625';
         (seed, index) = seed.random(100);
         if (i % 2 ==0 && j % 2 == 0) {
-          if (i % 8 ==0 && j % 8 == 0 && index<20) {
+          if (i % 8 ==0 && j % 8 == 0 && index<18) {
             scale = '0.5, 0.5';
             for (uint k=0; k<64; k++) {
               filled[i + k % 8][j + k / 8] = true;
             }
-          } else if (i % 4 ==0 && j % 4 == 0 && index<30) {
+          } else if (i % 4 ==0 && j % 4 == 0 && index<40) {
             scale = '0.25, 0.25';
             for (uint k=0; k<16; k++) {
               filled[i + k % 4][j + k / 4] = true;
             }
-          } else if (index<75) {
+          } else if (index<80) {
             scale = '0.125, 0.125';
             filled[i+1][j] = true;
             filled[i][j+1] = true;
