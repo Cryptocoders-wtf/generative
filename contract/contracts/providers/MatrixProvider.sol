@@ -72,19 +72,21 @@ contract MatrixProvider is IAssetProvider, IERC165, Ownable {
     string[] scheme;
   }
 
-  function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
+  function generateSVGPartWith(IAssetProvider _provider, string memory _providerKey,
+              uint256 _providerAssetId, IColorSchemes _colorSchemes, uint256 _assetId) 
+              public view returns(string memory svgPart, string memory tag) {
     Properties memory props;
     Randomizer.Seed memory seed;
-    (seed, props.scheme) = colorSchemes.getColorScheme(_assetId);
+    (seed, props.scheme) = _colorSchemes.getColorScheme(_assetId);
     
     string memory defs;
     string memory tagPart;
-    (defs, tagPart) = provider.generateSVGPart(providerAssetId);
+    (defs, tagPart) = _provider.generateSVGPart(_providerAssetId);
     defs = string(abi.encodePacked(defs, '<filter id="grayscale">\n'
       '  <feColorMatrix type="saturate" values="0.00"/>\n'
       '</filter>\n'));
     bytes memory body;
-    tag = string(abi.encodePacked(providerKey, _assetId.toString()));
+    tag = string(abi.encodePacked(_providerKey, _assetId.toString()));
 
     bool[16][16] memory filled;
 
@@ -138,5 +140,9 @@ contract MatrixProvider is IAssetProvider, IERC165, Ownable {
       body,
       '</g>\n'
     ));
+  }
+
+  function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
+    return generateSVGPartWith(provider, providerKey, providerAssetId, colorSchemes, _assetId);
   }
 }

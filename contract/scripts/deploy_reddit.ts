@@ -30,7 +30,6 @@ const waitForUserInput = (text: string) => {
 };
 
 async function main() {
-
   const assetId = (network.name == "mainnet") ? 1516 : 24; // reddit
   console.log("assetId", assetId);
 
@@ -39,16 +38,14 @@ async function main() {
   await contractArt.deployed();
   console.log(`      redditArt="${contractArt.address}"`);
 
-  /*
   const factoryToken = await ethers.getContractFactory("RedditToken");
-  const token = await factoryToken.deploy(splatterToken, contractArt.address, proxy);
+  const token = await factoryToken.deploy(contractArt.address, proxy);
   await token.deployed();
   console.log(`      token="${token.address}"`);
-  */
 
   const addresses = `export const addresses = {\n`
     + `  redditArtProvider:"${contractArt.address}",\n`
-    //+ `  bitcoinToken:"${token.address}"\n`
+    + `  redditToken:"${token.address}"\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/reddit_${network.name}.ts`, addresses, ()=>{});
   console.log("Complete");  
