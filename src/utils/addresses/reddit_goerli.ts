@@ -1,4 +1,4 @@
 export const addresses = {
-  redditArtProvider:"0xFeF7Ecc33A98DD8Fd82c7df1d422223224E2bc05",
-  redditToken:"0xcB721DF7150A360377229babF41A13cB3AA12c1c"
+  redditArtProvider:"0xb6d21a5908D60FcbEEBe2901A0eAF0d9eEc42352",
+  redditToken:"0x28FCD1C6755b787e171e2715282c6C362641eC6c"
 }

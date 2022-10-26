@@ -112,7 +112,7 @@ contract MatrixProvider is IAssetProvider, IERC165, Ownable {
             for (uint k=0; k<64; k++) {
               filled[i + k % 8][j + k / 8] = true;
             }
-          } else if (i % 4 ==0 && j % 4 == 0 && index<40) {
+          } else if (i % 4 ==0 && j % 4 == 0 && index<50) {
             scale = '0.25, 0.25';
             for (uint k=0; k<16; k++) {
               filled[i + k % 4][j + k / 4] = true;
