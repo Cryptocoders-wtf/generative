@@ -95,4 +95,8 @@ export const addresses: any = {
     goerli: reddit_goerli.redditArtProvider,
     mainnet: reddit_goerli.redditArtProvider, // HACK
   },
+  redditToken: {
+    goerli: reddit_goerli.redditToken,
+    mainnet: reddit_goerli.redditToken, // HACK
+  },
 };
