@@ -4,7 +4,7 @@
     <ProviderView assetProvider="nouns" />
     <ProviderView assetProvider="nounsArt" />
     <ProviderView assetProvider="dotNouns" />
-    <ProviderView assetProvider="lilnouns" />
+    <ProviderView assetProvider="dotlilArt" />
   </div>
 </template>
 
