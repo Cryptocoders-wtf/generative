@@ -60,6 +60,6 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
       '<g id="', tag, '_dot32">'
       '<use href="#',tag,'" mask="url(#dot32mask)"/>'
       '</g>'));
-    tag = string(abi.encodePacked(tag, '_coin'));  
+    tag = string(abi.encodePacked(tag, '_dot32'));  
   }
 }
