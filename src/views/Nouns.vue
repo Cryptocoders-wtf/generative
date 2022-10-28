@@ -3,6 +3,7 @@
     <p>Images from the on-chain asset provider.</p>
     <ProviderView assetProvider="nouns" />
     <ProviderView assetProvider="nounsArt" />
+    <ProviderView assetProvider="dotNouns" />
   </div>
 </template>
 

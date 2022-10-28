@@ -16,6 +16,7 @@ import { addresses as bitcoin_goerli } from "./addresses/bitcoin_goerli";
 import { addresses as bitcoin_localhost } from "./addresses/bitcoin_localhost";
 import { addresses as bitcoin_mainnet } from "./addresses/bitcoin_mainnet";
 import { addresses as reddit_goerli } from "./addresses/reddit_goerli";
+import { addresses as dotNouns_goerli } from "./addresses/dotNouns_goerli";
 
 export const addresses: any = {
   svgHelper: {
@@ -98,5 +99,9 @@ export const addresses: any = {
   redditToken: {
     goerli: reddit_goerli.redditToken,
     mainnet: reddit_goerli.redditToken, // HACK
+  },
+  dotNouns: {
+    goerli: dotNouns_goerli.dotNounsArt,
+    mainnet: dotNouns_goerli.dotNounsArt, // HACK
   },
 };
