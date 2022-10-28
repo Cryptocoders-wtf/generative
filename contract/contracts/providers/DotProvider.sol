@@ -13,7 +13,7 @@ import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "assetprovider.sol/IAssetProvider.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 
-contract CoinProvider is IAssetProvider, IERC165, Ownable {
+contract DotProvider is IAssetProvider, IERC165, Ownable {
   IAssetProvider public provider;
 
   constructor(IAssetProvider _provider) {
