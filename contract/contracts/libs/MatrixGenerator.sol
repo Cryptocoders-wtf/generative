@@ -16,6 +16,7 @@ contract MatrixGenerator {
   struct Node {
     uint x;
     uint y;
+    uint size;    // 64, 128, 256 or 512
     string scale;
   }
 
@@ -35,21 +36,25 @@ contract MatrixGenerator {
         }
         node.x = i * 64;
         node.scale = '0.0625'; // 1/16
+        node.size = 64;
         uint index;  
         (seed, index) = seed.random(100);
         if (i % 2 ==0 && j % 2 == 0) {
           if (i % 8 ==0 && j % 8 == 0 && index < _ratio2) {
             node.scale = '0.5'; // 1/2
+            node.size = 512;
             for (uint k=0; k<64; k++) {
               filled[i + k % 8][j + k / 8] = true;
             }
           } else if (i % 4 ==0 && j % 4 == 0 && index < _ratio4) {
             node.scale = '0.25'; // 1/4
+            node.size = 256;
             for (uint k=0; k<16; k++) {
               filled[i + k % 4][j + k / 4] = true;
             }
           } else if (index < _ratio8) {
             node.scale = '0.125'; // 1/8
+            node.size = 128;
             filled[i+1][j] = true;
             filled[i][j+1] = true;
             filled[i+1][j+1] = true;
