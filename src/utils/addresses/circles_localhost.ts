@@ -1,4 +1,4 @@
 export const addresses = {
-  matrixGenerator:"0x4f42528B7bF8Da96516bECb22c1c6f53a8Ac7312",
-  contractArt:"0x8f119cd256a0FfFeed643E830ADCD9767a1d517F",
+  matrixGenerator:"0xF85895D097B2C25946BB95C4d11E2F3c035F8f0C",
+  contractArt:"0x0b27a79cb9C0B38eE06Ca3d94DAA68e0Ed17F953",
 }

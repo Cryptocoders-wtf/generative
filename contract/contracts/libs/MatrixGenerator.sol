@@ -25,17 +25,17 @@ contract MatrixGenerator is ILayoutGenerator {
     seed = _seed;
     Props memory props = Props(_props & 0xff, (_props / 0x100) & 0xff, (_props / 0x10000) & 0xff);
 
-    Node memory node;
     Node[16][16] memory nodesFixed;
     bool[16][16] memory filled;
     uint count;
 
     for (uint j = 0; j < 16; j++) {
-      node.y = j * 64;
       for (uint i = 0; i < 16; i++) {
         if (filled[i][j]) {
           continue;
         }
+        Node memory node;
+        node.y = j * 64;
         node.x = i * 64;
         node.scale = '0.0625'; // 1/16
         node.size = 64;

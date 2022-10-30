@@ -66,7 +66,7 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function concat(bytes[] memory parts) public pure returns (bytes memory ret) {
-    for (uint i=0; i<parts.length; i++) {
+    for (uint i = 0; i < parts.length; i++) {
       ret = abi.encodePacked(ret, parts[i]);
     }
   }
@@ -82,6 +82,9 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
     bytes[] memory parts = new bytes[](nodes.length);
     for (uint i = 0; i < nodes.length; i++) {
       ILayoutGenerator.Node memory node = nodes[i];
+      node.size /= 2;
+      node.x += node.size;
+      node.y += node.size;
       parts[i] = abi.encodePacked(
         '<circle cx="',node.x.toString(),'" cy="',node.y.toString(),'" r="',node.size.toString(),'" />'
       );  
