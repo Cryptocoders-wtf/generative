@@ -24,6 +24,9 @@ async function main() {
   await contractArt.deployed();
   console.log(`      contractArt="${contractArt.address}"`);
 
+  const result = await contractArt.generateSVGPart(0);
+  console.log("result", result);
+
   const addresses = `export const addresses = {\n`
     + `  matrixGenerator:"${contractGenerator.address}",\n`
     + `  contractArt:"${contractArt.address}",\n`

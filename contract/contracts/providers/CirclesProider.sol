@@ -83,7 +83,7 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
     for (uint i = 0; i < nodes.length; i++) {
       ILayoutGenerator.Node memory node = nodes[i];
       parts[i] = abi.encodePacked(
-        '<clrcle cx="',node.x.toString(),'" cy="',node.y.toString(),'" r="',node.size.toString(),'" />'
+        '<circle cx="',node.x.toString(),'" cy="',node.y.toString(),'" r="',node.size.toString(),'" />'
       );  
     }
     svgPart = string(abi.encodePacked(
