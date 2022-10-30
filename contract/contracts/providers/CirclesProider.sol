@@ -86,7 +86,8 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
       node.x += node.size;
       node.y += node.size;
       parts[i] = abi.encodePacked(
-        '<circle cx="',node.x.toString(),'" cy="',node.y.toString(),'" r="',node.size.toString(),'" />'
+        '<circle cx="',node.x.toString(),'" cy="',node.y.toString(),'" r="',node.size.toString(),'"'
+          ' fill="#', props.scheme[i % props.scheme.length], '" />'
       );  
     }
     svgPart = string(abi.encodePacked(
