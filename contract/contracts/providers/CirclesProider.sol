@@ -65,13 +65,31 @@ contract CircleProvider is IAssetProvider, IERC165, Ownable {
     string[] scheme;
   }
 
+  function concat(bytes[] memory parts) public pure returns (bytes memory ret) {
+    for (uint i=0; i<parts.length; i++) {
+      ret = abi.encodePacked(ret, parts[i]);
+    }
+  }
+
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     Properties memory props;
     Randomizer.Seed memory seed;
     (seed, props.scheme) = colorSchemes.getColorScheme(_assetId);
     ILayoutGenerator.Node[] memory nodes;
-    (seed, nodes) = generator.generate(seed, 18 + 50 * 0x100 + 80 * 0x10000);
     tag = string(abi.encodePacked("circles", _assetId.toString()));
-    svgPart = "";
+
+    (seed, nodes) = generator.generate(seed, 18 + 50 * 0x100 + 80 * 0x10000);
+    bytes[] memory parts = new bytes[](nodes.length);
+    for (uint i = 0; i < nodes.length; i++) {
+      ILayoutGenerator.Node memory node = nodes[i];
+      parts[i] = abi.encodePacked(
+        '<clrcle cx="',node.x.toString(),'" cy="',node.y.toString(),'" r="',node.size.toString(),'" />'
+      );  
+    }
+    svgPart = string(abi.encodePacked(
+      '<g id="',tag,'">',
+      concat(parts),
+      '</g>'
+    ));
   }
 }
