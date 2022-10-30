@@ -24,12 +24,18 @@ async function main() {
   await contractArt.deployed();
   console.log(`      contractArt="${contractArt.address}"`);
 
-  const result = await contractArt.generateSVGPart(0);
-  console.log("result", result);
+  const factoryStencil = await ethers.getContractFactory("StencilProvider");
+  const contractStencil = await factoryStencil.deploy(contractGenerator.address, contractSchemes);
+  await contractStencil.deployed();
+  console.log(`      contractStencil="${contractStencil.address}"`);
+
+//  const result = await contractArt.generateSVGPart(0);
+//  console.log("result", result);
 
   const addresses = `export const addresses = {\n`
     + `  matrixGenerator:"${contractGenerator.address}",\n`
     + `  contractArt:"${contractArt.address}",\n`
+    + `  contractStencil:"${contractStencil.address}",\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/circles_${network.name}.ts`, addresses, ()=>{});
   console.log("Complete");  
