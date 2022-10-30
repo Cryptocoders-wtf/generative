@@ -10,6 +10,7 @@ import Nouns from "../views/Nouns.vue";
 import Bitcoin from "../views/Bitcoin.vue";
 import Reddit from "../views/Reddit.vue";
 import Sample from "../views/Sample.vue";
+import Experiment from "../views/Experiment.vue";
 
 const routeChildren: Array<RouteRecordRaw> = [
   {
@@ -35,6 +36,10 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "reddit",
     component: Reddit,
+  },
+  {
+    path: "exp",
+    component: Experiment,
   },
   {
     path: "sample",

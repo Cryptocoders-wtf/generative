@@ -18,6 +18,7 @@ import { addresses as bitcoin_mainnet } from "./addresses/bitcoin_mainnet";
 import { addresses as reddit_goerli } from "./addresses/reddit_goerli";
 import { addresses as dotNouns_goerli } from "./addresses/dotNouns_goerli";
 import { addresses as lilnouns_goerli } from "./addresses/lilnouns_goerli";
+import { addresses as circles_localhost } from "./addresses/circles_localhost";
 
 export const addresses: any = {
   svgHelper: {
@@ -110,5 +111,11 @@ export const addresses: any = {
   },
   dotlilArt: {
     goerli: lilnouns_goerli.dotNounsArt,
+  },
+  circles: {
+    localhost: circles_localhost.contractArt,
+  },
+  matrixGenerator: {
+    localhost: circles_localhost.matrixGenerator,
   },
 };
