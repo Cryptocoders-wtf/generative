@@ -17,17 +17,20 @@ contract MatrixGenerator {
     uint x;
     uint y;
     string scale;
-    bool skip;
   }
 
-  function generate(Randomizer.Seed memory _seed)  
-              external pure returns(Randomizer.Seed memory seed, Node[16][16] memory nodes) {
+  function generate(Randomizer.Seed memory _seed, uint _ratio2, uint _ratio4, uint _ratio8)
+              external pure returns(Randomizer.Seed memory seed, Node[] memory nodes) {
     seed = _seed;
     Node memory node;
+    Node[16][16] memory nodesFixed;
+    bool[16][16] memory filled;
+    uint count;
+
     for (uint j = 0; j < 16; j++) {
       node.y = j * 64;
       for (uint i = 0; i < 16; i++) {
-        if (nodes[i][j].skip) {
+        if (filled[i][j]) {
           continue;
         }
         node.x = i * 64;
@@ -35,24 +38,35 @@ contract MatrixGenerator {
         uint index;  
         (seed, index) = seed.random(100);
         if (i % 2 ==0 && j % 2 == 0) {
-          if (i % 8 ==0 && j % 8 == 0 && index<18) {
+          if (i % 8 ==0 && j % 8 == 0 && index < _ratio2) {
             node.scale = '0.5'; // 1/2
             for (uint k=0; k<64; k++) {
-              nodes[i + k % 8][j + k / 8].skip = true;
+              filled[i + k % 8][j + k / 8] = true;
             }
-          } else if (i % 4 ==0 && j % 4 == 0 && index<50) {
+          } else if (i % 4 ==0 && j % 4 == 0 && index < _ratio4) {
             node.scale = '0.25'; // 1/4
             for (uint k=0; k<16; k++) {
-              nodes[i + k % 4][j + k / 4].skip = true;
+              filled[i + k % 4][j + k / 4] = true;
             }
-          } else if (index<80) {
+          } else if (index < _ratio8) {
             node.scale = '0.125'; // 1/8
-            nodes[i+1][j].skip = true;
-            nodes[i][j+1].skip = true;
-            nodes[i+1][j+1].skip = true;
+            filled[i+1][j] = true;
+            filled[i][j+1] = true;
+            filled[i+1][j+1] = true;
           }
         }
-        nodes[i][j] = node;
+        nodesFixed[i][j] = node;
+        count++;
+      }
+    }
+
+    nodes = new Node[](count);
+    count = 0;
+    for (uint j = 0; j < 16; j++) {
+      for (uint i = 0; i < 16; i++) {
+        if (!filled[i][j]) {
+          nodes[count++] = nodesFixed[i][j];
+        }
       }
     }
   }
