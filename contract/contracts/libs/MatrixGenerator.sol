@@ -62,6 +62,7 @@ contract MatrixGenerator is ILayoutGenerator {
             filled[i+1][j+1] = true;
           }
         }
+        filled[i][j] = false;
         nodesFixed[i][j] = node;
         count++;
       }
