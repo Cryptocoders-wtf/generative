@@ -29,8 +29,8 @@ async function main() {
   await contractStencil.deployed();
   console.log(`      contractStencil="${contractStencil.address}"`);
 
-//  const result = await contractArt.generateSVGPart(0);
-//  console.log("result", result);
+  const result = await contractStencil.generateSVGPart(0);
+  console.log("result", result);
 
   const addresses = `export const addresses = {\n`
     + `  matrixGenerator:"${contractGenerator.address}",\n`

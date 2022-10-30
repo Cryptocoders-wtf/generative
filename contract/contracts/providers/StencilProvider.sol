@@ -87,12 +87,16 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
       node.y += node.size;
       parts[i] = abi.encodePacked(
         '<circle cx="',node.x.toString(),'" cy="',node.y.toString(),'" r="',node.size.toString(),'"'
-          ' fill="#', props.scheme[i % props.scheme.length], '" />'
+          ' fill="black" />'
       );  
     }
     svgPart = string(abi.encodePacked(
-      '<g id="',tag,'">',
+      '<mask id="',tag,'_mask">'
+      '<rect x="0" y="0" width="100%" height="100%" fill="white"/>',
       concat(parts),
+      '</mask>'
+      '<g id="',tag,'" mask="url(#', tag ,'_mask)">'
+      '<rect x="0" y="0" width="100%" height="100%" />',
       '</g>'
     ));
   }
