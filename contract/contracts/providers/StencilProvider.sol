@@ -95,9 +95,8 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
       '<rect x="0" y="0" width="100%" height="100%" fill="white"/>',
       concat(parts),
       '</mask>'
-      '<g id="',tag,'" mask="url(#', tag ,'_mask)">'
-      '<rect x="0" y="0" width="100%" height="100%" />',
-      '</g>'
+      '<rect id="',tag,'" mask="url(#', tag ,'_mask)" '
+        'x="0" y="0" width="100%" height="100%" />'
     ));
   }
 }
