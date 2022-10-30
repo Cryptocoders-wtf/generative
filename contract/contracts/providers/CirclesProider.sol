@@ -21,7 +21,7 @@ import "../interfaces/ILayoutGenerator.sol";
  * MultiplexProvider create a new asset provider from another asset provider,
  * which draws multiple assets with the same set of provider-specific properties.
  */
-contract CircleProvider is IAssetProvider, IERC165, Ownable {
+contract CirclesProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
 
