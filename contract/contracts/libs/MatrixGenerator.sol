@@ -16,7 +16,7 @@ contract MatrixGenerator {
   struct Node {
     uint x;
     uint y;
-    uint size;    // 64, 128, 256 or 512
+    uint size;
     string scale;
   }
 
