@@ -94,17 +94,17 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
       '<mask id="',tag,'_mask">'
       '<rect x="0" y="0" width="100%" height="100%" fill="white"/>',
       concat(parts),
-      '</mask>'
+      '</mask>\n'
       '<rect id="',tag,'_stencil" mask="url(#', tag ,'_mask)" '
-        'x="0" y="0" width="100%" height="100%" />'));
+        'x="0" y="0" width="100%" height="100%" />\n'));
     svgPart = string(abi.encodePacked(svgPart,
-      '<g id="',tag,'" >'
-      '<rect x="0" y="0" width="100%" height="100%" fill="#', props.scheme[0], '"/>',
-      '<use href="#', tag ,'_stencil" fill="#', props.scheme[1], '" />'
-      '<use href="#', tag ,'_stencil" fill="#', props.scheme[2], '" transform="rotate(90 512 512)"/>'
-      '<use href="#', tag ,'_stencil" fill="#', props.scheme[3], '" transform="rotate(180 512 512)"/>'
-      '<use href="#', tag ,'_stencil" fill="#', props.scheme[4], '" transform="rotate(270 512 512)"/>'
-      '</g>'
+      '<g id="',tag,'" >\n'
+      '<rect x="0" y="0" width="100%" height="100%" fill="#', props.scheme[0], '"/>\n',
+      '<use href="#', tag ,'_stencil" fill="#', props.scheme[1], '" />\n'
+      '<use href="#', tag ,'_stencil" fill="#', props.scheme[2], '" transform="rotate(90 512 512)"/>\n'
+      '<use href="#', tag ,'_stencil" fill="#', props.scheme[3], '" transform="rotate(180 512 512)"/>\n'
+      '<use href="#', tag ,'_stencil" fill="#', props.scheme[4], '" transform="rotate(270 512 512)"/>\n'
+      '</g>\n'
     ));
   }
 }
