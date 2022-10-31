@@ -82,9 +82,11 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
     bytes[] memory parts = new bytes[](nodes.length);
     for (uint i = 0; i < nodes.length; i++) {
       ILayoutGenerator.Node memory node = nodes[i];
+      uint h;
+      (seed, h) = seed.random(3);
       parts[i] = abi.encodePacked(
         '<rect x="',node.x.toString(),'" y="',node.y.toString(),'" '
-          'width="',node.size.toString(),'" height="',(node.size/2).toString(),'"'
+          'width="',node.size.toString(),'" height="',(node.size/5 * (h + 2)).toString(),'"'
           ' fill="black" />'
       );  
     }
