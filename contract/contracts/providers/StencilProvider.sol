@@ -16,6 +16,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "../interfaces/IColorSchemes.sol";
 import "../interfaces/ILayoutGenerator.sol";
+import "../libs/BytesArray.sol";
 
 /**
  * MultiplexProvider create a new asset provider from another asset provider,
@@ -24,6 +25,7 @@ import "../interfaces/ILayoutGenerator.sol";
 contract StencilProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
+  using BytesArray for bytes[];
 
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;
@@ -65,35 +67,6 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
     string[] scheme;
   }
 
-  function concat(bytes[] memory parts) public pure returns (bytes memory ret) {
-    /*    
-    for (uint i = 0; i < parts.length; i++) {
-      ret = abi.encodePacked(ret, parts[i]);
-    }
-    */
-    uint count = parts.length;
-    assembly {
-      ret := mload(0x40)
-      let retMemory := add(ret, 0x20)
-      let bufParts := add(parts, 0x20)
-      for {let i := 0} lt(i, count) {i := add(i, 1)} {
-        let src := mload(bufParts) // read the address
-        let dest := retMemory
-        let length := mload(src)
-        // copy 0x20 bytes each (and let it overrun)
-        for {let j := 0} lt(j, length) {j := add(j, 0x20)} {
-          src := add(src, 0x20) // dual purpose
-          mstore(dest, mload(src))
-          dest := add(dest, 0x20)
-        }
-        retMemory := add(retMemory, length)
-        bufParts := add(bufParts, 0x20)
-      }
-      mstore(ret, sub(sub(retMemory, ret), 0x20))
-      mstore(0x40, retMemory)
-    }
-  }
-
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     Properties memory props;
     Randomizer.Seed memory seed;
@@ -116,7 +89,7 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
     svgPart = string(abi.encodePacked(
       '<mask id="',tag,'_mask">'
       '<rect x="0" y="0" width="100%" height="100%" fill="white"/>',
-      concat(parts),
+      parts.packed(),
       '</mask>\n'
       '<rect id="',tag,'_stencil" mask="url(#', tag ,'_mask)" '
         'x="0" y="0" width="100%" height="100%" />\n'));
