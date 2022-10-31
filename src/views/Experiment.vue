@@ -1,6 +1,7 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
     <ProviderView assetProvider="circles" />
+    <ProviderView assetProvider="circleStencil" />
     <ProviderView assetProvider="stencil" />
   </div>
 </template>

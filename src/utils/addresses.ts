@@ -118,6 +118,9 @@ export const addresses: any = {
   matrixGenerator: {
     localhost: circles_localhost.matrixGenerator,
   },
+  circleStencil: {
+    localhost: circles_localhost.contractCircleStencil,
+  },
   stencil: {
     localhost: circles_localhost.contractStencil,
   },
