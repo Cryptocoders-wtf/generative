@@ -99,7 +99,6 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
         'x="0" y="0" width="100%" height="100%" />\n'));
     svgPart = string(abi.encodePacked(svgPart,
       '<g id="',tag,'" >\n'
-      '<rect x="0" y="0" width="100%" height="100%" fill="#', props.scheme[0], '"/>\n',
       '<use href="#', tag ,'_stencil" fill="#', props.scheme[1], '" />\n'
       '<use href="#', tag ,'_stencil" fill="#', props.scheme[2], '" transform="rotate(90 512 512)"/>\n'
       '<use href="#', tag ,'_stencil" fill="#', props.scheme[3], '" transform="rotate(180 512 512)"/>\n'
