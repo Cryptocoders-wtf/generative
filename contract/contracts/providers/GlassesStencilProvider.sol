@@ -82,8 +82,9 @@ contract GlassesStencilProvider is IAssetProvider, IERC165, Ownable {
       (seed, h) = seed.random(3);
       parts[i] = abi.encodePacked(
         '<g transform="translate(',node.x.toString(),',',node.y.toString(),') scale(',node.scale,',',node.scale,')">'
-        '<use y="-200" href="#nouns_glass"/>'
-        '<use y="200" href="#nouns_glass"/>'
+        '<use href="#nouns_glass"/>'
+        '<use y="-340" href="#nouns_glass"/>'
+        '<use y="340" href="#nouns_glass"/>'
         '</g>'
       );  
     }

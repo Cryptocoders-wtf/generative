@@ -1,7 +1,7 @@
 export const addresses = {
-  matrixGenerator:"0xE2307e3710d108ceC7a4722a020a050681c835b3",
-  contractArt:"0xD28F3246f047Efd4059B24FA1fa587eD9fa3e77F",
-  contractCircleStencil:"0x15F2ea83eB97ede71d84Bd04fFF29444f6b7cd52",
-  contractStencil:"0x0B32a3F8f5b7E5d315b9E52E640a49A89d89c820",
-  contractGlassesStencil:"0xF357118EBd576f3C812c7875B1A1651a7f140E9C",
+  matrixGenerator:"0x519b05b3655F4b89731B677d64CEcf761f4076f6",
+  contractArt:"0x057cD3082EfED32d5C907801BF3628B27D88fD80",
+  contractCircleStencil:"0xb6057e08a11da09a998985874FE2119e98dB3D5D",
+  contractStencil:"0xad203b3144f8c09a20532957174fc0366291643c",
+  contractGlassesStencil:"0x31403b1e52051883f2Ce1B1b4C89f36034e1221D",
 }
