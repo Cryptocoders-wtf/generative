@@ -86,6 +86,8 @@ contract GlassesStencilProvider is IAssetProvider, IERC165, Ownable {
         '<rect x="662" y="362" width="300" height="300" fill="black"/>'
         '<rect x="112" y="462" width="800" height="50" fill="black"/>'
         '<rect x="112" y="462" width="50" height="150" fill="black"/>'
+        '<rect x="312" y="412" width="100" height="200" fill="white"/>'
+        '<rect x="712" y="412" width="100" height="200" fill="white"/>'
         '</g>'
       );  
     }
