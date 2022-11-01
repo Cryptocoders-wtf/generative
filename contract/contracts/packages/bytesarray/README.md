@@ -33,7 +33,7 @@ contract YourContract {
       ...
       parts[i] = abi.encodePacked(...);
     }
+    result = parts.packed();
   }
-  result = parts.packed();
 }
 ```
