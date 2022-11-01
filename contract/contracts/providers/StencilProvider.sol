@@ -46,7 +46,7 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function getProviderInfo() external view override returns(ProviderInfo memory) {
-    return ProviderInfo("circles", "Circles", this);
+    return ProviderInfo("stencil", "Stencil", this);
   }
 
   function totalSupply() external pure override returns(uint256) {
@@ -56,7 +56,7 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
   function processPayout(uint256 _assetId) external override payable {
     address payable payableTo = payable(owner());
     payableTo.transfer(msg.value);
-    emit Payout("clrcles", _assetId, payableTo, msg.value);
+    emit Payout("stencil", _assetId, payableTo, msg.value);
   }
 
   function generateTraits(uint256 _assetId) external view returns (string memory) {
@@ -72,7 +72,7 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
     Randomizer.Seed memory seed;
     (seed, props.scheme) = colorSchemes.getColorScheme(_assetId);
     ILayoutGenerator.Node[] memory nodes;
-    tag = string(abi.encodePacked("circles", _assetId.toString()));
+    tag = string(abi.encodePacked("stencil", _assetId.toString()));
 
     (seed, nodes) = generator.generate(seed, 0 + 30 * 0x100 + 60 * 0x10000);
     bytes[] memory parts = new bytes[](nodes.length);
