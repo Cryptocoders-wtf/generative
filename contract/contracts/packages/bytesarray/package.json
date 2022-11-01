@@ -1,0 +1,24 @@
+{
+  "name": "bytes-array.sol",
+  "version": "1.0.0",
+  "description": "Efficient way to combine an array of bytes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cryptocoders-wtf/generative.git"
+  },
+  "keywords": [
+    "Solidity",
+    "Bytes",
+    "Assembly"
+  ],
+  "author": "snakajima",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cryptocoders-wtf/generative/issues"
+  },
+  "homepage": "https://github.com/Cryptocoders-wtf/generative#readme"
+}

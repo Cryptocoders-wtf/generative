@@ -16,7 +16,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "../interfaces/IColorSchemes.sol";
 import "../interfaces/ILayoutGenerator.sol";
-import "../libs/BytesArray.sol";
+import "bytes-array.sol/BytesArray.sol";
 
 /**
  * MultiplexProvider create a new asset provider from another asset provider,

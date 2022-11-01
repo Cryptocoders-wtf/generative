@@ -6,6 +6,7 @@
     "@openzeppelin/contracts": "^4.7.3",
     "assetprovider.sol": "^1.0.0",
     "assetstore.sol": "^1.0.1",
+    "bytes-array.sol": "^1.0.0",
     "hardhat": "^2.11.2",
     "randomizer.sol": "^1.0.0",
     "trigonometry.sol": "^1.0.0"
