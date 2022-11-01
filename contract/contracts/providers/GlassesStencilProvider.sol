@@ -81,9 +81,9 @@ contract GlassesStencilProvider is IAssetProvider, IERC165, Ownable {
       uint h;
       (seed, h) = seed.random(3);
       parts[i] = abi.encodePacked(
-        '<rect'
-          ' width="1024" height="',(uint(1024)/5 * (h + 2)).toString(),'"'
-          ' transform="translate(',node.x.toString(),',',node.y.toString(),') scale(',node.scale,',',node.scale,')" fill="black" />'
+        '<g transform="translate(',node.x.toString(),',',node.y.toString(),') scale(',node.scale,',',node.scale,')">'
+        '<rect width="1024" height="',(uint(1024)/5 * (h + 2)).toString(),'"  fill="black"/>'
+        '</g>'
       );  
     }
     svgPart = string(abi.encodePacked(
