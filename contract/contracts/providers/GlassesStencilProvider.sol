@@ -101,9 +101,9 @@ contract GlassesStencilProvider is IAssetProvider, IERC165, Ownable {
     svgPart = string(abi.encodePacked(svgPart,
       '<g id="',tag,'" >\n'
       '<use href="#', tag ,'_stencil" fill="#', props.scheme[1], '" />\n'
-      '<use href="#', tag ,'_stencil" fill="#', props.scheme[2], '" transform="rotate(0 512 512)"/>\n'
-      '<use href="#', tag ,'_stencil" fill="#', props.scheme[3], '" transform="rotate(0 512 512)"/>\n'
-      '<use href="#', tag ,'_stencil" fill="#', props.scheme[4], '" transform="rotate(0 512 512)"/>\n'
+      '<use href="#', tag ,'_stencil" fill="#', props.scheme[2], '" transform="rotate(90 512 512)"/>\n'
+      '<use href="#', tag ,'_stencil" fill="#', props.scheme[3], '" transform="rotate(180 512 512)"/>\n'
+      '<use href="#', tag ,'_stencil" fill="#', props.scheme[4], '" transform="rotate(270 512 512)"/>\n'
       '</g>\n'
     ));
   }
