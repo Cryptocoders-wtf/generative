@@ -74,7 +74,7 @@ contract GlassesStencilProvider is IAssetProvider, IERC165, Ownable {
     ILayoutGenerator.Node[] memory nodes;
     tag = string(abi.encodePacked("circles", _assetId.toString()));
 
-    (seed, nodes) = generator.generate(seed, 0 + 30 * 0x100 + 60 * 0x10000);
+    (seed, nodes) = generator.generate(seed, 18 + 50 * 0x100 + 60 * 0x10000);
     bytes[] memory parts = new bytes[](nodes.length);
     for (uint i = 0; i < nodes.length; i++) {
       ILayoutGenerator.Node memory node = nodes[i];
@@ -82,7 +82,10 @@ contract GlassesStencilProvider is IAssetProvider, IERC165, Ownable {
       (seed, h) = seed.random(3);
       parts[i] = abi.encodePacked(
         '<g transform="translate(',node.x.toString(),',',node.y.toString(),') scale(',node.scale,',',node.scale,')">'
-        '<rect width="1024" height="',(uint(1024)/5 * (h + 2)).toString(),'"  fill="black"/>'
+        '<rect x="262" y="362" width="300" height="300" fill="black"/>'
+        '<rect x="662" y="362" width="300" height="300" fill="black"/>'
+        '<rect x="112" y="462" width="800" height="50" fill="black"/>'
+        '<rect x="112" y="462" width="50" height="150" fill="black"/>'
         '</g>'
       );  
     }
