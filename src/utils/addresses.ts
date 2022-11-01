@@ -124,4 +124,7 @@ export const addresses: any = {
   stencil: {
     localhost: circles_localhost.contractStencil,
   },
+  glassesStencil: {
+    localhost: circles_localhost.contractGlassesStencil,
+  },
 };

@@ -3,6 +3,7 @@
     <ProviderView assetProvider="circles" />
     <ProviderView assetProvider="circleStencil" />
     <ProviderView assetProvider="stencil" :debugMode="true"/>
+    <ProviderView assetProvider="glassesStencil" />
   </div>
 </template>
 

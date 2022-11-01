@@ -34,6 +34,11 @@ async function main() {
   await contractStencil.deployed();
   console.log(`      contractStencil="${contractStencil.address}"`);
 
+  const factoryGlasses = await ethers.getContractFactory("GlassesStencilProvider");
+  const contractGlasses = await factoryGlasses.deploy(contractGenerator.address, contractSchemes);
+  await contractGlasses.deployed();
+  console.log(`      contractGlasses="${contractGlasses.address}"`);
+
   const result = await contractStencil.generateSVGPart(0);
   console.log("result", result);
 
@@ -42,6 +47,7 @@ async function main() {
     + `  contractArt:"${contractArt.address}",\n`
     + `  contractCircleStencil:"${contractCircleStencil.address}",\n`
     + `  contractStencil:"${contractStencil.address}",\n`
+    + `  contractGlassesStencil:"${contractGlasses.address}",\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/circles_${network.name}.ts`, addresses, ()=>{});
   console.log("Complete");  
