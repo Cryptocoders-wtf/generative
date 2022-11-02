@@ -85,6 +85,6 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
           ' fill="#', props.scheme[i % props.scheme.length], '" />'
       );  
     }
-    svgPart = string(SVG.group(parts, bytes(tag)));
+    svgPart = string(SVG.group(parts, tag));
   }
 }

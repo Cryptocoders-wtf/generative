@@ -14,13 +14,13 @@ import "bytes-array.sol/BytesArray.sol";
 library SVG {
   using BytesArray for bytes[];
 
-  function path(bytes memory _path, bytes memory _id) internal pure returns(bytes memory svg) {
+  function path(bytes memory _path, string memory _id) internal pure returns(bytes memory svg) {
     svg = abi.encodePacked(
       '<path id="', _id, '" d="', _path, '"/>\n'
     );
   }
 
-  function group(bytes[] memory _parts, bytes memory _id) internal pure returns(bytes memory svg) {
+  function group(bytes[] memory _parts, string memory _id) internal pure returns(bytes memory svg) {
     svg = abi.encodePacked(
       '<g id="', _id, '">', _parts.packed(), '</g>\n'
     );
