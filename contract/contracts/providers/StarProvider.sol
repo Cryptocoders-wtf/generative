@@ -77,12 +77,16 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
                 returns(Randomizer.Seed memory, uint[] memory) {
     uint count = 12;
     int radius = 500;
-    uint[] memory points = new uint[](count);    
-    for (uint i = 0; i < count; i++) {
-      uint angle = 0x4000 * i / count;
+    uint[] memory points = new uint[](count * 2);    
+    for (uint i = 0; i < count * 2; i += 2) {
+      uint angle = 0x4000 * i / count / 2;
       uint x = uint(angle.cos() * radius / 0x8000 + 512);
       uint y = uint(angle.sin() * radius / 0x8000 + 512);
       points[i] = x + (y << 16) + (566 << 32);
+      angle += 0x4000 / count / 2;
+      x = uint(angle.cos() * radius / 2 / 0x8000 + 512);
+      y = uint(angle.sin() * radius / 2 / 0x8000 + 512);
+      points[i + 1] = x + (y << 16) + (566 << 32);
     }
     return (_seed, points);
   }
