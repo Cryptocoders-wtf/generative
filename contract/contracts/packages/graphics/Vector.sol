@@ -14,19 +14,22 @@ import "hardhat/console.sol";
 
 library Vector {
   using Trigonometry for uint;
+  int constant PI = 0x2000;
+  int constant PI2 = 0x4000;
+  int constant ONE = 0x8000;
 
   struct Struct {
-    int x; // fixed point * 0x8000
-    int y; // fixed point * 0x8000
+    int x; // fixed point * ONE
+    int y; // fixed point * ONE
   }
 
   function vector(int _x, int _y) internal pure returns(Struct memory newVector) {
-    newVector.x = _x * 0x8000;
-    newVector.y = _y * 0x8000;
+    newVector.x = _x * ONE;
+    newVector.y = _y * ONE;
   }
 
   function vectorWithAngle(int _angle, int _radius) internal pure returns(Struct memory newVector) {
-    uint angle = uint(_angle); // + (0x4000 << 64));
+    uint angle = uint(_angle + (PI2 << 64));
     newVector.x = _radius * angle.cos();
     newVector.y = _radius * angle.sin();
   }
@@ -47,10 +50,10 @@ library Vector {
   }
 
   function rotate(Struct memory _vector, int _angle) internal pure returns(Struct memory newVector) {
-    uint angle = uint(_angle); // + (0x4000 << 64));
+    uint angle = uint(_angle + (PI2 << 64));
     int cos = angle.cos();
     int sin = angle.sin();
-    newVector.x = (cos * _vector.x - sin * _vector.y) / 0x8000;
-    newVector.y = (sin * _vector.x + cos * _vector.y) / 0x8000;
+    newVector.x = (cos * _vector.x - sin * _vector.y) / ONE;
+    newVector.y = (sin * _vector.x + cos * _vector.y) / ONE;
   }
 }
