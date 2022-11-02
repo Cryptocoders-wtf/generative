@@ -11,27 +11,21 @@ pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "assetprovider.sol/IAssetProvider.sol";
-import { IAssetProviderEx } from '../interfaces/IAssetProviderEx.sol';
-import "assetprovider.sol/ISVGHelper.sol";
 import "randomizer.sol/Randomizer.sol";
-import "trigonometry.sol/Trigonometry.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
-import "../packages/graphics/Vector.sol";
 import "../packages/graphics/Path.sol";
 import "hardhat/console.sol";
 
 contract StarProvider is IAssetProvider, IERC165, Ownable {
-  using Strings for uint;
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
-  using Trigonometry for uint;
   using Vector for Vector.Struct;
   using Path for uint[];
 
   struct Props {
-    uint count; // number of control points
-    uint length; // average length fo arm
+    uint count; // number of spikes
+    uint length; // relative length of each valley (percentile)
   }
 
   string constant providerKey = "snow";
@@ -44,7 +38,6 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
     return
       interfaceId == type(IAssetProvider).interfaceId ||
-      interfaceId == type(IAssetProviderEx).interfaceId ||
       interfaceId == type(IERC165).interfaceId;
   }
 
