@@ -2,12 +2,9 @@ import { ethers, network } from "hardhat";
 import { writeFile } from "fs";
 import { addresses } from "../../src/utils/addresses";
 
-const svgHelperAddress = addresses["svgHelper"][network.name];
-console.log("svgHelperAddress", svgHelperAddress);
-
 async function main() {
   const factory = await ethers.getContractFactory("StarProvider");
-  const contract = await factory.deploy(svgHelperAddress);
+  const contract = await factory.deploy();
   await contract.deployed();
   console.log(`      snow="${contract.address}"`);
 

@@ -32,16 +32,13 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
   struct Props {
     uint count; // number of control points
     uint length; // average length fo arm
-    uint dot; // average size of dot
   }
 
   string constant providerKey = "snow";
   address public receiver;
-  ISVGHelper svgHelper;
 
-  constructor(ISVGHelper _svgHelper) {
+  constructor() {
     receiver = owner();
-    svgHelper = _svgHelper; // default helper
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -73,10 +70,6 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
     receiver = _receiver;
   }
 
-  function setHelper(ISVGHelper _svgHelper) external onlyOwner {
-    svgHelper = _svgHelper;
-  }
-
   function generatePath(Props memory _props) public pure returns(bytes memory path) {
     uint count = _props.count;
     int radius = 511;
@@ -91,22 +84,17 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
     path = points.closedPath();
   }
 
-  function generateProps(Randomizer.Seed memory _seed) public pure returns(Randomizer.Seed memory seed, Props memory props) {
-    seed = _seed;
-    props = Props(30, 40, 140);
+  function generateProps(uint256 _assetId) public pure returns(Randomizer.Seed memory seed, Props memory props) {
+    seed = Randomizer.Seed(_assetId, 0);
+    props = Props(30, 40);
     (seed, props.count) = seed.randomize(props.count, 50); // +/- 50%
     (seed, props.length) = seed.randomize(props.length, 50); // +/- 50%
-    (seed, props.dot) = seed.randomize(props.dot + 1000 / props.count, 50);
-    props.count = props.count / 3 * 3; // always multiple of 3
   }
 
   function generateSVGPart(uint256 _assetId) external pure override returns(string memory svgPart, string memory tag) {
-    Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
     Props memory props;
-    (seed, props) = generateProps(seed);
-
+    (, props) = generateProps(_assetId);
     bytes memory path = generatePath(props);
-
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
     svgPart = string(abi.encodePacked(
       '<path id="', tag, '" d="', path, '"/>\n'
