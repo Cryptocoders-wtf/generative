@@ -86,7 +86,8 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
       uint x = uint(angle.cos() * radius / 0x8000 + 512);
       uint y = uint(angle.sin() * radius / 0x8000 + 512);
       console.log("***1", i.toString(), x.toString(), y.toString());
-      points[i] = x + y << 16 + (566 << 32);
+      points[i] = x + (y << 16) + (566 << 32);
+      console.log("***2", points[i].toString());
     }
     return (_seed, points);
   }
