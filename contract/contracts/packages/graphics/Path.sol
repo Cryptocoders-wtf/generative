@@ -17,7 +17,7 @@ library Path {
   }
 
   function sharpCorner(Vector.Struct memory _vector) internal pure returns(uint) {
-    return uint(_vector.x/0x8000) + (uint(_vector.y/0x8000) << 16) + (0x1 << 48);
+    return uint(_vector.x/0x8000) + (uint(_vector.y/0x8000) << 16) + (0x1 << 144);
   }
 
   function closedPath(uint[] memory points) internal pure returns(bytes memory newPath) {
@@ -72,7 +72,7 @@ library Path {
           let ex := div(add(x, and(wordN, 0xffff)),2)
           let ey := div(add(y, and(shr(16, wordN), 0xffff)),2)
 
-          switch and(shr(48, word), 0x01) 
+          switch and(shr(144, word), 0x01) 
             case 0 {
               mstore(wbuf, shl(248, 0x43)) // C
               wbuf := add(wbuf, 1)
