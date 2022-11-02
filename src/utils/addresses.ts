@@ -20,6 +20,7 @@ import { addresses as dotNouns_goerli } from "./addresses/dotNouns_goerli";
 import { addresses as lilnouns_goerli } from "./addresses/lilnouns_goerli";
 import { addresses as circles_localhost } from "./addresses/circles_localhost";
 import { addresses as star_localhost } from "./addresses/star_localhost";
+import { addresses as star_goerli } from "./addresses/star_goerli";
 
 export const addresses: any = {
   svgHelper: {
@@ -130,5 +131,6 @@ export const addresses: any = {
   },
   star: {
     localhost: star_localhost.starAddress,
+    goerli: star_goerli.starAddress,
   },
 };

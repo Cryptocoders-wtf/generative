@@ -25,6 +25,9 @@
       <router-link :to="localizedUrl('/snow')" class="text-md">
         Snow
       </router-link>
+      <router-link :to="localizedUrl('/star')" class="text-md">
+        Star
+      </router-link>
       <router-link :to="localizedUrl('/nouns')" class="text-md">
         Nouns
       </router-link>
