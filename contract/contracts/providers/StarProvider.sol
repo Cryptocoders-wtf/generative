@@ -75,30 +75,22 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
 
   function generatePoints(Randomizer.Seed memory _seed, Props memory _props) view internal 
                 returns(Randomizer.Seed memory, uint[] memory) {
-    console.log("generatePoints");
     uint count = 12;
     int radius = 500;
     uint[] memory points = new uint[](count);    
-    console.log("generatePoints2", count.toString());
-    console.log("generatePoints3", count.toString(), uint(radius).toString());
     for (uint i = 0; i < count; i++) {
       uint angle = 0x4000 * i / count;
       uint x = uint(angle.cos() * radius / 0x8000 + 512);
       uint y = uint(angle.sin() * radius / 0x8000 + 512);
-      console.log("***1", i.toString(), x.toString(), y.toString());
       points[i] = x + (y << 16) + (566 << 32);
-      console.log("***2", points[i].toString());
     }
     return (_seed, points);
   }
 
   function generatePath(Randomizer.Seed memory _seed, Props memory _props) public view returns(Randomizer.Seed memory seed, bytes memory path) {
-    console.log("generatePath");
     uint[] memory points;
     (seed, points) = generatePoints(_seed, _props);
-    console.log("generatePath2", points.length.toString());
     path = svgHelper.pathFromPoints(points);
-    console.log("generatePath2", string(path));
   }
 
   function generateProps(Randomizer.Seed memory _seed) public pure returns(Randomizer.Seed memory seed, Props memory props) {
@@ -111,7 +103,6 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
-    console.log("generateSVGPart");
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
     Props memory props;
     (seed, props) = generateProps(seed);
