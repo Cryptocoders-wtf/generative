@@ -27,6 +27,7 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
   using Randomizer for Randomizer.Seed;
   using Trigonometry for uint;
   using Vector for Vector.Struct;
+  using Path for uint[];
 
   struct Props {
     uint count; // number of control points
@@ -94,7 +95,7 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
   function generatePath(Randomizer.Seed memory _seed, Props memory _props) public view returns(Randomizer.Seed memory seed, bytes memory path) {
     uint[] memory points;
     (seed, points) = generatePoints(_seed, _props);
-    path = svgHelper.pathFromPoints(points);
+    path = points.closedPath();
   }
 
   function generateProps(Randomizer.Seed memory _seed) public pure returns(Randomizer.Seed memory seed, Props memory props) {
