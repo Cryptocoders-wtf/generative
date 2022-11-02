@@ -14,6 +14,7 @@ import "assetprovider.sol/IAssetProvider.sol";
 import { IAssetProviderEx } from '../interfaces/IAssetProviderEx.sol';
 import "assetprovider.sol/ISVGHelper.sol";
 import "randomizer.sol/Randomizer.sol";
+import "trigonometry.sol/Trigonometry.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "hardhat/console.sol";
@@ -22,6 +23,7 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint;
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
+  using Trigonometry for uint;
 
   struct Props {
     uint thickness; 
@@ -73,33 +75,14 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
 
   function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal 
                 returns(Randomizer.Seed memory, uint[] memory) {
-    int thickness = int(_props.thickness);
-    int army = thickness / 10;
-    int armx = (army * 173) / 100;
-    int r = 512;
-    if (_props.style == 0) {
-      r -= army * 2;
-    }
-    int dir = (_props.style == 0)? int(1) : int(-1);
-    uint count = uint(int(r / army)) - 1;
-    uint[] memory points = new uint[](count * 2 + 2);
-    points[0] = 512 + (512 << 16) + (1 << 48);
-    points[1] = 512 + ((512 + uint(r)) << 16) + (1 << 48);
-    int x;
-    int y;
-    for (uint i=0; i < count * 2; i++) {
-      int m = (i % 4 < 2) ? int(2) : int(1); 
-      x = 512 + m * armx; //  * (1 + int(int(i % 2)));
-      if (i % 2 == 0) {
-        y = 512 + r + dir * m * army;
-      } else {
-        y = 512 + r + dir * m * army - army;
-        r -= army;
-        thickness = thickness * int(_props.growth) / 100;
-        army = thickness / 10;
-        armx = (army * 173) / 100;
-      }
-      points[i + 2] = uint(uint16(int16(x))) + (uint(uint16(int16(y))) << 16) + (566 << 32);
+    uint count = 12;
+    int radius = 500;
+    uint[] memory points = new uint[](count);    
+    for (uint i=0; i < count; i++) {
+      uint angle = 0x4000 * i / count;
+      uint x = uint(angle.cos() * radius / 0x8000 + 512);
+      uint y = uint(angle.sin() * radius / 0x8000 + 512);
+      points[i] = x + y << 16 + (566 << 32);
     }
     return (_seed, points);
   }

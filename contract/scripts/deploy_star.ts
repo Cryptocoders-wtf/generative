@@ -12,7 +12,7 @@ async function main() {
   console.log(`      snow="${contract.address}"`);
 
   const result = await contract.generateSVGPart(0);
-  console.log("svg", result.tag);
+  console.log("svg", result);
 
   /*
   const factoryArt = await ethers.getContractFactory("RepeatProvider");
