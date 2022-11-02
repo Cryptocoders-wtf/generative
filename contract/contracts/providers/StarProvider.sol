@@ -73,13 +73,14 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
   function generatePath(Props memory _props) public pure returns(bytes memory path) {
     uint count = _props.count;
     int radius = 511;
+    int length = int(_props.length);
     Vector.Struct memory center = Vector.vector(512, 512);
     uint[] memory points = new uint[](count * 2);    
     for (uint i = 0; i < count * 2; i += 2) {
       int angle = int(0x4000 * i / count / 2);
       Vector.Struct memory vector = Vector.vectorWithAngle(angle, radius);
       points[i] = Path.roundedCorner(vector.add(center));
-      points[i+1] = Path.sharpCorner(vector.div(2).rotate(int(0x4000 / count / 2)).add(center));
+      points[i+1] = Path.sharpCorner(vector.mul(length).div(100).rotate(int(0x4000 / count / 2)).add(center));
     }
     path = points.closedPath();
   }
