@@ -77,8 +77,7 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
     svgHelper = _svgHelper;
   }
 
-  function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal 
-                returns(Randomizer.Seed memory, uint[] memory) {
+  function generatePath(Props memory _props) public pure returns(bytes memory path) {
     uint count = _props.count;
     int radius = 511;
     Vector.Struct memory center = Vector.vector(512, 512);
@@ -89,12 +88,6 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
       points[i] = Path.roundedCorner(vector.add(center));
       points[i+1] = Path.sharpCorner(vector.div(2).rotate(int(0x4000 / count / 2)).add(center));
     }
-    return (_seed, points);
-  }
-
-  function generatePath(Randomizer.Seed memory _seed, Props memory _props) public view returns(Randomizer.Seed memory seed, bytes memory path) {
-    uint[] memory points;
-    (seed, points) = generatePoints(_seed, _props);
     path = points.closedPath();
   }
 
@@ -107,13 +100,12 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
     props.count = props.count / 3 * 3; // always multiple of 3
   }
 
-  function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
+  function generateSVGPart(uint256 _assetId) external pure override returns(string memory svgPart, string memory tag) {
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
     Props memory props;
     (seed, props) = generateProps(seed);
 
-    bytes memory path;
-    (,path) = generatePath(seed, props);
+    bytes memory path = generatePath(props);
 
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
     svgPart = string(abi.encodePacked(
