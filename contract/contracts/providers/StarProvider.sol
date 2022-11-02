@@ -109,9 +109,7 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
 
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
     svgPart = string(abi.encodePacked(
-      '<g id="', tag, '">\n'
-      '<path d="', path, '"/>\n'
-      '</g>\n'
+      '<path id="', tag, '" d="', path, '"/>\n'
     ));
   }
 
