@@ -13,8 +13,7 @@ export default defineComponent({
     ProviderView,
   },
   setup() {
-    return {
-    };
+    return {};
   },
 });
 </script>

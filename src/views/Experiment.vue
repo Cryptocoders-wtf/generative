@@ -2,7 +2,7 @@
   <div class="mx-auto max-w-3xl p-2 text-left">
     <ProviderView assetProvider="circles" />
     <ProviderView assetProvider="circleStencil" />
-    <ProviderView assetProvider="stencil" :debugMode="true"/>
+    <ProviderView assetProvider="stencil" :debugMode="true" />
     <ProviderView assetProvider="glassesStencil" />
   </div>
 </template>
@@ -16,8 +16,7 @@ export default defineComponent({
     ProviderView,
   },
   setup() {
-    return {
-    };
+    return {};
   },
 });
 </script>
