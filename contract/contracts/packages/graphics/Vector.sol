@@ -25,12 +25,10 @@ library Vector {
     vector.y = _y * 0x8000;
   }
 
-  function newVectorWithAngle(int _angle, int _radius) internal view returns(Struct memory vector) {
-    console.log("newVectorWithAngle");
+  function newVectorWithAngle(int _angle, int _radius) internal pure returns(Struct memory vector) {
     uint angle = uint(_angle); // + (0x4000 << 64));
     vector.x = _radius * angle.cos();
     vector.y = _radius * angle.sin();
-    console.log("newVectorWithAngle2");
   }
 
   function div(Struct memory _vector, int _value) internal pure returns(Struct memory vector) {

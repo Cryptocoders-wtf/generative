@@ -75,7 +75,7 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
     svgHelper = _svgHelper;
   }
 
-  function generatePoints(Randomizer.Seed memory _seed, Props memory _props) view internal 
+  function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal 
                 returns(Randomizer.Seed memory, uint[] memory) {
     uint count = _props.count;
     int radius = 500;
@@ -85,7 +85,6 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
       int angle = int(0x4000 * i / count / 2);
       Vector.Struct memory vector = Vector.newVectorWithAngle(angle, radius);
       vector = vector.add(center);
-      console.log(uint(vector.x/0x8000).toString(), uint(vector.y/0x8000).toString());
       points[i] = uint(vector.x/0x8000) + (uint(vector.y/0x8000) << 16) + (566 << 32);
       angle += int(0x4000 / count / 2);
       vector = Vector.newVectorWithAngle(angle, radius / 2);
