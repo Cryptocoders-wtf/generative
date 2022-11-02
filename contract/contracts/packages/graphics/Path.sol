@@ -55,11 +55,11 @@ library Path {
       let wordP := mload(add(rbuf, mul(sub(length,1), 0x20)))
       let word := mload(rbuf)
       for {let i := 0} lt(i, length) {i := add(i, 1)} {
-        let x := and(word, 0xffff)
-        let y := and(shr(32, word), 0xffff)
+        let x := and(word, 0xffffffff)
+        let y := and(shr(32, word), 0xffffffff)
         let r := and(shr(64, word), 0xffff)
-        let sx := div(add(x, and(wordP, 0xffff)),2)
-        let sy := div(add(y, and(shr(32, wordP), 0xffff)),2)
+        let sx := div(add(x, and(wordP, 0xffffffff)),2)
+        let sy := div(add(y, and(shr(32, wordP), 0xffffffff)),2)
         if eq(i, 0) {
           mstore(wbuf, shl(248, 0x4D)) // M
           wbuf := add(wbuf, 1)
@@ -69,8 +69,8 @@ library Path {
         
         let wordN := mload(add(rbuf, mul(mod(add(i,1), length), 0x20)))
         {
-          let ex := div(add(x, and(wordN, 0xffff)),2)
-          let ey := div(add(y, and(shr(32, wordN), 0xffff)),2)
+          let ex := div(add(x, and(wordN, 0xffffffff)),2)
+          let ey := div(add(y, and(shr(32, wordN), 0xffffffff)),2)
 
           switch and(shr(80, word), 0x01) 
             case 0 {
