@@ -17,6 +17,7 @@ import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "../packages/graphics/SVG.sol";
 import "../interfaces/IColorSchemes.sol";
 import "../interfaces/ILayoutGenerator.sol";
+import "bytes-array.sol/BytesArray.sol";
 
 /**
  * MultiplexProvider create a new asset provider from another asset provider,
@@ -25,6 +26,7 @@ import "../interfaces/ILayoutGenerator.sol";
 contract CircleStencilProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
+  using BytesArray for bytes[];
 
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;
@@ -94,7 +96,7 @@ contract CircleStencilProvider is IAssetProvider, IERC165, Ownable {
       '<mask id="',tag,'_mask">'
       '<rect x="0" y="0" width="100%" height="100%" fill="white"/>'
       '<g fill="black">',
-      concat(parts),
+      parts.packed(),
       '</g>'
       '</mask>\n'
       '<rect id="',tag,'_stencil" mask="url(#', tag ,'_mask)" '
