@@ -66,9 +66,9 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
 
   function generatePath(Props memory _props) public pure returns(bytes memory path) {
     uint count = _props.count;
-    int radius = 511;
+    int radius = 511; // We want to fill the whole viewbox (1024 x 1024)
     int length = int(_props.length);
-    Vector.Struct memory center = Vector.vector(512, 512);
+    Vector.Struct memory center = Vector.vector(512, 512); // center of the viewbox
     uint[] memory points = new uint[](count * 2);    
     for (uint i = 0; i < count * 2; i += 2) {
       int angle = Vector.PI2 * int(i) / int(count) / 2;
@@ -81,9 +81,8 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
 
   function generateProps(uint256 _assetId) public pure returns(Randomizer.Seed memory seed, Props memory props) {
     seed = Randomizer.Seed(_assetId, 0);
-    props = Props(30, 40);
-    (seed, props.count) = seed.randomize(props.count, 50); // +/- 50%
-    (seed, props.length) = seed.randomize(props.length, 50); // +/- 50%
+    (seed, props.count) = seed.randomize(30, 50); // +/- 50%
+    (seed, props.length) = seed.randomize(40, 50); // +/- 50%
   }
 
   function generateSVGPart(uint256 _assetId) external pure override returns(string memory svgPart, string memory tag) {
