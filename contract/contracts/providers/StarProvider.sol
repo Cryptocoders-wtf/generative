@@ -15,6 +15,7 @@ import "randomizer.sol/Randomizer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "../packages/graphics/Path.sol";
+import "../packages/graphics/SVG.sol";
 import "hardhat/console.sol";
 
 contract StarProvider is IAssetProvider, IERC165, Ownable {
@@ -90,9 +91,7 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
     (, props) = generateProps(_assetId);
     bytes memory path = generatePath(props);
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
-    svgPart = string(abi.encodePacked(
-      '<path id="', tag, '" d="', path, '"/>\n'
-    ));
+    svgPart = string(SVG.path(bytes(path), bytes(tag)));
   }
 
   function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
