@@ -17,6 +17,7 @@ import "randomizer.sol/Randomizer.sol";
 import "trigonometry.sol/Trigonometry.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
+import "../packages/graphics/Vector.sol";
 import "hardhat/console.sol";
 
 contract StarProvider is IAssetProvider, IERC165, Ownable {
@@ -73,9 +74,9 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
     svgHelper = _svgHelper;
   }
 
-  function generatePoints(Randomizer.Seed memory _seed, Props memory _props) view internal 
+  function generatePoints(Randomizer.Seed memory _seed, Props memory _props) pure internal 
                 returns(Randomizer.Seed memory, uint[] memory) {
-    uint count = 12;
+    uint count = _props.count;
     int radius = 500;
     uint[] memory points = new uint[](count * 2);    
     for (uint i = 0; i < count * 2; i += 2) {
