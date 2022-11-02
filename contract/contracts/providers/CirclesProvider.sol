@@ -14,6 +14,7 @@ import "assetprovider.sol/IAssetProvider.sol";
 import "randomizer.sol/Randomizer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
+import "../packages/graphics/SVG.sol";
 import "../interfaces/IColorSchemes.sol";
 import "../interfaces/ILayoutGenerator.sol";
 
@@ -65,12 +66,6 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
     string[] scheme;
   }
 
-  function concat(bytes[] memory parts) public pure returns (bytes memory ret) {
-    for (uint i = 0; i < parts.length; i++) {
-      ret = abi.encodePacked(ret, parts[i]);
-    }
-  }
-
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     Properties memory props;
     Randomizer.Seed memory seed;
@@ -90,10 +85,6 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
           ' fill="#', props.scheme[i % props.scheme.length], '" />'
       );  
     }
-    svgPart = string(abi.encodePacked(
-      '<g id="',tag,'">',
-      concat(parts),
-      '</g>'
-    ));
+    svgPart = string(SVG.group(parts, bytes(tag)));
   }
 }

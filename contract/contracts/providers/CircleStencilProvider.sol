@@ -14,6 +14,7 @@ import "assetprovider.sol/IAssetProvider.sol";
 import "randomizer.sol/Randomizer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
+import "../packages/graphics/SVG.sol";
 import "../interfaces/IColorSchemes.sol";
 import "../interfaces/ILayoutGenerator.sol";
 
