@@ -13,7 +13,7 @@ import "./Vector.sol";
 
 library Path {
   function roundedCorner(Vector.Struct memory _vector) internal pure returns(uint) {
-    return uint(_vector.x/0x8000) + (uint(_vector.y/0x8000) << 16) + (566 << 32);
+    return uint(_vector.x/0x8000) + (uint(_vector.y/0x8000) << 16) + (566 << 128);
   }
 
   function sharpCorner(Vector.Struct memory _vector) internal pure returns(uint) {
@@ -57,7 +57,7 @@ library Path {
       for {let i := 0} lt(i, length) {i := add(i, 1)} {
         let x := and(word, 0xffff)
         let y := and(shr(16, word), 0xffff)
-        let r := and(shr(32, word), 0xffff)
+        let r := and(shr(128, word), 0xffff)
         let sx := div(add(x, and(wordP, 0xffff)),2)
         let sy := div(add(y, and(shr(16, wordP), 0xffff)),2)
         if eq(i, 0) {
