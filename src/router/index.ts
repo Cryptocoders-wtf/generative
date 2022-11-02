@@ -11,6 +11,7 @@ import Bitcoin from "../views/Bitcoin.vue";
 import Reddit from "../views/Reddit.vue";
 import Sample from "../views/Sample.vue";
 import Experiment from "../views/Experiment.vue";
+import Star from "../views/Star.vue";
 
 const routeChildren: Array<RouteRecordRaw> = [
   {
@@ -40,6 +41,10 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "exp",
     component: Experiment,
+  },
+  {
+    path: "star",
+    component: Star,
   },
   {
     path: "sample",
