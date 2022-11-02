@@ -25,7 +25,7 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
   using Trigonometry for uint;
-  using VectorLibrary for VectorLibrary.Vector;
+  using Vector for Vector.Struct;
 
   struct Props {
     uint count; // number of control points
@@ -79,16 +79,16 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
                 returns(Randomizer.Seed memory, uint[] memory) {
     uint count = _props.count;
     int radius = 500;
-    VectorLibrary.Vector memory center = VectorLibrary.newVector(512, 512);
+    Vector.Struct memory center = Vector.newVector(512, 512);
     uint[] memory points = new uint[](count * 2);    
     for (uint i = 0; i < count * 2; i += 2) {
       int angle = int(0x4000 * i / count / 2);
-      VectorLibrary.Vector memory vector = VectorLibrary.newVectorWithAngle(angle, radius);
+      Vector.Struct memory vector = Vector.newVectorWithAngle(angle, radius);
       vector = vector.add(center);
       console.log(uint(vector.x/0x8000).toString(), uint(vector.y/0x8000).toString());
       points[i] = uint(vector.x/0x8000) + (uint(vector.y/0x8000) << 16) + (566 << 32);
       angle += int(0x4000 / count / 2);
-      vector = VectorLibrary.newVectorWithAngle(angle, radius / 2);
+      vector = Vector.newVectorWithAngle(angle, radius / 2);
       vector = vector.add(center);
       points[i+1] = uint(vector.x/0x8000) + (uint(vector.y/0x8000) << 16) + (566 << 32);
     }
