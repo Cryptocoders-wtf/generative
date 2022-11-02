@@ -25,4 +25,16 @@ library SVG {
       '<g id="', _id, '">', _parts.packed(), '</g>\n'
     );
   }
+
+  // "_mask" will be added to the id
+  function mask(bytes memory _svg, string memory _id) internal pure returns(bytes memory svg) {
+    svg = abi.encodePacked(
+      '<mask id="', _id ,'_mask">'
+      '<rect x="0" y="0" width="100%" height="100%" fill="white"/>'
+      '<g fill="black">',
+      _svg,
+      '</g>'
+      '</mask>\n'
+    );
+  }
 }
