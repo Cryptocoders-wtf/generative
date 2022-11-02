@@ -84,11 +84,9 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
     uint[] memory points = new uint[](count * 2);    
     for (uint i = 0; i < count * 2; i += 2) {
       int angle = int(0x4000 * i / count / 2);
-      Vector.Struct memory vector = Vector.vectorWithAngle(angle, radius).add(center);
-      points[i] = Path.roundedCorner(vector);
-      angle += int(0x4000 / count / 2);
-      vector = Vector.vectorWithAngle(angle, radius / 2).add(center);
-      points[i+1] = Path.sharpCorner(vector);
+      Vector.Struct memory vector = Vector.vectorWithAngle(angle, radius);
+      points[i] = Path.roundedCorner(vector.add(center));
+      points[i+1] = Path.sharpCorner(vector.div(2).rotate(int(0x4000 / count / 2)).add(center));
     }
     return (_seed, points);
   }
