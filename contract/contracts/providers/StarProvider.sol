@@ -18,7 +18,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "hardhat/console.sol";
 
-contract StarProvider is IAssetProviderEx, IERC165, Ownable {
+contract StarProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint;
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
@@ -119,29 +119,6 @@ contract StarProvider is IAssetProviderEx, IERC165, Ownable {
     props.growth += 100;
   }
 
-  function SVGPartFromPath(bytes memory _path, string memory _tag) internal pure returns(string memory svgPart) {
-    bytes memory part = abi.encodePacked(
-      '<g id="', _tag, 'part">\n'
-      '<path d="', _path, '"/>\n'
-      '</g>\n'
-    );
-    part = abi.encodePacked(
-      part,
-      '<g id="', _tag, '">\n');
-    for (uint i = 0; i < 360; i += 60) {
-      part = abi.encodePacked(
-        part,
-        '<use href="#', _tag, 'part" transform="rotate(', i.toString(),', 512, 512)"/>\n',
-        '<use href="#', _tag, 'part" transform="rotate(', i.toString(),', 512, 512) scale(-1, 1) translate(-1024, 0)"/>\n'
-      );
-    }
-    part = abi.encodePacked(
-      part,
-      '</g>\n'
-    );
-    svgPart = string(part);
-  }
-
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
     Props memory props;
@@ -151,30 +128,11 @@ contract StarProvider is IAssetProviderEx, IERC165, Ownable {
     (,path) = generatePath(seed, props);
 
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
-    svgPart = SVGPartFromPath(path, tag);
-  }
-
-  /**
-   * An optional method, which allows MultplexProvider to create a new set of assets.
-   */
-  function generateRandomProps(Randomizer.Seed memory _seed) external override pure returns(Randomizer.Seed memory seed, uint256 prop) {
-    Props memory props;
-    (seed, props) = generateProps(_seed);
-    prop = props.thickness + props.style * 0x10000 + props.growth * 0x100000000;
-  }
-
-  /**
-   * An optional method, which allows MultplexProvider to create a new set of assets.
-   */
-  function generateSVGPartWithProps(Randomizer.Seed memory _seed, uint256 _prop, string memory _tag) external override view 
-    returns(Randomizer.Seed memory seed, string memory svgPart) {
-    Props memory props;
-    props.thickness = _prop & 0xffff;
-    props.style = (_prop / 0x10000) & 0xffff;
-    props.growth = (_prop / 0x100000000) & 0xffff;
-    bytes memory path;
-    (seed, path) = generatePath(_seed, props);
-    svgPart = SVGPartFromPath(path, _tag);
+    svgPart = string(abi.encodePacked(
+      '<g id="', tag, '">\n'
+      '<path d="', path, '"/>\n'
+      '</g>\n'
+    ));
   }
 
   function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
