@@ -13,11 +13,11 @@ import "./Vector.sol";
 
 library Path {
   function roundedCorner(Vector.Struct memory _vector) internal pure returns(uint) {
-    return uint(_vector.x/0x8000) + (uint(_vector.y/0x8000) << 16) + (566 << 128);
+    return uint(_vector.x/0x8000) + (uint(_vector.y/0x8000) << 32) + (566 << 64);
   }
 
   function sharpCorner(Vector.Struct memory _vector) internal pure returns(uint) {
-    return uint(_vector.x/0x8000) + (uint(_vector.y/0x8000) << 16) + (0x1 << 144);
+    return uint(_vector.x/0x8000) + (uint(_vector.y/0x8000) << 32) + (0x1 << 80);
   }
 
   function closedPath(uint[] memory points) internal pure returns(bytes memory newPath) {
@@ -56,10 +56,10 @@ library Path {
       let word := mload(rbuf)
       for {let i := 0} lt(i, length) {i := add(i, 1)} {
         let x := and(word, 0xffff)
-        let y := and(shr(16, word), 0xffff)
-        let r := and(shr(128, word), 0xffff)
+        let y := and(shr(32, word), 0xffff)
+        let r := and(shr(64, word), 0xffff)
         let sx := div(add(x, and(wordP, 0xffff)),2)
-        let sy := div(add(y, and(shr(16, wordP), 0xffff)),2)
+        let sy := div(add(y, and(shr(32, wordP), 0xffff)),2)
         if eq(i, 0) {
           mstore(wbuf, shl(248, 0x4D)) // M
           wbuf := add(wbuf, 1)
@@ -70,9 +70,9 @@ library Path {
         let wordN := mload(add(rbuf, mul(mod(add(i,1), length), 0x20)))
         {
           let ex := div(add(x, and(wordN, 0xffff)),2)
-          let ey := div(add(y, and(shr(16, wordN), 0xffff)),2)
+          let ey := div(add(y, and(shr(32, wordN), 0xffff)),2)
 
-          switch and(shr(144, word), 0x01) 
+          switch and(shr(80, word), 0x01) 
             case 0 {
               mstore(wbuf, shl(248, 0x43)) // C
               wbuf := add(wbuf, 1)
