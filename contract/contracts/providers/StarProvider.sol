@@ -26,9 +26,9 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
   using Trigonometry for uint;
 
   struct Props {
-    uint thickness; 
-    uint style; // 0 or 1
-    uint growth; // average size of growth
+    uint count; // number of control points
+    uint length; // average length fo arm
+    uint dot; // average size of dot
   }
 
   string constant providerKey = "snow";
@@ -95,11 +95,11 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
 
   function generateProps(Randomizer.Seed memory _seed) public pure returns(Randomizer.Seed memory seed, Props memory props) {
     seed = _seed;
-    props = Props(400, 40, 100);
-    (seed, props.thickness) = seed.randomize(props.thickness, 60); // +/- 60%
-    (seed, props.style) = seed.random(2); // 0 or 1
-    (seed, props.growth) = seed.random(7);
-    props.growth += 100;
+    props = Props(30, 40, 140);
+    (seed, props.count) = seed.randomize(props.count, 50); // +/- 50%
+    (seed, props.length) = seed.randomize(props.length, 50); // +/- 50%
+    (seed, props.dot) = seed.randomize(props.dot + 1000 / props.count, 50);
+    props.count = props.count / 3 * 3; // always multiple of 3
   }
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
