@@ -1,8 +1,8 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
-    <ProviderView assetProvider="circles" />
+    <ProviderView assetProvider="circles"  :debugMode="true" />
     <ProviderView assetProvider="circleStencil" />
-    <ProviderView assetProvider="stencil" :debugMode="true" />
+    <ProviderView assetProvider="stencil" />
     <ProviderView assetProvider="glassesStencil" />
   </div>
 </template>

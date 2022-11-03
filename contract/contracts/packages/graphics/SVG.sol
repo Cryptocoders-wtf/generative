@@ -10,9 +10,20 @@
 pragma solidity ^0.8.6;
 
 import "bytes-array.sol/BytesArray.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 library SVG {
   using BytesArray for bytes[];
+  using Strings for uint;
+
+  enum Attribute {
+    FILL
+  }
+  struct Context {
+    Attribute attr;
+    string value;
+  }
 
   function path(bytes memory _path, string memory _id) internal pure returns(bytes memory svg) {
     svg = abi.encodePacked(
@@ -24,6 +35,25 @@ library SVG {
     svg = abi.encodePacked(
       '<g id="', _id, '">', _parts.packed(), '</g>\n'
     );
+  }
+
+  function circle(int _cx, int _cy, int _radius) internal pure returns(bytes memory svg) {
+    svg = abi.encodePacked(
+        '<circle cx="', uint(_cx).toString(),'" cy="', uint(_cy).toString(),'" r="', uint(_radius).toString(),'" />'
+    );
+  }
+
+  function circle(int _cx, int _cy, int _radius, Context[] memory _ctxs) internal pure returns(bytes memory svg) {
+    svg = abi.encodePacked(
+        '<circle cx="', uint(_cx).toString(),'" cy="', uint(_cy).toString(),'" r="', uint(_radius).toString()
+    );
+    for (uint i=0; i<_ctxs.length; i++) {
+      Context memory ctx = _ctxs[i];
+      if (ctx.attr == Attribute.FILL) {
+        svg = abi.encodePacked(svg, '" fill="#', ctx.value);      
+      }      
+    }
+    svg = abi.encodePacked(svg, '" />');
   }
 
   // "_mask" will be added to the id
