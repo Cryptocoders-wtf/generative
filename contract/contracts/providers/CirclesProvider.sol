@@ -83,9 +83,8 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
       node.size /= 2;
       node.x += node.size;
       node.y += node.size;
-      Context.Struct[] memory ctxs = new Context.Struct[](1);
-      ctxs[0] = Context.Struct(Context.Attribute.FILL, props.scheme[i % props.scheme.length]);
-      parts[i] = SVG.circle(int(node.x), int(node.y), int(node.size), ctxs);
+      parts[i] = SVG.circle(int(node.x), int(node.y), int(node.size), 
+        Context.fill(props.scheme[i % props.scheme.length]));
       //  parts[i] = SVG.fill(SVG.circle(int(node.x), int(node.y), int(node.size)), props.scheme[i % props.scheme.length]);
       /*
       parts[i] = abi.encodePacked(

@@ -21,6 +21,11 @@ library Context {
     Attribute attr;
     string value;
   }
+
+  function fill(string memory _value) internal pure returns(Struct[] memory ctx) {
+    ctx = new Struct[](1);
+    ctx[0] = Struct(Attribute.FILL, _value);
+  }
 }
 
 library SVG {
