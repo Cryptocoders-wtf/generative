@@ -13,18 +13,18 @@ import "bytes-array.sol/BytesArray.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-library Context {
-  enum Attribute {
+library Attribute {
+  enum Attr {
     FILL, STROKE, STROKE_WIDTH
   }
   struct Struct {
-    Attribute attr;
+    Attr attr;
     string value;
   }
 
   function fill(string memory _color) internal pure returns(Struct[] memory ctx) {
     ctx = new Struct[](1);
-    ctx[0] = Struct(Attribute.FILL, _color);
+    ctx[0] = Struct(Attr.FILL, _color);
   }
 
   function fill(Struct[] memory _ctx, string memory _color) internal pure returns(Struct[] memory ctx) {
@@ -33,8 +33,8 @@ library Context {
 
   function stroke(string memory _color, string memory _width) internal pure returns(Struct[] memory ctx) {
     ctx = new Struct[](2);
-    ctx[0] = Struct(Attribute.STROKE, _color);
-    ctx[1] = Struct(Attribute.STROKE_WIDTH, _width);
+    ctx[0] = Struct(Attr.STROKE, _color);
+    ctx[1] = Struct(Attr.STROKE_WIDTH, _width);
   }
 
   function stroke(Struct[] memory _ctx, string memory _color, string memory _width) internal pure returns(Struct[] memory ctx) {
@@ -80,17 +80,17 @@ library SVG {
     );
   }
 
-  function circle(int _cx, int _cy, int _radius, Context.Struct[] memory _ctxs) internal pure returns(bytes memory svg) {
+  function circle(int _cx, int _cy, int _radius, Attribute.Struct[] memory _ctxs) internal pure returns(bytes memory svg) {
     svg = abi.encodePacked(
         '<circle cx="', uint(_cx).toString(),'" cy="', uint(_cy).toString(),'" r="', uint(_radius).toString()
     );
     for (uint i=0; i<_ctxs.length; i++) {
-      Context.Struct memory ctx = _ctxs[i];
-      if (ctx.attr == Context.Attribute.FILL) {
+      Attribute.Struct memory ctx = _ctxs[i];
+      if (ctx.attr == Attribute.Attr.FILL) {
         svg = abi.encodePacked(svg, '" fill="', ctx.value);      
-      } else if (ctx.attr == Context.Attribute.STROKE) {
+      } else if (ctx.attr == Attribute.Attr.STROKE) {
         svg = abi.encodePacked(svg, '" stroke="', ctx.value);      
-      } else if (ctx.attr == Context.Attribute.STROKE_WIDTH) {
+      } else if (ctx.attr == Attribute.Attr.STROKE_WIDTH) {
         svg = abi.encodePacked(svg, '" stroke-width="', ctx.value);      
       }      
     }
