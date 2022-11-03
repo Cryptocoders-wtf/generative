@@ -15,20 +15,29 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 library Attribute {
   enum Attr {
-    FILL, STROKE, STROKE_WIDTH
+    FILL, STROKE, STROKE_WIDTH, ID
   }
   struct Struct {
     Attr attr;
     string value;
   }
 
-  function fill(string memory _color) internal pure returns(Struct[] memory ctx) {
+  function id(string memory _value) internal pure returns(Struct[] memory ctx) {
     ctx = new Struct[](1);
-    ctx[0] = Struct(Attr.FILL, _color);
+    ctx[0] = Struct(Attr.ID, _value);
   }
 
-  function fill(Struct[] memory _ctx, string memory _color) internal pure returns(Struct[] memory ctx) {
-    ctx = _concat(_ctx, fill(_color));
+  function id(Struct[] memory _ctx, string memory _value) internal pure returns(Struct[] memory ctx) {
+    ctx = _concat(_ctx, id(_value));
+  }
+
+  function fill(string memory _value) internal pure returns(Struct[] memory ctx) {
+    ctx = new Struct[](1);
+    ctx[0] = Struct(Attr.FILL, _value);
+  }
+
+  function fill(Struct[] memory _ctx, string memory _value) internal pure returns(Struct[] memory ctx) {
+    ctx = _concat(_ctx, fill(_value));
   }
 
   function stroke(string memory _color, string memory _width) internal pure returns(Struct[] memory ctx) {
@@ -55,7 +64,9 @@ library Attribute {
     svg = _svg;
     for (uint i=0; i<_ctxs.length; i++) {
       Attribute.Struct memory ctx = _ctxs[i];
-      if (ctx.attr == Attribute.Attr.FILL) {
+      if (ctx.attr == Attribute.Attr.ID) {
+        svg = abi.encodePacked(svg, '" id="', ctx.value);      
+      } else if (ctx.attr == Attribute.Attr.FILL) {
         svg = abi.encodePacked(svg, '" fill="', ctx.value);      
       } else if (ctx.attr == Attribute.Attr.STROKE) {
         svg = abi.encodePacked(svg, '" stroke="', ctx.value);      
@@ -72,10 +83,16 @@ library SVG {
   using Strings for uint;
   using Attribute for Attribute.Struct[];
 
-  function path(bytes memory _path, string memory _id) internal pure returns(bytes memory svg) {
+  function path(bytes memory _path) internal pure returns(bytes memory svg) {
     svg = abi.encodePacked(
-      '<path id="', _id, '" d="', _path, '"/>\n'
+      '<path d="', _path, '"/>\n'
     );
+  }
+
+  function path(bytes memory _path, Attribute.Struct[] memory _ctxs) internal pure returns(bytes memory svg) {
+    svg = _ctxs._append(abi.encodePacked(
+      '<path d="', _path
+    ));
   }
 
   function group(bytes[] memory _parts, string memory _id) internal pure returns(bytes memory svg) {
