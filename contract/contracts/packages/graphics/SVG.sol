@@ -115,6 +115,17 @@ library SVG {
     tag.attrs[_tag.attrs.length] = _attr;   
   }
 
+  function _append2(Tag memory _tag, Attrib memory _attr, Attrib memory _attr2) internal pure returns(Tag memory tag) {
+    tag.head = _tag.head;
+    tag.tail = _tag.tail;
+    tag.attrs = new Attrib[](_tag.attrs.length + 2);
+    for (uint i=0; i<_tag.attrs.length; i++) {
+      tag.attrs[i] = _tag.attrs[i];
+    }
+    tag.attrs[_tag.attrs.length] = _attr;   
+    tag.attrs[_tag.attrs.length+1] = _attr2;   
+  }
+
   function id(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
     tag = _append(_tag, Attrib(Key.ID, _value));
   }
