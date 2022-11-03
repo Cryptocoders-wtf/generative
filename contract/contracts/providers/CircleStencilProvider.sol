@@ -27,6 +27,7 @@ contract CircleStencilProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
   using BytesArray for bytes[];
+  using SVG for SVG.Tag;
 
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;
@@ -93,7 +94,9 @@ contract CircleStencilProvider is IAssetProvider, IERC165, Ownable {
       );  
     }
     svgPart = string(abi.encodePacked(
-      SVG_OLD.mask(parts.packed(), tag),
+      SVG.stencil(parts.packed())
+        .id(string(abi.encodePacked(tag, '_mask')))
+        .svg(),
       '<rect id="',tag,'_stencil" mask="url(#', tag ,'_mask)" '
         'x="0" y="0" width="100%" height="100%" />\n'));
     svgPart = string(abi.encodePacked(svgPart,
