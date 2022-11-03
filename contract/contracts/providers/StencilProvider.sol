@@ -76,9 +76,8 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
     for (uint i=0; i<props.scheme.length; i++) {
       props.scheme[i] = string(abi.encodePacked('#', props.scheme[i]));      
     }
-    ILayoutGenerator.Node[] memory nodes;
-    tag = string(abi.encodePacked("stencil", _assetId.toString()));
 
+    ILayoutGenerator.Node[] memory nodes;
     (seed, nodes) = generator.generate(seed, 0 + 30 * 0x100 + 60 * 0x10000);
     bytes[] memory parts = new bytes[](nodes.length);
     for (uint i = 0; i < nodes.length; i++) {
@@ -87,24 +86,18 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
       (seed, h) = seed.random(3);
       parts[i] = SVG.rect(int(node.x), int(node.y), node.size, node.size/5 * (h + 2)).svg();
     }
+
+    tag = string(abi.encodePacked("stencil", _assetId.toString()));
     string memory stencil = string(abi.encodePacked(tag, '_stencil'));
-    svgPart = string(abi.encodePacked(
-      SVG.stencil(parts.packed())
-        .id(string(abi.encodePacked(tag, '_mask')))
-        .svg(),
-      SVG.rect()
-        .id(stencil)
-        .mask(string(abi.encodePacked(tag, '_mask')))
-        .svg()
-    ));
-    bytes memory elements = abi.encodePacked(
-          SVG.use(stencil).fill(props.scheme[1]).svg(),
-          SVG.use(stencil).fill(props.scheme[2]).transform("rotate(90 512 512)").svg(),
-          SVG.use(stencil).fill(props.scheme[3]).transform("rotate(180 512 512)").svg(),
-          SVG.use(stencil).fill(props.scheme[4]).transform("rotate(270 512 512)").svg()
-        );
-    svgPart = string(abi.encodePacked(svgPart,
-      SVG.group(elements).id(tag).svg()
-    ));
+    svgPart = string(SVG.packed([
+      SVG.stencil(parts.packed()).id(string(abi.encodePacked(tag, '_mask'))),
+      SVG.rect().mask(string(abi.encodePacked(tag, '_mask'))).id(stencil),
+      SVG.group([
+        SVG.use(stencil).fill(props.scheme[1]),
+        SVG.use(stencil).fill(props.scheme[2]).transform("rotate(90 512 512)"),
+        SVG.use(stencil).fill(props.scheme[3]).transform("rotate(180 512 512)"),
+        SVG.use(stencil).fill(props.scheme[4]).transform("rotate(270 512 512)")
+      ]).id(tag)
+    ]));
   }
 }
