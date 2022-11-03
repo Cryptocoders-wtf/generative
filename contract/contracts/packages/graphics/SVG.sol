@@ -15,6 +15,8 @@ import "hardhat/console.sol";
 
 library SVG {
   using Strings for uint;
+  using BytesArray for bytes[];
+
   struct Attrib {
     string key;
     string value;
@@ -55,6 +57,19 @@ library SVG {
   function group(bytes memory _elements) internal pure returns(Tag memory tag) {
     tag.head = abi.encodePacked('<g x_x="x'); // HACK: dummy header for trailing '"'
     tag.tail = abi.encodePacked('">', _elements, '</g>\n');
+  }
+
+  function packedSVG(Tag[] memory _tags) internal pure returns(bytes memory output) {
+    bytes[] memory svgs = new bytes[](_tags.length);
+    for (uint i=0; i<_tags.length; i++) {
+      svgs[i] = svg(_tags[i]);
+    }
+    output = svgs.packed();
+  }
+
+  function group(Tag[] memory _tags) internal pure returns(Tag memory tag) {
+    tag.head = abi.encodePacked('<g x_x="x'); // HACK: dummy header for trailing '"'
+    tag.tail = abi.encodePacked('">', packedSVG(_tags), '</g>\n');
   }
 
   function mask(bytes memory _elements) internal pure returns(Tag memory tag) {
