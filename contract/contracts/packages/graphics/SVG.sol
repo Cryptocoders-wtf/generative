@@ -15,16 +15,22 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 library Context {
   enum Attribute {
-    FILL
+    FILL, STROKE, STROKE_WIDTH
   }
   struct Struct {
     Attribute attr;
     string value;
   }
 
-  function fill(string memory _value) internal pure returns(Struct[] memory ctx) {
+  function fill(string memory _color) internal pure returns(Struct[] memory ctx) {
     ctx = new Struct[](1);
-    ctx[0] = Struct(Attribute.FILL, _value);
+    ctx[0] = Struct(Attribute.FILL, _color);
+  }
+
+  function stroke(string memory _color, string memory _width) internal pure returns(Struct[] memory ctx) {
+    ctx = new Struct[](2);
+    ctx[0] = Struct(Attribute.STROKE, _color);
+    ctx[1] = Struct(Attribute.STROKE_WIDTH, _width);
   }
 }
 
@@ -65,6 +71,10 @@ library SVG {
       Context.Struct memory ctx = _ctxs[i];
       if (ctx.attr == Context.Attribute.FILL) {
         svg = abi.encodePacked(svg, '" fill="', ctx.value);      
+      } else if (ctx.attr == Context.Attribute.STROKE) {
+        svg = abi.encodePacked(svg, '" stroke="', ctx.value);      
+      } else if (ctx.attr == Context.Attribute.STROKE_WIDTH) {
+        svg = abi.encodePacked(svg, '" stroke-width="', ctx.value);      
       }      
     }
     svg = abi.encodePacked(svg, '" />');
