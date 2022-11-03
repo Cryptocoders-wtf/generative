@@ -11,7 +11,6 @@ pragma solidity ^0.8.6;
 
 import "bytes-array.sol/BytesArray.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
 import "hardhat/console.sol";
 
 library SVG {
@@ -34,6 +33,17 @@ library SVG {
 
   function circle(int _cx, int _cy, int _radius) internal pure returns(Tag memory tag) {
     tag.head = abi.encodePacked('<circle cx="', uint(_cx).toString(),'" cy="', uint(_cy).toString(),'" r="', uint(_radius).toString());
+    tag.tail = '"/>\n';
+  }
+
+  function rect(int _x, int _y, uint _width, uint _height) internal pure returns(Tag memory tag) {
+    tag.head = abi.encodePacked('<rect x="', uint(_x).toString(),'" y="', uint(_y).toString(),
+                                '" width="', _width.toString(), '" height="', _height.toString());
+    tag.tail = '"/>\n';
+  }
+
+  function rect() internal pure returns(Tag memory tag) {
+    tag.head = abi.encodePacked('<rect width="100%" height="100%');
     tag.tail = '"/>\n';
   }
 
@@ -91,6 +101,10 @@ library SVG {
 
   function fill(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
     tag = _append(_tag, Attrib("fill", _value));
+  }
+
+  function mask(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
+    tag = _append(_tag, Attrib("mask", string(abi.encodePacked('url(#', _value,')'))));
   }
 
   function stroke(Tag memory _tag, string memory _color, uint _width) internal pure returns(Tag memory tag) {
