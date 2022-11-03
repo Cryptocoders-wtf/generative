@@ -84,7 +84,7 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
       node.size /= 2;
       node.x += node.size;
       node.y += node.size;
-      parts[i] = SVG.circle(int(node.x), int(node.y), int(node.size), 
+      parts[i] = SVG_OLD.circle(int(node.x), int(node.y), int(node.size), 
         Attribute.fill(props.scheme[i % props.scheme.length]).stroke("black", "10"));
         // Attribute.fill(props.scheme[i % props.scheme.length]));
       //  parts[i] = SVG.fill(SVG.circle(int(node.x), int(node.y), int(node.size)), props.scheme[i % props.scheme.length]);
@@ -95,6 +95,6 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
       );
       */  
     }
-    svgPart = string(SVG.group(parts, tag));
+    svgPart = string(SVG_OLD.group(parts, tag));
   }
 }

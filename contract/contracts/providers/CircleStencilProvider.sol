@@ -93,7 +93,7 @@ contract CircleStencilProvider is IAssetProvider, IERC165, Ownable {
       );  
     }
     svgPart = string(abi.encodePacked(
-      SVG.mask(parts.packed(), tag),
+      SVG_OLD.mask(parts.packed(), tag),
       '<rect id="',tag,'_stencil" mask="url(#', tag ,'_mask)" '
         'x="0" y="0" width="100%" height="100%" />\n'));
     svgPart = string(abi.encodePacked(svgPart,
