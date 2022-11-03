@@ -106,13 +106,14 @@ contract CircleStencilProvider is IAssetProvider, IERC165, Ownable {
         .mask(string(abi.encodePacked(tag, '_mask')))
         .svg()
     ));
+    bytes memory elements = abi.encodePacked(
+          SVG.use(stencil).fill(props.scheme[1]).svg(),
+          SVG.use(stencil).fill(props.scheme[2]).transform("rotate(90 512 512)").svg(),
+          SVG.use(stencil).fill(props.scheme[3]).transform("rotate(180 512 512)").svg(),
+          SVG.use(stencil).fill(props.scheme[4]).transform("rotate(270 512 512)").svg()
+        );
     svgPart = string(abi.encodePacked(svgPart,
-      '<g id="',tag,'" >\n',
-      SVG.use(stencil).fill(props.scheme[1]).svg(),
-      SVG.use(stencil).fill(props.scheme[2]).transform("rotate(90 512 512)").svg(),
-      SVG.use(stencil).fill(props.scheme[3]).transform("rotate(180 512 512)").svg(),
-      SVG.use(stencil).fill(props.scheme[4]).transform("rotate(270 512 512)").svg(),
-      '</g>\n'
+      SVG.group(elements).id(tag).svg()
     ));
   }
 }
