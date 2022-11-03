@@ -105,7 +105,7 @@ library SVG {
     tag.tail = '" />';
   }
 
-  function _append(Tag memory _tag, Attrib memory _attr) internal view returns(Tag memory tag) {
+  function _append(Tag memory _tag, Attrib memory _attr) internal pure returns(Tag memory tag) {
     tag.head = _tag.head;
     tag.tail = _tag.tail;
     tag.attrs = new Attrib[](_tag.attrs.length + 1);
@@ -115,11 +115,11 @@ library SVG {
     tag.attrs[_tag.attrs.length] = _attr;   
   }
 
-  function id(Tag memory _tag, string memory _value) internal view returns(Tag memory tag) {
+  function id(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
     tag = _append(_tag, Attrib(Key.ID, _value));
   }
 
-  function svg(Tag memory _tag) internal view returns (bytes memory output) {
+  function svg(Tag memory _tag) internal pure returns (bytes memory output) {
     output = _tag.head;
     for (uint i=0; i<_tag.attrs.length; i++) {
       Attrib memory attr = _tag.attrs[i];
