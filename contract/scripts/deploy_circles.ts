@@ -48,8 +48,8 @@ async function main() {
   await contractGlasses.deployed();
   console.log(`      contractGlasses="${contractGlasses.address}"`);
 
-  //const result = await contractStencil.generateSVGPart(0);
-  //console.log("result", result);
+  const result = await contractArt.generateSVGPart(0);
+  console.log("result", result);
 
   const addresses = `export const addresses = {\n`
     + `  matrixGenerator:"${contractGenerator.address}",\n`

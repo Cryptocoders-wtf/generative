@@ -25,8 +25,8 @@ import "../interfaces/ILayoutGenerator.sol";
 contract CirclesProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
-  using Attribute for Attribute.Struct[];
   using SVG for SVG.Tag;
+  using BytesArray for bytes[];
 
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;
@@ -90,6 +90,6 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
                       .stroke("black", 10)
                       .svg();
     }
-    svgPart = string(SVG_OLD.group(parts, tag));
+    svgPart = string(SVG.group(parts.packed()).id(tag).svg());
   }
 }

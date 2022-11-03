@@ -103,7 +103,7 @@ library SVG {
   }
 
   function group(bytes memory _elements) internal pure returns(Tag memory tag) {
-    tag.head = abi.encodePacked('<g x:x="x'); // HACK: dummy header for trailing '"'
+    tag.head = abi.encodePacked('<g x_x="x'); // HACK: dummy header for trailing '"'
     tag.tail = abi.encodePacked('">', _elements, '</g>\n');
   }
 
