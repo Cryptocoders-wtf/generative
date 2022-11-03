@@ -188,4 +188,15 @@ library SVG {
     }
     output = abi.encodePacked(output, _tag.tail);
   }
+
+  function document(string memory _viewBox, bytes memory _defs, bytes memory _body) internal pure returns (bytes memory output) {
+    output = abi.encodePacked(
+      '<svg viewBox="', _viewBox, '"'
+      ' xmlns="http://www.w3.org/2000/svg">\n'
+    );
+    if (_defs.length > 0) {
+      output = abi.encodePacked(output, '<defs>\n', _defs, '</defs>\n');
+    }
+    output = abi.encodePacked(output, _body, '</svg>\n');
+  }
 }
