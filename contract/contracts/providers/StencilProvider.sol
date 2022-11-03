@@ -85,11 +85,7 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
       ILayoutGenerator.Node memory node = nodes[i];
       uint h;
       (seed, h) = seed.random(3);
-      parts[i] = abi.encodePacked(
-        '<rect x="',node.x.toString(),'" y="',node.y.toString(),'" '
-          'width="',node.size.toString(),'" height="',(node.size/5 * (h + 2)).toString(),'"'
-          ' fill="black" />'
-      );  
+      parts[i] = SVG.rect(int(node.x), int(node.y), node.size, node.size/5 * (h + 2)).svg();
     }
     string memory stencil = string(abi.encodePacked(tag, '_stencil'));
     svgPart = string(abi.encodePacked(
