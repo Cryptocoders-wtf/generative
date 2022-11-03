@@ -50,6 +50,21 @@ library Attribute {
       ctx[i + _ctx0.length] = _ctx1[i];      
     }
   }
+
+  function _append(Attribute.Struct[] memory _ctxs, bytes memory _svg) internal pure returns(bytes memory svg) {
+    svg = _svg;
+    for (uint i=0; i<_ctxs.length; i++) {
+      Attribute.Struct memory ctx = _ctxs[i];
+      if (ctx.attr == Attribute.Attr.FILL) {
+        svg = abi.encodePacked(svg, '" fill="', ctx.value);      
+      } else if (ctx.attr == Attribute.Attr.STROKE) {
+        svg = abi.encodePacked(svg, '" stroke="', ctx.value);      
+      } else if (ctx.attr == Attribute.Attr.STROKE_WIDTH) {
+        svg = abi.encodePacked(svg, '" stroke-width="', ctx.value);      
+      }      
+    }
+    svg = abi.encodePacked(svg, '" />');
+  }
 }
 
 library SVG {
@@ -84,17 +99,7 @@ library SVG {
     svg = abi.encodePacked(
         '<circle cx="', uint(_cx).toString(),'" cy="', uint(_cy).toString(),'" r="', uint(_radius).toString()
     );
-    for (uint i=0; i<_ctxs.length; i++) {
-      Attribute.Struct memory ctx = _ctxs[i];
-      if (ctx.attr == Attribute.Attr.FILL) {
-        svg = abi.encodePacked(svg, '" fill="', ctx.value);      
-      } else if (ctx.attr == Attribute.Attr.STROKE) {
-        svg = abi.encodePacked(svg, '" stroke="', ctx.value);      
-      } else if (ctx.attr == Attribute.Attr.STROKE_WIDTH) {
-        svg = abi.encodePacked(svg, '" stroke-width="', ctx.value);      
-      }      
-    }
-    svg = abi.encodePacked(svg, '" />');
+    svg = Attribute._append(_ctxs, svg);
   }
 
   // "_mask" will be added to the id
