@@ -25,7 +25,7 @@ import "../interfaces/ILayoutGenerator.sol";
 contract CirclesProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
-  using Context for Context.Struct;
+  using Context for Context.Struct[];
 
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;
@@ -85,7 +85,7 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
       node.x += node.size;
       node.y += node.size;
       parts[i] = SVG.circle(int(node.x), int(node.y), int(node.size), 
-        Context.stroke(props.scheme[i % props.scheme.length], "5"));
+        Context.fill(props.scheme[i % props.scheme.length]).stroke("black", "10"));
         // Context.fill(props.scheme[i % props.scheme.length]));
       //  parts[i] = SVG.fill(SVG.circle(int(node.x), int(node.y), int(node.size)), props.scheme[i % props.scheme.length]);
       /*

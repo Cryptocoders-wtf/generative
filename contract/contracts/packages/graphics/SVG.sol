@@ -27,17 +27,34 @@ library Context {
     ctx[0] = Struct(Attribute.FILL, _color);
   }
 
+  function fill(Struct[] memory _ctx, string memory _color) internal pure returns(Struct[] memory ctx) {
+    ctx = _concat(_ctx, fill(_color));
+  }
+
   function stroke(string memory _color, string memory _width) internal pure returns(Struct[] memory ctx) {
     ctx = new Struct[](2);
     ctx[0] = Struct(Attribute.STROKE, _color);
     ctx[1] = Struct(Attribute.STROKE_WIDTH, _width);
+  }
+
+  function stroke(Struct[] memory _ctx, string memory _color, string memory _width) internal pure returns(Struct[] memory ctx) {
+    ctx = _concat(_ctx, stroke(_color, _width));
+  }
+
+  function _concat(Struct[] memory _ctx0, Struct[] memory _ctx1) internal pure returns(Struct[] memory ctx) {
+    ctx = new Struct[](_ctx0.length + _ctx1.length);
+    for (uint i=0; i<_ctx0.length; i++) {
+      ctx[i] = _ctx0[i];
+    }
+    for (uint i=0; i<_ctx1.length; i++) {
+      ctx[i + _ctx0.length] = _ctx1[i];      
+    }
   }
 }
 
 library SVG {
   using BytesArray for bytes[];
   using Strings for uint;
-
 
   function path(bytes memory _path, string memory _id) internal pure returns(bytes memory svg) {
     svg = abi.encodePacked(
