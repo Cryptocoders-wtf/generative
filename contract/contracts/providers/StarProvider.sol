@@ -92,7 +92,7 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
     (, props) = generateProps(_assetId);
     bytes memory path = generatePath(props);
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
-    svgPart = string(SVG.path(path).id(tag).svg());
+    svgPart = string(SVG.path(path).id(tag).stroke("black", 10).svg());
   }
 
   function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {

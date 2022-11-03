@@ -81,11 +81,8 @@ library Attribute {
 
 library SVG {
   using Strings for uint;
-  enum Key {
-    FILL, STROKE, STROKE_WIDTH, ID
-  }
   struct Attrib {
-    Key key;
+    string key;
     string value;
   }
 
@@ -127,22 +124,18 @@ library SVG {
   }
 
   function id(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
-    tag = _append(_tag, Attrib(Key.ID, _value));
+    tag = _append(_tag, Attrib("id", _value));
+  }
+
+  function stroke(Tag memory _tag, string memory _color, uint _width) internal pure returns(Tag memory tag) {
+    tag = _append2(_tag, Attrib("stroke", _color), Attrib("stroke-width", _width.toString()));
   }
 
   function svg(Tag memory _tag) internal pure returns (bytes memory output) {
     output = _tag.head;
     for (uint i=0; i<_tag.attrs.length; i++) {
       Attrib memory attr = _tag.attrs[i];
-      if (attr.key == Key.ID) {
-        output = abi.encodePacked(output, '" id="', attr.value);      
-      } else if (attr.key == Key.FILL) {
-        output = abi.encodePacked(output, '" fill="', attr.value);      
-      } else if (attr.key == Key.STROKE) {
-        output = abi.encodePacked(output, '" stroke="', attr.value);      
-      } else if (attr.key == Key.STROKE_WIDTH) {
-        output = abi.encodePacked(output, '" stroke-width="', attr.value);      
-      }      
+      output = abi.encodePacked(output, '" ', attr.key ,'="', attr.value);      
     }
     output = abi.encodePacked(output, _tag.tail);
   }
