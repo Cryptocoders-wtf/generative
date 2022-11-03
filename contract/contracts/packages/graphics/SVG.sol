@@ -99,7 +99,12 @@ library SVG {
 
   function circle(int _cx, int _cy, int _radius) internal pure returns(Tag memory tag) {
     tag.head = abi.encodePacked('<circle cx="', uint(_cx).toString(),'" cy="', uint(_cy).toString(),'" r="', uint(_radius).toString());
-    tag.tail = '" />';
+    tag.tail = '"/>\n';
+  }
+
+  function group(bytes memory _elements) internal pure returns(Tag memory tag) {
+    tag.head = abi.encodePacked('<g x:x="x'); // HACK: dummy header for trailing '"'
+    tag.tail = abi.encodePacked('">', _elements, '</g>\n');
   }
 
   function _append(Tag memory _tag, Attrib memory _attr) internal pure returns(Tag memory tag) {
@@ -125,6 +130,10 @@ library SVG {
 
   function id(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
     tag = _append(_tag, Attrib("id", _value));
+  }
+
+  function fill(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
+    tag = _append(_tag, Attrib("fill", _value));
   }
 
   function stroke(Tag memory _tag, string memory _color, uint _width) internal pure returns(Tag memory tag) {

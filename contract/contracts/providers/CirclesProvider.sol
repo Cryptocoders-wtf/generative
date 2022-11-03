@@ -26,6 +26,7 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
   using Attribute for Attribute.Struct[];
+  using SVG for SVG.Tag;
 
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;
@@ -84,16 +85,10 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
       node.size /= 2;
       node.x += node.size;
       node.y += node.size;
-      parts[i] = SVG_OLD.circle(int(node.x), int(node.y), int(node.size), 
-        Attribute.fill(props.scheme[i % props.scheme.length]).stroke("black", "10"));
-        // Attribute.fill(props.scheme[i % props.scheme.length]));
-      //  parts[i] = SVG.fill(SVG.circle(int(node.x), int(node.y), int(node.size)), props.scheme[i % props.scheme.length]);
-      /*
-      parts[i] = abi.encodePacked(
-        '<circle cx="',node.x.toString(),'" cy="',node.y.toString(),'" r="',node.size.toString(),'"'
-          ' fill="#', props.scheme[i % props.scheme.length], '" />'
-      );
-      */  
+      parts[i] = SVG.circle(int(node.x), int(node.y), int(node.size))
+                      .fill(props.scheme[i % props.scheme.length])
+                      .stroke("black", 10)
+                      .svg();
     }
     svgPart = string(SVG_OLD.group(parts, tag));
   }
