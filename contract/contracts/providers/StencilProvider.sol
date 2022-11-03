@@ -17,6 +17,7 @@ import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "../interfaces/IColorSchemes.sol";
 import "../interfaces/ILayoutGenerator.sol";
 import "bytes-array.sol/BytesArray.sol";
+import "../packages/graphics/SVG.sol";
 
 /**
  * MultiplexProvider create a new asset provider from another asset provider,
@@ -26,6 +27,7 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
   using BytesArray for bytes[];
+  using SVG for SVG.Tag;
 
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;
@@ -89,20 +91,24 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
           ' fill="black" />'
       );  
     }
+    string memory stencil = string(abi.encodePacked(tag, '_stencil'));
     svgPart = string(abi.encodePacked(
-      '<mask id="',tag,'_mask">'
-      '<rect x="0" y="0" width="100%" height="100%" fill="white"/>',
-      parts.packed(),
-      '</mask>\n'
-      '<rect id="',tag,'_stencil" mask="url(#', tag ,'_mask)" '
-        'x="0" y="0" width="100%" height="100%" />\n'));
+      SVG.stencil(parts.packed())
+        .id(string(abi.encodePacked(tag, '_mask')))
+        .svg(),
+      SVG.rect()
+        .id(stencil)
+        .mask(string(abi.encodePacked(tag, '_mask')))
+        .svg()
+    ));
+    bytes memory elements = abi.encodePacked(
+          SVG.use(stencil).fill(props.scheme[1]).svg(),
+          SVG.use(stencil).fill(props.scheme[2]).transform("rotate(90 512 512)").svg(),
+          SVG.use(stencil).fill(props.scheme[3]).transform("rotate(180 512 512)").svg(),
+          SVG.use(stencil).fill(props.scheme[4]).transform("rotate(270 512 512)").svg()
+        );
     svgPart = string(abi.encodePacked(svgPart,
-      '<g id="',tag,'" >\n'
-      '<use href="#', tag ,'_stencil" fill="', props.scheme[1], '" />\n'
-      '<use href="#', tag ,'_stencil" fill="', props.scheme[2], '" transform="rotate(90 512 512)"/>\n'
-      '<use href="#', tag ,'_stencil" fill="', props.scheme[3], '" transform="rotate(180 512 512)"/>\n'
-      '<use href="#', tag ,'_stencil" fill="', props.scheme[4], '" transform="rotate(270 512 512)"/>\n'
-      '</g>\n'
+      SVG.group(elements).id(tag).svg()
     ));
   }
 }
