@@ -12,7 +12,7 @@ pragma solidity ^0.8.6;
 import "bytes-array.sol/BytesArray.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-
+import "hardhat/console.sol";
 
 library Attribute {
   enum Attr {
@@ -105,21 +105,21 @@ library SVG {
     tag.tail = '" />';
   }
 
-  function _append(Tag memory _tag, Attrib memory _attr) internal pure returns(Tag memory tag) {
+  function _append(Tag memory _tag, Attrib memory _attr) internal view returns(Tag memory tag) {
     tag.head = _tag.head;
     tag.tail = _tag.tail;
     tag.attrs = new Attrib[](_tag.attrs.length + 1);
     for (uint i=0; i<_tag.attrs.length; i++) {
       tag.attrs[i] = _tag.attrs[i];
     }
-    tag.attrs[_tag.attrs.length + 1] = _attr;      
+    tag.attrs[_tag.attrs.length] = _attr;   
   }
 
-  function id(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
+  function id(Tag memory _tag, string memory _value) internal view returns(Tag memory tag) {
     tag = _append(_tag, Attrib(Key.ID, _value));
   }
 
-  function svg(Tag memory _tag) internal pure returns (bytes memory output) {
+  function svg(Tag memory _tag) internal view returns (bytes memory output) {
     output = _tag.head;
     for (uint i=0; i<_tag.attrs.length; i++) {
       Attrib memory attr = _tag.attrs[i];
