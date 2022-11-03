@@ -8,8 +8,9 @@ async function main() {
   await contract.deployed();
   console.log(`      snow="${contract.address}"`);
 
-  const result = await contract.generateSVGPart(0);
+  const result = await contract.generateSVGDocument(0);
   console.log("svg", result);
+  await writeFile(`./cache/star.svg`, result, ()=>{});  
 
   /*
   const factoryArt = await ethers.getContractFactory("RepeatProvider");

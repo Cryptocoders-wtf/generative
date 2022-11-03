@@ -86,7 +86,7 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
     (seed, props.length) = seed.randomize(40, 50); // +/- 50%
   }
 
-  function generateSVGPart(uint256 _assetId) external pure override returns(string memory svgPart, string memory tag) {
+  function generateSVGPart(uint256 _assetId) public pure override returns(string memory svgPart, string memory tag) {
     Props memory props;
     (, props) = generateProps(_assetId);
     bytes memory path = generatePath(props);
@@ -96,5 +96,17 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
 
   function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
     // nothing to return
+  }
+
+  // For debugging
+  function generateSVGDocument(uint256 _assetId) external pure returns(string memory svgDocument) {
+    string memory svgPart;
+    string memory tag;
+    (svgPart, tag) = generateSVGPart(_assetId);
+    svgDocument = string(SVG.document(
+      "0 0 1024 1024",
+      bytes(svgPart),
+      SVG.use(tag).svg()
+    ));
   }
 }

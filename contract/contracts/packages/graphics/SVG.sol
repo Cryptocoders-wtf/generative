@@ -17,7 +17,7 @@ library SVG {
   using Strings for uint;
   using BytesArray for bytes[];
 
-  struct Attrib {
+  struct Attribute {
     string key;
     string value;
   }
@@ -25,7 +25,7 @@ library SVG {
   struct Tag {
     bytes head;
     bytes tail;
-    Attrib[] attrs;    
+    Attribute[] attrs;    
   }
 
   function path(bytes memory _path) internal pure returns(Tag memory tag) {
@@ -139,20 +139,20 @@ library SVG {
       '</mask>\n');
   }
 
-  function _append(Tag memory _tag, Attrib memory _attr) internal pure returns(Tag memory tag) {
+  function _append(Tag memory _tag, Attribute memory _attr) internal pure returns(Tag memory tag) {
     tag.head = _tag.head;
     tag.tail = _tag.tail;
-    tag.attrs = new Attrib[](_tag.attrs.length + 1);
+    tag.attrs = new Attribute[](_tag.attrs.length + 1);
     for (uint i=0; i<_tag.attrs.length; i++) {
       tag.attrs[i] = _tag.attrs[i];
     }
     tag.attrs[_tag.attrs.length] = _attr;   
   }
 
-  function _append2(Tag memory _tag, Attrib memory _attr, Attrib memory _attr2) internal pure returns(Tag memory tag) {
+  function _append2(Tag memory _tag, Attribute memory _attr, Attribute memory _attr2) internal pure returns(Tag memory tag) {
     tag.head = _tag.head;
     tag.tail = _tag.tail;
-    tag.attrs = new Attrib[](_tag.attrs.length + 2);
+    tag.attrs = new Attribute[](_tag.attrs.length + 2);
     for (uint i=0; i<_tag.attrs.length; i++) {
       tag.attrs[i] = _tag.attrs[i];
     }
@@ -161,29 +161,29 @@ library SVG {
   }
 
   function id(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
-    tag = _append(_tag, Attrib("id", _value));
+    tag = _append(_tag, Attribute("id", _value));
   }
 
   function fill(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
-    tag = _append(_tag, Attrib("fill", _value));
+    tag = _append(_tag, Attribute("fill", _value));
   }
 
   function transform(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
-    tag = _append(_tag, Attrib("transform", _value));
+    tag = _append(_tag, Attribute("transform", _value));
   }
 
   function mask(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
-    tag = _append(_tag, Attrib("mask", string(abi.encodePacked('url(#', _value,')'))));
+    tag = _append(_tag, Attribute("mask", string(abi.encodePacked('url(#', _value,')'))));
   }
 
   function stroke(Tag memory _tag, string memory _color, uint _width) internal pure returns(Tag memory tag) {
-    tag = _append2(_tag, Attrib("stroke", _color), Attrib("stroke-width", _width.toString()));
+    tag = _append2(_tag, Attribute("stroke", _color), Attribute("stroke-width", _width.toString()));
   }
 
   function svg(Tag memory _tag) internal pure returns (bytes memory output) {
     output = _tag.head;
     for (uint i=0; i<_tag.attrs.length; i++) {
-      Attrib memory attr = _tag.attrs[i];
+      Attribute memory attr = _tag.attrs[i];
       output = abi.encodePacked(output, '" ', attr.key ,'="', attr.value);      
     }
     output = abi.encodePacked(output, _tag.tail);
