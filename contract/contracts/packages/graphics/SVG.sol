@@ -70,6 +70,7 @@ library Attribute {
 library SVG {
   using BytesArray for bytes[];
   using Strings for uint;
+  using Attribute for Attribute.Struct[];
 
   function path(bytes memory _path, string memory _id) internal pure returns(bytes memory svg) {
     svg = abi.encodePacked(
@@ -96,10 +97,9 @@ library SVG {
   }
 
   function circle(int _cx, int _cy, int _radius, Attribute.Struct[] memory _ctxs) internal pure returns(bytes memory svg) {
-    svg = abi.encodePacked(
+    svg = _ctxs._append(abi.encodePacked(
         '<circle cx="', uint(_cx).toString(),'" cy="', uint(_cy).toString(),'" r="', uint(_radius).toString()
-    );
-    svg = Attribute._append(_ctxs, svg);
+    ));
   }
 
   // "_mask" will be added to the id
