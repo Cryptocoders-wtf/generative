@@ -70,6 +70,9 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
     Properties memory props;
     Randomizer.Seed memory seed;
     (seed, props.scheme) = colorSchemes.getColorScheme(_assetId);
+    for (uint i = 0; i < props.scheme.length; i++) {
+      props.scheme[i] = string(abi.encodePacked("#", props.scheme[i]));
+    }    
     ILayoutGenerator.Node[] memory nodes;
     tag = string(abi.encodePacked("circles", _assetId.toString()));
 
@@ -80,9 +83,12 @@ contract CirclesProvider is IAssetProvider, IERC165, Ownable {
       node.size /= 2;
       node.x += node.size;
       node.y += node.size;
+      /*
       SVG.Context[] memory ctxs = new SVG.Context[](1);
       ctxs[0] = SVG.Context(SVG.Attribute.FILL, props.scheme[i % props.scheme.length]);
       parts[i] = SVG.circle(int(node.x), int(node.y), int(node.size), ctxs);
+      */
+      parts[i] = SVG.fill(SVG.circle(int(node.x), int(node.y), int(node.size)), props.scheme[i % props.scheme.length]);
       /*
       parts[i] = abi.encodePacked(
         '<circle cx="',node.x.toString(),'" cy="',node.y.toString(),'" r="',node.size.toString(),'"'

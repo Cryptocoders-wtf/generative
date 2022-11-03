@@ -37,6 +37,12 @@ library SVG {
     );
   }
 
+  function fill(bytes memory _svg, string memory _value) internal pure returns(bytes memory svg) {
+    svg = abi.encodePacked(
+      '<g fill="', _value, '">', _svg, '</g>\n'
+    );
+  }
+
   function circle(int _cx, int _cy, int _radius) internal pure returns(bytes memory svg) {
     svg = abi.encodePacked(
         '<circle cx="', uint(_cx).toString(),'" cy="', uint(_cy).toString(),'" r="', uint(_radius).toString(),'" />'
@@ -50,7 +56,7 @@ library SVG {
     for (uint i=0; i<_ctxs.length; i++) {
       Context memory ctx = _ctxs[i];
       if (ctx.attr == Attribute.FILL) {
-        svg = abi.encodePacked(svg, '" fill="#', ctx.value);      
+        svg = abi.encodePacked(svg, '" fill="', ctx.value);      
       }      
     }
     svg = abi.encodePacked(svg, '" />');
