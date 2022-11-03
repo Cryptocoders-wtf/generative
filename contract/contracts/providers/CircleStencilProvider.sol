@@ -96,21 +96,22 @@ contract CircleStencilProvider is IAssetProvider, IERC165, Ownable {
         '<circle cx="',node.x.toString(),'" cy="',node.y.toString(),'" r="',node.size.toString(),'" />'
       );  
     }
+    string memory stencil = string(abi.encodePacked(tag, '_stencil'));
     svgPart = string(abi.encodePacked(
       SVG.stencil(parts.packed())
         .id(string(abi.encodePacked(tag, '_mask')))
         .svg(),
       SVG.rect()
-        .id(string(abi.encodePacked(tag, '_stencil')))
+        .id(stencil)
         .mask(string(abi.encodePacked(tag, '_mask')))
         .svg()
     ));
     svgPart = string(abi.encodePacked(svgPart,
-      '<g id="',tag,'" >\n'
-      '<use href="#', tag ,'_stencil" fill="', props.scheme[1], '" />\n'
-      '<use href="#', tag ,'_stencil" fill="', props.scheme[2], '" transform="rotate(90 512 512)"/>\n'
-      '<use href="#', tag ,'_stencil" fill="', props.scheme[3], '" transform="rotate(180 512 512)"/>\n'
-      '<use href="#', tag ,'_stencil" fill="', props.scheme[4], '" transform="rotate(270 512 512)"/>\n'
+      '<g id="',tag,'" >\n',
+      SVG.use(stencil).fill(props.scheme[1]).svg(),
+      SVG.use(stencil).fill(props.scheme[2]).transform("rotate(90 512 512)").svg(),
+      SVG.use(stencil).fill(props.scheme[3]).transform("rotate(180 512 512)").svg(),
+      SVG.use(stencil).fill(props.scheme[4]).transform("rotate(270 512 512)").svg(),
       '</g>\n'
     ));
   }

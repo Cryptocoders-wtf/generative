@@ -47,6 +47,11 @@ library SVG {
     tag.tail = '"/>\n';
   }
 
+  function use(string memory _id) internal pure returns(Tag memory tag) {
+    tag.head = abi.encodePacked('<use href="#', _id);
+    tag.tail = '"/>\n';
+  }
+
   function group(bytes memory _elements) internal pure returns(Tag memory tag) {
     tag.head = abi.encodePacked('<g x_x="x'); // HACK: dummy header for trailing '"'
     tag.tail = abi.encodePacked('">', _elements, '</g>\n');
@@ -101,6 +106,10 @@ library SVG {
 
   function fill(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
     tag = _append(_tag, Attrib("fill", _value));
+  }
+
+  function transform(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
+    tag = _append(_tag, Attrib("transform", _value));
   }
 
   function mask(Tag memory _tag, string memory _value) internal pure returns(Tag memory tag) {
