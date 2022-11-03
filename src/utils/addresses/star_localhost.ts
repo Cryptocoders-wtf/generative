@@ -1,3 +1,3 @@
 export const addresses = {
-  starAddress: "0xe044814c9eD1e6442Af956a817c161192cBaE98F",
-};
+  starAddress:"0x5E5713a0d915701F464DEbb66015adD62B2e6AE9",
+}
