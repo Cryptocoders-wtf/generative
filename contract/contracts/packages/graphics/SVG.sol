@@ -13,17 +13,20 @@ import "bytes-array.sol/BytesArray.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+library Context {
+  enum Attribute {
+    FILL
+  }
+  struct Struct {
+    Attribute attr;
+    string value;
+  }
+}
+
 library SVG {
   using BytesArray for bytes[];
   using Strings for uint;
 
-  enum Attribute {
-    FILL
-  }
-  struct Context {
-    Attribute attr;
-    string value;
-  }
 
   function path(bytes memory _path, string memory _id) internal pure returns(bytes memory svg) {
     svg = abi.encodePacked(
@@ -49,13 +52,13 @@ library SVG {
     );
   }
 
-  function circle(int _cx, int _cy, int _radius, Context[] memory _ctxs) internal pure returns(bytes memory svg) {
+  function circle(int _cx, int _cy, int _radius, Context.Struct[] memory _ctxs) internal pure returns(bytes memory svg) {
     svg = abi.encodePacked(
         '<circle cx="', uint(_cx).toString(),'" cy="', uint(_cy).toString(),'" r="', uint(_radius).toString()
     );
     for (uint i=0; i<_ctxs.length; i++) {
-      Context memory ctx = _ctxs[i];
-      if (ctx.attr == Attribute.FILL) {
+      Context.Struct memory ctx = _ctxs[i];
+      if (ctx.attr == Context.Attribute.FILL) {
         svg = abi.encodePacked(svg, '" fill="', ctx.value);      
       }      
     }
