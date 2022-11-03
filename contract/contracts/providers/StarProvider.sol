@@ -23,7 +23,6 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
   using Randomizer for Randomizer.Seed;
   using Vector for Vector.Struct;
   using Path for uint[];
-  using Attribute for Attribute.Struct[];
   using SVG for SVG.Tag;
 
   struct Props {
