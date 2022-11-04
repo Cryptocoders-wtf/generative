@@ -50,7 +50,7 @@ contract SVGTest {
 
     samples[5] = SVG.group([
                       SVG.rect(256, 256, 512, 512).fill("yellow"),
-                      SVG.circle(360, 360, 200)
+                      SVG.circle(320, 320, 280)
                     ]).id("test5");
 
     samples[6] = SVG.use("test5")
@@ -75,7 +75,7 @@ contract SVGTest {
 
     {
       uint count = 12;
-      int radius = 511;
+      int radius = 480;
       Vector.Struct memory center = Vector.vector(512, 512);
       uint[] memory points = new uint[](count * 2);    
       for (uint i = 0; i < count * 2; i += 2) {
@@ -92,8 +92,25 @@ contract SVGTest {
                         .fill("green"),                      
                       SVG.use("test5")
                         .fill("red")                      
-                        .transform("translate(300 300) scale(0.8)")
                     ]).id("test9");
+
+    samples[10] = SVG.group([
+                      SVG.mask(
+                        SVG.use("test8")
+                      ).id("test10_mask"),
+                      SVG.use("test5")
+                        .fill("red")                      
+                        .mask("test10_mask")
+                    ]).id("test10");
+
+    samples[11] = SVG.group([
+                      SVG.stencil(
+                        SVG.use("test8")
+                      ).id("test11_mask"),                      
+                      SVG.use("test5")
+                        .fill("red")                      
+                        .mask("test11_mask")
+                    ]).id("test11");
 
     for (uint i=0; i<16; i++) {
       uint x = 256 * (i % 4);

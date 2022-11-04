@@ -94,6 +94,11 @@ library SVG {
     output = svgs.packed();
   }
 
+  function group(Tag memory _tag) internal pure returns(Tag memory tag) {
+    tag.head = abi.encodePacked('<g x_x="x'); // HACK: dummy header for trailing '"'
+    tag.tail = abi.encodePacked('">', svg(_tag), '</g>\n');
+  }
+
   function group(Tag[] memory _tags) internal pure returns(Tag memory tag) {
     tag.head = abi.encodePacked('<g x_x="x'); // HACK: dummy header for trailing '"'
     tag.tail = abi.encodePacked('">', packed(_tags), '</g>\n');
@@ -128,6 +133,10 @@ library SVG {
       '</mask>\n');
   }
 
+  function mask(Tag memory _tag) internal pure returns(Tag memory tag) {
+    tag = mask(svg(_tag));
+  }
+
   function stencil(bytes memory _elements) internal pure returns(Tag memory tag) {
     tag.head = abi.encodePacked('<mask x_x="x'); // HACK: dummy header for trailing '"'
     tag.tail = abi.encodePacked(
@@ -137,6 +146,10 @@ library SVG {
       _elements,
       '</g>' 
       '</mask>\n');
+  }
+
+  function stencil(Tag memory _tag) internal pure returns(Tag memory tag) {
+    tag = stencil(svg(_tag));
   }
 
   function _append(Tag memory _tag, Attribute memory _attr) internal pure returns(Tag memory tag) {
