@@ -55,7 +55,7 @@ contract SVGTest {
 
     samples[6] = SVG.use("test5")
                       .fill("green")
-                      .transform("rotate(40 512 512)")
+                      .transform("translate(200 200) scale(0.6) rotate(45 512 512) ")
                       .id("test6");
 
     samples[7] = SVG.group([
