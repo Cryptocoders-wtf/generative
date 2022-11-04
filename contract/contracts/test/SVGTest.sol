@@ -112,6 +112,20 @@ contract SVGTest {
                         .mask("test11_mask")
                     ]).id("test11");
 
+    {
+      uint count = 12;
+      int radius = 511;
+      Vector.Struct memory center = Vector.vector(512, 512);
+      uint[] memory points = new uint[](count * 2);    
+      for (uint i = 0; i < count * 2; i += 2) {
+        int angle = Vector.PI2 * int(i) / int(count) / 2;
+        Vector.Struct memory vector = Vector.vectorWithAngle(angle, radius);
+        points[i] = Path.roundedCorner(vector.add(center));
+        points[i+1] = Path.sharpCorner(vector.div(2).rotate(Vector.PI2 / int(count) / 2).add(center));
+      }
+      samples[12] = SVG.path(points.closedPath()).id("test12");
+    }
+
     samples[15] = SVG.group([
                       SVG.mask(
                         SVG.group([
@@ -131,14 +145,6 @@ contract SVGTest {
                         .fill("red")                      
                         .mask("test15_mask")
                     ]).id("test15");
-    /*
-        '<rect x="262" y="362" width="300" height="300" fill="black"/>'
-        '<rect x="662" y="362" width="300" height="300" fill="black"/>'
-        '<rect x="112" y="462" width="800" height="50" fill="black"/>'
-        '<rect x="112" y="462" width="50" height="150" fill="black"/>'
-        '<rect x="312" y="412" width="100" height="200" fill="white"/>'
-        '<rect x="712" y="412" width="100" height="200" fill="white"/>'
-    */
 
     for (uint i=0; i<16; i++) {
       uint x = 256 * (i % 4);
