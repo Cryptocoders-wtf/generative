@@ -122,6 +122,21 @@ library SVG {
     tag.tail = abi.encodePacked('">', packed(_tags), '</g>\n');
   }
 
+  // HACK: Solidity does not support literal expression of dynamic array yet
+  function list(Tag[2] memory _tags) internal pure returns(Tag memory tag) {
+    tag.tail = packed(_tags);
+  }
+
+  // HACK: Solidity does not support literal expression of dynamic array yet
+  function list(Tag[3] memory _tags) internal pure returns(Tag memory tag) {
+    tag.tail = packed(_tags);
+  }
+
+  // HACK: Solidity does not support literal expression of dynamic array yet
+  function list(Tag[4] memory _tags) internal pure returns(Tag memory tag) {
+    tag.tail = packed(_tags);
+  }
+
   function mask(bytes memory _elements) internal pure returns(Tag memory tag) {
     tag.head = abi.encodePacked('<mask x_x="x'); // HACK: dummy header for trailing '"'
     tag.tail = abi.encodePacked(
@@ -194,10 +209,14 @@ library SVG {
   }
 
   function svg(Tag memory _tag) internal pure returns (bytes memory output) {
-    output = _tag.head;
-    for (uint i=0; i<_tag.attrs.length; i++) {
-      Attribute memory attr = _tag.attrs[i];
-      output = abi.encodePacked(output, '" ', attr.key ,'="', attr.value);      
+    if (_tag.head.length > 0) {
+      output = _tag.head;
+      for (uint i=0; i<_tag.attrs.length; i++) {
+        Attribute memory attr = _tag.attrs[i];
+        output = abi.encodePacked(output, '" ', attr.key ,'="', attr.value);      
+      }
+    } else {
+      require(_tag.attrs.length == 0, "Attributes on list");
     }
     output = abi.encodePacked(output, _tag.tail);
   }
