@@ -87,6 +87,13 @@ contract SVGTest {
       samples[8] = SVG.path(points.closedPath()).id("test8");
     }
 
+    samples[9] = SVG.group([
+                      SVG.use("test8")
+                        .fill("green"),                      
+                      SVG.use("test5")
+                        .fill("red")                      
+                        .transform("translate(300 300) scale(0.8)")
+                    ]).id("test9");
 
     for (uint i=0; i<16; i++) {
       uint x = 256 * (i % 4);
