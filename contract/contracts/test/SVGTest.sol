@@ -156,8 +156,8 @@ contract SVGTest {
 
     output = string(SVG.document(
       "0 0 1024 1024",
-      SVG.packed(samples),
-      SVG.packed(uses)
+      SVG.list(samples).svg(),
+      SVG.list(uses).svg()
     ));
   }
 }

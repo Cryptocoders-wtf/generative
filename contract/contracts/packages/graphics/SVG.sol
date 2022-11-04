@@ -123,6 +123,11 @@ library SVG {
   }
 
   // HACK: Solidity does not support literal expression of dynamic array yet
+  function list(Tag[] memory _tags) internal pure returns(Tag memory tag) {
+    tag.tail = packed(_tags);
+  }
+
+  // HACK: Solidity does not support literal expression of dynamic array yet
   function list(Tag[2] memory _tags) internal pure returns(Tag memory tag) {
     tag.tail = packed(_tags);
   }
