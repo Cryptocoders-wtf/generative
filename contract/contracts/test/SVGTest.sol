@@ -26,37 +26,31 @@ contract SVGTest {
     SVG.Tag[] memory samples = new SVG.Tag[](16);
     SVG.Tag[] memory uses = new SVG.Tag[](16);
 
-    samples[0] = SVG.rect(256, 256, 512, 512)
-                      .id("test0");
+    samples[0] = SVG.rect(256, 256, 512, 512);
 
     samples[1] = SVG.rect(256, 256, 512, 512)
-                      .fill("yellow")
-                      .id("test1");
+                      .fill("yellow");
 
     samples[2] = SVG.rect(256, 256, 512, 512)
                       .fill("yellow")
-                      .stroke("blue", 10)
-                      .id("test2");
+                      .stroke("blue", 10);
 
     samples[3] = SVG.rect(256, 256, 512, 512)
                       .fill("yellow")
                       .stroke("blue", 10)
-                      .transform("rotate(30 512 512)")
-                      .id("test3");
+                      .transform("rotate(30 512 512)");
 
     samples[4] = SVG.circle(512, 512, 300)
-                      .fill("blue")
-                      .id("test4");
+                      .fill("blue");
 
     samples[5] = SVG.group([
                       SVG.rect(256, 256, 640, 640).fill("yellow"),
                       SVG.circle(320, 320, 280)
-                    ]).id("test5");
+                    ]);
 
     samples[6] = SVG.use("test5")
                       .fill("green")
-                      .transform("translate(200 200) scale(0.6) rotate(45 512 512) ")
-                      .id("test6");
+                      .transform("translate(200 200) scale(0.6) rotate(45 512 512) ");
 
     samples[7] = SVG.group([
                       SVG.use("test5")
@@ -71,7 +65,7 @@ contract SVGTest {
                       SVG.use("test5")
                         .fill("grey")                      
                         .transform("translate(512 512) scale(0.5)")
-                    ]).id("test7");
+                    ]);
 
     {
       uint count = 12;
@@ -84,7 +78,7 @@ contract SVGTest {
         points[i] = Path.roundedCorner(vector.add(center));
         points[i+1] = Path.sharpCorner(vector.div(2).rotate(Vector.PI2 / int(count) / 2).add(center));
       }
-      samples[8] = SVG.path(points.closedPath()).id("test8");
+      samples[8] = SVG.path(points.closedPath());
     }
 
     samples[9] = SVG.group([
@@ -94,7 +88,7 @@ contract SVGTest {
                       SVG.rect()
                         .fill("yellow")                      
                         .mask("test8_mask")
-                    ]).id("test9");
+                    ]);
 
     samples[10] = SVG.group([
                       SVG.stencil(
@@ -102,7 +96,7 @@ contract SVGTest {
                       ).id("test10_mask"),
                       SVG.use("test7")
                         .mask("test10_mask")
-                    ]).id("test10");
+                    ]);
 
     samples[11] = SVG.group([
                       SVG.mask(
@@ -110,7 +104,7 @@ contract SVGTest {
                       ).id("test11_mask"),                      
                       SVG.use("test7")
                         .mask("test11_mask")
-                    ]).id("test11");
+                    ]);
 
     {
       uint count = 12;
@@ -123,8 +117,11 @@ contract SVGTest {
         points[i] = Path.roundedCorner(vector.add(center));
         points[i+1] = Path.sharpCorner(vector.div(2).rotate(Vector.PI2 / int(count) / 2).add(center));
       }
-      samples[12] = SVG.path(points.closedPath()).id("test12");
+      samples[12] = SVG.path(points.closedPath());
     }
+
+    samples[13] = SVG.rect(256, 256, 512, 512);
+    samples[14] = SVG.rect(256, 256, 512, 512);
 
     samples[15] = SVG.group([
                       SVG.mask(
@@ -144,14 +141,16 @@ contract SVGTest {
                       SVG.rect()
                         .fill("red")                      
                         .mask("test15_mask")
-                    ]).id("test15");
+                      ]);
 
     for (uint i=0; i<16; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
+      string memory tag = string(abi.encodePacked("test", i.toString()));
+      samples[i] = samples[i].id(tag);
       uses[i] = SVG.group([
         SVG.rect(16,16,992,992).fill("#c0c0c0"), 
-        SVG.use(string(abi.encodePacked("test", i.toString())))
+        SVG.use(tag)
       ]).transform(string(abi.encodePacked('translate(',x.toString(),' ', y.toString(), ') scale(0.25)')));
     }
 
