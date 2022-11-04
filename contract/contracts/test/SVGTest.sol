@@ -49,7 +49,7 @@ contract SVGTest {
                       .id("test4");
 
     samples[5] = SVG.group([
-                      SVG.rect(256, 256, 512, 512).fill("yellow"),
+                      SVG.rect(256, 256, 640, 640).fill("yellow"),
                       SVG.circle(320, 320, 280)
                     ]).id("test5");
 
@@ -75,7 +75,7 @@ contract SVGTest {
 
     {
       uint count = 12;
-      int radius = 480;
+      int radius = 511;
       Vector.Struct memory center = Vector.vector(512, 512);
       uint[] memory points = new uint[](count * 2);    
       for (uint i = 0; i < count * 2; i += 2) {
@@ -88,27 +88,27 @@ contract SVGTest {
     }
 
     samples[9] = SVG.group([
-                      SVG.use("test8")
-                        .fill("green"),                      
-                      SVG.use("test5")
-                        .fill("red")                      
+                      SVG.stencil(
+                        SVG.use("test8")
+                      ).id("test8_mask"),                      
+                      SVG.rect()
+                        .fill("yellow")                      
+                        .mask("test8_mask")
                     ]).id("test9");
 
     samples[10] = SVG.group([
-                      SVG.mask(
+                      SVG.stencil(
                         SVG.use("test8")
                       ).id("test10_mask"),
-                      SVG.use("test5")
-                        .fill("red")                      
+                      SVG.use("test7")
                         .mask("test10_mask")
                     ]).id("test10");
 
     samples[11] = SVG.group([
-                      SVG.stencil(
+                      SVG.mask(
                         SVG.use("test8")
                       ).id("test11_mask"),                      
-                      SVG.use("test5")
-                        .fill("red")                      
+                      SVG.use("test7")
                         .mask("test11_mask")
                     ]).id("test11");
 
