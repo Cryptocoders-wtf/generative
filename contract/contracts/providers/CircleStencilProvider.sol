@@ -65,9 +65,6 @@ contract CircleStencilProvider is IAssetProvider, IERC165, Ownable {
     return colorSchemes.generateTraits(_assetId);
   }
 
-  struct Properties {
-    string[] scheme;
-  }
 
   function concat(bytes[] memory parts) public pure returns (bytes memory ret) {
     for (uint i = 0; i < parts.length; i++) {
@@ -76,11 +73,11 @@ contract CircleStencilProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
-    Properties memory props;
     Randomizer.Seed memory seed;
-    (seed, props.scheme) = colorSchemes.getColorScheme(_assetId);
-    for (uint i=0; i<props.scheme.length; i++) {
-      props.scheme[i] = string(abi.encodePacked('#', props.scheme[i]));      
+    string[] memory scheme;
+    (seed, scheme) = colorSchemes.getColorScheme(_assetId);
+    for (uint i=0; i<scheme.length; i++) {
+      scheme[i] = string(abi.encodePacked('#', scheme[i]));      
     }
     ILayoutGenerator.Node[] memory nodes;
     tag = string(abi.encodePacked("clrcleStencil", _assetId.toString()));
@@ -100,10 +97,10 @@ contract CircleStencilProvider is IAssetProvider, IERC165, Ownable {
       SVG.stencil(parts.packed()).id(string(abi.encodePacked(tag, '_mask'))),
       SVG.rect().mask(string(abi.encodePacked(tag, '_mask'))).id(stencil),
       SVG.group([
-        SVG.use(stencil).fill(props.scheme[1]),
-        SVG.use(stencil).fill(props.scheme[2]).transform("rotate(90 512 512)"),
-        SVG.use(stencil).fill(props.scheme[3]).transform("rotate(180 512 512)"),
-        SVG.use(stencil).fill(props.scheme[4]).transform("rotate(270 512 512)")
+        SVG.use(stencil).fill(scheme[1]),
+        SVG.use(stencil).fill(scheme[2]).transform("rotate(90 512 512)"),
+        SVG.use(stencil).fill(scheme[3]).transform("rotate(180 512 512)"),
+        SVG.use(stencil).fill(scheme[4]).transform("rotate(270 512 512)")
       ]).id(tag)
     ]));
   }
