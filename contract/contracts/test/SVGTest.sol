@@ -112,6 +112,34 @@ contract SVGTest {
                         .mask("test11_mask")
                     ]).id("test11");
 
+    samples[15] = SVG.group([
+                      SVG.mask(
+                        SVG.group([
+                          SVG.group([
+                            SVG.rect(256, 362, 300, 300),
+                            SVG.rect(662, 362, 300, 300),
+                            SVG.rect(112, 462, 800, 50),
+                            SVG.rect(112, 462, 50, 150)
+                          ]),
+                          SVG.group([
+                            SVG.rect(312, 412, 100, 200),
+                            SVG.rect(712, 412, 100, 200)
+                          ]).fill("black")
+                        ])
+                      ).id("test15_mask"),                      
+                      SVG.rect()
+                        .fill("red")                      
+                        .mask("test15_mask")
+                    ]).id("test15");
+    /*
+        '<rect x="262" y="362" width="300" height="300" fill="black"/>'
+        '<rect x="662" y="362" width="300" height="300" fill="black"/>'
+        '<rect x="112" y="462" width="800" height="50" fill="black"/>'
+        '<rect x="112" y="462" width="50" height="150" fill="black"/>'
+        '<rect x="312" y="412" width="100" height="200" fill="white"/>'
+        '<rect x="712" y="412" width="100" height="200" fill="white"/>'
+    */
+
     for (uint i=0; i<16; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
