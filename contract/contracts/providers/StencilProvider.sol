@@ -27,7 +27,7 @@ contract StencilProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
   using BytesArray for bytes[];
-  using SVG for SVG.Tag;
+  using SVG for SVG.Element;
 
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;

@@ -23,7 +23,7 @@ contract StarProvider is IAssetProvider, IERC165, Ownable {
   using Randomizer for Randomizer.Seed;
   using Vector for Vector.Struct;
   using Path for uint[];
-  using SVG for SVG.Tag;
+  using SVG for SVG.Element;
 
   struct Props {
     uint count; // number of spikes

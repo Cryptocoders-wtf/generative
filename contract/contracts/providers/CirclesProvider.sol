@@ -25,7 +25,7 @@ import "../interfaces/ILayoutGenerator.sol";
 contract CirclesProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
-  using SVG for SVG.Tag;
+  using SVG for SVG.Element;
   using BytesArray for bytes[];
 
   ILayoutGenerator public generator;

@@ -20,11 +20,11 @@ contract SVGTest {
   using Randomizer for Randomizer.Seed;
   using Vector for Vector.Struct;
   using Path for uint[];
-  using SVG for SVG.Tag;
+  using SVG for SVG.Element;
 
   function main() external pure returns(string memory output) {
-    SVG.Tag[] memory samples = new SVG.Tag[](16);
-    SVG.Tag[] memory uses = new SVG.Tag[](16);
+    SVG.Element[] memory samples = new SVG.Element[](16);
+    SVG.Element[] memory uses = new SVG.Element[](16);
 
     samples[0] = SVG.rect(256, 256, 512, 512);
 
