@@ -73,6 +73,21 @@ contract SVGTest {
                         .transform("translate(512 512) scale(0.5)")
                     ]).id("test7");
 
+    {
+      uint count = 12;
+      int radius = 511;
+      Vector.Struct memory center = Vector.vector(512, 512);
+      uint[] memory points = new uint[](count * 2);    
+      for (uint i = 0; i < count * 2; i += 2) {
+        int angle = Vector.PI2 * int(i) / int(count) / 2;
+        Vector.Struct memory vector = Vector.vectorWithAngle(angle, radius);
+        points[i] = Path.roundedCorner(vector.add(center));
+        points[i+1] = Path.sharpCorner(vector.div(2).rotate(Vector.PI2 / int(count) / 2).add(center));
+      }
+      samples[8] = SVG.path(points.closedPath()).id("test8");
+    }
+
+
     for (uint i=0; i<16; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
