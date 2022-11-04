@@ -122,7 +122,6 @@ library SVG {
     tag.tail = abi.encodePacked('">', packed(_tags), '</g>\n');
   }
 
-  // HACK: Solidity does not support literal expression of dynamic array yet
   function list(Tag[] memory _tags) internal pure returns(Tag memory tag) {
     tag.tail = packed(_tags);
   }
