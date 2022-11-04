@@ -95,31 +95,26 @@ library SVG {
   }
 
   function group(Tag memory _tag) internal pure returns(Tag memory tag) {
-    tag.head = abi.encodePacked('<g x_x="x'); // HACK: dummy header for trailing '"'
-    tag.tail = abi.encodePacked('">', svg(_tag), '</g>\n');
+    tag = group(svg(_tag));
   }
 
   function group(Tag[] memory _tags) internal pure returns(Tag memory tag) {
-    tag.head = abi.encodePacked('<g x_x="x'); // HACK: dummy header for trailing '"'
-    tag.tail = abi.encodePacked('">', packed(_tags), '</g>\n');
+    tag = group(packed(_tags));
   }
 
   // HACK: Solidity does not support literal expression of dynamic array yet
   function group(Tag[2] memory _tags) internal pure returns(Tag memory tag) {
-    tag.head = abi.encodePacked('<g x_x="x'); // HACK: dummy header for trailing '"'
-    tag.tail = abi.encodePacked('">', packed(_tags), '</g>\n');
+    tag = group(packed(_tags));
   }
 
   // HACK: Solidity does not support literal expression of dynamic array yet
   function group(Tag[3] memory _tags) internal pure returns(Tag memory tag) {
-    tag.head = abi.encodePacked('<g x_x="x'); // HACK: dummy header for trailing '"'
-    tag.tail = abi.encodePacked('">', packed(_tags), '</g>\n');
+    tag = group(packed(_tags));
   }
 
   // HACK: Solidity does not support literal expression of dynamic array yet
   function group(Tag[4] memory _tags) internal pure returns(Tag memory tag) {
-    tag.head = abi.encodePacked('<g x_x="x'); // HACK: dummy header for trailing '"'
-    tag.tail = abi.encodePacked('">', packed(_tags), '</g>\n');
+    tag = group(packed(_tags));
   }
 
   function list(Tag[] memory _tags) internal pure returns(Tag memory tag) {
