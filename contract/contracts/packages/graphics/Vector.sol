@@ -10,7 +10,6 @@
 pragma solidity ^0.8.6;
 
 import "trigonometry.sol/Trigonometry.sol";
-import "hardhat/console.sol";
 
 library Vector {
   using Trigonometry for uint;

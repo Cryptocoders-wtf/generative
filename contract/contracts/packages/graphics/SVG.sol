@@ -11,7 +11,6 @@ pragma solidity ^0.8.6;
 
 import "bytes-array.sol/BytesArray.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "hardhat/console.sol";
 
 library SVG {
   using Strings for uint;
