@@ -1,0 +1,24 @@
+{
+  "name": "fully-on-chain.sol",
+  "version": "1.0.0",
+  "description": "Graphics library for fully on-chain generative art in Solidity",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cryptocoders-wtf/generative.git"
+  },
+  "keywords": [
+    "Solidity",
+    "Graphics",
+    "SVG"
+  ],
+  "author": "snakajima",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cryptocoders-wtf/generative/issues"
+  },
+  "homepage": "https://github.com/Cryptocoders-wtf/generative#readme"
+}
