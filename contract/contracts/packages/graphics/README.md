@@ -13,7 +13,7 @@ It consists of three libraries.
 ## Basic Concept
 
 To generate an SVG image, you need to create a series of SVG elements,
-combine them appropriately, convert them into a string and return as a SVG string.
+combine them, and generate an SVG string.
 
 SVG library has a set of method to create SVG elements, such as rect() and circle(). For exmaple, the following code create a rectangle element with origin=(256, 256) and size=(512, 512) 
 ```
@@ -31,11 +31,11 @@ When you are ready to generate a full SVG document, you need to write this.
 ```
 SVG.document(
   "0 0 1024 1024", // viewbox
-  "",              // defs
+  "",              // defs (empty)
   SVG.rect(256, 256, 512, 512).svg()
-)
+);
 ```
-The final output will be this.
+It will generate the following SVG string.
 ```
 <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
   <rect x="256" y="256" width="512" height="512"/>
@@ -48,7 +48,7 @@ If you render it, the box will be displayed in black (which is the default color
 You need to use the fill() method to specify the color.
 ```
 SVG.rect(256, 256, 512, 512)
-          .fill("yellow");
+  .fill("yellow");
 ```
 
 ![](https://i.imgur.com/Y2Z0ZJF.png)
@@ -74,7 +74,7 @@ SVG.group([
 
 ![](https://i.imgur.com/TVfvcJY.png)
 
-Because a group is also an SVG element, you can methods as well. The method id() assigns an id to the SVG element, and it makes it possible to make a reference to it later.
+Because a group is also an SVG element, you can apply methods as well. The method id() assigns an id to the SVG element, and makes it possible to make a reference to it later.
 
 ```
 SVG.group([
