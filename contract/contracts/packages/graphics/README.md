@@ -15,7 +15,7 @@ It consists of three libraries.
 To generate an SVG image, you need to create a series of SVG elements,
 combine them, and generate an SVG string.
 
-SVG library has a set of method to create SVG elements, such as rect() and circle(). For exmaple, the following code create a rectangle element with origin=(256, 256) and size=(512, 512) 
+SVG library has a set of method to create SVG elements, such as rect() and circle(). For exmaple, the following code creates a rectangle element with origin=(256, 256) and size=(512, 512) 
 ```
 SVG.rect(256, 256, 512, 512);
 ```
@@ -69,7 +69,7 @@ You can create a group like this.
 SVG.group([
   SVG.rect(256, 256, 640, 640).fill("yellow"),
   SVG.circle(320, 320, 280)
-]).id("test
+]).id("test");
 ```
 
 ![](https://i.imgur.com/TVfvcJY.png)
