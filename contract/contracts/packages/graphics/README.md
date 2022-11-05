@@ -15,25 +15,60 @@ It consists of three libraries.
 To generate an SVG image, you need to create a series of SVG elements,
 combine them appropriately, convert them into a string and return as a SVG string.
 
-SVG library has a set of method to create SVG elements, such as rect() and circle(). For exmaple, the following code create a rectangle element with origin=(0,0) and size=(100,100) 
+SVG library has a set of method to create SVG elements, such as rect() and circle(). For exmaple, the following code create a rectangle element with origin=(256, 256) and size=(512, 512) 
 ```
-SVG.rect(0,0,100,100);
+SVG.rect(256, 256, 512, 512);
 ```
 To convert it into a string, you need to call its svg() method.
 ```
-SVG.rect(0,0,100,100).svg();
+SVG.rect(256, 256, 512, 512).svg();
 ```
 It will return the following string.
 ```
-<rect x="0" y="0" width="100" height="100"/>
+<rect x="256" y="256" width="512" height="512"/>
 ```
-If you render it (with proper SVG tag around it), the box will be displayed in black (which is the default coloir).
+When you are ready to generate a full SVG document, you need to write this.
+```
+SVG.document(
+  "0 0 1024 1024", // viewbox
+  "",              // defs
+  SVG.rect(256, 256, 512, 512).svg()
+)
+```
+The final output will be this.
+```
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <rect x="256" y="256" width="512" height="512"/>
+</svg>
+```
+If you render it, the box will be displayed in black (which is the default color).
 
-If you want to specify the color, you need to use the fill() method.
+![](https://i.imgur.com/mwDv189.png)
+
+You need to use the fill() method to specify the color.
 ```
-SVG.rect(0,0,100,100).fill("red");
+SVG.rect(256, 256, 512, 512)
+          .fill("yellow");
 ```
-This will generate the following string.
+
+![](https://i.imgur.com/Y2Z0ZJF.png)
+
+Please notice that fill() method returns another SVG element, which allows to apply multiple methods in chain.
+
 ```
-<rect x="0" y="0" width="100" height="100" fill="red"/>
+SVG.rect(256, 256, 512, 512)
+          .fill("yellow");
+          .stroke("blue", 10)
+          .transform("rotate(30 512 512)");
 ```
+
+![](https://i.imgur.com/MLEUGD5.png)
+
+You can create a group like this.
+```
+SVG.group([
+  SVG.rect(256, 256, 640, 640).fill("yellow"),
+  SVG.circle(320, 320, 280)
+]).id("test")
+```
+Because a group is also an SVG element, you can methods as well.

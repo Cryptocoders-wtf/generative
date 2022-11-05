@@ -154,10 +154,10 @@ contract SVGTest {
       ]).transform(string(abi.encodePacked('translate(',x.toString(),' ', y.toString(), ') scale(0.25)')));
     }
 
-    output = string(SVG.document(
+    output = SVG.document(
       "0 0 1024 1024",
       SVG.list(samples).svg(),
       SVG.list(uses).svg()
-    ));
+    );
   }
 }
