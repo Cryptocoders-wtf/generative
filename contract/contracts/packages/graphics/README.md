@@ -57,9 +57,9 @@ Please notice that fill() method returns another SVG element, which allows to ap
 
 ```
 SVG.rect(256, 256, 512, 512)
-          .fill("yellow");
-          .stroke("blue", 10)
-          .transform("rotate(30 512 512)");
+  .fill("yellow");
+  .stroke("blue", 10)
+  .transform("rotate(30 512 512)");
 ```
 
 ![](https://i.imgur.com/MLEUGD5.png)
@@ -69,6 +69,44 @@ You can create a group like this.
 SVG.group([
   SVG.rect(256, 256, 640, 640).fill("yellow"),
   SVG.circle(320, 320, 280)
-]).id("test")
+]).id("test
 ```
-Because a group is also an SVG element, you can methods as well.
+
+![](https://i.imgur.com/TVfvcJY.png)
+
+Because a group is also an SVG element, you can methods as well. The method id() assigns an id to the SVG element, and it makes it possible to make a reference to it later.
+
+```
+SVG.group([
+  SVG.use("test")
+    .fill("green")                      
+    .transform("scale(0.5)"),
+  SVG.use("test")
+    .fill("red")                      
+    .transform("translate(512 0) scale(0.5)"),
+  SVG.use("test")
+    .fill("blue")                      
+    .transform("translate(0 512) scale(0.5)"),
+  SVG.use("test")
+    .fill("grey")                      
+    .transform("translate(512 512) scale(0.5)")
+]);
+```
+![](https://i.imgur.com/vf6GWhw.png)
+
+In order to create complex images, you need to use path() method, which takes a series of *control points* as a parameter. You need to use Vector and Path libraries to generate those control points.
+
+```
+uint count = 12;
+int radius = 511;
+Vector.Struct memory center = Vector.vector(512, 512);
+uint[] memory points = new uint[](count * 2);    
+for (uint i = 0; i < count * 2; i += 2) {
+  int angle = Vector.PI2 * int(i) / int(count) / 2;
+  Vector.Struct memory vector = Vector.vectorWithAngle(angle, radius);
+  points[i] = Path.roundedCorner(vector.add(center));
+  points[i+1] = Path.sharpCorner(vector.div(2).rotate(Vector.PI2 / int(count) / 2).add(center));
+}
+SVG.path(points.closedPath());
+```
+![](https://i.imgur.com/oGtTv8R.png)
