@@ -130,6 +130,6 @@ export const compressPath = (body: string, width: number) => {
 
 export const solidityString = (array: Uint8Array) => {
   return Array.from(array).map(value => {
-    return `\\x${value.toString(16)}`;
+    return `\\x${value.toString(16).padStart(2, '0')}`;
   }).join('');
 }
