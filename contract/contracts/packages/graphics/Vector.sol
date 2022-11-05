@@ -34,6 +34,7 @@ library Vector {
   }
 
   function div(Struct memory _vector, int _value) internal pure returns(Struct memory newVector) {
+    require(_value != 0, "Not allow division by zero")
     newVector.x = _vector.x / _value;
     newVector.y = _vector.y / _value;
   }
