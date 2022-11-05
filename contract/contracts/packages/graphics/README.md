@@ -8,7 +8,7 @@ It consists of three libraries.
 
 - SVG.sol - SVG generations
 - Vector.sol - Vector operations
-- Path.sol - Path generation for <path>
+- Path.sol - Path generations
 
 ## Basic Concept
 
