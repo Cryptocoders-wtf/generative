@@ -1,6 +1,6 @@
 {
   "name": "fully-on-chain.sol",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Graphics library for fully on-chain generative art in Solidity",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/Cryptocoders-wtf/generative/issues"
   },
-  "homepage": "https://fullyonchain.xyz",
+  "homepage": "https://github.com/Cryptocoders-wtf/generative/tree/main/contract/contracts/packages/graphics",
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
     "bytes-array.sol": "^1.0.2",

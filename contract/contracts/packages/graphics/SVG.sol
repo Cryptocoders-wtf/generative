@@ -221,6 +221,7 @@ library SVG {
 
   function document(string memory _viewBox, bytes memory _defs, bytes memory _body) internal pure returns (string memory) {
     bytes memory output = abi.encodePacked(
+      '<?xml version="1.0" encoding="UTF-8"?>'
       '<svg viewBox="', _viewBox, '"'
       ' xmlns="http://www.w3.org/2000/svg">\n'
     );

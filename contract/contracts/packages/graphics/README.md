@@ -37,11 +37,12 @@ SVG.document(
 ```
 It will generate the following SVG string.
 ```
+<?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
   <rect x="256" y="256" width="512" height="512"/>
 </svg>
 ```
-If you render it, the box will be displayed in black (which is the default color).
+If you render it, the box will be displayed in black, which is the default color.
 
 ![](https://i.imgur.com/mwDv189.png)
 
@@ -53,7 +54,7 @@ SVG.rect(256, 256, 512, 512)
 
 ![](https://i.imgur.com/Y2Z0ZJF.png)
 
-Please notice that fill() method returns another SVG element, which allows to apply multiple methods in chain.
+Please notice that fill() method returns another SVG element, which allows you to apply multiple methods in chain.
 
 ```
 SVG.rect(256, 256, 512, 512)
