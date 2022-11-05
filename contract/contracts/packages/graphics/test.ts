@@ -13,3 +13,4 @@ const pathP = normalizePath(fontP, 167);
 const dataP = compressPath(pathP, 1024);
 console.log(fontP.length, pathP.length, dataP.length);
 console.log(pathP);
+
