@@ -275,6 +275,26 @@ library SVG {
     element = _append(_element, Attribute("y2", _value));
   }
 
+  function cx(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("cy", _value));
+  }
+
+  function cy(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("cy", _value));
+  }
+
+  function r(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("r", _value));
+  }
+
+  function fx(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("fx", _value));
+  }
+
+  function fy(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("fy", _value));
+  }
+
   function fillRef(Element memory _element, string memory _value) internal pure returns(Element memory element) {
     element = _append(_element, Attribute("fill", string(abi.encodePacked('url(#', _value, ')'))));
   }
