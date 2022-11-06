@@ -165,4 +165,29 @@ contract SVGTest {
       SVG.list(uses).svg()
     );
   }
+
+  function main2() external pure returns(string memory output) {
+    SVG.Element[] memory samples = new SVG.Element[](16);
+    SVG.Element[] memory uses = new SVG.Element[](16);
+
+    samples[0] = SVG.rect(256, 256, 512, 512);
+
+    for (uint i=0; i<16; i++) {
+      uint x = 256 * (i % 4);
+      uint y = 256 * (i / 4);
+      string memory tag = string(abi.encodePacked("test", i.toString()));
+      samples[i] = samples[i].id(tag);
+      uses[i] = SVG.group([
+        SVG.rect(16,16,992,992).fill("#c0c0c0"), 
+        SVG.use(tag)
+      ]).transform(string(abi.encodePacked('translate(',x.toString(),' ', y.toString(), ') scale(0.25)')));
+    }
+
+    output = SVG.document(
+      "0 0 1024 1024",
+      SVG.list(samples).svg(),
+      SVG.list(uses).svg()
+    );
+  }
 }
+
