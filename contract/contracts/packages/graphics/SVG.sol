@@ -49,7 +49,7 @@ library SVG {
   }
 
   function stop(uint ratio) internal pure returns(Element memory element) {
-    element.head = abi.encodePacked('<stop offset="', ratio.toString());
+    element.head = abi.encodePacked('<stop offset="', ratio.toString(), '%');
     element.tail = '"/>\n';
   }
 
@@ -95,7 +95,7 @@ library SVG {
 
   function linearGradient(bytes memory _elements) internal pure returns(Element memory element) {
     element.head = abi.encodePacked('<linearGradient x_x="x'); // HACK: dummy header for trailing '"'
-    element.tail = abi.encodePacked('">', _elements, '</g>\n');
+    element.tail = abi.encodePacked('">', _elements, '</linearGradient>\n');
   }
 
   function linearGradient(Element memory _element) internal pure returns(Element memory element) {
@@ -227,8 +227,28 @@ library SVG {
     element = _append(_element, Attribute("fill", _value));
   }
 
+  function stopColor(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("stop-color", _value));
+  }
+
+  function x1(Element memory _element, uint _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("x1", _value.toString()));
+  }
+
+  function x2(Element memory _element, uint _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("x2", _value.toString()));
+  }
+
+  function y1(Element memory _element, uint _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("y1", _value.toString()));
+  }
+
+  function y2(Element memory _element, uint _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("y2", _value.toString()));
+  }
+
   function fillRef(Element memory _element, string memory _value) internal pure returns(Element memory element) {
-    element = _append(_element, Attribute("fill", string(abi.encodePacked('url(', _value, ')'))));
+    element = _append(_element, Attribute("fill", string(abi.encodePacked('url(#', _value, ')'))));
   }
 
   function style(Element memory _element, string memory _value) internal pure returns(Element memory element) {
