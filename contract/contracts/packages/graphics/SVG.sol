@@ -93,32 +93,32 @@ library SVG {
     output = svgs.packed();
   }
 
-  function linearGradient(bytes memory _elements) internal pure returns(Element memory element) {
-    element.head = abi.encodePacked('<linearGradient x_x="x'); // HACK: dummy header for trailing '"'
+  function linearGradient(bytes memory _elements, string memory _value) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<linearGradient id="', _value); 
     element.tail = abi.encodePacked('">', _elements, '</linearGradient>\n');
   }
 
-  function linearGradient(Element memory _element) internal pure returns(Element memory element) {
-    element = linearGradient(svg(_element));
+  function linearGradient(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = linearGradient(svg(_element), _value);
   }
 
-  function linearGradient(Element[] memory _elements) internal pure returns(Element memory element) {
-    element = linearGradient(packed(_elements));
-  }
-
-  // HACK: Solidity does not support literal expression of dynamic array yet
-  function linearGradient(Element[2] memory _elements) internal pure returns(Element memory element) {
-    element = linearGradient(packed(_elements));
+  function linearGradient(Element[] memory _elements, string memory _value) internal pure returns(Element memory element) {
+    element = linearGradient(packed(_elements), _value);
   }
 
   // HACK: Solidity does not support literal expression of dynamic array yet
-  function linearGradient(Element[3] memory _elements) internal pure returns(Element memory element) {
-    element = linearGradient(packed(_elements));
+  function linearGradient(Element[2] memory _elements, string memory _value) internal pure returns(Element memory element) {
+    element = linearGradient(packed(_elements), _value);
   }
 
   // HACK: Solidity does not support literal expression of dynamic array yet
-  function linearGradient(Element[4] memory _elements) internal pure returns(Element memory element) {
-    element = linearGradient(packed(_elements));
+  function linearGradient(Element[3] memory _elements, string memory _value) internal pure returns(Element memory element) {
+    element = linearGradient(packed(_elements), _value);
+  }
+
+  // HACK: Solidity does not support literal expression of dynamic array yet
+  function linearGradient(Element[4] memory _elements, string memory _value) internal pure returns(Element memory element) {
+    element = linearGradient(packed(_elements), _value);
   }
 
   function group(bytes memory _elements) internal pure returns(Element memory element) {
