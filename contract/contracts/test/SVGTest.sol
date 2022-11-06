@@ -170,7 +170,15 @@ contract SVGTest {
     SVG.Element[] memory samples = new SVG.Element[](16);
     SVG.Element[] memory uses = new SVG.Element[](16);
 
-    samples[0] = SVG.rect(256, 256, 512, 512);
+
+    samples[0] = SVG.group([
+      SVG.linearGradient([
+        SVG.stop(0).stopColor("red"),
+        SVG.stop(100).stopColor("yellow")
+      ], "gradient1").x1(0).x2(1),
+      SVG.rect(256, 256, 512, 512)
+        .fillRef("gradient1")
+    ]);
 
     for (uint i=0; i<1; i++) {
       uint x = 256 * (i % 4);
