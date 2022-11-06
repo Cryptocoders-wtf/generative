@@ -121,6 +121,34 @@ library SVG {
     element = linearGradient(packed(_elements), _value);
   }
 
+  function radialGradient(bytes memory _elements, string memory _value) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<radialGradient id="', _value); 
+    element.tail = abi.encodePacked('">', _elements, '</radialGradient>\n');
+  }
+
+  function radialGradient(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = radialGradient(svg(_element), _value);
+  }
+
+  function radialGradient(Element[] memory _elements, string memory _value) internal pure returns(Element memory element) {
+    element = radialGradient(packed(_elements), _value);
+  }
+
+  // HACK: Solidity does not support literal expression of dynamic array yet
+  function radialGradient(Element[2] memory _elements, string memory _value) internal pure returns(Element memory element) {
+    element = radialGradient(packed(_elements), _value);
+  }
+
+  // HACK: Solidity does not support literal expression of dynamic array yet
+  function radialGradient(Element[3] memory _elements, string memory _value) internal pure returns(Element memory element) {
+    element = radialGradient(packed(_elements), _value);
+  }
+
+  // HACK: Solidity does not support literal expression of dynamic array yet
+  function radialGradient(Element[4] memory _elements, string memory _value) internal pure returns(Element memory element) {
+    element = radialGradient(packed(_elements), _value);
+  }
+
   function group(bytes memory _elements) internal pure returns(Element memory element) {
     element.head = abi.encodePacked('<g x_x="x'); // HACK: dummy header for trailing '"'
     element.tail = abi.encodePacked('">', _elements, '</g>\n');
