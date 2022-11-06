@@ -172,7 +172,7 @@ contract SVGTest {
 
     samples[0] = SVG.rect(256, 256, 512, 512);
 
-    for (uint i=0; i<16; i++) {
+    for (uint i=0; i<1; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
       string memory tag = string(abi.encodePacked("test", i.toString()));
