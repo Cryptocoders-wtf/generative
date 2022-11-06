@@ -37,6 +37,12 @@ library SVG {
     element.tail = '"/>\n';
   }
 
+  function ellipse(int _cx, int _cy, int _rx, int _ry) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<ellipse cx="', uint(_cx).toString(),'" cy="', uint(_cy).toString(),
+                      '" rx="', uint(_rx).toString(), '" ry="', uint(_ry).toString());
+    element.tail = '"/>\n';
+  }
+
   function rect(int _x, int _y, uint _width, uint _height) internal pure returns(Element memory element) {
     element.head = abi.encodePacked('<rect x="', uint(_x).toString(),'" y="', uint(_y).toString(),
                                 '" width="', _width.toString(), '" height="', _height.toString());
