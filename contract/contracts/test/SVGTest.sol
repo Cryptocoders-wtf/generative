@@ -175,7 +175,7 @@ contract SVGTest {
       SVG.linearGradient([
         SVG.stop(0).stopColor("red"),
         SVG.stop(100).stopColor("yellow")
-      ], "gradient1").x1(0).x2(1),
+      ], "gradient1").x1("0%").x2("100%"),
       SVG.rect(256, 256, 512, 512)
         .fillRef("gradient1")
     ]);

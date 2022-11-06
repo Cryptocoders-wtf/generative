@@ -231,20 +231,20 @@ library SVG {
     element = _append(_element, Attribute("stop-color", _value));
   }
 
-  function x1(Element memory _element, uint _value) internal pure returns(Element memory element) {
-    element = _append(_element, Attribute("x1", _value.toString()));
+  function x1(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("x1", _value));
   }
 
-  function x2(Element memory _element, uint _value) internal pure returns(Element memory element) {
-    element = _append(_element, Attribute("x2", _value.toString()));
+  function x2(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("x2", _value));
   }
 
-  function y1(Element memory _element, uint _value) internal pure returns(Element memory element) {
-    element = _append(_element, Attribute("y1", _value.toString()));
+  function y1(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("y1", _value));
   }
 
-  function y2(Element memory _element, uint _value) internal pure returns(Element memory element) {
-    element = _append(_element, Attribute("y2", _value.toString()));
+  function y2(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("y2", _value));
   }
 
   function fillRef(Element memory _element, string memory _value) internal pure returns(Element memory element) {
