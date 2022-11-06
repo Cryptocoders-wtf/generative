@@ -180,7 +180,16 @@ contract SVGTest {
         .fillRef("gradient1")
     ]);
 
-    for (uint i=0; i<1; i++) {
+    samples[1] = SVG.group([
+      SVG.radialGradient([
+        SVG.stop(0).stopColor("red"),
+        SVG.stop(100).stopColor("yellow")
+      ], "gradient2"),
+      SVG.ellipse(512, 512, 512, 256)
+        .fillRef("gradient2")
+    ]);
+
+    for (uint i=0; i<2; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
       string memory tag = string(abi.encodePacked("test", i.toString()));
