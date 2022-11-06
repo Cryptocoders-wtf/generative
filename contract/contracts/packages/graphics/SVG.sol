@@ -48,6 +48,11 @@ library SVG {
     element.tail = '"/>\n';
   }
 
+  function stop(uint ratio) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<stop offset="', ratio.toString());
+    element.tail = '"/>\n';
+  }
+
   function use(string memory _id) internal pure returns(Element memory element) {
     element.head = abi.encodePacked('<use href="#', _id);
     element.tail = '"/>\n';
@@ -86,6 +91,34 @@ library SVG {
       svgs[i] = svg(_elements[i]);
     }
     output = svgs.packed();
+  }
+
+  function linearGradient(bytes memory _elements) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<linearGradient x_x="x'); // HACK: dummy header for trailing '"'
+    element.tail = abi.encodePacked('">', _elements, '</g>\n');
+  }
+
+  function linearGradient(Element memory _element) internal pure returns(Element memory element) {
+    element = linearGradient(svg(_element));
+  }
+
+  function linearGradient(Element[] memory _elements) internal pure returns(Element memory element) {
+    element = linearGradient(packed(_elements));
+  }
+
+  // HACK: Solidity does not support literal expression of dynamic array yet
+  function linearGradient(Element[2] memory _elements) internal pure returns(Element memory element) {
+    element = linearGradient(packed(_elements));
+  }
+
+  // HACK: Solidity does not support literal expression of dynamic array yet
+  function linearGradient(Element[3] memory _elements) internal pure returns(Element memory element) {
+    element = linearGradient(packed(_elements));
+  }
+
+  // HACK: Solidity does not support literal expression of dynamic array yet
+  function linearGradient(Element[4] memory _elements) internal pure returns(Element memory element) {
+    element = linearGradient(packed(_elements));
   }
 
   function group(bytes memory _elements) internal pure returns(Element memory element) {
@@ -192,6 +225,14 @@ library SVG {
 
   function fill(Element memory _element, string memory _value) internal pure returns(Element memory element) {
     element = _append(_element, Attribute("fill", _value));
+  }
+
+  function fillRef(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("fill", string(abi.encodePacked('url(', _value, ')'))));
+  }
+
+  function style(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("style", _value));
   }
 
   function transform(Element memory _element, string memory _value) internal pure returns(Element memory element) {
