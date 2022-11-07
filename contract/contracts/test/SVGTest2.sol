@@ -76,8 +76,8 @@ contract SVGTest2 {
     samples[5] = SVG.text(font, "hello").transform(string(abi.encodePacked('scale(0.', (1000 * 1024 / width).toString() ,')')));
 
     samples[6] = SVG.group([
-      SVG.text(font, "He will"),
-      SVG.text(font, "nouns").transform('translate(0 1024)')
+      SVG.text(font, "Hello"),
+      SVG.text(font, "Nouns").transform('translate(0 1024)')
     ]).transform('scale(0.4)');
 
     for (uint i=0; i<7; i++) {
