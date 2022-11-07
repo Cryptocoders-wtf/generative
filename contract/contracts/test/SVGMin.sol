@@ -11,8 +11,8 @@ pragma solidity ^0.8.6;
 
 import "randomizer.sol/Randomizer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "../packages/graphics/Path.sol";
-import "../packages/graphics/SVG.sol";
+import "fully-on-chain.sol/Path.sol";
+import "fully-on-chain.sol/SVG.sol";
 import "hardhat/console.sol";
 
 contract SVGMin {
