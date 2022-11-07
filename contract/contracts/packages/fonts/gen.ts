@@ -31,12 +31,19 @@ const main = async () => {
       path = element["@_d"];      
     }
     const bytes = solidityString(compressPath(path, height));
-    return { file, width, height, bytes };
+    const name = file.split('.')[0].slice(10);
+    return { file, name, width, height, bytes };
   });
-  const output = array.map(item => {
+  const constants = array.map(item => {
+    return `bytes constant ${item.name} = "${item.bytes}";`;
+  }).join('\n');
+  console.log(constants);
+  /*
+  const calls = array.map(item => {
     return `bytes constant ${item.file.split('.')[0].slice(10)} = "${item.bytes}";`;
   }).join('\n');
-  console.log(output);
+  console.log(calls);
+  */
 };
 
 main();
