@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
 /*
- * NounsAssetProvider is a wrapper around NounsDescriptor so that it offers
- * various characters as assets to compose (not individual parts).
+ * This is a part of fully-on-chain.sol, a npm package that allows developers
+ * to create fully on-chain generative art.
  *
  * Created by Satoshi Nakajima (@snakajima)
  */

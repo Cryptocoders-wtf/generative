@@ -1,30 +1,11 @@
+// SPDX-License-Identifier: MIT
+
 /*
-interface OriginalAssetPart {
-  body: string | Uint8Array;
-  color?: string;
-}
-
-interface AssetBase {
-  width: number;
-  height: number;
-  minter: string;
-  name: string;
-  group?: string;
-  category?: string;
-  svgPart?: string;
-  image?: string;
-  svg?: string;
-  metadata?: Uint8Array;
-  parts?: OriginalAssetPart[];
-}
-
-const assetBase: AssetBase = {
-  width: 24,
-  height: 24,
-  minter: "",
-  name: "",
-};
-*/
+ * This is a part of fully-on-chain.sol, a npm package that allows developers
+ * to create fully on-chain generative art.
+ *
+ * Created by Satoshi Nakajima (@snakajima)
+ */
 
 const regexNum = /[+-]?(\d*\.\d*|\d+)/;
 const regexNumG = /[+-]?(\d*\.\d*|\d+)/g;
