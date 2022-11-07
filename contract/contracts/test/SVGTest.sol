@@ -172,24 +172,33 @@ contract SVGTest {
 
 
     samples[0] = SVG.group([
-      SVG.linearGradient([
+      SVG.linearGradient(SVG.list([
         SVG.stop(0).stopColor("red"),
         SVG.stop(100).stopColor("yellow")
-      ], "gradient1").x1("0%").x2("100%"),
+      ]), "gradient1").x1("0%").x2("100%"),
       SVG.rect(256, 256, 512, 512)
         .fillRef("gradient1")
     ]);
 
     samples[1] = SVG.group([
-      SVG.radialGradient([
+      SVG.radialGradient(SVG.list([
         SVG.stop(0).stopColor("red"),
         SVG.stop(100).stopColor("yellow")
-      ], "gradient2"),
+      ]), "gradient2"),
       SVG.ellipse(512, 512, 512, 256)
         .fillRef("gradient2")
     ]);
 
-    for (uint i=0; i<2; i++) {
+    samples[2] = SVG.group([
+      SVG.filter("filter1", 
+        SVG.gaussianBlur("SourceGraphic", "20")
+      ),
+      SVG.ellipse(512, 512, 512, 256)
+        .fill("red")
+        .filter("filter1")
+    ]);
+
+    for (uint i=0; i<3; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
       string memory tag = string(abi.encodePacked("test", i.toString()));
