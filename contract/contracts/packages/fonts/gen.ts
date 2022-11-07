@@ -14,7 +14,7 @@ const main = async () => {
   console.log("main");
   let files = readdirSync(folder).filter(file => file !== ".DS_Store");
   // console.log(files);
-  const output = files.map((file) => {
+  const array = files.map((file) => {
     let xml = readFileSync(`${folder}/${file}`, 'utf8');
     //console.log(xml);
     const obj = parser.parse(xml);
@@ -33,6 +33,9 @@ const main = async () => {
     const bytes = solidityString(compressPath(path, height));
     return { file, width, height, bytes };
   });
+  const output = array.map(item => {
+    return `bytes constant ${item.file.slice(10,16)} = "${item.bytes}";`;
+  }).join('\n');
   console.log(output);
 };
 
