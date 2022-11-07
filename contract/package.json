@@ -7,7 +7,7 @@
     "assetprovider.sol": "^1.0.0",
     "assetstore.sol": "^1.0.1",
     "bytes-array.sol": "^1.0.0",
-    "fully-on-chain.sol": "^1.0.8",
+    "fully-on-chain.sol": "^1.0.9",
     "hardhat": "^2.11.2",
     "randomizer.sol": "^1.0.0",
     "trigonometry.sol": "^1.0.0"
