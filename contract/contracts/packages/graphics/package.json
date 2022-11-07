@@ -2,7 +2,8 @@
   "name": "fully-on-chain.sol",
   "version": "1.0.8",
   "description": "Graphics library for fully on-chain generative art in Solidity",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
