@@ -108,8 +108,22 @@ library SVG {
     element = filter(_id, svg(_element));
   }
 
-  function gaussianBlur(string memory _src, string memory _stdDeviation) internal pure returns(Element memory element) {
-    element.head = abi.encodePacked('<feGaussianBlur in="', _src, '" stdDeviation="', _stdDeviation, '" />');
+  function feGaussianBlur(string memory _src, string memory _stdDeviation) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<feGaussianBlur in="', _src, '" stdDeviation="', _stdDeviation);
+    element.tail = '" />';
+  }
+  /*
+      '  <feOffset result="offOut" in="SourceAlpha" dx="24" dy="32" />\n'
+      '  <feGaussianBlur result="blurOut" in="offOut" stdDeviation="16" />\n'
+      '  <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />\n'
+  */
+  function feOffset(string memory _src, string memory _dx, string memory _dy) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<feOffset in="', _src, '" dx="', _dx, '" dy="', _dy);
+    element.tail = '" />';
+  }
+
+  function feBlend(string memory _src, string memory _src2, string memory _mode) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<feBlend in="', _src, '" in2="', _src2, '" mode="', _mode);
     element.tail = '" />';
   }
 
@@ -275,6 +289,10 @@ library SVG {
 
   function fy(Element memory _element, string memory _value) internal pure returns(Element memory element) {
     element = _append(_element, Attribute("fy", _value));
+  }
+
+  function result(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("result", _value));
   }
 
   function fillRef(Element memory _element, string memory _value) internal pure returns(Element memory element) {
