@@ -73,7 +73,7 @@ contract SVGTest2 {
 
     samples[4] = SVG.char(font, "s");
     samples[5] = SVG.char(font, "t");
-    samples[6] = SVG.char(font, "w");
+    samples[6] = SVG.text(font, "xyz");
 
     for (uint i=0; i<7; i++) {
       uint x = 256 * (i % 4);
