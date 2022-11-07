@@ -21,7 +21,7 @@ const main = async () => {
     const svg = obj.svg;
     const viewBox = svg['@_viewBox'].split(' ');
     const height = parseInt(viewBox[3], 10);
-    const width = parseInt(viewBox[2], 10);
+    const width = Math.round(parseInt(viewBox[2], 10) * 1024 / height);
     const element = svg.path;
     let path;
     if (element.length > 0) {
@@ -32,18 +32,18 @@ const main = async () => {
     }
     const bytes = solidityString(compressPath(path, height));
     const name = file.split('.')[0].slice(10);
-    return { file, name, width, height, bytes };
+    const char = name.slice(5);
+    return { file, char, name, width, height, bytes };
   });
   const constants = array.map(item => {
     return `bytes constant ${item.name} = "${item.bytes}";`;
   }).join('\n');
   console.log(constants);
-  /*
+
   const calls = array.map(item => {
-    return `bytes constant ${item.file.split('.')[0].slice(10)} = "${item.bytes}";`;
+    return `register("${item.char}", ${item.name}, ${item.width});`;
   }).join('\n');
   console.log(calls);
-  */
 };
 
 main();
