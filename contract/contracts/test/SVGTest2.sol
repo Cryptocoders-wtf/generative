@@ -72,10 +72,13 @@ contract SVGTest2 {
     ]);
 
     samples[4] = SVG.char(font, "s");
-    samples[5] = SVG.char(font, "t");
-    uint width;
-    (samples[6], width) = SVG.text(font, "hello");
-    samples[6] = samples[6].transform(string(abi.encodePacked('scale(0.', (1000 * 1024 / width).toString() ,')')));
+    uint width = SVG.textWidth(font, "hello");
+    samples[5] = SVG.text(font, "hello").transform(string(abi.encodePacked('scale(0.', (1000 * 1024 / width).toString() ,')')));
+
+    samples[6] = SVG.group([
+      SVG.text(font, "hello"),
+      SVG.text(font, "nouns").transform('translate(0 1024)')
+    ]).transform('scale(0.4)');
 
     for (uint i=0; i<7; i++) {
       uint x = 256 * (i % 4);
