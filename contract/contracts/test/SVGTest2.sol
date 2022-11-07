@@ -71,9 +71,9 @@ contract SVGTest2 {
         .filter("filter3")
     ]);
 
-    samples[4] = SVG.path(Path.decode(font.pathOf("x")));
-    samples[5] = SVG.path(Path.decode(font.pathOf("y")));
-    samples[6] = SVG.path(Path.decode(font.pathOf("z")));
+    samples[4] = SVG.char(font, "s");
+    samples[5] = SVG.char(font, "t");
+    samples[6] = SVG.char(font, "w");
 
     for (uint i=0; i<7; i++) {
       uint x = 256 * (i % 4);

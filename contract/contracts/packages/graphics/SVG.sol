@@ -11,6 +11,8 @@ pragma solidity ^0.8.6;
 
 import "bytes-array.sol/BytesArray.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "./IFontProvider.sol";
+import "./Path.sol";
 
 library SVG {
   using Strings for uint;
@@ -30,6 +32,10 @@ library SVG {
   function path(bytes memory _path) internal pure returns(Element memory element) {
     element.head = abi.encodePacked('<path d="', _path); 
     element.tail = bytes('"/>\n');
+  }
+
+  function char(IFontProvider _font, string memory _char) internal view returns(Element memory element) {
+    element = SVG.path(Path.decode(_font.pathOf(_char)));
   }
 
   function circle(int _cx, int _cy, int _radius) internal pure returns(Element memory element) {
