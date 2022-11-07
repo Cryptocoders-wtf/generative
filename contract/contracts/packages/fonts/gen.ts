@@ -34,7 +34,7 @@ const main = async () => {
     return { file, width, height, bytes };
   });
   const output = array.map(item => {
-    return `bytes constant ${item.file.slice(10,16)} = "${item.bytes}";`;
+    return `bytes constant ${item.file.split('.')[0].slice(10)} = "${item.bytes}";`;
   }).join('\n');
   console.log(output);
 };
