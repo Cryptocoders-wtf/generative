@@ -51,11 +51,14 @@ contract LondrinaSolid is IFontProvider {
 
   function register(string memory _char, bytes memory _bytecode, uint _width) internal {
     uint key = uint(uint8(bytes(_char)[0]));
-    bytecodes[key] = _bytecode;
+    if (_bytecode.length > 0) {
+      bytecodes[key] = _bytecode;
+    }
     widths[key] = _width; 
   }
 
   function registerAll() internal {
+    register(" ", "", 208);
     register("a", font_a, 498);
     register("b", font_b, 498);
     register("c", font_c, 498);
