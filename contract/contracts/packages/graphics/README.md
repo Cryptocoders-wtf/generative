@@ -127,10 +127,10 @@ SVG.path(Path.decode(bitcoin)).fill("#F7931A");
 ```
 ![](https://i.imgur.com/LvsJPMM.png)
 
-Text output is possible as long as you have a font provider, which implements IFontProvider iterface. 
+Text output is also possible as long as you have a font provider, which implements IFontProvider iterface. 
 
 ```
-IFontProvider font = new LondrinaSolid();
+IFontProvider font = new gitLondrinaSolid();
 SVG.group([
   SVG.text(font, "hello"),
   SVG.text(font, "nouns").transform('translate(0 1024)')
