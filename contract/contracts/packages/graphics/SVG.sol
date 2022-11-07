@@ -38,11 +38,10 @@ library SVG {
     element = SVG.path(Path.decode(_font.pathOf(_char)));
   }
 
-  function text(IFontProvider _font, string memory _str) internal view returns(Element memory element) {
+  function text(IFontProvider _font, string memory _str) internal view returns(Element memory element, uint x) {
     bytes memory data = bytes(_str);
     bytes memory ch = new bytes(1);
     Element[] memory elements = new Element[](data.length);
-    uint x = 0;
     for (uint i=0; i<data.length; i++) {
       ch[0] = data[i];
       elements[i] = SVG.path(Path.decode(_font.pathOf(string(ch))));

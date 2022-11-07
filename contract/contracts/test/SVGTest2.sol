@@ -73,7 +73,9 @@ contract SVGTest2 {
 
     samples[4] = SVG.char(font, "s");
     samples[5] = SVG.char(font, "t");
-    samples[6] = SVG.text(font, "xyz");
+    uint width;
+    (samples[6], width) = SVG.text(font, "hello");
+    samples[6] = samples[6].transform(string(abi.encodePacked('scale(0.', (1000 * 1024 / width).toString() ,')')));
 
     for (uint i=0; i<7; i++) {
       uint x = 256 * (i % 4);
