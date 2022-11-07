@@ -76,7 +76,7 @@ export const normalizePath = (body: string, width: number) => {
   return numArray.join(" ");
 };
 
-export const compressPath = (body: string, width: number) => {
+export const compressNormalizedPath = (body: string, width: number) => {
   const items = prepareBody(body);
 
   const func1 = (value: number) => {
@@ -108,6 +108,11 @@ export const compressPath = (body: string, width: number) => {
 
   return bytes;
 };
+
+export const compressPath = (path: string, height: number) => {
+  const normalized = normalizePath(path, height);
+  return compressNormalizedPath(normalized, 1024);
+}
 
 export const solidityString = (array: Uint8Array) => {
   return Array.from(array).map(value => {
