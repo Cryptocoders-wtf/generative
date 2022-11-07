@@ -172,19 +172,19 @@ contract SVGTest {
 
 
     samples[0] = SVG.group([
-      SVG.linearGradient(SVG.list([
+      SVG.linearGradient("gradient1", SVG.list([
         SVG.stop(0).stopColor("red"),
         SVG.stop(100).stopColor("yellow")
-      ]), "gradient1").x1("0%").x2("100%"),
+      ])).x1("0%").x2("100%"),
       SVG.rect(256, 256, 512, 512)
         .fillRef("gradient1")
     ]);
 
     samples[1] = SVG.group([
-      SVG.radialGradient(SVG.list([
+      SVG.radialGradient("gradient2", SVG.list([
         SVG.stop(0).stopColor("red"),
         SVG.stop(100).stopColor("yellow")
-      ]), "gradient2"),
+      ])),
       SVG.ellipse(512, 512, 512, 256)
         .fillRef("gradient2")
     ]);

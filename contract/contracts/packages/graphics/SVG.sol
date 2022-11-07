@@ -99,13 +99,13 @@ library SVG {
     output = svgs.packed();
   }
 
-  function filter(string memory _value, bytes memory _elements) internal pure returns(Element memory element) {
-    element.head = abi.encodePacked('<filter id="', _value); 
+  function filter(string memory _id, bytes memory _elements) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<filter id="', _id); 
     element.tail = abi.encodePacked('">', _elements, '</filter>\n');
   }
 
-  function filter(string memory _value, Element memory _element) internal pure returns(Element memory element) {
-    element = filter(_value, svg(_element));
+  function filter(string memory _id, Element memory _element) internal pure returns(Element memory element) {
+    element = filter(_id, svg(_element));
   }
 
   function gaussianBlur(string memory _src, string memory _stdDeviation) internal pure returns(Element memory element) {
@@ -113,22 +113,22 @@ library SVG {
     element.tail = '" />';
   }
 
-  function linearGradient(bytes memory _elements, string memory _value) internal pure returns(Element memory element) {
-    element.head = abi.encodePacked('<linearGradient id="', _value); 
+  function linearGradient(string memory _id, bytes memory _elements) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<linearGradient id="', _id); 
     element.tail = abi.encodePacked('">', _elements, '</linearGradient>\n');
   }
 
-  function linearGradient(Element memory _element, string memory _value) internal pure returns(Element memory element) {
-    element = linearGradient(svg(_element), _value);
+  function linearGradient(string memory _id, Element memory _element) internal pure returns(Element memory element) {
+    element = linearGradient(_id, svg(_element));
   }
 
-  function radialGradient(bytes memory _elements, string memory _value) internal pure returns(Element memory element) {
-    element.head = abi.encodePacked('<radialGradient id="', _value); 
+  function radialGradient(string memory _id, bytes memory _elements) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<radialGradient id="', _id); 
     element.tail = abi.encodePacked('">', _elements, '</radialGradient>\n');
   }
 
-  function radialGradient(Element memory _element, string memory _value) internal pure returns(Element memory element) {
-    element = radialGradient(svg(_element), _value);
+  function radialGradient(string memory _id, Element memory _element) internal pure returns(Element memory element) {
+    element = radialGradient(_id, svg(_element));
   }
 
   function group(bytes memory _elements) internal pure returns(Element memory element) {
