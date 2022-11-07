@@ -42,9 +42,14 @@ library SVG {
     bytes memory data = bytes(_str);
     bytes memory ch = new bytes(1);
     Element[] memory elements = new Element[](data.length);
+    uint x = 0;
     for (uint i=0; i<data.length; i++) {
       ch[0] = data[i];
       elements[i] = SVG.path(Path.decode(_font.pathOf(string(ch))));
+      if (x > 0) {
+        elements[i] = transform(elements[i], string(abi.encodePacked('translate(', x.toString(), ' 0)')));
+      }
+      x += _font.widthOf(string(ch));
     }
     element = group(elements);
   }
