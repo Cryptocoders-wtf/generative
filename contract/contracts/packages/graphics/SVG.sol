@@ -13,6 +13,7 @@ import "bytes-array.sol/BytesArray.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./IFontProvider.sol";
 import "./Path.sol";
+import "./Transform.sol";
 
 library SVG {
   using Strings for uint;

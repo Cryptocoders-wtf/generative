@@ -22,6 +22,7 @@ contract SVGTest2 {
   using Vector for Vector.Struct;
   using Path for uint[];
   using SVG for SVG.Element;
+  using TX for string;
 
   IFontProvider immutable public font;
 
@@ -82,7 +83,8 @@ contract SVGTest2 {
 
     samples[6] = SVG.group([
       SVG.text(font, "Hello"),
-      SVG.text(font, "Nouns").transform(string(abi.encodePacked('translate(',width.toString(),' ',(baseline/2).toString(),') scale(0.5)')))
+      SVG.text(font, "Nouns")
+        .transform(TX.translate(width, baseline/2).scale("0.5")) 
     ]).transform('scale(0.3)');
 
     for (uint i=0; i<7; i++) {
@@ -93,7 +95,7 @@ contract SVGTest2 {
       uses[i] = SVG.group([
         SVG.rect().fill("#c0c0c0"), 
         SVG.use(tag)
-      ]).transform(string(abi.encodePacked('translate(',x.toString(),' ', y.toString(), ') scale(0.24)')));
+      ]).transform((TX.translate(x, y).scale("0.24"))); 
     }
 
     output = SVG.document(
