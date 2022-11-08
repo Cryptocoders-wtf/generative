@@ -15,6 +15,9 @@ async function main() {
   await contract2.deployed();
   console.log(`      test2="${contract2.address}"`);
 
+  const fontAddress = await contract2.font();
+  console.log("font", fontAddress);
+
   const result2 = await contract2.main();
   await writeFile(`../../../cache/test2.svg`, result2, ()=>{});  
 }
