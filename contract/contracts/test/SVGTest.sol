@@ -21,6 +21,7 @@ contract SVGTest {
   using Vector for Vector.Struct;
   using Path for uint[];
   using SVG for SVG.Element;
+  using TX for string;
 
   function main() external pure returns(string memory output) {
     SVG.Element[] memory samples = new SVG.Element[](16);
@@ -154,9 +155,9 @@ contract SVGTest {
       string memory tag = string(abi.encodePacked("test", i.toString()));
       samples[i] = samples[i].id(tag);
       uses[i] = SVG.group([
-        SVG.rect(16,16,992,992).fill("#c0c0c0"), 
+        SVG.rect().fill("#c0c0c0"), 
         SVG.use(tag)
-      ]).transform(string(abi.encodePacked('translate(',x.toString(),' ', y.toString(), ') scale(0.25)')));
+      ]).transform((TX.translate(x, y).scale("0.24"))); 
     }
 
     output = SVG.document(
