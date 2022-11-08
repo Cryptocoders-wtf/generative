@@ -8,7 +8,7 @@ const options = {
 };
 
 const parser = new XMLParser(options);
-const folder = "./londrina_solid";
+const folder = "./londrina_solid_E";
 
 const main = async () => {
   console.log("main");

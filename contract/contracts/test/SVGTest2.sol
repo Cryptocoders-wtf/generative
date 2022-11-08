@@ -72,7 +72,7 @@ contract SVGTest2 {
         .filter("filter3")
     ]);
 
-    uint width = SVG.textWidth(font, "pNouns");
+    uint width = SVG.textWidth(font, "0123456");
     samples[4] = SVG.text(font, "pNouns")
                     .fill("#224455")
                     .transform(TX.scale1000(1000 * 1024 / width));
@@ -90,7 +90,23 @@ contract SVGTest2 {
         .transform(TX.translate(width, baseline/2).scale("0.5")) 
     ]).transform('scale(0.3)');
 
-    for (uint i=0; i<7; i++) {
+    width = SVG.textWidth(font, "0123456789&@():,$!%.?;#/");
+    samples[7] = SVG.group([
+              SVG.text(font, "0123456789&@():,$!%.?;#/"),
+              SVG.text(font, "ABCDEFGHIJKLMNOPQRXYZ").transform('translate(0 1024)'),
+              SVG.text(font, "abcdefghijklmnopqrxyz").transform('translate(0 2048)')
+                  ]).fill("#224455")
+                    .transform(TX.translate(0,256).scale1000(1000 * 1024 / width));
+
+    // 1588750686006947840
+    samples[8] = SVG.text(font, [
+        "Elon Musk",
+        "@elonmusk",
+        "",
+        "Trash me all day, but it'll cost $8"
+      ], 1024);
+
+    for (uint i=0; i<9; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
       string memory tag = string(abi.encodePacked("test", i.toString()));

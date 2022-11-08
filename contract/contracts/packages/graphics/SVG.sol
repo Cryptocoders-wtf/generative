@@ -48,6 +48,19 @@ library SVG {
     }
   }
 
+  function text(IFontProvider _font, string[4] memory _strs, uint _width) internal view returns(Element memory element) {
+    string[] memory strs = new string[](4);
+    strs[0] = _strs[0];
+    strs[1] = _strs[1];
+    strs[2] = _strs[2];
+    strs[3] = _strs[3];
+    element = text(_font, strs, _width);
+  }
+
+  function text(IFontProvider _font, string[] memory _strs, uint _width) internal view returns(Element memory element) {
+    element = text(_font, _strs[0]);
+  }
+
   function text(IFontProvider _font, string memory _str) internal view returns(Element memory element) {
     bytes memory data = bytes(_str);
     bytes memory ch = new bytes(1);
