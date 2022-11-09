@@ -19,7 +19,7 @@ async function main() {
   console.log("font", fontAddress);
 
   const result2 = await contract2.main();
-  await writeFile(`../../../cache/test2.svg`, result2, ()=>{});  
+  await writeFile(`./cache/test2.svg`, result2, ()=>{});  
 }
 
 main().catch((error) => {

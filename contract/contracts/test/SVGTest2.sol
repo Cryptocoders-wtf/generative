@@ -13,6 +13,7 @@ import "randomizer.sol/Randomizer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "../packages/graphics/Path.sol";
 import "../packages/graphics/SVG.sol";
+import "../packages/graphics/Text.sol";
 import "../fonts/LondrinaSolid.sol";
 import "hardhat/console.sol";
 
@@ -125,7 +126,12 @@ contract SVGTest2 {
       SVG.text(font, "11:46 AM Oct 19, 2022").fill("grey").transform(TX.translate(0,921).scale1000(100))
     ]);
 
-    for (uint i=0; i<10; i++) {
+    samples[10] = SVG.group([
+      SVG.text(font, "Hello"),
+      SVG.text(font, "World").transform('translate(0 1024)')
+    ]).transform('scale(0.4)');
+
+    for (uint i=0; i<11; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
       string memory tag = string(abi.encodePacked("test", i.toString()));
