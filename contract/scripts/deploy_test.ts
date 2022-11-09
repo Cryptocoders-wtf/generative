@@ -2,6 +2,7 @@ import { ethers, network } from "hardhat";
 import { writeFile } from "fs";
 
 async function main() {
+  /*
   const factory = await ethers.getContractFactory("SVGTest");
   const contract = await factory.deploy();
   await contract.deployed();
@@ -9,7 +10,7 @@ async function main() {
 
   const result = await contract.main();
   await writeFile(`../../../cache/test.svg`, result, ()=>{});  
-
+  */
   const factory2 = await ethers.getContractFactory("SVGTest2");
   const contract2 = await factory2.deploy();
   await contract2.deployed();

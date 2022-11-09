@@ -36,6 +36,7 @@ contract SVGTest2 {
     SVG.Element[] memory samples = new SVG.Element[](16);
     SVG.Element[] memory uses = new SVG.Element[](16);
 
+/*
     samples[0] = SVG.group([
       SVG.linearGradient("gradient1", SVG.list([
         SVG.stop(0).stopColor("red"),
@@ -125,13 +126,17 @@ contract SVGTest2 {
       ], 1024).transform(TX.translate(0, 384)),
       SVG.text(font, "11:46 AM Oct 19, 2022").fill("grey").transform(TX.translate(0,921).scale1000(100))
     ]);
+*/
+    {
+      string memory str;
+      str = Text.extractLine("Hello\nWorld");
+      samples[10] = SVG.group([
+        SVG.text(font, str),
+        SVG.text(font, "World").transform('translate(0 1024)')
+      ]).transform('scale(0.4)');
+    }
 
-    samples[10] = SVG.group([
-      SVG.text(font, "Hello"),
-      SVG.text(font, "World").transform('translate(0 1024)')
-    ]).transform('scale(0.4)');
-
-    for (uint i=0; i<11; i++) {
+    for (uint i=10; i<11; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
       string memory tag = string(abi.encodePacked("test", i.toString()));
