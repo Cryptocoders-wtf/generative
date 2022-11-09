@@ -10,7 +10,7 @@
 pragma solidity ^0.8.6;
 
 library Text {
-  function extractLine(string memory _text, uint _index) internal pure returns(string memory line, uint index) {
+  function extractLine(string memory _text, uint _index, uint _ch) internal pure returns(string memory line, uint index) {
     uint length = bytes(_text).length;
     assembly {
       line := mload(0x40)
@@ -28,8 +28,7 @@ library Text {
           shift := 256
         }
         shift := sub(shift, 8)
-        let char := and(shr(shift, word), 0xff)
-        if eq(char, 0x0a) {
+        if eq(and(shr(shift, word), 0xff), _ch) {
           length := i
         }
       }
