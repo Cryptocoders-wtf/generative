@@ -58,7 +58,12 @@ library SVG {
   }
 
   function text(IFontProvider _font, string[] memory _strs, uint _width) internal view returns(Element memory element) {
-    element = text(_font, _strs[0]);
+    uint height = _font.height();
+    Element[] memory elements = new Element[](_strs.length);
+    for (uint i=0; i<_strs.length; i++) {
+      elements[i] = transform(text(_font, _strs[i]), TX.translate(0, height * i));
+    }
+    element = group(elements);
   }
 
   function text(IFontProvider _font, string memory _str) internal view returns(Element memory element) {
