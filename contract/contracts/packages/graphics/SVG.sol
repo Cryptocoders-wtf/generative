@@ -62,7 +62,7 @@ library SVG {
     uint maxWidth = _width;
     Element[] memory elements = new Element[](_strs.length);
     for (uint i=0; i<_strs.length; i++) {
-      uint width = _font.widthOf(_strs[i]);
+      uint width = textWidth(_font, _strs[i]);
       if (width > maxWidth) {
         maxWidth = width;
       }
