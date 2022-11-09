@@ -13,7 +13,7 @@ import "randomizer.sol/Randomizer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "../packages/graphics/Path.sol";
 import "../packages/graphics/SVG.sol";
-import "./LondrinaSolid.sol";
+import "../fonts/LondrinaSolid.sol";
 import "hardhat/console.sol";
 
 contract SVGTest2 {
@@ -103,7 +103,10 @@ contract SVGTest2 {
         "Elon Musk",
         "@elonmusk",
         "",
-        "Trash me all day, but it'll cost $8"
+        "I will not let you down,",
+        "no matter what it takes",
+        "",
+        "11:46 AM Oct 19, 2022"
       ], 1024);
 
     for (uint i=0; i<9; i++) {

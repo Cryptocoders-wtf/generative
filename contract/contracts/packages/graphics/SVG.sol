@@ -48,12 +48,40 @@ library SVG {
     }
   }
 
+  function text(IFontProvider _font, string[3] memory _strs, uint _width) internal view returns(Element memory element) {
+    string[] memory strs = new string[](3);
+    for (uint i=0; i<_strs.length; i++) {
+      strs[i] = _strs[i];
+    }
+    element = text(_font, strs, _width);
+  }
+
   function text(IFontProvider _font, string[4] memory _strs, uint _width) internal view returns(Element memory element) {
     string[] memory strs = new string[](4);
-    strs[0] = _strs[0];
-    strs[1] = _strs[1];
-    strs[2] = _strs[2];
-    strs[3] = _strs[3];
+    for (uint i=0; i<_strs.length; i++) {
+      strs[i] = _strs[i];
+    }
+    element = text(_font, strs, _width);
+  }
+  function text(IFontProvider _font, string[5] memory _strs, uint _width) internal view returns(Element memory element) {
+    string[] memory strs = new string[](5);
+    for (uint i=0; i<_strs.length; i++) {
+      strs[i] = _strs[i];
+    }
+    element = text(_font, strs, _width);
+  }
+  function text(IFontProvider _font, string[6] memory _strs, uint _width) internal view returns(Element memory element) {
+    string[] memory strs = new string[](6);
+    for (uint i=0; i<_strs.length; i++) {
+      strs[i] = _strs[i];
+    }
+    element = text(_font, strs, _width);
+  }
+  function text(IFontProvider _font, string[7] memory _strs, uint _width) internal view returns(Element memory element) {
+    string[] memory strs = new string[](7);
+    for (uint i=0; i<_strs.length; i++) {
+      strs[i] = _strs[i];
+    }
     element = text(_font, strs, _width);
   }
 
