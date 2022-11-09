@@ -129,10 +129,13 @@ contract SVGTest2 {
 */
     {
       string memory str;
-      str = Text.extractLine("Hello\nWorld", 1);
+      uint index;
+      (str,index) = Text.extractLine("Hello\nWorld!", 0);
+      string memory str2;
+      (str2,) = Text.extractLine("Hello\nWorld!", index);
       samples[10] = SVG.group([
         SVG.text(font, str),
-        SVG.text(font, "World").transform('translate(0 1024)')
+        SVG.text(font, str2).transform('translate(0 1024)')
       ]).transform('scale(0.4)');
     }
 

@@ -10,7 +10,7 @@
 pragma solidity ^0.8.6;
 
 library Text {
-  function extractLine(string memory _text, uint _index) internal pure returns(string memory line) {
+  function extractLine(string memory _text, uint _index) internal pure returns(string memory line, uint index) {
     uint length = bytes(_text).length;
     assembly {
       line := mload(0x40)
@@ -34,7 +34,7 @@ library Text {
         }
       }
 
-      // index := i
+      index := i
       length := sub(i, _index)
       mstore(line, length) //sub(i, _index))
       mstore(0x40, add(add(line, 0x20), length))
