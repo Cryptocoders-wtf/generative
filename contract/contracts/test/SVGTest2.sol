@@ -110,7 +110,19 @@ contract SVGTest2 {
         "11:46 AM Oct 19, 2022"
       ], 1024);
 
-    samples[9] = SVG.path(Path.decode(twitter)).fill("#1d9bf0");
+    samples[9] = SVG.group([
+      SVG.path(Path.decode(twitter))
+          .fill("#1d9bf0")
+          .transform(TX.translate(819,0).scale1000(200)),
+      SVG.group([
+        SVG.text(font, "Elon Musk"),
+        SVG.text(font, "@elonmusk").fill("grey").transform(TX.translate(0, 1024))
+      ]).transform(TX.scale1000(100)) /*,
+      SVG.text(font, [
+          "I will not let you down,",
+          "no matter what it takes"
+      ], 1024).transform(TX.translate(0, 384)) */
+    ]);
 
     for (uint i=0; i<10; i++) {
       uint x = 256 * (i % 4);
