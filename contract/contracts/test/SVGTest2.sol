@@ -121,7 +121,8 @@ contract SVGTest2 {
       SVG.text(font, [
           "I will not let you down,",
           "no matter what it takes"
-      ], 1024).transform(TX.translate(0, 384))
+      ], 1024).transform(TX.translate(0, 384)),
+      SVG.text(font, "11:46 AM Oct 19, 2022").fill("grey").transform(TX.translate(0,921).scale1000(100))
     ]);
 
     for (uint i=0; i<10; i++) {
