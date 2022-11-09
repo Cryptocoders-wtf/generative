@@ -59,11 +59,16 @@ library SVG {
 
   function text(IFontProvider _font, string[] memory _strs, uint _width) internal view returns(Element memory element) {
     uint height = _font.height();
+    uint maxWidth = _width;
     Element[] memory elements = new Element[](_strs.length);
     for (uint i=0; i<_strs.length; i++) {
+      uint width = _font.widthOf(_strs[i]);
+      if (width > maxWidth) {
+        maxWidth = width;
+      }
       elements[i] = transform(text(_font, _strs[i]), TX.translate(0, height * i));
     }
-    element = group(elements);
+    element = transform(group(elements), TX.scale1000(1000 * _width / maxWidth));
   }
 
   function text(IFontProvider _font, string memory _str) internal view returns(Element memory element) {

@@ -102,8 +102,8 @@ contract SVGTest2 {
     samples[8] = SVG.text(font, [
         "Elon Musk",
         "@elonmusk",
-        "",
-        "Trash me all day, but it'll cost $8"
+        " ",
+        "Trash me all day, but it ll cost $8"
       ], 1024);
 
     for (uint i=0; i<9; i++) {
