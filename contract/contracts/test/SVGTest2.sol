@@ -128,15 +128,15 @@ contract SVGTest2 {
     ]);
 */
     {
-      string memory str;
-      uint index;
-      (str,index) = Text.extractLine("Hello\nNouns", 0, 0x0a);
-      string memory str2;
-      (str2,) = Text.extractLine("Hello\nNouns", index, 0x0a);
-      samples[10] = SVG.group([
-        SVG.text(font, str),
-        SVG.text(font, str2).transform('translate(0 1024)')
-      ]).transform('scale(0.4)');
+      samples[10] = 
+        SVG.text(font, Text.split(
+            "Liquidating our FTT is just post-exit risk management,\n"
+            "learning from LUNA. We gave support before, but we won't\n"
+            "pretend to make love after divorce. We are not against\n"
+            "anyone. But we won't support people who lobby against\n"
+            "other industry players behind their backs. Onwards.",
+            0x0a
+        ), 1024);
     }
 
     for (uint i=10; i<11; i++) {
