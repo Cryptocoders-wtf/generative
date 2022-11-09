@@ -102,7 +102,8 @@ library SVG {
       }
       elements[i] = transform(text(_font, _strs[i]), TX.translate(0, height * i));
     }
-    element = transform(group(elements), TX.scale1000(1000 * _width / maxWidth));
+    // extra group is necessary to let it transform 
+    element = group(svg(transform(group(elements), TX.scale1000(1000 * _width / maxWidth))));
   }
 
   function text(IFontProvider _font, string memory _str) internal view returns(Element memory element) {

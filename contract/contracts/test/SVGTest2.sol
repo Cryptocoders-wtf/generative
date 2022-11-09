@@ -117,11 +117,11 @@ contract SVGTest2 {
       SVG.group([
         SVG.text(font, "Elon Musk"),
         SVG.text(font, "@elonmusk").fill("grey").transform(TX.translate(0, 1024))
-      ]).transform(TX.scale1000(100)) /*,
+      ]).transform(TX.scale1000(100)),
       SVG.text(font, [
           "I will not let you down,",
           "no matter what it takes"
-      ], 1024).transform(TX.translate(0, 384)) */
+      ], 1024).transform(TX.translate(0, 384))
     ]);
 
     for (uint i=0; i<10; i++) {
