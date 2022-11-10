@@ -19,7 +19,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 abstract contract ERC721P2P is IERC721P2P, ERC721, Ownable {
   mapping (uint256 => uint256) prices;
 
-  function setPriceOf(uint256 _tokenId, uint256 _price) external override {
+  function setPriceOf(uint256 _tokenId, uint256 _price) public override {
     require(ownerOf(_tokenId) == msg.sender, "Only the onwer can set the price");
     prices[_tokenId] = _price;
   }
@@ -60,6 +60,7 @@ abstract contract ERC721P2P is IERC721P2P, ERC721, Ownable {
   }
 
   function acceptOffer(uint256 _tokenId, IERC721Marketplace _dealer, uint256 _price) external override {
-
+    setPriceOf(_tokenId, _price);
+    _dealer.acceptOffer(this, _tokenId, _price);
   }
 }
