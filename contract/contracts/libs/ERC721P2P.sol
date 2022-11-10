@@ -63,4 +63,10 @@ abstract contract ERC721P2P is IERC721P2P, ERC721, Ownable {
     setPriceOf(_tokenId, _price);
     _dealer.acceptOffer(this, _tokenId, _price);
   }
+
+  function _isApprovedOrOwner(address spender, uint256 tokenId) internal view override returns (bool) {
+    require(_exists(tokenId), "ERC721: operator query for nonexistent token");
+    address owner = ERC721.ownerOf(tokenId);
+    return (spender == owner); // only owner can transfer it
+  }
 }
