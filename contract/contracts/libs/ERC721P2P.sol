@@ -33,8 +33,11 @@ abstract contract ERC721P2P is IERC721P2P, ERC721, Ownable {
     require(price > 0, "Token is not on sale.");
     require(msg.value >= price, "Not enough fund");
     uint256 comission = _processSalesCommission(msg.value, _facilitator);
+    uint256 royalty = _processRoyalty(msg.value, _tokenId);
     address tokenOwner = ownerOf(_tokenId);
-    _processPayout(tokenOwner, msg.value - comission);
+    address payable payableTo = payable(tokenOwner);
+    payableTo.transfer(msg.value - comission - royalty);
+
     _transfer(tokenOwner, _wallet, _tokenId);
   }
 
@@ -48,9 +51,12 @@ abstract contract ERC721P2P is IERC721P2P, ERC721, Ownable {
   }
 
   // Subclass needs to override to pay royalties to creator(s)
-  function _processPayout(address _tokenOwner, uint _amount) internal virtual {
-    address payable payableTo = payable(_tokenOwner);
-    payableTo.transfer(_amount);
+  function _processRoyalty(uint _amount, uint _tokenId) internal virtual returns(uint256 royalty) {
+    /*
+    royalty = _amount * 5 / 100;
+    address payable payableTo = payable(address(_creator));
+    payableTo.transfer(royalty);
+    */
   }
 
   function acceptOffer(uint256 _tokenId, IERC721Marketplace _dealer, uint256 _price) external override {
