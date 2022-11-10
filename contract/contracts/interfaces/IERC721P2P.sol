@@ -32,7 +32,7 @@ interface IERC721P2P is IERC721 {
   // Get the current price of the specified token
   function getPriceOf(uint256 _tokenId) external view returns(uint256);
   // It will transfer the token and distribute the money, including royalties
-  function purchase(uint256 _tokenId, address _wallet, address _facilitator) external payable;
+  function purchase(uint256 _tokenId, address _buyer, address _facilitator) external payable;
   // It sets the price and calls the acceptOffer method of _dealer (onlyTokenOwner)
   function acceptOffer(uint256 _tokenId, IERC721Marketplace _dealer, uint256 _price) external;
 }
