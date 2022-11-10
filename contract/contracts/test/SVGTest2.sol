@@ -36,7 +36,6 @@ contract SVGTest2 {
     SVG.Element[] memory samples = new SVG.Element[](16);
     SVG.Element[] memory uses = new SVG.Element[](16);
 
-/*
     samples[0] = SVG.group([
       SVG.linearGradient("gradient1", SVG.list([
         SVG.stop(0).stopColor("red"),
@@ -120,13 +119,12 @@ contract SVGTest2 {
         SVG.text(font, "Elon Musk"),
         SVG.text(font, "@elonmusk").fill("grey").transform(TX.translate(0, 1024))
       ]).transform(TX.scale1000(100)),
-      SVG.text(font, [
-          "I will not let you down,",
-          "no matter what it takes"
-      ], 1024).transform(TX.translate(0, 384)),
+      SVG.text(font, Text.split(
+          "I will not let you down,\nno matter what it takes", 0x0a
+      ), 1024).transform(TX.translate(0, 384)),
       SVG.text(font, "11:46 AM Oct 19, 2022").fill("grey").transform(TX.translate(0,921).scale1000(100))
     ]);
-*/
+/*
     {
       samples[10] = 
         SVG.text(font, Text.split(
@@ -138,8 +136,9 @@ contract SVGTest2 {
             0x0a
         ), 1024);
     }
+*/
 
-    for (uint i=10; i<11; i++) {
+    for (uint i=0; i<10; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
       string memory tag = string(abi.encodePacked("test", i.toString()));
