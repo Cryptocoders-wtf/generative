@@ -36,13 +36,32 @@ contract SVGTest3 {
     SVG.Element[] memory samples = new SVG.Element[](16);
     SVG.Element[] memory uses = new SVG.Element[](16);
 
-
     uint width = SVG.textWidth(font, "pNouns");
     samples[0] = SVG.text(font, "pNouns")
                     .fill("#224455")
                     .transform(TX.scale1000(1000 * 1024 / width));
 
-    for (uint i=0; i<1; i++) {
+    uint count = 10;
+    SVG.Element[] memory circles = new SVG.Element[](count);
+    Randomizer.Seed memory seed = Randomizer.Seed(1, 0);
+    for (uint i=0; i<count; i++) {
+      uint cx;
+      uint cy;
+      uint r;
+      (seed, cx) = seed.randomize(512, 60);
+      (seed, cy) = seed.randomize(512, 60);
+      (seed, r) = seed.randomize(100, 70);
+      circles[i] = SVG.circle(int(cx), int(cy), int(r))
+                      .opacity("0.5");
+    }
+    samples[1] = SVG.group([
+      SVG.text(font, "pNouns")
+                    .fill("#224455")
+                    .transform(TX.scale1000(1000 * 1024 / width)),
+      SVG.group(circles).transform("translate(0,200) scale(0.8)")
+    ]);
+
+    for (uint i=0; i<2; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
       string memory tag = string(abi.encodePacked("test", i.toString()));

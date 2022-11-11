@@ -341,6 +341,10 @@ library SVG {
     element = _append(_element, Attribute("fill", _value));
   }
 
+  function opacity(Element memory _element, string memory _value) internal pure returns(Element memory element) {
+    element = _append(_element, Attribute("opacity", _value));
+  }
+
   function stopColor(Element memory _element, string memory _value) internal pure returns(Element memory element) {
     element = _append(_element, Attribute("stop-color", _value));
   }
