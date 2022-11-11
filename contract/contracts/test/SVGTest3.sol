@@ -10,6 +10,7 @@
 pragma solidity ^0.8.6;
 
 import "randomizer.sol/Randomizer.sol";
+import "trigonometry.sol/Trigonometry.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "../packages/graphics/Path.sol";
 import "../packages/graphics/SVG.sol";
@@ -24,6 +25,7 @@ contract SVGTest3 {
   using Path for uint[];
   using SVG for SVG.Element;
   using TX for string;
+  using Trigonometry for uint;
 
   bytes constant twitter = "\x4d\x80\x94\xd4\x05\x63\x01\x55\x09\x01\x55\x12\x01\x55\x1b\x00\x65\x14\x2e\x74\x51\xaf\x72\x51\x76\x50\x00\x63\x40\x8f\x00\x45\x20\xe0\x34\xc0\xa3\x54\x10\x02\x55\x21\x03\x55\x32\x03\x55\x5e\x00\x55\xb9\xe1\x64\x03\xa7\x44\xa7\xfe\x44\x59\xc4\x44\x3d\x6f\x54\x1f\x06\x55\x3f\x05\x55\x5e\xfc\x44\x9f\xec\x44\x59\x97\x44\x59\x34\x04\x76\xfd\x04\x63\x1d\x55\x10\x3d\x55\x19\x5f\x55\x1a\x43\x50\x30\x05\x56\x14\x8c\x55\x4b\x2c\x05\x63\x6a\x55\x82\x06\x56\xd1\xae\x56\xda\xef\x44\xb8\x06\x45\x6c\x3c\x45\x39\x54\x45\xb1\xd8\x45\xb5\x27\x56\x09\x2f\x45\xf7\x5b\x45\xe6\x84\x45\xcd\xf0\x54\x30\xd0\x54\x59\xa4\x54\x73\x29\x45\xfb\x52\x45\xf0\x78\x45\xdf\xe4\x54\x2a\xc1\x54\x4e\x98\x54\x6c\x7a\x00";
   IFontProvider immutable public font;
@@ -46,13 +48,15 @@ contract SVGTest3 {
     SVG.Element[] memory elements = new SVG.Element[](count);
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
     for (uint i=0; i<count; i++) {
-      uint cx;
-      uint cy;
-      uint r;
-      (seed, cx) = doubles(seed, 300);
-      (seed, cy) = doubles(seed, 300);
-      (seed, r) = seed.randomize(120, 70);
-      elements[i] = SVG.circle(int(cx + 212), int(cy + 212), int(r))
+      uint degree;
+      (seed, degree) = seed.random(0x4000);
+      uint distance;
+      (seed, distance) = seed.random(480);
+      uint radius;
+      (seed, radius) = seed.randomize(150, 70);
+      distance = distance / (radius / 100 + 1);
+      elements[i] = SVG.circle(512 + degree.cos() * int(distance) / Vector.ONE, 
+                               512 + degree.sin() * int(distance) / Vector.ONE, int(radius))
                       .fill(colors[i % 4])
                       .opacity("0.333");
     }
@@ -70,8 +74,8 @@ contract SVGTest3 {
 
     for (uint i=0; i<16; i++) {
       samples[i] = SVG.group([
-        pnouns,
-        circles(i).transform("translate(102,204) scale(0.8)")
+        circles(i).transform("translate(102,204) scale(0.8)"),
+        pnouns
       ]);
     }
 
