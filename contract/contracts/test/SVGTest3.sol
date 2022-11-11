@@ -41,6 +41,7 @@ contract SVGTest3 {
   }
 
   function circles(uint _assetId) internal pure returns(SVG.Element memory) {
+    string[4] memory colors = ["red", "green", "yellow", "blue"]; 
     uint count = 12;
     SVG.Element[] memory elements = new SVG.Element[](count);
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
@@ -50,9 +51,10 @@ contract SVGTest3 {
       uint r;
       (seed, cx) = doubles(seed, 300);
       (seed, cy) = doubles(seed, 300);
-      (seed, r) = seed.randomize(100, 70);
+      (seed, r) = seed.randomize(120, 70);
       elements[i] = SVG.circle(int(cx + 212), int(cy + 212), int(r))
-                      .opacity("0.5");
+                      .fill(colors[i % 4])
+                      .opacity("0.333");
     }
     return SVG.group(elements);
   }
@@ -66,14 +68,14 @@ contract SVGTest3 {
                     .fill("#224455")
                     .transform(TX.scale1000(1000 * 1024 / width));
 
-    for (uint i=0; i<8; i++) {
+    for (uint i=0; i<16; i++) {
       samples[i] = SVG.group([
         pnouns,
-        circles(i).transform("translate(0,200) scale(0.8)")
+        circles(i).transform("translate(102,204) scale(0.8)")
       ]);
     }
 
-    for (uint i=0; i<8; i++) {
+    for (uint i=0; i<16; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
       string memory tag = string(abi.encodePacked("test", i.toString()));
