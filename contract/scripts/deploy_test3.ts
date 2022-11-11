@@ -12,8 +12,11 @@ async function main() {
   await nouns.deployed();
   console.log(`      provider="${nouns.address}"`);
 
+  // const foo = await nouns.generateSVGPart(0);
+  // console.log(foo);
+
   const factory = await ethers.getContractFactory("SVGTest3");
-  const contract = await factory.deploy();
+  const contract = await factory.deploy(nouns.address);
   await contract.deployed();
   console.log(`      test3="${contract.address}"`);
 
