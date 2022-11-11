@@ -32,18 +32,26 @@ contract SVGTest3 {
     font = new LondrinaSolid();
   }
 
+  function doubles(Randomizer.Seed memory _seed, uint _max) internal pure returns(Randomizer.Seed memory, uint) {
+    uint v1;
+    uint v2;
+    (_seed, v1) = _seed.random(_max);
+    (_seed, v2) = _seed.random(_max);
+    return (_seed, v1 + v2);    
+  }
+
   function circles(uint _assetId) internal pure returns(SVG.Element memory) {
-    uint count = 10;
+    uint count = 12;
     SVG.Element[] memory elements = new SVG.Element[](count);
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
     for (uint i=0; i<count; i++) {
       uint cx;
       uint cy;
       uint r;
-      (seed, cx) = seed.randomize(512, 60);
-      (seed, cy) = seed.randomize(512, 60);
+      (seed, cx) = doubles(seed, 300);
+      (seed, cy) = doubles(seed, 300);
       (seed, r) = seed.randomize(100, 70);
-      elements[i] = SVG.circle(int(cx), int(cy), int(r))
+      elements[i] = SVG.circle(int(cx + 212), int(cy + 212), int(r))
                       .opacity("0.5");
     }
     return SVG.group(elements);
@@ -57,17 +65,15 @@ contract SVGTest3 {
     SVG.Element memory pnouns = SVG.text(font, "pNouns")
                     .fill("#224455")
                     .transform(TX.scale1000(1000 * 1024 / width));
-    samples[0] = SVG.group([
-      pnouns,
-      circles(0).transform("translate(0,200) scale(0.8)")
-    ]);
 
-    samples[1] = SVG.group([
-      pnouns,
-      circles(1).transform("translate(0,200) scale(0.8)")
-    ]);
+    for (uint i=0; i<8; i++) {
+      samples[i] = SVG.group([
+        pnouns,
+        circles(i).transform("translate(0,200) scale(0.8)")
+      ]);
+    }
 
-    for (uint i=0; i<2; i++) {
+    for (uint i=0; i<8; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
       string memory tag = string(abi.encodePacked("test", i.toString()));
