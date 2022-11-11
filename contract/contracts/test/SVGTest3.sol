@@ -76,17 +76,19 @@ contract SVGTest3 {
                     .fill("#224455")
                     .transform(TX.scale1000(1000 * 1024 / width));
 
-    for (uint i=0; i<16; i++) {
+    string memory svgNouns;
+    string[] memory idNouns = new string[](2);
+    for (uint i=0; i<2; i++) {
+      (svgNouns, idNouns[i]) = nounsProvider.generateSVGPart(i);
+      samples[i] = SVG.group(bytes(svgNouns));
+    }
+
+    for (uint i=2; i<16; i++) {
       samples[i] = SVG.group([
         circles(i).transform("translate(102,204) scale(0.8)"),
         pnouns
       ]);
     }
-
-    string memory svgNouns;
-    string memory idNouns;
-    (svgNouns, idNouns) = nounsProvider.generateSVGPart(0);
-    samples[0] = SVG.group(bytes(svgNouns));
 
     for (uint i=0; i<16; i++) {
       uint x = 256 * (i % 4);
