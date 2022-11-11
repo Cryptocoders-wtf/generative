@@ -32,18 +32,10 @@ contract SVGTest3 {
     font = new LondrinaSolid();
   }
 
-  function main() external view returns(string memory output) {
-    SVG.Element[] memory samples = new SVG.Element[](16);
-    SVG.Element[] memory uses = new SVG.Element[](16);
-
-    uint width = SVG.textWidth(font, "pNouns");
-    samples[0] = SVG.text(font, "pNouns")
-                    .fill("#224455")
-                    .transform(TX.scale1000(1000 * 1024 / width));
-
+  function circles(uint _assetId) internal pure returns(SVG.Element memory) {
     uint count = 10;
-    SVG.Element[] memory circles = new SVG.Element[](count);
-    Randomizer.Seed memory seed = Randomizer.Seed(1, 0);
+    SVG.Element[] memory elements = new SVG.Element[](count);
+    Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
     for (uint i=0; i<count; i++) {
       uint cx;
       uint cy;
@@ -51,14 +43,28 @@ contract SVGTest3 {
       (seed, cx) = seed.randomize(512, 60);
       (seed, cy) = seed.randomize(512, 60);
       (seed, r) = seed.randomize(100, 70);
-      circles[i] = SVG.circle(int(cx), int(cy), int(r))
+      elements[i] = SVG.circle(int(cx), int(cy), int(r))
                       .opacity("0.5");
     }
-    samples[1] = SVG.group([
-      SVG.text(font, "pNouns")
+    return SVG.group(elements);
+  }
+
+  function main() external view returns(string memory output) {
+    SVG.Element[] memory samples = new SVG.Element[](16);
+    SVG.Element[] memory uses = new SVG.Element[](16);
+
+    uint width = SVG.textWidth(font, "pNouns");
+    SVG.Element memory pnouns = SVG.text(font, "pNouns")
                     .fill("#224455")
-                    .transform(TX.scale1000(1000 * 1024 / width)),
-      SVG.group(circles).transform("translate(0,200) scale(0.8)")
+                    .transform(TX.scale1000(1000 * 1024 / width));
+    samples[0] = SVG.group([
+      pnouns,
+      circles(0).transform("translate(0,200) scale(0.8)")
+    ]);
+
+    samples[1] = SVG.group([
+      pnouns,
+      circles(1).transform("translate(0,200) scale(0.8)")
     ]);
 
     for (uint i=0; i<2; i++) {
