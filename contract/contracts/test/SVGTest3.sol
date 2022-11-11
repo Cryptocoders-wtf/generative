@@ -50,6 +50,7 @@ contract SVGTest3 {
     uint count = 10;
     SVG.Element[] memory elements = new SVG.Element[](count);
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
+
     for (uint i=0; i<count; i++) {
       uint degree;
       (seed, degree) = seed.random(0x4000);
@@ -81,6 +82,11 @@ contract SVGTest3 {
         pnouns
       ]);
     }
+
+    string memory svgNouns;
+    string memory idNouns;
+    (svgNouns, idNouns) = nounsProvider.generateSVGPart(0);
+    samples[0] = SVG.group(bytes(svgNouns));
 
     for (uint i=0; i<16; i++) {
       uint x = 256 * (i % 4);
