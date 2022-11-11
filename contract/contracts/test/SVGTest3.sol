@@ -44,7 +44,7 @@ contract SVGTest3 {
 
   function circles(uint _assetId) internal pure returns(SVG.Element memory) {
     string[4] memory colors = ["red", "green", "yellow", "blue"]; 
-    uint count = 12;
+    uint count = 10;
     SVG.Element[] memory elements = new SVG.Element[](count);
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
     for (uint i=0; i<count; i++) {
