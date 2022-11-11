@@ -45,24 +45,32 @@ contract SVGTest3 {
     return (_seed, v1 + v2);    
   }
 
-  function circles(uint _assetId) internal pure returns(SVG.Element memory) {
+  struct Stackframe {
+    uint degree;
+    uint distance;
+    uint radius;
+  }
+
+  function circles(uint _assetId, string[] memory idNouns) internal pure returns(SVG.Element memory) {
     string[4] memory colors = ["red", "green", "yellow", "blue"]; 
     uint count = 10;
     SVG.Element[] memory elements = new SVG.Element[](count);
     Randomizer.Seed memory seed = Randomizer.Seed(_assetId, 0);
 
     for (uint i=0; i<count; i++) {
-      uint degree;
-      (seed, degree) = seed.random(0x4000);
-      uint distance;
-      (seed, distance) = seed.random(480);
-      uint radius;
-      (seed, radius) = seed.randomize(150, 70);
-      distance = distance / (radius / 100 + 1);
-      elements[i] = SVG.circle(512 + degree.cos() * int(distance) / Vector.ONE, 
-                               512 + degree.sin() * int(distance) / Vector.ONE, int(radius))
-                      .fill(colors[i % 4])
-                      .opacity("0.333");
+      Stackframe memory stack;
+      (seed, stack.degree) = seed.random(0x4000);
+      (seed, stack.distance) = seed.random(480);
+      (seed, stack.radius) = seed.randomize(150, 70);
+      stack.distance = stack.distance / (stack.radius / 100 + 1);
+      elements[i] = SVG.group([
+                      SVG.use(idNouns[i % idNouns.length]),
+                        //.transform(TX.scale1000(1000 * stack.radius / 512)),
+                      SVG.circle(512 + stack.degree.cos() * int(stack.distance) / Vector.ONE, 
+                                 512 + stack.degree.sin() * int(stack.distance) / Vector.ONE, int(stack.radius))
+                        .fill(colors[i % 4])
+                        .opacity("0.333")
+                    ]);
     }
     return SVG.group(elements);
   }
@@ -77,15 +85,15 @@ contract SVGTest3 {
                     .transform(TX.scale1000(1000 * 1024 / width));
 
     string memory svgNouns;
-    string[] memory idNouns = new string[](2);
-    for (uint i=0; i<2; i++) {
+    string[] memory idNouns = new string[](3);
+    for (uint i=0; i<3; i++) {
       (svgNouns, idNouns[i]) = nounsProvider.generateSVGPart(i);
       samples[i] = SVG.group(bytes(svgNouns));
     }
 
-    for (uint i=2; i<16; i++) {
+    for (uint i=3; i<16; i++) {
       samples[i] = SVG.group([
-        circles(i).transform("translate(102,204) scale(0.8)"),
+        circles(i, idNouns).transform("translate(102,204) scale(0.8)"),
         pnouns
       ]);
     }
