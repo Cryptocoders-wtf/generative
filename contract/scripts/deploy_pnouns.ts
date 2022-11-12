@@ -32,7 +32,7 @@ async function main() {
   const addresses = `export const addresses = {\n`
     + `  nounsProvider:"${nouns.address}",\n`
     + `  fontLondrinaSolid:"${font.address}",\n`
-    + `  pnound:"${contract.address}",\n`
+    + `  pnouns:"${contract.address}",\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/pnouns_${network.name}.ts`, addresses, ()=>{});  
 }
