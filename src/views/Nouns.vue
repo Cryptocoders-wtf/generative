@@ -5,6 +5,7 @@
     <ProviderView assetProvider="nounsArt" />
     <ProviderView assetProvider="dotNouns" />
     <ProviderView assetProvider="dotlilArt" />
+    <ProviderView assetProvider="pnouns" />
   </div>
 </template>
 
