@@ -100,27 +100,35 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
     return SVG.group(elements);
   }
   
+  struct StackFrame2 {
+    uint width;
+    SVG.Element pnouns;
+    string[] idNouns;
+    SVG.Element[] svgNouns;
+    string svg;
+  }
   function generateSVGPart(uint256 _assetId) public view override returns(string memory svgPart, string memory tag) {
+    StackFrame2 memory stack;
     tag = string(abi.encodePacked("circles", _assetId.toString()));
-
-    uint width = SVG.textWidth(font, "pNouns");
-    SVG.Element memory pnouns = SVG.text(font, "pNouns")
+    stack.width = SVG.textWidth(font, "pNouns");
+    stack.pnouns = SVG.text(font, "pNouns")
                     .fill("#224455")
-                    .transform(TX.scale1000(1000 * 1024 / width));
+                    .transform(TX.scale1000(1000 * 1024 / stack.width));
 
-    string[] memory idNouns = new string[](3);
-    SVG.Element[] memory svgNouns = new SVG.Element[](3);
-    for (uint i=0; i<idNouns.length; i++) {
-      string memory svg;
-      (svg, idNouns[i]) = nounsProvider.generateSVGPart(i + _assetId);
-      svgNouns[i] = SVG.item(bytes(svg));
+    stack.idNouns = new string[](3);
+    stack.svgNouns = new SVG.Element[](3);
+    for (uint i=0; i<stack.idNouns.length; i++) {
+      (stack.svg, stack.idNouns[i]) = nounsProvider.generateSVGPart(i + _assetId);
+      stack.svgNouns[i] = SVG.item(bytes(stack.svg));
     }
 
-    svgPart = string(SVG.group([
-      SVG.list(svgNouns),
-      circles(_assetId, idNouns).transform("translate(102,204) scale(0.8)"),
-      pnouns
-    ]).id(tag).svg());
+    svgPart = string(SVG.list([
+      SVG.list(stack.svgNouns),
+      SVG.group([
+        circles(_assetId, stack.idNouns).transform("translate(102,204) scale(0.8)"),
+        stack.pnouns
+      ]).id(tag)
+    ]).svg());
   }
 
   function generateSVGDocument(uint256 _assetId) external view returns(string memory document) {
