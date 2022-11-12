@@ -49,6 +49,7 @@ contract SVGTest3 {
     uint degree;
     uint distance;
     uint radius;
+    uint rotate;
     int x;
     int y;
   }
@@ -64,6 +65,7 @@ contract SVGTest3 {
       (seed, stack.degree) = seed.random(0x4000);
       (seed, stack.distance) = seed.random(480);
       (seed, stack.radius) = seed.randomize(150, 70);
+      (seed, stack.rotate) = seed.random(360);
       stack.distance = stack.distance / (stack.radius / 100 + 1);
       stack.x = 512 + stack.degree.cos() * int(stack.distance) / Vector.ONE;
       stack.y = 512 + stack.degree.sin() * int(stack.distance) / Vector.ONE;
@@ -71,7 +73,7 @@ contract SVGTest3 {
                       SVG.use(idNouns[i % idNouns.length])
                         .transform(TX.translate(uint(stack.x)-stack.radius, uint(stack.y)-stack.radius)
                                     .scale1000(1000 * stack.radius / 512)
-                                    .rotate("45, 512, 512")),
+                                    .rotate(string(abi.encodePacked(stack.rotate.toString(), ",512,512")))),
                       SVG.circle(stack.x, 
                                  stack.y, int(stack.radius + stack.radius/10))
                         .fill(colors[i % 4])
@@ -97,14 +99,14 @@ contract SVGTest3 {
       samples[i] = SVG.group(bytes(svgNouns));
     }
 
-    for (uint i=idNouns.length; i<16; i++) {
+    for (uint i=idNouns.length; i<8; i++) {
       samples[i] = SVG.group([
         circles(i, idNouns).transform("translate(102,204) scale(0.8)"),
         pnouns
       ]);
     }
 
-    for (uint i=0; i<16; i++) {
+    for (uint i=0; i<8; i++) {
       uint x = 256 * (i % 4);
       uint y = 256 * (i / 4);
       string memory tag = string(abi.encodePacked("test", i.toString()));
