@@ -86,12 +86,12 @@ contract SVGTest3 {
 
     string memory svgNouns;
     string[] memory idNouns = new string[](3);
-    for (uint i=0; i<3; i++) {
+    for (uint i=0; i<idNouns.length; i++) {
       (svgNouns, idNouns[i]) = nounsProvider.generateSVGPart(i);
       samples[i] = SVG.group(bytes(svgNouns));
     }
 
-    for (uint i=3; i<16; i++) {
+    for (uint i=idNouns.length; i<16; i++) {
       samples[i] = SVG.group([
         circles(i, idNouns).transform("translate(102,204) scale(0.8)"),
         pnouns
