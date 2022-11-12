@@ -49,6 +49,8 @@ contract SVGTest3 {
     uint degree;
     uint distance;
     uint radius;
+    int x;
+    int y;
   }
 
   function circles(uint _assetId, string[] memory idNouns) internal pure returns(SVG.Element memory) {
@@ -63,11 +65,13 @@ contract SVGTest3 {
       (seed, stack.distance) = seed.random(480);
       (seed, stack.radius) = seed.randomize(150, 70);
       stack.distance = stack.distance / (stack.radius / 100 + 1);
+      stack.x = 512 + stack.degree.cos() * int(stack.distance) / Vector.ONE;
+      stack.y = 512 + stack.degree.sin() * int(stack.distance) / Vector.ONE;
       elements[i] = SVG.group([
-                      SVG.use(idNouns[i % idNouns.length]),
-                        //.transform(TX.scale1000(1000 * stack.radius / 512)),
-                      SVG.circle(512 + stack.degree.cos() * int(stack.distance) / Vector.ONE, 
-                                 512 + stack.degree.sin() * int(stack.distance) / Vector.ONE, int(stack.radius))
+                      SVG.use(idNouns[i % idNouns.length])
+                        .transform(TX.translate(uint(stack.x), uint(stack.y)).scale1000(1000 * stack.radius / 512)),
+                      SVG.circle(stack.x, 
+                                 stack.y, int(stack.radius))
                         .fill(colors[i % 4])
                         .opacity("0.333")
                     ]);
@@ -85,7 +89,7 @@ contract SVGTest3 {
                     .transform(TX.scale1000(1000 * 1024 / width));
 
     string memory svgNouns;
-    string[] memory idNouns = new string[](3);
+    string[] memory idNouns = new string[](2);
     for (uint i=0; i<idNouns.length; i++) {
       (svgNouns, idNouns[i]) = nounsProvider.generateSVGPart(i);
       samples[i] = SVG.group(bytes(svgNouns));
