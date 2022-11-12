@@ -69,9 +69,10 @@ contract SVGTest3 {
       stack.y = 512 + stack.degree.sin() * int(stack.distance) / Vector.ONE;
       elements[i] = SVG.group([
                       SVG.use(idNouns[i % idNouns.length])
-                        .transform(TX.translate(uint(stack.x), uint(stack.y)).scale1000(1000 * stack.radius / 512)),
+                        .transform(TX.translate(uint(stack.x)-stack.radius, uint(stack.y)-stack.radius)
+                                     .scale1000(1000 * stack.radius / 512)),
                       SVG.circle(stack.x, 
-                                 stack.y, int(stack.radius))
+                                 stack.y, int(stack.radius + stack.radius/10))
                         .fill(colors[i % 4])
                         .opacity("0.333")
                     ]);
