@@ -21,11 +21,20 @@ async function main() {
   await contract.deployed();
   console.log(`      test3="${contract.address}"`);
 
+  /*
   const result = await contract.generateSVGDocument(0);
   await writeFile(`./cache/pnouns1.svg`, result, ()=>{});  
 
   const result2 = await contract.generateSVGDocument(1233);
   await writeFile(`./cache/pnouns1234.svg`, result2, ()=>{});  
+  */
+
+  const addresses = `export const addresses = {\n`
+    + `  nounsProvider:"${nouns.address}",\n`
+    + `  fontLondrinaSolid:"${font.address}",\n`
+    + `  pnound:"${contract.address}",\n`
+    + `}\n`;
+  await writeFile(`../src/utils/addresses/pnouns_${network.name}.ts`, addresses, ()=>{});  
 }
 
 main().catch((error) => {
