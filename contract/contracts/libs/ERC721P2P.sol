@@ -53,7 +53,7 @@ abstract contract ERC721P2P is IERC721P2P, ERC721, Ownable {
   // Subclass needs to override to pay royalties to creator(s) here
   function _processRoyalty(uint _salesPrice, uint _tokenId) internal virtual returns(uint256 royalty) {
     /*
-    royalty = _salesPrice * 5 / 100;
+    royalty = _salesPrice * 50 / 1000; // 5.0%
     address payable payableTo = payable(address(_creator));
     payableTo.transfer(royalty);
     */
