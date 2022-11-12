@@ -70,7 +70,8 @@ contract SVGTest3 {
       elements[i] = SVG.group([
                       SVG.use(idNouns[i % idNouns.length])
                         .transform(TX.translate(uint(stack.x)-stack.radius, uint(stack.y)-stack.radius)
-                                     .scale1000(1000 * stack.radius / 512)),
+                                    .scale1000(1000 * stack.radius / 512)
+                                    .rotate("45, 512, 512")),
                       SVG.circle(stack.x, 
                                  stack.y, int(stack.radius + stack.radius/10))
                         .fill(colors[i % 4])
