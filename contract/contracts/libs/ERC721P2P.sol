@@ -64,7 +64,7 @@ abstract contract ERC721P2P is IERC721P2P, ERC721, Ownable {
     _dealer.acceptOffer(this, _tokenId, _price);
   }
 
-　/**
+  /**
   * If you want to completely disable all the transfers via marketplaces, 
   * override _isApprovedOrOwner like this.
   *
