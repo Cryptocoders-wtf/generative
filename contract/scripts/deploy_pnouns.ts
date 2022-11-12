@@ -21,8 +21,8 @@ async function main() {
   await contract.deployed();
   console.log(`      test3="${contract.address}"`);
 
-  const result = await contract.generateSVGPart(0);
-  console.log(result);
+  const result = await contract.generateSVGDocument(0);
+  await writeFile(`./cache/pnouns0.svg`, result, ()=>{});  
 }
 
 main().catch((error) => {

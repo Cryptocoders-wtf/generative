@@ -25,7 +25,7 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
   using TX for string;
   using Trigonometry for uint;
 
-  IFontProvider immutable font;
+  IFontProvider immutable public font;
   IAssetProvider immutable public nounsProvider;
   
   constructor(IFontProvider _font, IAssetProvider _nounsProvider) {
@@ -100,7 +100,7 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
     return SVG.group(elements);
   }
   
-  function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
+  function generateSVGPart(uint256 _assetId) public view override returns(string memory svgPart, string memory tag) {
     tag = string(abi.encodePacked("circles", _assetId.toString()));
 
     uint width = SVG.textWidth(font, "pNouns");
@@ -121,5 +121,16 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
       circles(_assetId, idNouns).transform("translate(102,204) scale(0.8)"),
       pnouns
     ]).id(tag).svg());
+  }
+
+  function generateSVGDocument(uint256 _assetId) external view returns(string memory document) {
+    string memory svgPart;
+    string memory tag;
+    (svgPart, tag) = generateSVGPart(_assetId);
+    document = SVG.document(
+      "0 0 1024 1024",
+      bytes(svgPart),
+      SVG.use(tag).svg()
+    );
   }
 }
