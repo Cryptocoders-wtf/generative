@@ -263,6 +263,10 @@ library SVG {
     element = group(packed(_elements));
   }
 
+  function item(bytes memory _body) internal pure returns(Element memory element) {
+    element.tail = _body;
+  }
+
   function list(Element[] memory _elements) internal pure returns(Element memory element) {
     element.tail = packed(_elements);
   }

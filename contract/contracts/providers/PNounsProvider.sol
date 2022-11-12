@@ -26,9 +26,11 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
   using Trigonometry for uint;
 
   IFontProvider immutable font;
+  IAssetProvider immutable public nounsProvider;
   
-  constructor(IFontProvider _font) {
+  constructor(IFontProvider _font, IAssetProvider _nounsProvider) {
     font = _font;
+    nounsProvider = _nounsProvider;
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -98,8 +100,26 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
     return SVG.group(elements);
   }
   
-  function generateSVGPart(uint256 _assetId) external pure override returns(string memory svgPart, string memory tag) {
+  function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     tag = string(abi.encodePacked("circles", _assetId.toString()));
-    svgPart = "abc";
+
+    uint width = SVG.textWidth(font, "pNouns");
+    SVG.Element memory pnouns = SVG.text(font, "pNouns")
+                    .fill("#224455")
+                    .transform(TX.scale1000(1000 * 1024 / width));
+
+    string[] memory idNouns = new string[](3);
+    SVG.Element[] memory svgNouns = new SVG.Element[](3);
+    for (uint i=0; i<idNouns.length; i++) {
+      string memory svg;
+      (svg, idNouns[i]) = nounsProvider.generateSVGPart(i + _assetId);
+      svgNouns[i] = SVG.item(bytes(svg));
+    }
+
+    svgPart = string(SVG.group([
+      SVG.list(svgNouns),
+      circles(_assetId, idNouns).transform("translate(102,204) scale(0.8)"),
+      pnouns
+    ]).id(tag).svg());
   }
 }
