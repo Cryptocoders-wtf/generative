@@ -106,6 +106,8 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
     string[] idNouns;
     SVG.Element[] svgNouns;
     string svg;
+    string seriesText;
+    SVG.Element series;
   }
   function generateSVGPart(uint256 _assetId) public view override returns(string memory svgPart, string memory tag) {
     StackFrame2 memory stack;
@@ -114,6 +116,12 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
     stack.pnouns = SVG.text(font, "pNouns")
                     .fill("#224455")
                     .transform(TX.scale1000(1000 * 1024 / stack.width));
+
+    stack.seriesText = string(abi.encodePacked((_assetId+1).toString(), "/2000"));
+    stack.width = SVG.textWidth(font, stack.seriesText);
+    stack.series = SVG.text(font, stack.seriesText)
+                    .fill("#224455")
+                    .transform(TX.translate(1024 - stack.width/10, 1024-102).scale("0.1"));
 
     stack.idNouns = new string[](3);
     stack.svgNouns = new SVG.Element[](3);
@@ -126,7 +134,8 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
       SVG.list(stack.svgNouns),
       SVG.group([
         circles(_assetId, stack.idNouns).transform("translate(102,204) scale(0.8)"),
-        stack.pnouns
+        stack.pnouns,
+        stack.series
       ]).id(tag)
     ]).svg());
   }

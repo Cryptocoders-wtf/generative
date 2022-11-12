@@ -22,7 +22,10 @@ async function main() {
   console.log(`      test3="${contract.address}"`);
 
   const result = await contract.generateSVGDocument(0);
-  await writeFile(`./cache/pnouns0.svg`, result, ()=>{});  
+  await writeFile(`./cache/pnouns1.svg`, result, ()=>{});  
+
+  const result2 = await contract.generateSVGDocument(1233);
+  await writeFile(`./cache/pnouns1234.svg`, result2, ()=>{});  
 }
 
 main().catch((error) => {
