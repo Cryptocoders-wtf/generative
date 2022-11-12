@@ -12,7 +12,7 @@
 
 pragma solidity ^0.8.6;
 
-import "../interfaces/IERC721P2P.sol";
+import "./IERC721P2P.sol";
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
