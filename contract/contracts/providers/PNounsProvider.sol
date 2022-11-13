@@ -63,6 +63,7 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
 
   // Hack to deal with too many stack variables
   struct Stackframe {
+    uint trait; // 0:small, 1:middle, 2:large
     uint degree;
     uint distance;
     uint radius;
@@ -79,13 +80,25 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
 
     for (uint i=0; i<count; i++) {
       Stackframe memory stack;
+      stack.trait = i % 3;
+      if (stack.trait == 0) {
+        (seed, stack.distance) = seed.random(100);
+        stack.distance += 380;
+        (seed, stack.radius) = seed.random(70);
+        stack.radius += 40;
+      } else if (stack.trait == 1) {
+        (seed, stack.distance) = seed.random(100);
+        stack.distance += 200;
+        (seed, stack.radius) = seed.random(70);
+        stack.radius += 110;
+      } else {
+        (seed, stack.distance) = seed.random(100);
+        (seed, stack.radius) = seed.random(70);
+        stack.radius += 180;
+      }
       (seed, stack.degree) = seed.random(0x4000);
-      (seed, stack.distance) = seed.random(100);
-      stack.distance += 380;
-      (seed, stack.radius) = seed.random(205);
-      stack.radius += 45;
       (seed, stack.rotate) = seed.random(360);
-      stack.distance = stack.distance / (stack.radius / 100 + 1);
+      //stack.distance = stack.distance / (stack.radius / 100 + 1);
       stack.x = 512 + stack.degree.cos() * int(stack.distance) / Vector.ONE;
       stack.y = 512 + stack.degree.sin() * int(stack.distance) / Vector.ONE;
       elements[i] = SVG.group([
