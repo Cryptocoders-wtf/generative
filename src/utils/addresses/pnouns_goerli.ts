@@ -1,5 +1,5 @@
 export const addresses = {
-  nounsProvider:"0xF48AA2A27f06403A68bd29b5eB117dFacD5F885F",
-  fontLondrinaSolid:"0xae8A94cAAaed73F9E22A07ebA8f502Ea727aFB62",
-  pnouns:"0x38787e8c67865E878dC8C9CdFfaDB276557E3277",
+  nounsProvider:"0x39c1B0B13cF6eFf5ac3C8c1f06B7A36A230bDD04",
+  fontLondrinaSolid:"0xd01B5C66eCA6f456D2f340ED2e4f7AAFef03E49C",
+  pnouns:"0x94c4eFcb53dd3370403a6Dd6Fe02F1CBA4395BB7",
 }
