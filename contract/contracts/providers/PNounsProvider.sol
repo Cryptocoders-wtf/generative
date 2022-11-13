@@ -71,10 +71,6 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
     int y;
   }
 
-  function safeUint(int _value) internal pure returns(uint) {
-    return (_value < 0) ? 0 : uint(_value);
-  }
-
   function circles(uint _assetId, string[] memory idNouns) internal pure returns(SVG.Element memory) {
     string[4] memory colors = ["red", "green", "yellow", "blue"]; 
     uint count = 10;
@@ -92,7 +88,7 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
       stack.y = 512 + stack.degree.sin() * int(stack.distance) / Vector.ONE;
       elements[i] = SVG.group([
                       SVG.use(idNouns[i % idNouns.length])
-                        .transform(TX.translate(safeUint(stack.x-int(stack.radius)), safeUint(stack.y-int(stack.radius)))
+                        .transform(TX.translate(stack.x-int(stack.radius), stack.y-int(stack.radius))
                                     .scale1000(1000 * stack.radius / 512)
                                     .rotate(string(abi.encodePacked(stack.rotate.toString(), ",512,512")))),
                       SVG.circle(stack.x, 
