@@ -30,13 +30,6 @@ library SVG {
     Attribute[] attrs;    
   }
 
-  function toString(int _value) internal pure returns(string memory) {
-    if (_value > 0) {
-      return uint(_value).toString();      
-    }
-    return string(abi.encodePacked("-", uint(-_value).toString()));
-  }
-
   function path(bytes memory _path) internal pure returns(Element memory element) {
     element.head = abi.encodePacked('<path d="', _path); 
     element.tail = bytes('"/>\n');

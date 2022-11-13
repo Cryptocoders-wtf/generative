@@ -16,6 +16,13 @@ library TX {
   using Strings for uint;
   using BytesArray for bytes[];
 
+  function toString(int _value) internal pure returns(string memory) {
+    if (_value > 0) {
+      return uint(_value).toString();
+    }
+    return string(abi.encodePacked("-", uint(-_value).toString()));
+  }
+
   function translate(uint x, uint y) internal pure returns(string memory) {
     return string(abi.encodePacked('translate(',x.toString(),' ',y.toString(),')'));
   }
