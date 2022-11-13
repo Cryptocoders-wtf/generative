@@ -22,13 +22,12 @@ async function main() {
   await contract.deployed();
   console.log(`      contract="${contract.address}"`);
 
-  const result = await contract.generateSVGDocument(14);
-  await writeFile(`./cache/pnouns1.svg`, result, ()=>{});  
-  /*
-
-  const result2 = await contract.generateSVGDocument(1233);
-  await writeFile(`./cache/pnouns1234.svg`, result2, ()=>{});  
-  */
+  for (let i=0; i<14; i++) {
+    const n = Math.pow(2,i);
+    const result = await contract.generateSVGDocument(n);
+    await writeFile(`./cache/pnouns${n}.svg`, result, ()=>{});
+    console.log("output", n);  
+  }
 
   const addresses = `export const addresses = {\n`
     + `  nounsProvider:"${nouns.address}",\n`

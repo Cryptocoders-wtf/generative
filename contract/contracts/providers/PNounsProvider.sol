@@ -80,7 +80,7 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
 
     for (uint i=0; i<count; i++) {
       Stackframe memory stack;
-      stack.trait = i / 4; // 4:4:2
+      stack.trait = (i + 1) / 4; // 3:4:3
       if (stack.trait == 0) {
         (seed, stack.distance) = seed.random(100);
         stack.distance += 380;
@@ -95,7 +95,7 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
         (seed, stack.rotate) = seed.random(240);
         stack.rotate += 240;
       } else {
-        (seed, stack.distance) = seed.random(100);
+        (seed, stack.distance) = seed.random(180);
         (seed, stack.radius) = seed.random(70);
         stack.radius += 180;
         (seed, stack.rotate) = seed.random(120);
@@ -135,7 +135,15 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
                     .fill("#224455")
                     .transform(TX.scale1000(1000 * 1024 / stack.width));
 
-    stack.seriesText = string(abi.encodePacked((_assetId+1).toString(), "/2000"));
+    if (_assetId < 9) {
+      stack.seriesText = string(abi.encodePacked("000", (_assetId+1).toString(), "/2000"));
+    } else if (_assetId < 99) {
+      stack.seriesText = string(abi.encodePacked("00", (_assetId+1).toString(), "/2000"));
+    } else if (_assetId < 999) {
+      stack.seriesText = string(abi.encodePacked("0", (_assetId+1).toString(), "/2000"));
+    } else {
+      stack.seriesText = string(abi.encodePacked((_assetId+1).toString(), "/2000"));
+    }
     stack.width = SVG.textWidth(font, stack.seriesText);
     stack.series = SVG.text(font, stack.seriesText)
                     .fill("#224455")
