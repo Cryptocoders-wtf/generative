@@ -23,10 +23,6 @@ library TX {
     return string(abi.encodePacked("-", uint(-_value).toString()));
   }
 
-  function translate(uint x, uint y) internal pure returns(string memory) {
-    return string(abi.encodePacked('translate(',x.toString(),' ',y.toString(),')'));
-  }
-
   function translate(int x, int y) internal pure returns(string memory) {
     return string(abi.encodePacked('translate(',toString(x),' ',toString(y),')'));
   }

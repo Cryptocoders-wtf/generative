@@ -100,7 +100,7 @@ library SVG {
       if (width > maxWidth) {
         maxWidth = width;
       }
-      elements[i] = transform(text(_font, _strs[i]), TX.translate(0, height * i));
+      elements[i] = transform(text(_font, _strs[i]), TX.translate(0, int(height * i)));
     }
     // extra group is necessary to let it transform 
     element = group(svg(transform(group(elements), TX.scale1000(1000 * _width / maxWidth))));

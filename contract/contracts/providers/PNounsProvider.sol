@@ -121,7 +121,7 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
     stack.width = SVG.textWidth(font, stack.seriesText);
     stack.series = SVG.text(font, stack.seriesText)
                     .fill("#224455")
-                    .transform(TX.translate(1024 - stack.width/10, 1024-102).scale("0.1"));
+                    .transform(TX.translate(1024 - int(stack.width/10), 1024-102).scale("0.1"));
 
     stack.idNouns = new string[](3);
     stack.svgNouns = new SVG.Element[](3);

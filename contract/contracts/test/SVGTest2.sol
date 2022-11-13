@@ -89,7 +89,7 @@ contract SVGTest2 {
     samples[6] = SVG.group([
       SVG.text(font, "Hello"),
       SVG.text(font, "Nouns")
-        .transform(TX.translate(width, baseline/2).scale("0.5")) 
+        .transform(TX.translate(int(width), int(baseline/2)).scale("0.5")) 
     ]).transform('scale(0.3)');
 
     width = SVG.textWidth(font, "0123456789&@():,$!%.?;#/");
@@ -139,8 +139,8 @@ contract SVGTest2 {
 */
 
     for (uint i=0; i<10; i++) {
-      uint x = 256 * (i % 4);
-      uint y = 256 * (i / 4);
+      int x = int(256 * (i % 4));
+      int y = int(256 * (i / 4));
       string memory tag = string(abi.encodePacked("test", i.toString()));
       samples[i] = samples[i].id(tag);
       uses[i] = SVG.group([

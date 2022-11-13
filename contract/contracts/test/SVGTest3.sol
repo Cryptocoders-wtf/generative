@@ -71,7 +71,7 @@ contract SVGTest3 {
       stack.y = 512 + stack.degree.sin() * int(stack.distance) / Vector.ONE;
       elements[i] = SVG.group([
                       SVG.use(idNouns[i % idNouns.length])
-                        .transform(TX.translate(uint(stack.x)-stack.radius, uint(stack.y)-stack.radius)
+                        .transform(TX.translate(stack.x-int(stack.radius), stack.y-int(stack.radius))
                                     .scale1000(1000 * stack.radius / 512)
                                     .rotate(string(abi.encodePacked(stack.rotate.toString(), ",512,512")))),
                       SVG.circle(stack.x, 
@@ -107,8 +107,8 @@ contract SVGTest3 {
     }
 
     for (uint i=0; i<12; i++) {
-      uint x = 256 * (i % 4);
-      uint y = 256 * (i / 4);
+      int x = int(256 * (i % 4));
+      int y = int(256 * (i / 4));
       string memory tag = string(abi.encodePacked("test", i.toString()));
       samples[i] = samples[i].id(tag);
       uses[i] = SVG.group([

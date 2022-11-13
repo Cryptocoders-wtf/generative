@@ -150,8 +150,8 @@ contract SVGTest {
                       ]);
 
     for (uint i=0; i<16; i++) {
-      uint x = 256 * (i % 4);
-      uint y = 256 * (i / 4);
+      int x = int(256 * (i % 4));
+      int y = int(256 * (i / 4));
       string memory tag = string(abi.encodePacked("test", i.toString()));
       samples[i] = samples[i].id(tag);
       uses[i] = SVG.group([
