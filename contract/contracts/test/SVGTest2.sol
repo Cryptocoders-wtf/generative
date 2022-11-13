@@ -98,7 +98,7 @@ contract SVGTest2 {
               SVG.text(font, "ABCDEFGHIJKLMNOPQRXYZ").transform('translate(0 1024)'),
               SVG.text(font, "abcdefghijklmnopqrxyz").transform('translate(0 2048)')
                   ]).fill("#224455")
-                    .transform(TX.translate(0,256).scale1000(1000 * 1024 / width));
+                    .transform(TX.translate(int(0),int(256)).scale1000(1000 * 1024 / width));
 
     // 1588750686006947840
     samples[8] = SVG.text(font, [
@@ -114,15 +114,15 @@ contract SVGTest2 {
     samples[9] = SVG.group([
       SVG.path(Path.decode(twitter))
           .fill("#1d9bf0")
-          .transform(TX.translate(819,0).scale1000(200)),
+          .transform(TX.translate(int(819),0).scale1000(200)),
       SVG.group([
         SVG.text(font, "Elon Musk"),
-        SVG.text(font, "@elonmusk").fill("grey").transform(TX.translate(0, 1024))
+        SVG.text(font, "@elonmusk").fill("grey").transform(TX.translate(int(0), int(1024)))
       ]).transform(TX.scale1000(100)),
       SVG.text(font, Text.split(
           "I will not let you down,\nno matter what it takes", 0x0a
-      ), 1024).transform(TX.translate(0, 384)),
-      SVG.text(font, "11:46 AM Oct 19, 2022").fill("grey").transform(TX.translate(0,921).scale1000(100))
+      ), 1024).transform(TX.translate(0, int(384))),
+      SVG.text(font, "11:46 AM Oct 19, 2022").fill("grey").transform(TX.translate(0,int(921)).scale1000(100))
     ]);
 /*
     {

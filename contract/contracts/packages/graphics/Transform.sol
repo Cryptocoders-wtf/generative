@@ -27,6 +27,10 @@ library TX {
     return string(abi.encodePacked('translate(',x.toString(),' ',y.toString(),')'));
   }
 
+  function translate(int x, int y) internal pure returns(string memory) {
+    return string(abi.encodePacked('translate(',toString(x),' ',toString(y),')'));
+  }
+
   function rotate(string memory _base, string memory _value) internal pure returns(string memory) {
     return string(abi.encodePacked(_base, ' rotate(', _value ,')'));
   }
