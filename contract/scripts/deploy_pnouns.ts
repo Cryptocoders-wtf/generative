@@ -21,9 +21,9 @@ async function main() {
   await contract.deployed();
   console.log(`      test3="${contract.address}"`);
 
-  /*
-  const result = await contract.generateSVGDocument(0);
+  const result = await contract.generateSVGDocument(14);
   await writeFile(`./cache/pnouns1.svg`, result, ()=>{});  
+  /*
 
   const result2 = await contract.generateSVGDocument(1233);
   await writeFile(`./cache/pnouns1234.svg`, result2, ()=>{});  
