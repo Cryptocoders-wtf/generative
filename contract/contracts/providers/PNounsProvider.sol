@@ -92,7 +92,7 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
       stack.y = 512 + stack.degree.sin() * int(stack.distance) / Vector.ONE;
       elements[i] = SVG.group([
                       SVG.use(idNouns[i % idNouns.length])
-                        .transform(TX.translate(safeUint(stack.x-int(stack.radius)), safeUint(stack.y+int(stack.radius)))
+                        .transform(TX.translate(safeUint(stack.x-int(stack.radius)), safeUint(stack.y-int(stack.radius)))
                                     .scale1000(1000 * stack.radius / 512)
                                     .rotate(string(abi.encodePacked(stack.rotate.toString(), ",512,512")))),
                       SVG.circle(stack.x, 
