@@ -15,11 +15,12 @@ async function main() {
   const factoryFont = await ethers.getContractFactory("LondrinaSolid");
   const font = await factoryFont.deploy();
   await font.deployed();
+  console.log(`      font="${font.address}"`);
 
   const factory = await ethers.getContractFactory("PNounsPrivider");
   const contract = await factory.deploy(font.address, nouns.address);
   await contract.deployed();
-  console.log(`      test3="${contract.address}"`);
+  console.log(`      contract="${contract.address}"`);
 
   const result = await contract.generateSVGDocument(14);
   await writeFile(`./cache/pnouns1.svg`, result, ()=>{});  

@@ -1,10 +1,12 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
     <p>Images from the on-chain asset provider.</p>
-    <ProviderView assetProvider="nouns" />
-    <ProviderView assetProvider="nounsArt" />
-    <ProviderView assetProvider="dotNouns" />
-    <ProviderView assetProvider="dotlilArt" />
+    <div v-if="network != 'localhost'">
+      <ProviderView assetProvider="nouns" />
+      <ProviderView assetProvider="nounsArt" />
+      <ProviderView assetProvider="dotNouns" />
+      <ProviderView assetProvider="dotlilArt" />
+    </div>
     <ProviderView assetProvider="pnouns" />
   </div>
 </template>

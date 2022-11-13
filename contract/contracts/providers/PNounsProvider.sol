@@ -80,8 +80,10 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
     for (uint i=0; i<count; i++) {
       Stackframe memory stack;
       (seed, stack.degree) = seed.random(0x4000);
-      (seed, stack.distance) = seed.random(480);
-      (seed, stack.radius) = seed.randomize(150, 70);
+      (seed, stack.distance) = seed.random(100);
+      stack.distance += 380;
+      (seed, stack.radius) = seed.random(205);
+      stack.radius += 45;
       (seed, stack.rotate) = seed.random(360);
       stack.distance = stack.distance / (stack.radius / 100 + 1);
       stack.x = 512 + stack.degree.cos() * int(stack.distance) / Vector.ONE;
