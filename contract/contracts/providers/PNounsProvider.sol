@@ -80,25 +80,28 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
 
     for (uint i=0; i<count; i++) {
       Stackframe memory stack;
-      stack.trait = i % 3;
+      stack.trait = i / 4; // 4:4:2
       if (stack.trait == 0) {
         (seed, stack.distance) = seed.random(100);
         stack.distance += 380;
-        (seed, stack.radius) = seed.random(70);
+        (seed, stack.radius) = seed.random(40);
         stack.radius += 40;
+        (seed, stack.rotate) = seed.random(360);
       } else if (stack.trait == 1) {
         (seed, stack.distance) = seed.random(100);
         stack.distance += 200;
         (seed, stack.radius) = seed.random(70);
-        stack.radius += 110;
+        stack.radius += 70;
+        (seed, stack.rotate) = seed.random(240);
+        stack.rotate += 240;
       } else {
         (seed, stack.distance) = seed.random(100);
         (seed, stack.radius) = seed.random(70);
         stack.radius += 180;
+        (seed, stack.rotate) = seed.random(120);
+        stack.rotate += 300;
       }
       (seed, stack.degree) = seed.random(0x4000);
-      (seed, stack.rotate) = seed.random(360);
-      //stack.distance = stack.distance / (stack.radius / 100 + 1);
       stack.x = 512 + stack.degree.cos() * int(stack.distance) / Vector.ONE;
       stack.y = 512 + stack.degree.sin() * int(stack.distance) / Vector.ONE;
       elements[i] = SVG.group([
