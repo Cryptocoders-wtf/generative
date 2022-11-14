@@ -14,7 +14,7 @@ pragma solidity ^0.8.6;
 
 import "./ERC721P2P.sol";
 
-contract SampleToken is ERC721P2P {
+contract SampleP2PToken is ERC721P2P {
   uint public nextTokenId;
   uint constant mintLimit = 100;
   
