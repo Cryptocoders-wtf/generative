@@ -11,7 +11,7 @@ pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "assetprovider.sol/IAssetProvider.sol";
-import { IAssetProviderEx } from '../interfaces/IAssetProviderEx.sol';
+import { IAssetProviderWithProps } from '../interfaces/IAssetProviderWithProps.sol';
 import "assetprovider.sol/ISVGHelper.sol";
 import "trigonometry.sol/Trigonometry.sol";
 import "randomizer.sol/Randomizer.sol";
@@ -19,7 +19,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "hardhat/console.sol";
 
-contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
+contract SplatterProvider is IAssetProviderWithProps, IERC165, Ownable {
   using Strings for uint;
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
@@ -43,7 +43,7 @@ contract SplatterProvider is IAssetProviderEx, IERC165, Ownable {
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
     return
       interfaceId == type(IAssetProvider).interfaceId ||
-      interfaceId == type(IAssetProviderEx).interfaceId ||
+      interfaceId == type(IAssetProviderWithProps).interfaceId ||
       interfaceId == type(IERC165).interfaceId;
   }
 

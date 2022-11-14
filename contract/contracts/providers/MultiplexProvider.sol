@@ -11,7 +11,7 @@ pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "assetprovider.sol/IAssetProvider.sol";
-import { IAssetProviderEx } from '../interfaces/IAssetProviderEx.sol';
+import { IAssetProviderWithProps } from '../interfaces/IAssetProviderWithProps.sol';
 import "randomizer.sol/Randomizer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
@@ -32,9 +32,9 @@ contract MultiplexProvider is IAssetProvider, IERC165, Ownable {
   uint constant schemeCount = 15;
   uint constant colorCount = 5;
 
-  IAssetProviderEx public provider;
+  IAssetProviderWithProps public provider;
 
-  constructor(IAssetProviderEx _provider, string memory _key, string memory _name) {
+  constructor(IAssetProviderWithProps _provider, string memory _key, string memory _name) {
     provider = _provider;
     providerKey = _key;
     providerName = _name;

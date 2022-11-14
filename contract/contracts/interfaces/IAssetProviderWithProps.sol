@@ -18,7 +18,7 @@ import "randomizer.sol/Randomizer.sol";
  * generateRandomProps geneartes a set of provider-specific properties (packed in 256bits).
  * generatePathWithProps generates a random path using the seed and properties. 
  */
-interface IAssetProviderEx is IAssetProvider {
+interface IAssetProviderWithProps is IAssetProvider {
   function generateRandomProps(Randomizer.Seed memory _seed) external pure returns(Randomizer.Seed memory, uint256);
   function generateSVGPartWithProps(Randomizer.Seed memory _seed, uint256 _prop, string memory _tag) external view 
     returns(Randomizer.Seed memory seed, string memory svgPart);
