@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { ethers, BigNumber, SignerWithAddress, Contract } from "hardhat";
+import { ethers, SignerWithAddress, Contract } from "hardhat";
 
 let owner:SignerWithAddress, user1:SignerWithAddress, user2:SignerWithAddress, user3:SignerWithAddress;
 let token:Contract, token1:Contract, token2:Contract, token3:Contract;
@@ -54,5 +54,13 @@ describe("P2P", function () {
       await tx.wait();
     });
     expect(err).equal(true);
+  });
+  it("SetPrice", async function() {
+    const price = ethers.BigNumber.from("1000000000000000");
+    console.log(ethers.utils.formatEther(price));
+    tx = await token1.setPriceOf(0, price);
+    await tx.wait();
+    result = await token.getPriceOf(0);
+    expect(result.toNumber()).equal(price);
   });
 });
