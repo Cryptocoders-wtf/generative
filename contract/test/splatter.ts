@@ -52,7 +52,7 @@ const catchError = async (callback: any) => {
   }
 };
 
-describe("Test 1", function () {
+describe("Splatter", function () {
   it("contractHelper", async function() {
     const result = await contractHelper.functions.generateSVGPart(contractSplatter.address, 1);
     expect(result.tag).equal("splt1");
