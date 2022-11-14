@@ -17,8 +17,11 @@ import "./ERC721P2P.sol";
 contract SampleP2PToken is ERC721P2P {
   uint public nextTokenId;
   uint constant mintLimit = 100;
+  address payable immutable artist;
   
-  constructor() ERC721("sample", "SAMPLE") {}
+  constructor(address _artist) ERC721("sample", "SAMPLE") {
+    artist = payable(_artist);
+  }
 
   function mint() public virtual payable returns(uint256 tokenId) {
     require(nextTokenId < mintLimit, "Sold out");

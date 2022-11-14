@@ -5,10 +5,10 @@ let owner:SignerWithAddress, artist:SignerWithAddress, user1:SignerWithAddress, 
 let token:Contract, token1:Contract, token2:Contract, token3:Contract;
 
 before(async() => {
-  [owner, user1, user2, user3] = await ethers.getSigners();
+  [owner, artist, user1, user2, user3] = await ethers.getSigners();
 
   const factory = await ethers.getContractFactory("SampleP2PToken");
-  token = await factory.deploy();
+  token = await factory.deploy(artist.address);
   await token.deployed();
 
   token1 = token.connect(user1);
