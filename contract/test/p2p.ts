@@ -91,4 +91,11 @@ describe("P2P", function () {
     balance = await token.etherBalanceOf(artist.address);
     expect(balance.sub(balanceA)).equal(price.div(20).mul(1)); // 5%
   });
+  it("Attempt to buy by user3", async function() {
+    err = await catchError(async () => {
+      tx = await token3.purchase(0, user2.address, zeroAddress, {value: price});
+      await tx.wait();
+    });
+    expect(err).equal(true);
+  });
 });
