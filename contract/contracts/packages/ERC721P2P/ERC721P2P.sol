@@ -30,7 +30,7 @@ abstract contract ERC721P2P is IERC721P2P, ERC721, Ownable {
 
   function purchase(uint256 _tokenId, address _buyer, address _facilitator) external payable override {
     uint256 price = prices[_tokenId];
-    require(price > 0, "Token is not on sale.");
+    require(price > 0, "Token is not on sale");
     require(msg.value >= price, "Not enough fund");
     uint256 comission = _processSalesCommission(msg.value, _facilitator);
     uint256 royalty = _processRoyalty(msg.value, _tokenId);

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers, SignerWithAddress, Contract } from "hardhat";
 
-let owner:SignerWithAddress, user1:SignerWithAddress, user2:SignerWithAddress, user3:SignerWithAddress;
+let owner:SignerWithAddress, artist:SignerWithAddress, user1:SignerWithAddress, user2:SignerWithAddress, user3:SignerWithAddress;
 let token:Contract, token1:Contract, token2:Contract, token3:Contract;
 
 before(async() => {
