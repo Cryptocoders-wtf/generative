@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { ethers } from "hardhat";
+import { ethers, BigNumber, SignerWithAddress, Contract } from "hardhat";
 
-let owner:any, user1:any, user2:any, user3:any;
-let token:any, token1:any, token2:any, token3:any;
+let owner:SignerWithAddress, user1:SignerWithAddress, user2:SignerWithAddress, user3:SignerWithAddress;
+let token:Contract, token1:Contract, token2:Contract, token3:Contract;
 
 before(async() => {
   [owner, user1, user2, user3] = await ethers.getSigners();
@@ -23,12 +23,13 @@ const catchError = async (callback: any) => {
     console.log("unexpected success");
     return false;
   } catch(e:any) {
+    console.log(e.reason);
     return true;
   }
 };
 
 describe("P2P", function () {
-  let result;
+  let result, tx;
   it("Initial TotalSupply", async function() {
     result = await token.totalSupply();
     expect(result.toNumber()).equal(0);
@@ -36,7 +37,7 @@ describe("P2P", function () {
     expect(result.toNumber()).equal(0);
   });
   it("Mint by user1", async function() {
-    const tx = await token1.mint();
+    tx = await token1.mint();
     await tx.wait();
     result = await token.totalSupply();
     expect(result.toNumber()).equal(1);
@@ -46,5 +47,12 @@ describe("P2P", function () {
     expect(result).equal(user1.address);
     result = await token.getPriceOf(0);
     expect(result.toNumber()).equal(0);
+  });
+  it("Attempt to buy by user2", async function() {
+    const err = await catchError(async () => {
+      tx = await token2.purchase(0, user2.address, '0x0000000000000000000000000000000000000000');
+      await tx.wait();
+    });
+    expect(err).equal(true);
   });
 });
