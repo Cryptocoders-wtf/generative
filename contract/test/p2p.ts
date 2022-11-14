@@ -29,7 +29,10 @@ const catchError = async (callback: any) => {
 };
 
 describe("P2P", function () {
-  let result, tx;
+  let result, tx, err;
+  const price = ethers.BigNumber.from("1000000000000000");
+  console.log(ethers.utils.formatEther(price));
+  
   it("Initial TotalSupply", async function() {
     result = await token.totalSupply();
     expect(result.toNumber()).equal(0);
@@ -49,15 +52,18 @@ describe("P2P", function () {
     expect(result.toNumber()).equal(0);
   });
   it("Attempt to buy by user2", async function() {
-    const err = await catchError(async () => {
+    err = await catchError(async () => {
       tx = await token2.purchase(0, user2.address, '0x0000000000000000000000000000000000000000');
       await tx.wait();
     });
     expect(err).equal(true);
   });
   it("SetPrice", async function() {
-    const price = ethers.BigNumber.from("1000000000000000");
-    console.log(ethers.utils.formatEther(price));
+    err = await catchError(async () => {
+      tx = await token2.setPriceOf(0, price);
+      await tx.wait();
+    });
+    expect(err).equal(true);
     tx = await token1.setPriceOf(0, price);
     await tx.wait();
     result = await token.getPriceOf(0);
