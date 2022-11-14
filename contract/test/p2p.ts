@@ -87,8 +87,8 @@ describe("P2P", function () {
     expect(result).equal(user2.address);
 
     balance = await token.etherBalanceOf(user1.address);
-    console.log(balance1, balance);
+    expect(balance.sub(balance1)).equal(price.div(20).mul(19)); // 95%
     balance = await token.etherBalanceOf(artist.address);
-    console.log(balanceA, balance);
+    expect(balance.sub(balanceA)).equal(price.div(20).mul(1)); // 5%
   });
 });
