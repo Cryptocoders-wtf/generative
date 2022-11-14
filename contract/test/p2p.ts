@@ -28,18 +28,21 @@ const catchError = async (callback: any) => {
 };
 
 describe("P2P", function () {
+  let result;
   it("Initial TotalSupply", async function() {
-    const result = await token.totalSupply();
+    result = await token.totalSupply();
     expect(result.toNumber()).equal(0);
-    const result2 = await token.balanceOf(user1.address);
-    expect(result2.toNumber()).equal(0);
+    result = await token.balanceOf(user1.address);
+    expect(result.toNumber()).equal(0);
   });
   it("Mint by user1", async function() {
     const tx = await token1.mint();
     await tx.wait();
-    const result = await token.totalSupply();
+    result = await token.totalSupply();
     expect(result.toNumber()).equal(1);
-    const result2 = await token.balanceOf(user1.address);
-    expect(result2.toNumber()).equal(1);
+    result = await token.balanceOf(user1.address);
+    expect(result.toNumber()).equal(1);
+    result = await token.getPriceOf(0);
+    expect(result.toNumber()).equal(0);
   });
 });
