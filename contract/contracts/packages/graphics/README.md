@@ -4,13 +4,16 @@ Fully-On-Chain.sol consists of a set of Solidity libraries, which help developer
 to create fully on-chain generative art, dynamically generating images in SVG format,
 typically responding to tokenURI() method of ERC721.
 
-It consists of three libraries.
+It consists of four libraries.
 
 - SVG.sol - SVG generations
 - Vector.sol - Vector operations
 - Path.sol - Path generations
+- Transform.sol - Transform generations
 
 ## Basic Concept
+
+### SVG Elements
 
 To generate an SVG image, you need to create a series of SVG elements,
 combine them, and generate an SVG string.
@@ -46,6 +49,8 @@ If you render it, the box will be displayed in black, which is the default color
 
 ![](https://i.imgur.com/mwDv189.png)
 
+### Attributes
+
 You need to use the fill() method to specify the color.
 ```
 SVG.rect(256, 256, 512, 512)
@@ -64,6 +69,8 @@ SVG.rect(256, 256, 512, 512)
 ```
 
 ![](https://i.imgur.com/MLEUGD5.png)
+
+### Groups
 
 You can create a group like this.
 ```
@@ -95,6 +102,18 @@ SVG.group([
 ```
 ![](https://i.imgur.com/vf6GWhw.png)
 
+### Transform
+
+The Transform library makes it easy to dynamically generate transform strings like "translate(512 512) scale(0.5)".
+
+```
+SVG.use("test")
+    .fill("grey")                      
+    .transform(TX.translate(512,512).scale1000(500));
+```
+
+### Path
+
 In order to create complex images, you need to use path() method, which takes a series of *control points* as a parameter. You need to use Vector and Path libraries to generate those control points.
 
 ```
@@ -113,6 +132,8 @@ SVG.path(points.closedPath());
 ```
 ![](https://i.imgur.com/oGtTv8R.png)
 
+### Vector Data Import
+
 It is possible to import vector images from external tools such as Adobe Illustrator. You need to export them as SVG files, and copy the "d" attributes of path elements.
 
 ```
@@ -126,6 +147,8 @@ bytes constant bitcoin = "\x4d\x70\xe1\xb7\x06\x63\x0a\x45\xbc\xd6\x44\x97\x90\x
 SVG.path(Path.decode(bitcoin)).fill("#F7931A");
 ```
 ![](https://i.imgur.com/LvsJPMM.png)
+
+### Font and Text Output
 
 Text output is also possible as long as you have a font provider, which implements IFontProvider iterface. 
 
