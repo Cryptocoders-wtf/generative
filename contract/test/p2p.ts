@@ -30,9 +30,11 @@ const catchError = async (callback: any) => {
 
 describe("P2P", function () {
   let result, tx, err;
+  const zeroAddress = '0x0000000000000000000000000000000000000000';
   const price = ethers.BigNumber.from("1000000000000000");
+  const tokenId0 = 0;
   console.log(ethers.utils.formatEther(price));
-  
+
   it("Initial TotalSupply", async function() {
     result = await token.totalSupply();
     expect(result.toNumber()).equal(0);
@@ -46,27 +48,39 @@ describe("P2P", function () {
     expect(result.toNumber()).equal(1);
     result = await token.balanceOf(user1.address);
     expect(result.toNumber()).equal(1);
-    result = await token.ownerOf(0);
+    result = await token.ownerOf(tokenId0);
     expect(result).equal(user1.address);
-    result = await token.getPriceOf(0);
+    result = await token.getPriceOf(tokenId0);
     expect(result.toNumber()).equal(0);
   });
   it("Attempt to buy by user2", async function() {
     err = await catchError(async () => {
-      tx = await token2.purchase(0, user2.address, '0x0000000000000000000000000000000000000000');
+      tx = await token2.purchase(0, user2.address, zeroAddress);
       await tx.wait();
     });
     expect(err).equal(true);
   });
   it("SetPrice", async function() {
     err = await catchError(async () => {
-      tx = await token2.setPriceOf(0, price);
+      tx = await token2.setPriceOf(tokenId0, price);
       await tx.wait();
     });
     expect(err).equal(true);
-    tx = await token1.setPriceOf(0, price);
+    tx = await token1.setPriceOf(tokenId0, price);
     await tx.wait();
-    result = await token.getPriceOf(0);
+    result = await token.getPriceOf(tokenId0);
     expect(result.toNumber()).equal(price);
+  });
+  it("Purchase by user2", async function() {
+    err = await catchError(async () => {
+      tx = await token2.purchase(tokenId0, user2.address, zeroAddress);
+      await tx.wait();
+    });
+    expect(err).equal(true);
+
+    tx = await token2.purchase(tokenId0, user2.address, zeroAddress, {value:price});
+    await tx.wait();
+    result = await token.ownerOf(tokenId0);
+    expect(result).equal(user2.address);
   });
 });
