@@ -23,6 +23,11 @@ contract SampleP2PToken is ERC721P2P {
     artist = payable(_artist);
   }
 
+  function _processRoyalty(uint _salesPrice, uint) internal override returns(uint256 royalty) {
+    royalty = _salesPrice * 50 / 1000; // 5.0%
+    artist.transfer(royalty);
+  }
+
   function mint() public virtual payable returns(uint256 tokenId) {
     require(nextTokenId < mintLimit, "Sold out");
     tokenId = nextTokenId++; 
