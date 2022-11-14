@@ -23,8 +23,8 @@ const catchError = async (callback: any) => {
     console.log("unexpected success");
     return false;
   } catch(e:any) {
-    console.log(e.reason);
-    return true;
+    const array = e.reason.split("'");
+    return array.length == 3 ? array[1] : true;
   }
 };
 
@@ -58,14 +58,14 @@ describe("P2P", function () {
       tx = await token2.purchase(0, user2.address, zeroAddress);
       await tx.wait();
     });
-    expect(err).equal(true);
+    expect(err).equal('Token is not on sale');
   });
   it("SetPrice", async function() {
     err = await catchError(async () => {
       tx = await token2.setPriceOf(tokenId0, price);
       await tx.wait();
     });
-    expect(err).equal(true);
+    expect(err).equal('Only the onwer can set the price');
     tx = await token1.setPriceOf(tokenId0, price);
     await tx.wait();
     result = await token.getPriceOf(tokenId0);
@@ -76,7 +76,7 @@ describe("P2P", function () {
       tx = await token2.purchase(tokenId0, user2.address, zeroAddress);
       await tx.wait();
     });
-    expect(err).equal(true);
+    expect(err).equal('Not enough fund');
 
     balance1 = await token.etherBalanceOf(user1.address);
     balanceA = await token.etherBalanceOf(artist.address);
@@ -96,6 +96,6 @@ describe("P2P", function () {
       tx = await token3.purchase(0, user2.address, zeroAddress, {value: price});
       await tx.wait();
     });
-    expect(err).equal(true);
+    expect(err).equal('Token is not on sale');
   });
 });
