@@ -8,7 +8,8 @@
 pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
-import "assetprovider.sol/IAssetProvider.sol";
+//import "assetprovider.sol/IAssetProvider.sol";
+import "../packages/assetProvider/IAssetProvider.sol";
 import "randomizer.sol/Randomizer.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "../packages/graphics/Path.sol";
@@ -16,7 +17,7 @@ import "../packages/graphics/SVG.sol";
 import "../packages/graphics/Text.sol";
 import "../packages/graphics/IFontProvider.sol";
 
-contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
+contract PNounsPrivider is IAssetProviderEx, Ownable, IERC165 {
   using Strings for uint256;
   using Randomizer for Randomizer.Seed;
   using Vector for Vector.Struct;
@@ -36,6 +37,7 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
     return
       interfaceId == type(IAssetProvider).interfaceId ||
+      interfaceId == type(IAssetProviderEx).interfaceId ||
       interfaceId == type(IERC165).interfaceId;
   }
 
@@ -166,7 +168,7 @@ contract PNounsPrivider is IAssetProvider, Ownable, IERC165 {
     ]).svg());
   }
 
-  function generateSVGDocument(uint256 _assetId) external view returns(string memory document) {
+  function generateSVGDocument(uint256 _assetId) external view override returns(string memory document) {
     string memory svgPart;
     string memory tag;
     (svgPart, tag) = generateSVGPart(_assetId);

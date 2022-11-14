@@ -60,3 +60,7 @@ interface IAssetProvider {
 
   event Payout(string providerKey, uint256 assetId, address payable to, uint256 amount);
 }
+
+interface IAssetProviderEx is IAssetProvider {
+  function generateSVGDocument(uint256 _assetId) external view returns(string memory document);
+}
