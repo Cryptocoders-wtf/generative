@@ -4,7 +4,7 @@
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@nomiclabs/hardhat-etherscan": "^3.1.1",
     "@openzeppelin/contracts": "^4.7.3",
-    "assetprovider.sol": "^1.0.0",
+    "assetprovider.sol": "^1.2.0",
     "assetstore.sol": "^1.0.1",
     "bytes-array.sol": "^1.0.0",
     "fast-xml-parser": "^4.0.11",
