@@ -37,4 +37,9 @@ contract SampleP2PToken is ERC721P2P {
   function totalSupply() public view returns (uint256) {
     return nextTokenId;
   }
+
+  // Helper method for test script 
+  function etherBalanceOf(address _wallet) public view returns (uint256) {
+    return _wallet.balance;
+  }
 }

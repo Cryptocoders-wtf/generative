@@ -3,8 +3,9 @@ import { ethers, SignerWithAddress, Contract } from "hardhat";
 
 let owner:SignerWithAddress, artist:SignerWithAddress, user1:SignerWithAddress, user2:SignerWithAddress, user3:SignerWithAddress;
 let token:Contract, token1:Contract, token2:Contract, token3:Contract;
+let balanceO, balanceA, balance1, balance2, balance3;
 
-before(async() => {
+before(async () => {
   [owner, artist, user1, user2, user3] = await ethers.getSigners();
 
   const factory = await ethers.getContractFactory("SampleP2PToken");
@@ -14,7 +15,6 @@ before(async() => {
   token1 = token.connect(user1);
   token2 = token.connect(user2);
   token3 = token.connect(user3);
-
 });
 
 const catchError = async (callback: any) => {
@@ -29,7 +29,7 @@ const catchError = async (callback: any) => {
 };
 
 describe("P2P", function () {
-  let result, tx, err;
+  let result, tx, err, balance;
   const zeroAddress = '0x0000000000000000000000000000000000000000';
   const price = ethers.BigNumber.from("1000000000000000");
   const tokenId0 = 0;
@@ -78,9 +78,17 @@ describe("P2P", function () {
     });
     expect(err).equal(true);
 
+    balance1 = await token.etherBalanceOf(user1.address);
+    balanceA = await token.etherBalanceOf(artist.address);
+
     tx = await token2.purchase(tokenId0, user2.address, zeroAddress, {value:price});
     await tx.wait();
     result = await token.ownerOf(tokenId0);
     expect(result).equal(user2.address);
+
+    balance = await token.etherBalanceOf(user1.address);
+    console.log(balance1, balance);
+    balance = await token.etherBalanceOf(artist.address);
+    console.log(balanceA, balance);
   });
 });
