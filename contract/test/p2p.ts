@@ -42,6 +42,8 @@ describe("P2P", function () {
     expect(result.toNumber()).equal(1);
     result = await token.balanceOf(user1.address);
     expect(result.toNumber()).equal(1);
+    result = await token.ownerOf(0);
+    expect(result).equal(user1.address);
     result = await token.getPriceOf(0);
     expect(result.toNumber()).equal(0);
   });
