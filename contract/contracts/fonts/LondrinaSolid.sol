@@ -95,7 +95,7 @@ contract LondrinaSolid is IFontProvider, Ownable {
   bytes constant font_Z = "\x4d\x50\x0b\x33\x05\x73\x0a\x55\x33\x09\x55\x4f\x03\x55\x4b\x0d\x55\x54\x63\x50\x00\x00\x55\xeb\x06\x55\xfc\x0c\x55\x00\x00\x45\x8a\xa5\x45\x7a\xb9\x05\x53\x26\x75\x4a\x19\x75\x73\x63\x50\x00\x00\x55\x01\x44\x55\x01\x5c\x05\x73\x04\x55\x4e\x0c\x55\x58\x63\x50\x00\x00\x55\xab\xf8\x54\xcf\xf9\x04\x73\xdb\x55\x03\x06\x56\x07\x63\x50\x00\x00\x55\x0e\x6b\x54\x02\x46\x54\x00\x00\x45\x0c\xff\x34\xf6\x08\x55\x00\x00\x55\x92\x2d\x54\xa4\x14\x04\x73\x6a\x45\x64\x6d\x45\x59\x01\x45\xad\x02\x45\x9d\xff\x44\xb5\xfc\x44\xb0\x63\x50\x00\x00\x45\x35\xfd\x44\x12\xfc\x04\x73\x3f\x54\x01\xf7\x53\x09\x5a\x00";
   mapping(uint => uint) widths;
 
-  function _register(string memory _char, bytes memory _bytecode, uint _width) internal {
+  function _register(string memory _char, bytes memory, uint _width) internal {
     uint key = uint(uint8(bytes(_char)[0]));
     widths[key] = _width; 
   }
@@ -196,7 +196,38 @@ contract LondrinaSolid is IFontProvider, Ownable {
   function pathOf(string memory _char) external view override returns(bytes memory path) {
     uint key = uint(uint8(bytes(_char)[0]));
     if (key < 0x40) {
+    } else {
       if (key < 0x50) {
+        if (key < 0x48) {
+          if (key < 0x44) {
+            if (key < 0x42) {
+              path = (key == 0x40) ? font_at: font_A;
+            } else {
+              path = (key == 0x42) ? font_B : font_C;
+            }
+          } else {
+            if (key < 0x46) {
+              path = (key == 0x44) ? font_D: font_E;
+            } else {
+              path = (key == 0x46) ? font_F : font_G;
+            }
+          }
+        } else {
+          if (key < 0x4C) {
+            if (key < 0x4A) {
+              path = (key == 0x48) ? font_H: font_I;
+            } else {
+              path = (key == 0x4A) ? font_J : font_K;
+            }
+          } else {
+            if (key < 0x4E) {
+              path = (key == 0x4C) ? font_L: font_M;
+            } else {
+              path = (key == 0x4E) ? font_N : font_O;
+            }
+          }
+        }
+      } else {
         if (key < 0x58) {
           if (key < 0x54) {
             if (key < 0x52) {
@@ -212,16 +243,16 @@ contract LondrinaSolid is IFontProvider, Ownable {
             }
           }
         } else {
-
+          if (key < 0x5C) {
+            if (key < 0x5A) {
+              path = (key == 0x58) ? font_X: font_Y;
+            } else {
+              path = (key == 0x5A) ? font_Z : bytes("");
+            }
+          }
         }
-      } else {
-
       }
-      return font_P;
-    } else if (key < 0x60) {
-
     }
-    return font_p;
   }
 
   function processPayout() external override payable {
