@@ -1,5 +1,5 @@
 
-# orinal svg data
+# original svg data
 
 ```
 data/${dirname}/{$filename}.svg
