@@ -36,7 +36,9 @@ const main = async () => {
     return { file, char, name, width, height, bytes };
   });
   const constants = array.map(item => {
-    return `bytes constant ${item.name} = "${item.bytes}";`;
+    return `  function ${item.name}() internal pure returns(bytes memory) {\n` +
+           `    return "${item.bytes}";\n` +
+           `  }`;
   }).join('\n');
   console.log(constants);
 
