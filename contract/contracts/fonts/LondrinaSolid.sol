@@ -211,9 +211,9 @@ contract LondrinaSolid is IFontProvider, Ownable {
   }
 
   function foo() external view returns(bytes memory) {
-    function() view returns(bytes memory) a;
-    a=bar;
-    return a();
+    function() view returns(bytes memory)[1] memory a;
+    a[0]=bar;
+    return a[0]();
   }
 
   function processPayout() external override payable {
