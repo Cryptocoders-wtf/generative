@@ -108,6 +108,10 @@ contract LondrinaSolid is IFontProvider, Ownable {
     widths[key] = _width; 
   }
 
+  function register(string memory _char, bytes memory _bytecode, uint _width) external onlyOwner {
+    _register(_char, _bytecode, _width);
+  }
+
   function _registerAll() internal {
     _register(" ", "", 208);
     _register("a", font_a, 498);
@@ -204,5 +208,11 @@ contract LondrinaSolid is IFontProvider, Ownable {
   function pathOf(string memory _char) external view override returns(bytes memory) {
     uint key = uint(uint8(bytes(_char)[0]));
     return bytecodes[key]; 
+  }
+
+  function processPayout() external override payable {
+    address payable payableTo = payable(owner());
+    payableTo.transfer(msg.value);
+    emit Payout("LondrinaSolid", payableTo, msg.value);
   }
 }
