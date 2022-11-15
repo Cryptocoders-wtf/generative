@@ -95,89 +95,89 @@ contract LondrinaSolid is IFontProvider, Ownable {
   bytes constant font_Z = "\x4d\x50\x0b\x33\x05\x73\x0a\x55\x33\x09\x55\x4f\x03\x55\x4b\x0d\x55\x54\x63\x50\x00\x00\x55\xeb\x06\x55\xfc\x0c\x55\x00\x00\x45\x8a\xa5\x45\x7a\xb9\x05\x53\x26\x75\x4a\x19\x75\x73\x63\x50\x00\x00\x55\x01\x44\x55\x01\x5c\x05\x73\x04\x55\x4e\x0c\x55\x58\x63\x50\x00\x00\x55\xab\xf8\x54\xcf\xf9\x04\x73\xdb\x55\x03\x06\x56\x07\x63\x50\x00\x00\x55\x0e\x6b\x54\x02\x46\x54\x00\x00\x45\x0c\xff\x34\xf6\x08\x55\x00\x00\x55\x92\x2d\x54\xa4\x14\x04\x73\x6a\x45\x64\x6d\x45\x59\x01\x45\xad\x02\x45\x9d\xff\x44\xb5\xfc\x44\xb0\x63\x50\x00\x00\x45\x35\xfd\x44\x12\xfc\x04\x73\x3f\x54\x01\xf7\x53\x09\x5a\x00";
   mapping(uint => uint) widths;
 
-  function _register(string memory _char, bytes memory, uint _width) internal {
+  function _register(string memory _char, uint _width) internal {
     uint key = uint(uint8(bytes(_char)[0]));
     widths[key] = _width; 
   }
 
   function registerAll() external onlyOwner {
-    _register(" ", "", 208);
-    _register("a", font_a, 498);
-    _register("b", font_b, 498);
-    _register("c", font_c, 498);
-    _register("d", font_d, 498);
-    _register("e", font_e, 498);
-    _register("f", font_f, 447);
-    _register("g", font_g, 498);
-    _register("h", font_h, 461);
-    _register("i", font_i, 205);
-    _register("j", font_j, 368);
-    _register("k", font_k, 498);
-    _register("l", font_l, 205);
-    _register("m", font_m, 717);
-    _register("n", font_n, 456);
-    _register("o", font_o, 498);
-    _register("p", font_p, 498);
-    _register("q", font_q, 498);
-    _register("r", font_r, 400);
-    _register("s", font_s, 498);
-    _register("t", font_t, 442);
-    _register("u", font_u, 461);
-    _register("v", font_v, 498);
-    _register("w", font_w, 773);
-    _register("x", font_x, 498);
-    _register("y", font_y, 545);
-    _register("z", font_z, 498);
-    _register("A", font_A, 507);
-    _register("B", font_B, 507);
-    _register("C", font_C, 526);
-    _register("D", font_D, 526);
-    _register("E", font_E, 526);
-    _register("F", font_F, 554);
-    _register("G", font_G, 554);
-    _register("H", font_H, 526);
-    _register("I", font_I, 270);
-    _register("J", font_J, 526);
-    _register("K", font_K, 526);
-    _register("L", font_L, 526);
-    _register("M", font_M, 526);
-    _register("N", font_N, 526);
-    _register("O", font_O, 526);
-    _register("P", font_P, 545);
-    _register("Q", font_Q, 545);
-    _register("R", font_R, 586);
-    _register("S", font_S, 586);
-    _register("T", font_T, 531);
-    _register("U", font_U, 531);
-    _register("V", font_V, 531);
-    _register("W", font_W, 531);
-    _register("X", font_X, 531);
-    _register("Y", font_Y, 531);
-    _register("Z", font_Z, 531);
-    _register("0", font_0, 554);
-    _register("1", font_1, 414);
-    _register("2", font_2, 540);
-    _register("3", font_3, 526);
-    _register("4", font_4, 526);
-    _register("5", font_5, 526);
-    _register("6", font_6, 526);
-    _register("7", font_7, 526);
-    _register("8", font_8, 526);
-    _register("9", font_9, 535);
-    _register("&", font_and, 666);
-    _register("@", font_at, 628);
-    _register("(", font_brackets_left, 382);
-    _register(")", font_brackets_right, 382);
-    _register(":", font_colon, 214);
-    _register(",", font_comma, 214);
-    _register("$", font_dallar, 503);
-    _register("!", font_ex, 256);
-    _register("%", font_percent, 703);
-    _register(".", font_period, 214);
-    _register("?", font_question, 531);
-    _register(";", font_semi_colon, 214);
-    _register("#", font_sharp, 759);
-    _register("/", font_slash, 461);
+    _register(" ", 208);
+    _register("a", 498);
+    _register("b", 498);
+    _register("c", 498);
+    _register("d", 498);
+    _register("e", 498);
+    _register("f", 447);
+    _register("g", 498);
+    _register("h", 461);
+    _register("i", 205);
+    _register("j", 368);
+    _register("k", 498);
+    _register("l", 205);
+    _register("m", 717);
+    _register("n", 456);
+    _register("o", 498);
+    _register("p", 498);
+    _register("q", 498);
+    _register("r", 400);
+    _register("s", 498);
+    _register("t", 442);
+    _register("u", 461);
+    _register("v", 498);
+    _register("w", 773);
+    _register("x", 498);
+    _register("y", 545);
+    _register("z", 498);
+    _register("A", 507);
+    _register("B", 507);
+    _register("C", 526);
+    _register("D", 526);
+    _register("E", 526);
+    _register("F", 554);
+    _register("G", 554);
+    _register("H", 526);
+    _register("I", 270);
+    _register("J", 526);
+    _register("K", 526);
+    _register("L", 526);
+    _register("M", 526);
+    _register("N", 526);
+    _register("O", 526);
+    _register("P", 545);
+    _register("Q", 545);
+    _register("R", 586);
+    _register("S", 586);
+    _register("T", 531);
+    _register("U", 531);
+    _register("V", 531);
+    _register("W", 531);
+    _register("X", 531);
+    _register("Y", 531);
+    _register("Z", 531);
+    _register("0", 554);
+    _register("1", 414);
+    _register("2", 540);
+    _register("3", 526);
+    _register("4", 526);
+    _register("5", 526);
+    _register("6", 526);
+    _register("7", 526);
+    _register("8", 526);
+    _register("9", 535);
+    _register("&", 666);
+    _register("@", 628);
+    _register("(", 382);
+    _register(")", 382);
+    _register(":", 214);
+    _register(",", 214);
+    _register("$", 503);
+    _register("!", 256);
+    _register("%", 703);
+    _register(".", 214);
+    _register("?", 531);
+    _register(";", 214);
+    _register("#", 759);
+    _register("/", 461);
   }
 
   function height() external pure override returns(uint) {
@@ -196,6 +196,34 @@ contract LondrinaSolid is IFontProvider, Ownable {
   function pathOf(string memory _char) external pure override returns(bytes memory path) {
     uint key = uint(uint8(bytes(_char)[0]));
     if (key < 0x40) {
+      if (key < 0x30) {
+        if (key < 0x28) {
+        } else {
+        }
+      } else {
+        if (key < 0x38) {
+          if (key < 0x34) {
+            if (key < 0x32) {
+              path = (key == 0x30) ? font_0 : font_1;
+            } else {
+              path = (key == 0x32) ? font_2 : font_3;
+            }
+          } else {
+            if (key < 0x36) {
+              path = (key == 0x34) ? font_4 : font_5;
+            } else {
+              path = (key == 0x32) ? font_6 : font_7;
+            }
+          }
+        } else {
+          if (key < 0x3C) {
+            if (key < 0x3a) {
+              path = (key == 0x38) ? font_8 : font_9;
+            }
+          } else {
+          }
+        }
+      }
     } else if (key < 0x60) {
       if (key < 0x50) {
         if (key < 0x48) {
