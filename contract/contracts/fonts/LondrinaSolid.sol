@@ -10,8 +10,9 @@
 pragma solidity ^0.8.6;
 
 import "../packages/graphics/IFontProvider.sol";
+import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 
-contract LondrinaSolid is IFontProvider {
+contract LondrinaSolid is IFontProvider, Ownable {
   uint constant fixed_height = 1024;
   uint constant fixed_baseline = 800;
 
@@ -96,10 +97,10 @@ contract LondrinaSolid is IFontProvider {
   mapping(uint => uint) widths;
 
   constructor() {
-    registerAll();
+    _registerAll();
   }
 
-  function register(string memory _char, bytes memory _bytecode, uint _width) internal {
+  function _register(string memory _char, bytes memory _bytecode, uint _width) internal {
     uint key = uint(uint8(bytes(_char)[0]));
     if (_bytecode.length > 0) {
       bytecodes[key] = _bytecode;
@@ -107,84 +108,84 @@ contract LondrinaSolid is IFontProvider {
     widths[key] = _width; 
   }
 
-  function registerAll() internal {
-    register(" ", "", 208);
-    register("a", font_a, 498);
-    register("b", font_b, 498);
-    register("c", font_c, 498);
-    register("d", font_d, 498);
-    register("e", font_e, 498);
-    register("f", font_f, 447);
-    register("g", font_g, 498);
-    register("h", font_h, 461);
-    register("i", font_i, 205);
-    register("j", font_j, 368);
-    register("k", font_k, 498);
-    register("l", font_l, 205);
-    register("m", font_m, 717);
-    register("n", font_n, 456);
-    register("o", font_o, 498);
-    register("p", font_p, 498);
-    register("q", font_q, 498);
-    register("r", font_r, 400);
-    register("s", font_s, 498);
-    register("t", font_t, 442);
-    register("u", font_u, 461);
-    register("v", font_v, 498);
-    register("w", font_w, 773);
-    register("x", font_x, 498);
-    register("y", font_y, 545);
-    register("z", font_z, 498);
-    register("A", font_A, 507);
-    register("B", font_B, 507);
-    register("C", font_C, 526);
-    register("D", font_D, 526);
-    register("E", font_E, 526);
-    register("F", font_F, 554);
-    register("G", font_G, 554);
-    register("H", font_H, 526);
-    register("I", font_I, 270);
-    register("J", font_J, 526);
-    register("K", font_K, 526);
-    register("L", font_L, 526);
-    register("M", font_M, 526);
-    register("N", font_N, 526);
-    register("O", font_O, 526);
-    register("P", font_P, 545);
-    register("Q", font_Q, 545);
-    register("R", font_R, 586);
-    register("S", font_S, 586);
-    register("T", font_T, 531);
-    register("U", font_U, 531);
-    register("V", font_V, 531);
-    register("W", font_W, 531);
-    register("X", font_X, 531);
-    register("Y", font_Y, 531);
-    register("Z", font_Z, 531);
-    register("0", font_0, 554);
-    register("1", font_1, 414);
-    register("2", font_2, 540);
-    register("3", font_3, 526);
-    register("4", font_4, 526);
-    register("5", font_5, 526);
-    register("6", font_6, 526);
-    register("7", font_7, 526);
-    register("8", font_8, 526);
-    register("9", font_9, 535);
-    register("&", font_and, 666);
-    register("@", font_at, 628);
-    register("(", font_brackets_left, 382);
-    register(")", font_brackets_right, 382);
-    register(":", font_colon, 214);
-    register(",", font_comma, 214);
-    register("$", font_dallar, 503);
-    register("!", font_ex, 256);
-    register("%", font_percent, 703);
-    register(".", font_period, 214);
-    register("?", font_question, 531);
-    register(";", font_semi_colon, 214);
-    register("#", font_sharp, 759);
-    register("/", font_slash, 461);
+  function _registerAll() internal {
+    _register(" ", "", 208);
+    _register("a", font_a, 498);
+    _register("b", font_b, 498);
+    _register("c", font_c, 498);
+    _register("d", font_d, 498);
+    _register("e", font_e, 498);
+    _register("f", font_f, 447);
+    _register("g", font_g, 498);
+    _register("h", font_h, 461);
+    _register("i", font_i, 205);
+    _register("j", font_j, 368);
+    _register("k", font_k, 498);
+    _register("l", font_l, 205);
+    _register("m", font_m, 717);
+    _register("n", font_n, 456);
+    _register("o", font_o, 498);
+    _register("p", font_p, 498);
+    _register("q", font_q, 498);
+    _register("r", font_r, 400);
+    _register("s", font_s, 498);
+    _register("t", font_t, 442);
+    _register("u", font_u, 461);
+    _register("v", font_v, 498);
+    _register("w", font_w, 773);
+    _register("x", font_x, 498);
+    _register("y", font_y, 545);
+    _register("z", font_z, 498);
+    _register("A", font_A, 507);
+    _register("B", font_B, 507);
+    _register("C", font_C, 526);
+    _register("D", font_D, 526);
+    _register("E", font_E, 526);
+    _register("F", font_F, 554);
+    _register("G", font_G, 554);
+    _register("H", font_H, 526);
+    _register("I", font_I, 270);
+    _register("J", font_J, 526);
+    _register("K", font_K, 526);
+    _register("L", font_L, 526);
+    _register("M", font_M, 526);
+    _register("N", font_N, 526);
+    _register("O", font_O, 526);
+    _register("P", font_P, 545);
+    _register("Q", font_Q, 545);
+    _register("R", font_R, 586);
+    _register("S", font_S, 586);
+    _register("T", font_T, 531);
+    _register("U", font_U, 531);
+    _register("V", font_V, 531);
+    _register("W", font_W, 531);
+    _register("X", font_X, 531);
+    _register("Y", font_Y, 531);
+    _register("Z", font_Z, 531);
+    _register("0", font_0, 554);
+    _register("1", font_1, 414);
+    _register("2", font_2, 540);
+    _register("3", font_3, 526);
+    _register("4", font_4, 526);
+    _register("5", font_5, 526);
+    _register("6", font_6, 526);
+    _register("7", font_7, 526);
+    _register("8", font_8, 526);
+    _register("9", font_9, 535);
+    _register("&", font_and, 666);
+    _register("@", font_at, 628);
+    _register("(", font_brackets_left, 382);
+    _register(")", font_brackets_right, 382);
+    _register(":", font_colon, 214);
+    _register(",", font_comma, 214);
+    _register("$", font_dallar, 503);
+    _register("!", font_ex, 256);
+    _register("%", font_percent, 703);
+    _register(".", font_period, 214);
+    _register("?", font_question, 531);
+    _register(";", font_semi_colon, 214);
+    _register("#", font_sharp, 759);
+    _register("/", font_slash, 461);
   }
 
   function height() external pure override returns(uint) {
