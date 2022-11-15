@@ -193,10 +193,10 @@ contract LondrinaSolid is IFontProvider, Ownable {
     return widths[key]; 
   }
 
-  function pathOf(string memory _char) external view override returns(bytes memory path) {
+  function pathOf(string memory _char) external pure override returns(bytes memory path) {
     uint key = uint(uint8(bytes(_char)[0]));
     if (key < 0x40) {
-    } else {
+    } else if (key < 0x60) {
       if (key < 0x50) {
         if (key < 0x48) {
           if (key < 0x44) {
@@ -248,6 +248,63 @@ contract LondrinaSolid is IFontProvider, Ownable {
               path = (key == 0x58) ? font_X: font_Y;
             } else {
               path = (key == 0x5A) ? font_Z : bytes("");
+            }
+          }
+        }
+      }
+    } else {
+      key -= 0x20;
+      if (key < 0x50) {
+        if (key < 0x48) {
+          if (key < 0x44) {
+            if (key < 0x42) {
+              path = (key == 0x40) ? bytes(""): font_a;
+            } else {
+              path = (key == 0x42) ? font_b : font_c;
+            }
+          } else {
+            if (key < 0x46) {
+              path = (key == 0x44) ? font_d: font_e;
+            } else {
+              path = (key == 0x46) ? font_f : font_g;
+            }
+          }
+        } else {
+          if (key < 0x4C) {
+            if (key < 0x4A) {
+              path = (key == 0x48) ? font_h: font_i;
+            } else {
+              path = (key == 0x4A) ? font_j : font_k;
+            }
+          } else {
+            if (key < 0x4E) {
+              path = (key == 0x4C) ? font_l: font_m;
+            } else {
+              path = (key == 0x4E) ? font_n : font_o;
+            }
+          }
+        }
+      } else {
+        if (key < 0x58) {
+          if (key < 0x54) {
+            if (key < 0x52) {
+              path = (key == 0x50) ? font_p: font_q;
+            } else {
+              path = (key == 0x52) ? font_r : font_s;
+            }
+          } else {
+            if (key < 0x56) {
+              path = (key == 0x54) ? font_t: font_u;
+            } else {
+              path = (key == 0x56) ? font_v : font_w;
+            }
+          }
+        } else {
+          if (key < 0x5C) {
+            if (key < 0x5A) {
+              path = (key == 0x58) ? font_x: font_y;
+            } else {
+              path = (key == 0x5A) ? font_z : bytes("");
             }
           }
         }
