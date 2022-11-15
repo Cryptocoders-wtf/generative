@@ -15,6 +15,7 @@ async function main() {
   const factoryFont = await ethers.getContractFactory("LondrinaSolid");
   const font = await factoryFont.deploy();
   await font.deployed();
+  await font.registerAll();
   console.log(`      font="${font.address}"`);
 
   const factory = await ethers.getContractFactory("PNounsPrivider");
@@ -22,7 +23,7 @@ async function main() {
   await contract.deployed();
   console.log(`      contract="${contract.address}"`);
 
-  for (let i=0; i<14; i++) {
+  for (let i=0; i<3; i++) {
     const n = Math.pow(2,i);
     const result = await contract.generateSVGDocument(n);
     await writeFile(`./cache/pnouns${n}.svg`, result, ()=>{});

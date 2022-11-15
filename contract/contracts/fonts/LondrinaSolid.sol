@@ -96,10 +96,6 @@ contract LondrinaSolid is IFontProvider, Ownable {
   mapping(uint => bytes) bytecodes;
   mapping(uint => uint) widths;
 
-  constructor() {
-    _registerAll();
-  }
-
   function _register(string memory _char, bytes memory _bytecode, uint _width) internal {
     uint key = uint(uint8(bytes(_char)[0]));
     if (_bytecode.length > 0) {
@@ -112,7 +108,7 @@ contract LondrinaSolid is IFontProvider, Ownable {
     _register(_char, _bytecode, _width);
   }
 
-  function _registerAll() internal {
+  function registerAll() external onlyOwner {
     _register(" ", "", 208);
     _register("a", font_a, 498);
     _register("b", font_b, 498);
