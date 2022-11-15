@@ -5,7 +5,18 @@ import {
   solidityString,
 } from "../../contracts/packages/graphics/pathUtils";
 
-const findPath = (obj: any) => {
+interface SVGData {
+  path: SVGData | SVGData[];
+  circle: SVGData | SVGData[];
+  polygon: SVGData | SVGData[];
+  "@_d": string;
+  "@_r": string;
+  "@_cy": string;
+  "@_cx": string;
+}
+
+
+const findPath = (obj: SVGData | SVGData[]) => {
   const ret: any[] = [];
 
   if (Array.isArray(obj)) {
@@ -17,11 +28,11 @@ const findPath = (obj: any) => {
   } else {
     Object.keys(obj).map((key) => {
       if (key === "path") {
-        (Array.isArray(obj[key]) ? obj[key] : [obj[key]]).map((a: any) => {
+        (Array.isArray(obj.path) ? obj.path : [obj.path]).map((a: SVGData) => {
           ret.push(a);
         });
       } else if (key === "circle") {
-        (Array.isArray(obj[key]) ? obj[key] : [obj[key]]).map((a: any) => {
+        (Array.isArray(obj.circle) ? obj.circle : [obj.circle]).map((a: SVGData) => {
           const cx = Number(a["@_cx"]);
           const cy = Number(a["@_cy"]);
           const r = Number(a["@_r"]);
@@ -31,7 +42,7 @@ const findPath = (obj: any) => {
           ret.push(a);
         });
       } else if (key === "polygon") {
-        (Array.isArray(obj[key]) ? obj[key] : [obj[key]]).map((a: any) => {
+        (Array.isArray(obj.polygon) ? obj.polygon : [obj.polygon]).map((a: any) => {
           const points = a["@_points"].split(/\s+|,/);
           const x0 = points.shift();
           const y0 = points.shift();
@@ -42,8 +53,8 @@ const findPath = (obj: any) => {
       } else if (key === "clipPath") {
         // skip
       } else {
-        if (typeof obj[key] === "object") {
-          findPath(obj[key]).map((b) => {
+        if (typeof obj[key as keyof SVGData] === "object") {
+          findPath(obj[key as keyof SVGData] as SVGData | SVGData[]).map((b) => {
             ret.push(b);
           });
         }
