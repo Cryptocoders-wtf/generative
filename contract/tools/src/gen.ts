@@ -1,16 +1,9 @@
-import { readdirSync, readFileSync, writeFileSync, mkdirSync } from "fs";
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, createWriteStream } from "fs";
 import { XMLParser } from "fast-xml-parser";
 import {
   compressPath,
   solidityString,
 } from "../../contracts/packages/graphics/pathUtils";
-
-const options = {
-  ignoreAttributes: false,
-  format: true,
-};
-
-const parser = new XMLParser(options);
 
 const findPath = (obj: any) => {
   const ret: any[] = [];
@@ -81,6 +74,13 @@ const dumpConvertSVG = (svg: any, pathElements: any[]) => {
 };
 
 const main = async () => {
+  const options = {
+    ignoreAttributes: false,
+    format: true,
+  };
+  
+  const parser = new XMLParser(options);
+
   const files = readdirSync(folder).filter((fileName) => {
     return fileName.endsWith(".svg");
   });
@@ -113,7 +113,7 @@ const main = async () => {
     return { fileName, char, name, width, height, bytes };
   });
 
-  const stream = fs.createWriteStream(outdir + "/data/data.txt");
+  const stream = createWriteStream(outdir + "/data/data.txt");
   stream.on("error", (err) => {
     if (err) console.log(err.message);
   });
