@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync, writeFileSync, existsSync } from "fs";
 import { XMLParser } from "fast-xml-parser";
-import { compressPath, solidityString } from "../graphics/pathUtils";
+import { compressPath, solidityString } from "../packages/graphics/pathUtils";
 
 const options = {
   ignoreAttributes: false,
