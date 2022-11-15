@@ -1,10 +1,9 @@
-import { readdirSync, readFileSync, writeFileSync, existsSync } from "fs";
+import { readdirSync, readFileSync, writeFileSync, mkdirSync } from "fs";
 import { XMLParser } from "fast-xml-parser";
 import {
   compressPath,
   solidityString,
 } from "../../contracts/packages/graphics/pathUtils";
-import * as fs from "fs";
 
 const options = {
   ignoreAttributes: false,
@@ -12,13 +11,6 @@ const options = {
 };
 
 const parser = new XMLParser(options);
-
-const folder = process.argv[2];
-
-if (!folder) {
-  console.log("npm run convert ./targetFolder/");
-  process.exit(-1);
-}
 
 const findPath = (obj: any) => {
   const ret: any[] = [];
@@ -95,9 +87,9 @@ const main = async () => {
 
   const oFolderNname = folder.split("/")[2];
   const outdir = "./outputs/" + oFolderNname;
-  fs.mkdirSync(outdir, { recursive: true });
-  fs.mkdirSync(outdir + "/svgs/", { recursive: true });
-  fs.mkdirSync(outdir + "/data/", { recursive: true });
+  mkdirSync(outdir, { recursive: true });
+  mkdirSync(outdir + "/svgs/", { recursive: true });
+  mkdirSync(outdir + "/data/", { recursive: true });
 
   const array = files.map((fileName) => {
     const svgData = readFileSync(`${folder}/${fileName}`, "utf8");
@@ -114,7 +106,7 @@ const main = async () => {
     const convertedSVG = dumpConvertSVG(svg, pathElements);
     name + ".svg";
 
-    fs.writeFileSync(outdir + "/svgs/" + fileName, convertedSVG);
+    writeFileSync(outdir + "/svgs/" + fileName, convertedSVG);
 
     const bytes = solidityString(compressPath(path, height));
 
@@ -143,5 +135,12 @@ const main = async () => {
     .join("\n");
   // console.log(calls);
 };
+
+const folder = process.argv[2];
+
+if (!folder) {
+  console.log("npm run convert ./targetFolder/");
+  process.exit(-1);
+}
 
 main();
