@@ -20,19 +20,6 @@ contract LondrinaSolid is IFontProvider, Ownable {
   mapping(uint => function() view returns(bytes memory)) fonts;
   mapping(uint => bytes) extras;
 
-  function _register(string memory _char, function() view returns(bytes memory) _function, uint _width) internal {
-    uint key = uint(uint8(bytes(_char)[0]));
-    fonts[key] = _function;
-    widths[key] = _width; 
-  }
-
-  // Only the onwer can add extra fonts later
-  function register(string memory _char, bytes memory _bytecode, uint _width) external onlyOwner {
-    uint key = uint(uint8(bytes(_char)[0]));
-    extras[key] = _bytecode;
-    widths[key] = _width; 
-  }
-
   function font_a() internal pure returns(bytes memory) {
     return "\x4d\x60\xe9\x14\x06\x63\xfd\x44\xef\xff\x44\xe8\xff\x44\xe8\x00\x55\x00\xbd\x44\xff\xa8\x44\xfd\x73\x40\xa5\xf7\x44\x9c\xfb\x04\x63\xfb\x54\x0b\x01\x55\x1b\x01\x55\x1b\xcd\x44\xe6\x43\x44\xcf\xf6\x53\x61\xb4\x54\x92\x11\x65\x70\x3a\x65\x8f\x2a\x55\x1f\x61\x55\x3d\xce\x45\xfe\x00\x55\x00\xfe\x54\x1f\x1b\x55\x23\x1d\x55\x05\x7d\x55\x01\x88\x55\x00\x73\x50\x1a\xfc\x54\x1b\xdb\x04\x63\x01\x45\xdf\x03\x35\x2a\x00\x35\x19\x5a\x00\x6d\x42\x64\x1d\x63\x50\x01\x5c\x45\xd3\x50\x45\xbd\x4e\x45\xe9\xfe\x44\xbb\xdd\x44\xc1\x7f\x54\x06\xa2\x54\x48\x9b\x54\x64\x9c\x54\x2d\x01\x55\x1d\x3c\x55\x1e\x98\x05\x5a";
   }
@@ -261,9 +248,10 @@ contract LondrinaSolid is IFontProvider, Ownable {
   function font_slash() internal pure returns(bytes memory) {
     return "\x4d\x50\x6e\x20\x08\x73\x34\x55\x02\x4c\x45\xfa\x63\x50\x00\x00\x55\x05\xfd\x54\x0c\xe6\x04\x73\x39\x45\x72\x48\x45\x47\x4e\x45\x1b\x5b\x35\xf7\x28\x45\x8f\x30\x45\x77\x26\x45\x86\x26\x45\x82\xfc\x44\xf9\xfa\x44\xf9\x63\x50\x00\x00\x55\x03\xfa\x54\x09\xf9\x54\x00\x00\x45\xf1\xf1\x44\xb6\xf3\x04\x73\xaa\x44\xff\x9f\x44\xfb\x63\x50\x00\x00\x45\xe4\x66\x45\xd7\x88\x05\x73\xe4\x54\x53\xe4\x54\x55\xf7\x54\x22\xf2\x54\x2c\xbf\x54\xb1\xb9\x54\xc0\xda\x54\x6c\xd5\x54\x77\xd6\x54\x70\xdd\x54\x66\x63\x50\x00\x00\x45\xe7\x3f\x45\xe8\x49\x05\x73\xfd\x54\x1a\x0c\x55\x1a\x4a\x45\xff\x4a\x45\xff\x5a\x00";
   }
+  function font_space() internal pure returns(bytes memory ret) {}
 
-  function registerAll() external onlyOwner {
-    // _register(" ", "", 208);
+  function _registerAll() internal {
+    _register(" ", font_space, 208);
     _register("a", font_a, 498);
     _register("b", font_b, 498);
     _register("c", font_c, 498);
@@ -340,6 +328,23 @@ contract LondrinaSolid is IFontProvider, Ownable {
     _register(";", font_semi_colon, 214);
     _register("#", font_sharp, 759);
     _register("/", font_slash, 461);
+  }
+
+  function _register(string memory _char, function() view returns(bytes memory) _function, uint _width) internal {
+    uint key = uint(uint8(bytes(_char)[0]));
+    fonts[key] = _function;
+    widths[key] = _width; 
+  }
+
+  constructor() {
+    _registerAll();
+  }
+
+  // Only the onwer can add extra fonts later
+  function register(string memory _char, bytes memory _bytecode, uint _width) external onlyOwner {
+    uint key = uint(uint8(bytes(_char)[0]));
+    extras[key] = _bytecode;
+    widths[key] = _width; 
   }
 
   function height() external pure override returns(uint) {

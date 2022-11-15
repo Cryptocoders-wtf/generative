@@ -6,9 +6,11 @@ async function main() {
   const font = await factory.deploy();
   await font.deployed();
 
+  /*
   const tx = await font.registerAll();
   const result = await tx.wait();
   console.log(result.gasUsed);
+  */
 
   console.log(`      font="${font.address}"`);
 }

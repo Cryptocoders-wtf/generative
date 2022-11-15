@@ -15,7 +15,7 @@ async function main() {
   const factoryFont = await ethers.getContractFactory("LondrinaSolid");
   const font = await factoryFont.deploy();
   await font.deployed();
-  await font.registerAll();
+  // await font.registerAll();
   console.log(`      font="${font.address}"`);
 
   const factory = await ethers.getContractFactory("PNounsPrivider");
