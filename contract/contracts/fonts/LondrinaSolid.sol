@@ -353,24 +353,14 @@ contract LondrinaSolid is IFontProvider, Ownable {
     return widths[key]; 
   }
 
-  function pathOf(string memory _char) external view override returns(bytes memory) {
+  function pathOf(string memory _char) external view override returns(bytes memory ret) {
     uint key = uint(uint8(bytes(_char)[0]));
-    function() view returns(bytes memory) func = functions[key]; 
-    return func();
-  }
-
-  function bar() internal view returns(bytes memory) {
-    return bytes("");
-  }
-
-  function foo() external returns(bytes memory) {
-    functions[10] = bar;
-    return functions[10]();
-    /*
-    function() view returns(bytes memory)[1] memory a;
-    a[0]=bar;
-    return a[0]();
-    */
+    function() view returns(bytes memory) func = functions[key];
+    uint adr;
+    assembly { adr := func } // function() to uint casting
+    if (adr != 0) {
+      ret = func();
+    }
   }
 
   function processPayout() external override payable {
