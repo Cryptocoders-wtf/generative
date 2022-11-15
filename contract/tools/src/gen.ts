@@ -36,7 +36,6 @@ const findPath = (obj: any) => {
           ret.push(a);
         });
       } else if (key === "circle") {
-        // console.log(obj[key])
         (Array.isArray(obj[key]) ? obj[key] : [obj[key]]).map((a: any) => {
           const cx = Number(a["@_cx"]);
           const cy = Number(a["@_cy"]);
@@ -55,6 +54,8 @@ const findPath = (obj: any) => {
           a["@_d"] = pathdata;
           ret.push(a);
         });
+      } else if (key === "clipPath") {
+        // skip
       } else {
         if (typeof obj[key] === "object") {
           findPath(obj[key]).map((b) => {
