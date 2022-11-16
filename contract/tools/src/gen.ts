@@ -5,57 +5,61 @@ import {
   solidityString,
 } from "../../contracts/packages/graphics/pathUtils";
 
+type SVGObj = SVGData | SVGData[];
+
 interface SVGData {
-  path: SVGData | SVGData[];
-  circle: SVGData | SVGData[];
-  polygon: SVGData | SVGData[];
+  path: SVGObj;
+  circle: SVGObj;
+  polygon: SVGObj;
   "@_d": string;
   "@_r": string;
   "@_cy": string;
   "@_cx": string;
+  "@_viewBox": string;
+  "@_points": string;
 }
 
 
-const findPath = (obj: SVGData | SVGData[]) => {
-  const ret: any[] = [];
+const findPath = (obj: SVGObj) => {
+  const ret: SVGData[] = [];
 
   if (Array.isArray(obj)) {
-    obj.map((a) => {
-      findPath(a).map((b) => {
-        ret.push(b);
+    obj.map((svgObj) => {
+      findPath(svgObj).map((svgData) => {
+        ret.push(svgData);
       });
     });
   } else {
     Object.keys(obj).map((key) => {
       if (key === "path") {
-        (Array.isArray(obj.path) ? obj.path : [obj.path]).map((a: SVGData) => {
-          ret.push(a);
+        (Array.isArray(obj.path) ? obj.path : [obj.path]).map((svgData: SVGData) => {
+          ret.push(svgData);
         });
       } else if (key === "circle") {
-        (Array.isArray(obj.circle) ? obj.circle : [obj.circle]).map((a: SVGData) => {
-          const cx = Number(a["@_cx"]);
-          const cy = Number(a["@_cy"]);
-          const r = Number(a["@_r"]);
-          a["@_d"] = `M ${cx} ${cy} m ${-r}, 0 a ${r},${r} 0 1,1 ${
+        (Array.isArray(obj.circle) ? obj.circle : [obj.circle]).map((svgData: SVGData) => {
+          const cx = Number(svgData["@_cx"]);
+          const cy = Number(svgData["@_cy"]);
+          const r = Number(svgData["@_r"]);
+          svgData["@_d"] = `M ${cx} ${cy} m ${-r}, 0 a ${r},${r} 0 1,1 ${
             r * 2
           },0 a ${r},${r} 0 1,1 ${-(r * 2)},0`;
-          ret.push(a);
+          ret.push(svgData);
         });
       } else if (key === "polygon") {
-        (Array.isArray(obj.polygon) ? obj.polygon : [obj.polygon]).map((a: any) => {
-          const points = a["@_points"].split(/\s+|,/);
+        (Array.isArray(obj.polygon) ? obj.polygon : [obj.polygon]).map((svgData: SVGData) => {
+          const points = svgData["@_points"].split(/\s+|,/);
           const x0 = points.shift();
           const y0 = points.shift();
           const pathdata = "M" + x0 + "," + y0 + "L" + points.join(" ") + "z";
-          a["@_d"] = pathdata;
-          ret.push(a);
+          svgData["@_d"] = pathdata;
+          ret.push(svgData);
         });
       } else if (key === "clipPath") {
         // skip
       } else {
         if (typeof obj[key as keyof SVGData] === "object") {
-          findPath(obj[key as keyof SVGData] as SVGData | SVGData[]).map((b) => {
-            ret.push(b);
+          findPath(obj[key as keyof SVGData] as SVGObj).map((svgData) => {
+            ret.push(svgData);
           });
         }
       }
@@ -63,20 +67,20 @@ const findPath = (obj: SVGData | SVGData[]) => {
   }
   return ret;
 };
-const getSvgSize = (svg: any) => {
+const getSvgSize = (svg: SVGData) => {
   const viewBox = svg["@_viewBox"].split(" ");
   const height = parseInt(viewBox[3], 10);
   const width = Math.round((parseInt(viewBox[2], 10) * 1024) / height);
   return { height, width };
 };
 
-const dumpConvertSVG = (svg: any, pathElements: any[]) => {
+const dumpConvertSVG = (svg: SVGData, pathElements: SVGData[]) => {
   const vb = svg["@_viewBox"];
   const ret =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}">\n\t<g>\n` +
     pathElements
-      .map((a: any) => {
-        const d = a["@_d"];
+      .map((svgData) => {
+        const d = svgData["@_d"];
         return `\t\t<path d="${d}" />`;
       })
       .join("\n") +
@@ -112,7 +116,7 @@ const main = async () => {
     const { height, width } = getSvgSize(svg);
 
     const pathElements = findPath(svg);
-    const path = pathElements.map((item: any) => item["@_d"]).join("");
+    const path = pathElements.map((item: SVGData) => item["@_d"]).join("");
 
     const convertedSVG = dumpConvertSVG(svg, pathElements);
     name + ".svg";
