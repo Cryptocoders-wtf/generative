@@ -19,6 +19,19 @@ interface SVGData {
   "@_points": string;
 }
 
+const circle2path = (svgData: SVGData) => {
+  const cx = Number(svgData["@_cx"]);
+  const cy = Number(svgData["@_cy"]);
+  const r = Number(svgData["@_r"]);
+  return  `M ${cx} ${cy} m ${-r}, 0 a ${r},${r} 0 1,1 ${r * 2},0 a ${r},${r} 0 1,1 ${-(r * 2)},0`;
+}
+
+const polygon2path = (svgData: SVGData) => {
+  const points = svgData["@_points"].split(/\s+|,/);
+  const x0 = points.shift();
+  const y0 = points.shift();
+  return "M" + x0 + "," + y0 + "L" + points.join(" ") + "z";
+}
 
 const findPath = (obj: SVGObj) => {
   const ret: SVGData[] = [];
@@ -37,21 +50,12 @@ const findPath = (obj: SVGObj) => {
         });
       } else if (key === "circle") {
         (Array.isArray(obj.circle) ? obj.circle : [obj.circle]).map((svgData: SVGData) => {
-          const cx = Number(svgData["@_cx"]);
-          const cy = Number(svgData["@_cy"]);
-          const r = Number(svgData["@_r"]);
-          svgData["@_d"] = `M ${cx} ${cy} m ${-r}, 0 a ${r},${r} 0 1,1 ${
-            r * 2
-          },0 a ${r},${r} 0 1,1 ${-(r * 2)},0`;
+          svgData["@_d"] = circle2path(svgData);
           ret.push(svgData);
         });
       } else if (key === "polygon") {
         (Array.isArray(obj.polygon) ? obj.polygon : [obj.polygon]).map((svgData: SVGData) => {
-          const points = svgData["@_points"].split(/\s+|,/);
-          const x0 = points.shift();
-          const y0 = points.shift();
-          const pathdata = "M" + x0 + "," + y0 + "L" + points.join(" ") + "z";
-          svgData["@_d"] = pathdata;
+          svgData["@_d"] = polygon2path(svgData);
           ret.push(svgData);
         });
       } else if (key === "clipPath") {
