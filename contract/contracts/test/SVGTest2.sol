@@ -92,19 +92,15 @@ contract SVGTest2 {
         .transform(TX.translate(int(width), int(baseline/2)).scale("0.5")) 
     ]).transform('scale(0.3)');
 
-    /*
-              SVG.text(font, '!"#$%&' "'()*+,-./0123456789"),
+    width = SVG.textWidth(font, "@ABCDEFGHIJKLMNOPQRXYZ[\\]^_");
+    samples[7] = SVG.group([
+              SVG.text(font, '!"#$%&' "'()*+,-./0123456789:;<=>?"),
               SVG.text(font, "@ABCDEFGHIJKLMNOPQRXYZ[\\]^_").transform('translate(0 1024)'),
               SVG.text(font, "abcdefghijklmnopqrxyz{|}~").transform('translate(0 2048)')
-    */
-    width = SVG.textWidth(font, "0123456789&@():,$!%.?;#/");
-    samples[7] = SVG.group([
-              SVG.text(font, "0123456789&@():,$!%.?;#/"),
-              SVG.text(font, "ABCDEFGHIJKLMNOPQRXYZ").transform('translate(0 1024)'),
-              SVG.text(font, "abcdefghijklmnopqrxyz").transform('translate(0 2048)')
                   ]).fill("#224455")
                     .transform(TX.translate(int(0),int(256)).scale1000(1000 * 1024 / width));
 
+    /*
     // 1588750686006947840
     samples[8] = SVG.text(font, [
         "Elon Musk",
@@ -129,6 +125,7 @@ contract SVGTest2 {
       ), 1024).transform(TX.translate(0, int(384))),
       SVG.text(font, "11:46 AM Oct 19, 2022").fill("grey").transform(TX.translate(0,int(921)).scale1000(100))
     ]);
+*/
 /*
     {
       samples[10] = 
@@ -143,7 +140,7 @@ contract SVGTest2 {
     }
 */
 
-    for (uint i=0; i<10; i++) {
+    for (uint i=0; i<8; i++) {
       int x = int(256 * (i % 4));
       int y = int(256 * (i / 4));
       string memory tag = string(abi.encodePacked("test", i.toString()));
