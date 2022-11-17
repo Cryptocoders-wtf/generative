@@ -96,7 +96,8 @@ contract SVGTest2 {
     samples[7] = SVG.group([
               SVG.text(font, '!"#$%&' "'()*+,-./0123456789:;<=>?"),
               SVG.text(font, "@ABCDEFGHIJKLMNOPQRXYZ[\\]^_").transform('translate(0 1024)'),
-              SVG.text(font, "abcdefghijklmnopqrxyz{|}~").transform('translate(0 2048)')
+              SVG.text(font, "abcdefghijklmnopqrxyz{|}~").transform('translate(0 2048)'),
+              SVG.text(font, "Hello World").transform('translate(0 4096)')
                   ]).fill("#224455")
                     .transform(TX.translate(int(0),int(256)).scale1000(1000 * 1024 / width));
 
