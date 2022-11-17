@@ -11,6 +11,8 @@ async function main() {
   const result = await tx.wait();
   console.log(result.gasUsed);
   */
+  const result = await font.widthOf("a");
+  console.log(result);
 
   console.log(`      font="${font.address}"`);
 }

@@ -16,7 +16,7 @@ contract LondrinaSolid is IFontProvider, Ownable {
   uint constant fixed_height = 1024;
   uint constant fixed_baseline = 800;
 
-  mapping(uint => uint) widths;
+  bytes widths = new bytes(0xe0 * 2);
   mapping(uint => function() view returns(bytes memory)) fonts;
   mapping(uint => bytes) extras;
 
@@ -408,7 +408,8 @@ contract LondrinaSolid is IFontProvider, Ownable {
   function _register(string memory _char, function() view returns(bytes memory) _function, uint _width) internal {
     uint key = uint(uint8(bytes(_char)[0]));
     fonts[key] = _function;
-    widths[key] = _width; 
+    widths[key * 2 - 0x40] = bytes1(uint8(_width & 0xff));
+    widths[key * 2 + 0xA0] = bytes1(uint8(_width / 0x100));
   }
 
   constructor() {
@@ -419,7 +420,8 @@ contract LondrinaSolid is IFontProvider, Ownable {
   function register(string memory _char, bytes memory _bytecode, uint _width) external onlyOwner {
     uint key = uint(uint8(bytes(_char)[0]));
     extras[key] = _bytecode;
-    widths[key] = _width; 
+    widths[key * 2 - 0x40] = bytes1(uint8(_width & 0xff));
+    widths[key * 2 + 0xA0] = bytes1(uint8(_width / 0x100));
   }
 
   function height() external pure override returns(uint) {
@@ -430,9 +432,11 @@ contract LondrinaSolid is IFontProvider, Ownable {
     return fixed_baseline;    
   }
 
-  function widthOf(string memory _char) external view override returns(uint) {
+  function widthOf(string memory _char) external view override returns(uint width) {
     uint key = uint(uint8(bytes(_char)[0]));
-    return widths[key]; 
+    if (key >= 0x20 && key < 0x80) {
+      width = uint(uint8(widths[key * 2 - 0x40])) + uint(uint8(widths[key * 2 + 0xA0])) * 0x100;  
+    }
   }
 
   function pathOf(string memory _char) external view override returns(bytes memory) {
