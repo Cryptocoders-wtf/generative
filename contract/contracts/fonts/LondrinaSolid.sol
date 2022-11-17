@@ -16,7 +16,7 @@ contract LondrinaSolid is IFontProvider, Ownable {
   uint constant fixed_height = 1024;
   uint constant fixed_baseline = 800;
 
-  bytes widths = new bytes(0xe0 * 2);
+  bytes1[0x1c0] widths;
   mapping(uint => function() view returns(bytes memory)) fonts;
   mapping(uint => bytes) extras;
 
