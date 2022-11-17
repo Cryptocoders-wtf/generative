@@ -307,7 +307,7 @@ contract LondrinaSolid is IFontProvider, Ownable {
   function _registerAll() internal {
     _register(" ", font_space, 208);
     _register("!", font_ex, 256);
-    _register("\"", font_double_quote, 424);
+    _register('"', font_double_quote, 424);
     _register("#", font_sharp, 759);
     _register("$", font_dallar, 503);
     _register("%", font_percent, 703);
