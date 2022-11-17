@@ -92,7 +92,7 @@ contract SVGTest2 {
         .transform(TX.translate(int(width), int(baseline/2)).scale("0.5")) 
     ]).transform('scale(0.3)');
 
-    width = SVG.textWidth(font, "@ABCDEFGHIJKLMNOPQRXYZ[\\]^_");
+    width = SVG.textWidth(font, '!"#$%&' "'()*+,-./0123456789:;<=>?");
     samples[7] = SVG.group([
               SVG.text(font, '!"#$%&' "'()*+,-./0123456789:;<=>?"),
               SVG.text(font, "@ABCDEFGHIJKLMNOPQRXYZ[\\]^_").transform('translate(0 1024)'),
