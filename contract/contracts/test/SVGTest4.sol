@@ -98,15 +98,18 @@ contract SVGTest4 {
       Randomizer.Seed memory seed;
       string[] memory scheme;
       (seed, scheme) = colorSchemes.getColorScheme(0);
+      for (uint i=0; i<scheme.length; i++) {
+        scheme[i] = string(abi.encodePacked('#', scheme[i]));      
+      }
+
       ILayoutGenerator.Node[] memory nodes;
       (seed, nodes) = generator.generate(seed, 0 + 30 * 0x100 + 60 * 0x10000);
 
       SVG.Element[] memory parts = new SVG.Element[](nodes.length);
       for (uint i = 0; i < nodes.length; i++) {
         ILayoutGenerator.Node memory node = nodes[i];
-        uint h;
-        (seed, h) = seed.random(3);
-        parts[i] = SVG.rect(int(node.x), int(node.y), node.size, node.size/5 * (h + 2));
+        parts[i] = SVG.rect(int(node.x), int(node.y), node.size, node.size)
+                      .fill(scheme[i % scheme.length]);
       }
       samples[3] = SVG.group(parts);
     }
