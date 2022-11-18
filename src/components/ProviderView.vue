@@ -42,8 +42,8 @@ export default defineComponent({
       (network == "localhost")
         ? new ethers.providers.JsonRpcProvider()
         : (network == "mumbai") ?
-        new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com") : alchemyKey
-        ? new ethers.providers.AlchemyProvider(network, alchemyKey)
+        new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com") : 
+        alchemyKey ? new ethers.providers.AlchemyProvider(network, alchemyKey)
         : new ethers.providers.InfuraProvider(network);
     const assetProvider = new ethers.Contract(
       providerAddress,
