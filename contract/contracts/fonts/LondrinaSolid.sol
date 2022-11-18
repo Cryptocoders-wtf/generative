@@ -307,7 +307,7 @@ contract LondrinaSolid is IFontProvider, Ownable {
     widths[_key - 0x20] = uint16(_width);
   }
 
-  function registerAll() public {
+  function _registerAll() internal {
     widths[0] = 208; // space
     _register(0x21, font_ex, 256);
     _register(0x22, font_double_quote, 424);
@@ -409,7 +409,7 @@ contract LondrinaSolid is IFontProvider, Ownable {
   }
 
   constructor() {
-    // registerAll();
+    _registerAll();
   }
 
   function height() external pure override returns(uint) {

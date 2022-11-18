@@ -5,17 +5,12 @@ async function main() {
   const factory = await ethers.getContractFactory("LondrinaSolid");
   const font = await factory.deploy();
   await font.deployed();
+  console.log(`      font="${font.address}"`);
 
-  const tx = await font.registerAll();
-  const result = await tx.wait();
-  console.log(result.gasUsed);
-  
   /*
   const result = await font.widthOf("a");
   console.log(result);
   */
-
-  console.log(`      font="${font.address}"`);
 
   const addresses = `export const addresses = {\n`
     + `  font:"${font.address}",\n`
