@@ -26,6 +26,8 @@ import { addresses as pnouns_localhost } from "./addresses/pnouns_localhost";
 import { addresses as color_mumbai } from "./addresses/colors_mumbai";
 import { addresses as lolinda_solid_localhost } from "./addresses/londrina_solid_localhost";
 import { addresses as lolinda_solid_mumbai } from "./addresses/londrina_solid_mumbai";
+import { addresses as matrix_mumbai } from "./addresses/matrix_mumbai";
+import { addresses as matrix_localhost } from "./addresses/matrix_localhost";
 
 export const addresses: any = {
   svgHelper: {
@@ -146,5 +148,9 @@ export const addresses: any = {
   lolinda_solid: {
     mumbai: lolinda_solid_mumbai.font,
     localhost: lolinda_solid_localhost.font
+  },
+  matrix: {
+    matrix_localhost: matrix_localhost.matrix,
+    matrix_mumbai: matrix_mumbai.matrix
   }
 };
