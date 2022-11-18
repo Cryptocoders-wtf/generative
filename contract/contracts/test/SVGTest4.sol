@@ -106,10 +106,18 @@ contract SVGTest4 {
       (seed, nodes) = generator.generate(seed, 0 + 30 * 0x100 + 60 * 0x10000);
 
       SVG.Element[] memory parts = new SVG.Element[](nodes.length);
+      bytes memory text = new bytes(1);
       for (uint i = 0; i < nodes.length; i++) {
         ILayoutGenerator.Node memory node = nodes[i];
-        parts[i] = SVG.rect(int(node.x), int(node.y), node.size, node.size)
-                      .fill(scheme[i % scheme.length]);
+        uint char;
+        (seed, char) = seed.random(26);
+        text[0] = bytes1(uint8(0x41 + char));
+        uint width = font.widthOf(string(text));
+        width = ((1024 - width) / 2 * node.size) / 1024;
+        parts[i] = SVG.group([
+                      SVG.rect(int(node.x), int(node.y), node.size, node.size)
+                        .fill(scheme[i % scheme.length]),
+                      SVG.text(font, string(text)).transform(TX.translate(int(node.x + width), int(node.y + node.size/10)).scale1000(node.size))]);
       }
       samples[3] = SVG.group(parts);
     }
