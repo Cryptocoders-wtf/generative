@@ -23,6 +23,9 @@ import { addresses as star_localhost } from "./addresses/star_localhost";
 import { addresses as star_goerli } from "./addresses/star_goerli";
 import { addresses as pnouns_goerli } from "./addresses/pnouns_goerli";
 import { addresses as pnouns_localhost } from "./addresses/pnouns_localhost";
+import { addresses as color_mumbai } from "./addresses/colors_mumbai";
+import { addresses as lolinda_solid_localhost } from "./addresses/londrina_solid_localhost";
+import { addresses as lolinda_solid_mumbai } from "./addresses/londrina_solid_mumbai";
 
 export const addresses: any = {
   svgHelper: {
@@ -97,6 +100,7 @@ export const addresses: any = {
     goerli: bitcoin_goerli.colorSchemes,
     localhost: bitcoin_localhost.colorSchemes,
     mainnet: bitcoin_mainnet.colorSchemes,
+    mumbai: color_mumbai.colorSchemes
   },
   reddit: {
     goerli: reddit_goerli.redditArtProvider,
@@ -138,5 +142,9 @@ export const addresses: any = {
   pnouns: {
     goerli: pnouns_goerli.pnouns,
     localhost: pnouns_localhost.pnouns,
+  },
+  lolinda_solid: {
+    mumbai: lolinda_solid_mumbai.font,
+    localhost: lolinda_solid_localhost.font
   }
 };
