@@ -67,7 +67,6 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
     return colorSchemes.generateTraits(_assetId);
   }
 
-
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     Randomizer.Seed memory seed;
     string[] memory scheme;

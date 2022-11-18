@@ -150,7 +150,7 @@ export const addresses: any = {
     localhost: lolinda_solid_localhost.font
   },
   matrix: {
-    matrix_localhost: matrix_localhost.matrix,
-    matrix_mumbai: matrix_mumbai.matrix
+    localhost: matrix_localhost.matrix,
+    mumbai: matrix_mumbai.matrix
   }
 };
