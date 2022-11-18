@@ -80,7 +80,14 @@ contract SVGTest4 {
       SVG.text(font, "11:46 AM Oct 19, 2022").fill("grey").transform(TX.translate(0,int(921)).scale1000(100))
     ]);
 
-    for (uint i=0; i<2; i++) {
+    samples[2] = SVG.group([
+      SVG.pattern("pattern2", "0 0 100 100", "10%", "10%", 
+        SVG.circle(50, 50, 50)
+      ),
+      SVG.rect().fillRef("pattern2")
+    ]);
+
+    for (uint i=0; i<3; i++) {
       int x = int(256 * (i % 4));
       int y = int(256 * (i / 4));
       string memory tag = string(abi.encodePacked("test", i.toString()));

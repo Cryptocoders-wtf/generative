@@ -189,6 +189,15 @@ library SVG {
     output = svgs.packed();
   }
 
+  function pattern(string memory _id, string memory _viewbox, string memory _width, string memory _height, bytes memory _elements) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<pattern id="', _id, '" viewBox="', _viewbox, '" width="', _width, '" height="', _height); 
+    element.tail = abi.encodePacked('">', _elements, '</pattern>\n');
+  }
+
+  function pattern(string memory _id, string memory _viewbox, string memory _width, string memory _height, Element memory _element) internal pure returns(Element memory element) {
+    element = pattern(_id, _viewbox, _width, _height, svg(_element));    
+  }
+
   function filter(string memory _id, bytes memory _elements) internal pure returns(Element memory element) {
     element.head = abi.encodePacked('<filter id="', _id); 
     element.tail = abi.encodePacked('">', _elements, '</filter>\n');
