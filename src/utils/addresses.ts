@@ -25,6 +25,7 @@ import { addresses as star_mumbai } from "./addresses/star_mumbai";
 import { addresses as pnouns_goerli } from "./addresses/pnouns_goerli";
 import { addresses as pnouns_localhost } from "./addresses/pnouns_localhost";
 import { addresses as color_mumbai } from "./addresses/colors_mumbai";
+import { addresses as color_localhost } from "./addresses/colors_localhost";
 import { addresses as lolinda_solid_localhost } from "./addresses/londrina_solid_localhost";
 import { addresses as lolinda_solid_mumbai } from "./addresses/londrina_solid_mumbai";
 import { addresses as matrix_mumbai } from "./addresses/matrix_mumbai";
@@ -103,8 +104,9 @@ export const addresses: any = {
   },
   colorSchemes: {
     goerli: bitcoin_goerli.colorSchemes,
-    localhost: bitcoin_localhost.colorSchemes,
+    //localhost: bitcoin_localhost.colorSchemes,
     mainnet: bitcoin_mainnet.colorSchemes,
+    localhost: color_localhost.colorSchemes,
     mumbai: color_mumbai.colorSchemes
   },
   reddit: {

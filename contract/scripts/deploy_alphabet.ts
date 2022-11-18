@@ -5,7 +5,7 @@ import { addresses } from "../../src/utils/addresses";
 const font = addresses.lolinda_solid[network.name];
 const matrix = addresses.matrix[network.name];
 const colors = addresses.colorSchemes[network.name];
-console.log(font, matrix, colors);
+console.log([font, matrix, colors]);
 
 async function main() {
   // await waitForUserInput("Continue?");
