@@ -107,11 +107,20 @@ contract SVGTest4 {
 
       SVG.Element[] memory parts = new SVG.Element[](nodes.length);
       bytes memory text = new bytes(1);
+      bytes memory scrabble = bytes("AAAAAAAAAB"
+                               "BCCDDDDEEE"
+                               "EEEEEEEEEF"
+                               "FGGGHHIIII"
+                               "IIIIIJKLLL"
+                               "LMMNNNNNNO"
+                               "OOOOOPPQRR"
+                               "TTTTTTUUUU"
+                               "VVWWXYYZ");
       for (uint i = 0; i < nodes.length; i++) {
         ILayoutGenerator.Node memory node = nodes[i];
-        uint char;
-        (seed, char) = seed.random(26);
-        text[0] = bytes1(uint8(0x41 + char));
+        uint index;
+        (seed, index) = seed.random(scrabble.length);
+        text[0] = scrabble[index];
         uint width = font.widthOf(string(text));
         width = ((1024 - width) / 2 * node.size) / 1024;
         parts[i] = SVG.group([
