@@ -15,6 +15,9 @@ async function main() {
   await contract.deployed();
   console.log(`      alphabetProvider="${contract.address}"`);
 
+  const result = await contract.generateSVGPart(0);
+  console.log("svg", result);
+
   const addresses = `export const addresses = {\n`
     + `  alphabetProvider:"${contract.address}",\n`
     + `}\n`;
