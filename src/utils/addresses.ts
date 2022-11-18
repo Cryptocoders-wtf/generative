@@ -36,7 +36,8 @@ import { addresses as alphabet_localhost } from "./addresses/alphabet_localhost"
 export const addresses: any = {
   svgHelper: {
     goerli: splatter_goerli.svgHelperAddress,
-    localhost: splatter_localhost.svgHelperAddress,
+    mumbai: color_mumbai.svgHelper,
+    localhost: color_localhost.svgHelper,
     mainnet: splatter_mainnet.svgHelperAddress,
   },
   splatter: {

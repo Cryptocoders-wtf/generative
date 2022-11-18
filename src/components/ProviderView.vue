@@ -31,7 +31,6 @@ export default defineComponent({
     const route = useRoute();
     const network:string = ( 
       typeof route.query.network == "string" ? route.query.network : props.network || "goerli") as string;
-    console.log("*****", network);
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     // console.log("*** network", network, alchemyKey);
 
@@ -42,9 +41,12 @@ export default defineComponent({
       (network == "localhost")
         ? new ethers.providers.JsonRpcProvider()
         : (network == "mumbai") ?
-        new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com") : 
+        new ethers.providers.JsonRpcProvider("https://matic-mumbai.chainstacklabs.com") : 
         alchemyKey ? new ethers.providers.AlchemyProvider(network, alchemyKey)
         : new ethers.providers.InfuraProvider(network);
+
+    console.log("*****", network, provider);
+    
     const assetProvider = new ethers.Contract(
       providerAddress,
       IAssetProvider.wabi.abi,

@@ -17,8 +17,14 @@ async function main() {
   await contractSchemes.deployed();
   console.log(`      colorSchemes="${contractSchemes.address}"`);
 
+  const factoryHelper = await ethers.getContractFactory("SVGHelperA");
+  const contractHelper = await factoryHelper.deploy();
+  await contractHelper.deployed();
+  console.log(`      helper="${contractHelper.address}"`);
+
   const addresses = `export const addresses = {\n`
     + `  colorSchemes:"${contractSchemes.address}",\n`
+    + `  svgHelper:"${contractHelper.address}",\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/colors_${network.name}.ts`, addresses, ()=>{});
   console.log("Complete");  

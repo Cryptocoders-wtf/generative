@@ -1,3 +1,4 @@
 export const addresses = {
-  colorSchemes:"0x30e41Ca2C80964eb88c22c860179bB8d230f3b24",
+  colorSchemes:"0xEAf918cc3aba362aDFBf6Ce1D95039bF4EbDB259",
+  svgHelper:"0xEC6B0295fDb988952652ed75e1EECC3e94237A46",
 }
