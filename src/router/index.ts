@@ -12,6 +12,7 @@ import Reddit from "../views/Reddit.vue";
 import Sample from "../views/Sample.vue";
 import Experiment from "../views/Experiment.vue";
 import Star from "../views/Star.vue";
+import Alphabet from "../views/Alphabet.vue";
 
 const routeChildren: Array<RouteRecordRaw> = [
   {
@@ -45,6 +46,10 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "star",
     component: Star,
+  },
+  {
+    path: "alphabet",
+    component: Alphabet,
   },
   {
     path: "sample",
