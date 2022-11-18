@@ -21,6 +21,7 @@ import { addresses as lilnouns_goerli } from "./addresses/lilnouns_goerli";
 import { addresses as circles_localhost } from "./addresses/circles_localhost";
 import { addresses as star_localhost } from "./addresses/star_localhost";
 import { addresses as star_goerli } from "./addresses/star_goerli";
+import { addresses as star_mumbai } from "./addresses/star_mumbai";
 import { addresses as pnouns_goerli } from "./addresses/pnouns_goerli";
 import { addresses as pnouns_localhost } from "./addresses/pnouns_localhost";
 import { addresses as color_mumbai } from "./addresses/colors_mumbai";
@@ -28,6 +29,8 @@ import { addresses as lolinda_solid_localhost } from "./addresses/londrina_solid
 import { addresses as lolinda_solid_mumbai } from "./addresses/londrina_solid_mumbai";
 import { addresses as matrix_mumbai } from "./addresses/matrix_mumbai";
 import { addresses as matrix_localhost } from "./addresses/matrix_localhost";
+import { addresses as alphabet_mumbai } from "./addresses/alphabet_mumbai";
+import { addresses as alphabet_localhost } from "./addresses/alphabet_localhost";
 
 export const addresses: any = {
   svgHelper: {
@@ -140,6 +143,7 @@ export const addresses: any = {
   star: {
     localhost: star_localhost.starAddress,
     goerli: star_goerli.starAddress,
+    mumbai: star_mumbai.starAddress,
   },
   pnouns: {
     goerli: pnouns_goerli.pnouns,
@@ -152,5 +156,9 @@ export const addresses: any = {
   matrix: {
     localhost: matrix_localhost.matrix,
     mumbai: matrix_mumbai.matrix
+  },
+  alphabet: {
+    localhost: alphabet_localhost.alphabetProvider,
+    mumbai: alphabet_mumbai.alphabetProvider
   }
 };

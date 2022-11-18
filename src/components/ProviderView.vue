@@ -25,12 +25,13 @@ const ISVGHelper = {
 };
 
 export default defineComponent({
-  props: ["assetProvider", "debugMode"],
+  props: ["assetProvider", "debugMode", "network"],
   setup(props) {
     const images = ref<string[]>([]);
     const route = useRoute();
-    const network =
-      typeof route.query.network == "string" ? route.query.network : "goerli";
+    const network:string = ( 
+      typeof route.query.network == "string" ? route.query.network : props.network || "goerli") as string;
+    console.log("*****", network);
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     // console.log("*** network", network, alchemyKey);
 
@@ -38,9 +39,10 @@ export default defineComponent({
     const svgHelperAddress = addresses["svgHelper"][network];
     // console.log("*** address", providerAddress, svgHelperAddress);
     const provider =
-      network == "localhost"
+      (network == "localhost")
         ? new ethers.providers.JsonRpcProvider()
-        : alchemyKey
+        : (network == "mumbai") ?
+        new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com") : alchemyKey
         ? new ethers.providers.AlchemyProvider(network, alchemyKey)
         : new ethers.providers.InfuraProvider(network);
     const assetProvider = new ethers.Contract(
@@ -77,7 +79,6 @@ export default defineComponent({
 
     return {
       images,
-      network,
     };
   },
 });
