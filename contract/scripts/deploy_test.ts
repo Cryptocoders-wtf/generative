@@ -8,7 +8,7 @@ async function main() {
   console.log(`      test="${contract.address}"`);
 
   const result = await contract.main();
-  await writeFile(`../../../cache/test.svg`, result, ()=>{});  
+  await writeFile(`./cache/test.svg`, result, ()=>{});  
 }
 
 main().catch((error) => {
