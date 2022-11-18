@@ -301,15 +301,14 @@ contract LondrinaSolid is IFontProvider, Ownable {
   function font_vertical() internal pure returns(bytes memory) {
     return "\x4d\x50\x15\x0a\x05\x73\x00\x55\xec\x01\x65\x05\x00\x55\xcb\x00\x55\xdd\x01\x55\xf1\x01\x65\x04\x00\x55\x4d\x00\x55\x4d\x63\x50\x00\x00\x55\x4b\x03\x55\x5a\x03\x05\x73\x39\x55\x00\x3e\x55\x00\x63\x50\x00\x00\x55\x00\x42\x44\xff\x27\x04\x73\x00\x45\x2e\x00\x45\x15\xff\x44\x19\xff\x44\x0a\x00\x45\x81\x00\x45\x80\x63\x50\x00\x00\x45\x75\x06\x45\x69\x04\x05\x5a";
   }
-  function font_space() internal pure returns(bytes memory ret) {}
 
   function _register(uint _key, function() view returns(bytes memory) _function, uint _width) internal {
     fonts[_key] = _function;
     widths[_key - 0x20] = uint16(_width);
   }
 
-  function _registerAll() internal {
-    _register(0x20, font_space, 208);
+  function registerAll() public {
+    widths[0] = 208; // space
     _register(0x21, font_ex, 256);
     _register(0x22, font_double_quote, 424);
     _register(0x23, font_sharp, 759);
@@ -410,7 +409,7 @@ contract LondrinaSolid is IFontProvider, Ownable {
   }
 
   constructor() {
-    _registerAll();
+    // registerAll();
   }
 
   function height() external pure override returns(uint) {
@@ -423,18 +422,15 @@ contract LondrinaSolid is IFontProvider, Ownable {
 
   function widthOf(string memory _char) external view override returns(uint width) {
     uint key = uint(uint8(bytes(_char)[0]));
-    if (key >= 0x20 && key < 0x80) {
+    if (key >= 0x20 && key < 0x7F) {
       width = uint(widths[key - 0x20]);  
     }
   }
 
   function pathOf(string memory _char) external view override returns(bytes memory path) {
     uint key = uint(uint8(bytes(_char)[0]));
-    function() view returns(bytes memory) func = fonts[key];
-    uint adr;
-    assembly { adr := func } // function() to uint casting
-    if (adr != 0) {
-      path = func();
+    if (key >= 0x21 && key < 0x7F) {
+      path = fonts[key]();
     }
   }
 
