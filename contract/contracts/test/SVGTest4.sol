@@ -37,7 +37,7 @@ contract SVGTest4 {
   IColorSchemes public colorSchemes;
 
   constructor() {
-    font = new LondrinaSolid();
+    font = new LondrinaSolid(address(0x0));
     generator = new MatrixGenerator();
     colorSchemes = new ColorSchemes();
   }

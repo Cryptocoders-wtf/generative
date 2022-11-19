@@ -29,7 +29,7 @@ contract SVGTest2 {
   IFontProvider immutable public font;
 
   constructor() {
-    font = new LondrinaSolid();
+    font = new LondrinaSolid(address(0x0));
   }
 
   function main() external view returns(string memory output) {
