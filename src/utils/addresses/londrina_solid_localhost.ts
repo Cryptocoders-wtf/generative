@@ -1,3 +1,3 @@
 export const addresses = {
-  font:"0xfd660A1D683F1d810efCFc90d320b9cDF1574497",
+  font:"0xeC20dCBf0380F1C9856Ee345aF41F62Ee45a95a1",
 }
