@@ -1,3 +1,3 @@
 export const addresses = {
-  alphabetProvider:"0xCb4e33F5e5540BD2293FeF18A2b0Bf874980c496",
+  alphabetProvider:"0x8bbef7796D11867Ef31953e7a1a620447A9560Dd",
 }

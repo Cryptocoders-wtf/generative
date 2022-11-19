@@ -82,15 +82,8 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
 
     SVG.Element[] memory parts = new SVG.Element[](nodes.length);
     bytes memory text = new bytes(1);
-    bytes memory scrabble = bytes("AAAAAAAAAB"
-                              "BCCDDDDEEE"
-                              "EEEEEEEEEF"
-                              "FGGGHHIIII"
-                              "IIIIIJKLLL"
-                              "LMMNNNNNNO"
-                              "OOOOOPPQRR"
-                              "TTTTTTUUUU"
-                              "VVWWXYYZ");
+    bytes memory scrabble = bytes("AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIII"
+                              "IIIIIJKLLLLMMNNNNNNOOOOOOPPQRRTTTTTTUUUUVVWWXYYZ");
     for (uint i = 0; i < nodes.length; i++) {
       ILayoutGenerator.Node memory node = nodes[i];
       uint index;
