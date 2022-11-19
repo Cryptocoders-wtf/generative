@@ -9,15 +9,20 @@ type SVGObj = SVGData | SVGData[];
 
 interface SVGData {
   path: SVGObj;
+  rect: SVGObj;
   circle: SVGObj;
   polygon: SVGObj;
   ellipse: SVGObj;
   "@_d": string;
   "@_r": string;
+  "@_x": string;
+  "@_y": string;
   "@_rx": string;
   "@_ry": string;
   "@_cy": string;
   "@_cx": string;
+  "@_width": string;
+  "@_height": string;
   "@_viewBox": string;
   "@_points": string;
   "@_style": string;
@@ -44,6 +49,14 @@ const ellipse2path = (svgData: SVGData) => {
   const rx = Number(svgData["@_rx"]);
   const ry = Number(svgData["@_ry"]);
   return  `M ${cx} ${cy} m ${-rx}, 0 a ${rx},${ry} 0 1,0 ${rx * 2},0 a ${rx},${ry} 0 1,0 ${-(rx * 2)},0`;
+}
+
+const rect2path = (svgData: SVGData) => {
+  const x = Number(svgData["@_x"] || "0");
+  const y = Number(svgData["@_y"] || "0");
+  const rx = Number(svgData["@_width"]);
+  const ry = Number(svgData["@_height"]);
+  return  `M ${x} ${y} H ${rx + x} V ${ry + y} H ${x} Z`;
 }
 
 
@@ -75,6 +88,11 @@ const findPath = (obj: SVGObj) => {
           svgData["@_d"] = ellipse2path(svgData);
           ret.push(svgData);
         });
+      } else if (key === "rect") {
+        (Array.isArray(obj.rect) ? obj.rect : [obj.rect]).map((svgData: SVGData) => {
+          svgData["@_d"] = rect2path(svgData);
+          ret.push(svgData);
+        });
       } else if (key === "polygon") {
         (Array.isArray(obj.polygon) ? obj.polygon : [obj.polygon]).map((svgData: SVGData) => {
           svgData["@_d"] = polygon2path(svgData);
@@ -95,10 +113,16 @@ const findPath = (obj: SVGObj) => {
 };
 const getSvgSize = (svg: SVGData) => {
   const viewBox = svg["@_viewBox"].split(" ");
-  const height = parseInt(viewBox[3], 10);
-  const width = Math.round((parseInt(viewBox[2], 10) * 1024) / height);
+  // const originalHeight = parseInt(viewBox[3], 10);
+  // const originalWidth = parseInt(viewBox[2], 10)
+  const originalHeight = 730;
+  const originalWidth = 730;
+
+  // 730;
+  const width = Math.round((originalWidth * 1024) / originalHeight);
+  console.log({ height: originalHeight, width: width });
   // return { height, width };
-  return { height: height*10, width: width*10 };
+  return { height: originalHeight*10, width: width*10 };
 };
 
 const dumpConvertSVG = (svg: SVGData, pathElements: SVGData[]) => {
@@ -115,7 +139,37 @@ const dumpConvertSVG = (svg: SVGData, pathElements: SVGData[]) => {
     "\n\t</g>\n</svg>\n";
   return ret;
 };
+const dumpConvertSVG2 = (svg: SVGData, paths: any[]) => {
+  const vb = svg["@_viewBox"];
+  const ret =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}">\n\t<g>\n` +
+    paths
+      .map((pathData) => {
+        const d = pathData["path"];
+        const fill = pathData["fill"]
+        const stroke = pathData["stroke"];
+        const styles = [];
+        if (fill) {
+          styles.push(`fill:${fill}`)
+        }
+        if (stroke) {
+          styles.push(`stroke-linecap:round;stroke-linejoin:round;stroke-width:${stroke};stroke:#000`);
+        };
+        const style = styles.join(";");
+        return `\t\t<path d="${d}" style="${style}" />`;
+      })
+      .join("\n") +
+    "\n\t</g>\n</svg>\n";
+  return ret;
+};
 
+const style2elem = (style: string) => {
+  const styles = style.split(";").map(a => a.split(":"));
+  return styles.reduce((tmp: any, key: string[]) => {
+    tmp[key[0]] = key[1];
+    return tmp;
+  }, {});
+};
 const main = async () => {
   const options = {
     ignoreAttributes: false,
@@ -144,11 +198,25 @@ const main = async () => {
     const { height, width } = getSvgSize(svg);
 
     const pathElements = findPath(svg);
+    if (fileName === "Lu_1.svg")
+      console.log(svg.g.g)
     const path = pathElements.map((item: SVGData) => {
       return item["@_d"]
     }).join("");
 
-    const convertedSVG = dumpConvertSVG(svg, pathElements);
+    const path2 = pathElements.map((item: SVGData) => {
+      const styles = (style2elem(item["@_style"]||""));
+      const fill = styles["fill"];
+      const stroke = styles["stroke-width"];
+      return {
+        path: item["@_d"],
+        fill,
+        "stroke": stroke,
+      }
+    });
+
+    // const convertedSVG = dumpConvertSVG(svg, pathElements);
+    const convertedSVG = dumpConvertSVG2(svg, path2);
     name + ".svg";
 
     writeFileSync(outdir + "/svgs/" + fileName, convertedSVG);
