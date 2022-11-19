@@ -11,13 +11,17 @@ interface SVGData {
   path: SVGObj;
   circle: SVGObj;
   polygon: SVGObj;
+  ellipse: SVGObj;
   "@_d": string;
   "@_r": string;
+  "@_rx": string;
+  "@_ry": string;
   "@_cy": string;
   "@_cx": string;
   "@_viewBox": string;
   "@_points": string;
   "@_style": string;
+  "@_id": string;
 }
 
 const circle2path = (svgData: SVGData) => {
@@ -34,6 +38,15 @@ const polygon2path = (svgData: SVGData) => {
   return "M" + x0 + "," + y0 + "L" + points.join(" ") + "z";
 }
 
+const ellipse2path = (svgData: SVGData) => {
+  const cx = Number(svgData["@_cx"]);
+  const cy = Number(svgData["@_cy"]);
+  const rx = Number(svgData["@_rx"]);
+  const ry = Number(svgData["@_ry"]);
+  return  `M ${cx} ${cy} m ${-rx}, 0 a ${rx},${ry} 0 1,0 ${rx * 2},0 a ${rx},${ry} 0 1,0 ${-(rx * 2)},0`;
+}
+
+
 const findPath = (obj: SVGObj) => {
   const ret: SVGData[] = [];
 
@@ -48,13 +61,18 @@ const findPath = (obj: SVGObj) => {
       if (key === "path") {
         (Array.isArray(obj.path) ? obj.path : [obj.path]).map((svgData: SVGData) => {
           if (svgData["@_style"]) {
-            console.log(svgData["@_style"])
+            // console.log(svgData["@_style"])
           }
           ret.push(svgData);
         });
       } else if (key === "circle") {
         (Array.isArray(obj.circle) ? obj.circle : [obj.circle]).map((svgData: SVGData) => {
           svgData["@_d"] = circle2path(svgData);
+          ret.push(svgData);
+        });
+      } else if (key === "ellipse") {
+        (Array.isArray(obj.ellipse) ? obj.ellipse : [obj.ellipse]).map((svgData: SVGData) => {
+          svgData["@_d"] = ellipse2path(svgData);
           ret.push(svgData);
         });
       } else if (key === "polygon") {
@@ -79,7 +97,8 @@ const getSvgSize = (svg: SVGData) => {
   const viewBox = svg["@_viewBox"].split(" ");
   const height = parseInt(viewBox[3], 10);
   const width = Math.round((parseInt(viewBox[2], 10) * 1024) / height);
-  return { height, width };
+  // return { height, width };
+  return { height: height*10, width: width*10 };
 };
 
 const dumpConvertSVG = (svg: SVGData, pathElements: SVGData[]) => {
@@ -89,7 +108,8 @@ const dumpConvertSVG = (svg: SVGData, pathElements: SVGData[]) => {
     pathElements
       .map((svgData) => {
         const d = svgData["@_d"];
-        return `\t\t<path d="${d}" style="fill:#ffffff;stroke-linecap:round;stroke-linejoin:round;stroke-width:3px;stroke:#000;" />`;
+        return `\t\t<path d="${d}" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:3px;stroke:#000;" />`;
+        //        return `\t\t<path d="${d}"  />`;
       })
       .join("\n") +
     "\n\t</g>\n</svg>\n";
@@ -124,7 +144,9 @@ const main = async () => {
     const { height, width } = getSvgSize(svg);
 
     const pathElements = findPath(svg);
-    const path = pathElements.map((item: SVGData) => item["@_d"]).join("");
+    const path = pathElements.map((item: SVGData) => {
+      return item["@_d"]
+    }).join("");
 
     const convertedSVG = dumpConvertSVG(svg, pathElements);
     name + ".svg";
