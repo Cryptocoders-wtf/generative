@@ -86,6 +86,10 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
     bytes memory text = new bytes(1);
     bytes memory scrabble = bytes("AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIII"
                               "IIIIIJKLLLLMMNNNNNNOOOOOOPPQRRTTTTTTUUUUVVWWXYYZ");
+    string memory svgNouns;
+    string memory idNouns;
+    (svgNouns, idNouns) = nouns.generateSVGPart(_assetId);
+
     for (uint i = 0; i < nodes.length; i++) {
       ILayoutGenerator.Node memory node = nodes[i];
       uint index;
@@ -93,12 +97,19 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
       text[0] = scrabble[index];
       uint width = font.widthOf(string(text));
       width = ((1024 - width) / 2 * node.size) / 1024;
-      parts[i] = SVG.group([
+      if (i == 15) {
+        parts[i] = SVG.use(idNouns).transform(TX.translate(int(node.x), int(node.y)).scale1000(node.size));
+      } else {
+        parts[i] = SVG.group([
                     SVG.rect(int(node.x), int(node.y), node.size, node.size)
                       .fill(scheme[i % scheme.length]),
                     SVG.text(font, string(text))
                       .transform(TX.translate(int(node.x + width), int(node.y + node.size/10)).scale1000(node.size))]);
+      }
     }
-    svgPart = string(SVG.group(parts).id(tag).fill("#222").svg());
+    svgPart = string(abi.encodePacked(
+      svgNouns,
+      SVG.group(parts).id(tag).fill("#222").svg()
+    ));
   }
 }
