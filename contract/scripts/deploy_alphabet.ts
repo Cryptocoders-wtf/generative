@@ -5,13 +5,14 @@ import { addresses } from "../../src/utils/addresses";
 const font = addresses.lolinda_solid[network.name];
 const matrix = addresses.matrix[network.name];
 const colors = addresses.colorSchemes[network.name];
+const nouns = addresses.nouns[network.name];
 console.log([font, matrix, colors]);
 
 async function main() {
   // await waitForUserInput("Continue?");
 
   const factory = await ethers.getContractFactory("AlphabetProvider");
-  const contract = await factory.deploy(font, matrix, colors);
+  const contract = await factory.deploy(font, matrix, colors, nouns);
   await contract.deployed();
   console.log(`      alphabetProvider="${contract.address}"`);
 

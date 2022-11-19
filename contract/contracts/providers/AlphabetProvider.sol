@@ -32,11 +32,13 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;
   IFontProvider public font;
+  IAssetProvider public nouns;
 
-  constructor(IFontProvider _font, ILayoutGenerator _generator, IColorSchemes _colorSchemes) {
+  constructor(IFontProvider _font, ILayoutGenerator _generator, IColorSchemes _colorSchemes, IAssetProvider _nouns) {
     font = _font;
     generator = _generator;
     colorSchemes = _colorSchemes;
+    nouns = _nouns;
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
