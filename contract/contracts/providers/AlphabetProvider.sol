@@ -101,8 +101,9 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
       parts[i] = SVG.group([
                     SVG.rect(int(node.x), int(node.y), node.size, node.size)
                       .fill(scheme[i % scheme.length]),
-                    SVG.text(font, string(text)).transform(TX.translate(int(node.x + width), int(node.y + node.size/10)).scale1000(node.size))]);
+                    SVG.text(font, string(text))
+                      .transform(TX.translate(int(node.x + width), int(node.y + node.size/10)).scale1000(node.size))]);
     }
-    svgPart = string(SVG.group(parts).id(tag).svg());
+    svgPart = string(SVG.group(parts).id(tag).fill("#222").svg());
   }
 }
