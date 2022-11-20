@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync, writeFileSync, existsSync } from "fs";
 import { XMLParser } from "fast-xml-parser";
-import { compressPath, solidityString } from "../graphics/pathUtils";
+import { compressPath, solidityString } from "../packages/graphics/pathUtils";
 
 const options = {
   ignoreAttributes: false,
@@ -8,7 +8,7 @@ const options = {
 };
 
 const parser = new XMLParser(options);
-const folder = "./londrina_solid_E";
+const folder = "./londrina_solid_E2";
 
 const main = async () => {
   console.log("main");
@@ -36,7 +36,9 @@ const main = async () => {
     return { file, char, name, width, height, bytes };
   });
   const constants = array.map(item => {
-    return `bytes constant ${item.name} = "${item.bytes}";`;
+    return `  function ${item.name}() internal pure returns(bytes memory) {\n` +
+           `    return "${item.bytes}";\n` +
+           `  }`;
   }).join('\n');
   console.log(constants);
 

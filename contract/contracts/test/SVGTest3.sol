@@ -33,7 +33,7 @@ contract SVGTest3 {
   IAssetProvider immutable public nounsProvider;
 
   constructor(IAssetProvider _provider) {
-    font = new LondrinaSolid();
+    font = new LondrinaSolid(address(0x0));
     nounsProvider = _provider;
   }
 
