@@ -11,6 +11,10 @@
     "convert": "npx ts-node ./src/gen.ts"
   },
   "devDependencies": {
+    "@types/svg-parser": "^2.0.3",
     "prettier": "^2.7.1"
+  },
+  "dependencies": {
+    "svg-parser": "^2.0.4"
   }
 }
