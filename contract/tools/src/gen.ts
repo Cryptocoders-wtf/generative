@@ -13,30 +13,6 @@ import {
   solidityString,
 } from "../../contracts/packages/graphics/pathUtils";
 
-type SVGObj = SVGData | SVGData[];
-
-interface SVGData {
-  path: SVGObj;
-  rect: SVGObj;
-  circle: SVGObj;
-  polygon: SVGObj;
-  ellipse: SVGObj;
-  "@_d": string;
-  "@_r": string;
-  "@_x": string;
-  "@_y": string;
-  "@_rx": string;
-  "@_ry": string;
-  "@_cy": string;
-  "@_cx": string;
-  "@_width": string;
-  "@_height": string;
-  "@_viewBox": string;
-  "@_points": string;
-  "@_style": string;
-  "@_id": string;
-}
-
 const circle2path = (element: ElementNode) => {
   const cx = Number(element.properties?.cx);
   const cy = Number(element.properties?.cy);
@@ -243,7 +219,7 @@ const main = async (folder: string) => {
       return code;
     })
     .join("\n");
-  // console.log(constants);
+  console.log(constants);
 
   const calls = array
     .map((item) => {
