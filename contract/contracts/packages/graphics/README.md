@@ -63,7 +63,7 @@ Please notice that fill() method returns another SVG element, which allows you t
 
 ```
 SVG.rect(256, 256, 512, 512)
-  .fill("yellow");
+  .fill("yellow")
   .stroke("blue", 10)
   .transform("rotate(30 512 512)");
 ```
