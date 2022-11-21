@@ -4,6 +4,8 @@ export const getAddresses = (network: string, contentAddress: string) => {
       return "https://rinkeby.etherscan.io/address";
     } else if (network == "goerli") {
       return "https://goerli.etherscan.io/address";
+    } else if (network == "mumbai") {
+      return "https://mumbai.polygonscan.com/address";
     }
     return "https://etherscan.io/address";
   })();
