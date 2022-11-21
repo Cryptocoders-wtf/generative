@@ -15,8 +15,9 @@ pragma solidity ^0.8.6;
 import "./IERC721P2P.sol";
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "./opensea/DefaultOperatorFilterer.sol";
 
-abstract contract ERC721P2P is IERC721P2P, ERC721, Ownable {
+abstract contract ERC721P2P is IERC721P2P, ERC721, DefaultOperatorFilterer, Ownable {
   mapping (uint256 => uint256) prices;
 
   function setPriceOf(uint256 _tokenId, uint256 _price) public override {
