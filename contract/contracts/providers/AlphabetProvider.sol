@@ -50,7 +50,7 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function getProviderInfo() external view override returns(ProviderInfo memory) {
-    return ProviderInfo("stencil", "Stencil", this);
+    return ProviderInfo("alphabet", "Alphabet", this);
   }
 
   function totalSupply() external pure override returns(uint256) {
@@ -58,9 +58,15 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function processPayout(uint256 _assetId) external override payable {
+    uint half = msg.value / 2;
+    address payable pNouns = payable(address(0x8AE80e0B44205904bE18869240c2eC62D2342785));
+    pNouns.transfer(half);
+    emit Payout("alphabet", _assetId, pNouns, half);
+
+    half = msg.value - half; // eliminating round error
     address payable payableTo = payable(owner());
-    payableTo.transfer(msg.value);
-    emit Payout("stencil", _assetId, payableTo, msg.value);
+    payableTo.transfer(half);
+    emit Payout("alphabet", _assetId, payableTo, half);
   }
 
   function generateTraits(uint256 _assetId) external view returns (string memory) {
