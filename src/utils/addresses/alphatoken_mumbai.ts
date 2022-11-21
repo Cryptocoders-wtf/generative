@@ -1,3 +1,3 @@
 export const addresses = {
-  alphatoken:"0xb991c6B1d5FDE39983eD4d77D5F7B0F7Ce33728c"
+  alphatoken:"0xcdb32b033CBDA8a419B4DE4B23e779c6dD432C09"
 }
