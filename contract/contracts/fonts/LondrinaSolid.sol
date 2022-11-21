@@ -437,7 +437,7 @@ contract LondrinaSolid is IFontProvider, Ownable {
   }
 
   function processPayout() external override payable {
-    address payable payableTo = payable(owner());
+    address payable payableTo = payable(designer);
     payableTo.transfer(msg.value);
     emit Payout("LondrinaSolid", payableTo, msg.value);
   }
