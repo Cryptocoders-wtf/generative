@@ -34,6 +34,8 @@ import { addresses as matrix_mumbai } from "./addresses/matrix_mumbai";
 import { addresses as matrix_localhost } from "./addresses/matrix_localhost";
 import { addresses as alphabet_mumbai } from "./addresses/alphabet_mumbai";
 import { addresses as alphabet_localhost } from "./addresses/alphabet_localhost";
+import { addresses as alphatoken_mumbai } from "./addresses/alphatoken_mumbai";
+import { addresses as alphatoken_localhost } from "./addresses/alphatoken_localhost";
 
 export const addresses: any = {
   svgHelper: {
@@ -169,5 +171,9 @@ export const addresses: any = {
   alphabet: {
     localhost: alphabet_localhost.alphabetProvider,
     mumbai: alphabet_mumbai.alphabetProvider
-  }
+  },
+  alphabetToken: {
+    localhost: alphatoken_localhost.alphatoken,
+    mumbai: alphatoken_mumbai.alphatoken
+  },
 };
