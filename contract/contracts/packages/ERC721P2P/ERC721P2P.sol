@@ -17,7 +17,33 @@ import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "./opensea/DefaultOperatorFilterer.sol";
 
-abstract contract ERC721P2P is IERC721P2P, ERC721, DefaultOperatorFilterer, Ownable {
+abstract contract ERC721WithOperatorFilter is ERC721, DefaultOperatorFilterer, Ownable {
+    function setApprovalForAll(address operator, bool approved) public override onlyAllowedOperatorApproval(operator) {
+        super.setApprovalForAll(operator, approved);
+    }
+
+    function approve(address operator, uint256 tokenId) public override onlyAllowedOperatorApproval(operator) {
+        super.approve(operator, tokenId);
+    }
+
+    function transferFrom(address from, address to, uint256 tokenId) public override onlyAllowedOperator(from) {
+        super.transferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(address from, address to, uint256 tokenId) public override onlyAllowedOperator(from) {
+        super.safeTransferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data)
+        public
+        override
+        onlyAllowedOperator(from)
+    {
+        super.safeTransferFrom(from, to, tokenId, data);
+    }
+  }
+
+abstract contract ERC721P2P is IERC721P2P, ERC721WithOperatorFilter {
   mapping (uint256 => uint256) prices;
 
   function setPriceOf(uint256 _tokenId, uint256 _price) public override {
