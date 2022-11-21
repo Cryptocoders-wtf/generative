@@ -14,6 +14,8 @@ export const getAddresses = (network: string, contentAddress: string) => {
       return "https://testnets.opensea.io/assets/rinkeby";
     } else if (network == "goerli") {
       return "https://testnets.opensea.io/assets/goerli";
+    } else if (network == "mumbai") {
+      return "https://testnets.opensea.io/assets/mumbai";
     }
     return "https://opensea.io/assets/ethereum";
   })();
