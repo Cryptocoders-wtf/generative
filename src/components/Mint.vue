@@ -126,7 +126,9 @@ export default defineComponent({
     const provider =
       props.network == "localhost"
         ? new ethers.providers.JsonRpcProvider()
-        : alchemyKey
+        : (props.network == "mumbai") ?
+        new ethers.providers.JsonRpcProvider("https://matic-mumbai.chainstacklabs.com") : 
+        alchemyKey
         ? new ethers.providers.AlchemyProvider(props.network, alchemyKey)
         : new ethers.providers.InfuraProvider(props.network);
 
