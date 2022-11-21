@@ -48,4 +48,9 @@ contract AlphabetToken is ProviderToken {
     }
     return mintPrice;
   }
+
+  function _processRoyalty(uint _salesPrice, uint _tokenId) internal override returns(uint256 royalty) {
+    royalty = _salesPrice * 50 / 1000; // 5.0%
+    assetProvider.processPayout{value:royalty}(_tokenId);
+  }
 }
