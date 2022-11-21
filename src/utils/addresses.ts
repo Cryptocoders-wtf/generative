@@ -52,11 +52,13 @@ export const addresses: any = {
     goerli: splatter_goerli.splatterArtAddress,
     localhost: splatter_localhost.splatterArtAddress,
     mainnet: splatter_mainnet.splatterArtAddress,
+    mumbai: splatter_mumbai.splatterArtAddress,
   },
   splatterToken: {
     goerli: splatter_goerli.splatterToken,
     mainnet: splatter_mainnet.splatterToken,
     localhost: splatter_localhost.splatterToken,
+    mumbai: splatter_mumbai.splatterToken,
   },
   snow: {
     goerli: snow_goerli.snowAddress,
