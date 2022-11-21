@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
     <p>Images from the on-chain asset provider.</p>
-    <ProviderView assetProvider="bitcoin" />
+    <ProviderView assetProvider="alphabet" network="mumbai" />
     <Mint
       :network="network"
       :tokenGated="true"
