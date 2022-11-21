@@ -58,15 +58,18 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function processPayout(uint256 _assetId) external override payable {
-    uint half = msg.value / 2;
+    uint amount = msg.value / 2;
     address payable pNouns = payable(address(0x8AE80e0B44205904bE18869240c2eC62D2342785));
-    pNouns.transfer(half);
-    emit Payout("alphabet", _assetId, pNouns, half);
+    pNouns.transfer(amount); // 50% to pNouns
+    emit Payout("alphabet", _assetId, pNouns, amount);
 
-    half = msg.value - half; // eliminating round error
+    amount = msg.value - amount; // eliminating round error
+    font.processPayout{value:amount / 5}(); // 10% distribution to the font provider
+
+    amount = amount - amount / 5;
     address payable payableTo = payable(owner());
-    payableTo.transfer(half);
-    emit Payout("alphabet", _assetId, payableTo, half);
+    payableTo.transfer(amount);
+    emit Payout("alphabet", _assetId, payableTo, amount);
   }
 
   function generateTraits(uint256 _assetId) external view returns (string memory) {
