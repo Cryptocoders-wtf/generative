@@ -32,12 +32,17 @@ contract AlphabetToken is ProviderToken {
   function mint() public override virtual payable returns(uint256 tokenId) {
     require(nextTokenId < 1000, "Sold out"); // hard limit, regardless of updatable "mintLimit"
     require(msg.value >= mintPriceFor(msg.sender), 'Must send the mint price');
-    require(balanceOf(msg.sender) == 0, "Only one token is allowed");
+    require(balanceOf(msg.sender) < 3, "Too many tokens");
     tokenId = super.mint();
     assetProvider.processPayout{value:msg.value}(tokenId); // 100% distribution to the asset provider
   }
 
   function mintPriceFor(address _wallet) public override view virtual returns(uint256) {
+    if (balanceOf(_wallet) == 1) {
+      return mintPrice * 2; // x2 for second
+    } else if (balanceOf(_wallet) == 2) {
+      return mintPrice * 4; // x4 for third
+    }
     if (tokenGate.balanceOf(_wallet) > 0) {
       return mintPrice / 2; // 50% off
     }
