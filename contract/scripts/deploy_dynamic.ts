@@ -3,6 +3,8 @@ import { writeFile } from "fs";
 import { addresses } from "../../src/utils/addresses";
 
 const splatterTokenAddress = addresses.splatterToken[network.name];
+const bitcoinTokenAddress = addresses.bitcoinToken[network.name];
+console.log("bitcoinTokenAddress", bitcoinTokenAddress);
 
 async function main() {
   let result;
@@ -17,10 +19,6 @@ async function main() {
   result = await splatterToken.balanceOf("0x4E4cD175f812f1Ba784a69C1f8AC8dAa52AD7e2B");
   console.log("splatter user1", result);
 
-  if (false) {
-    return;
-  }
-
   const factory = await ethers.getContractFactory("DynamicTokenGate");
   const contract = await factory.deploy();
   await contract.deployed();
@@ -33,6 +31,20 @@ async function main() {
 
   const tx = await contract.append(splatterTokenAddress);
   await tx.wait();
+
+  if (bitcoinTokenAddress) {
+    const bitcoinFactory = await ethers.getContractFactory("BitcoinToken");
+    const bitcoinToken = await bitcoinFactory.attach(bitcoinTokenAddress);
+    result = await bitcoinToken.balanceOf(owner.address);
+    console.log("bitcoinToken owner", result);
+    result = await bitcoinToken.balanceOf("0x4E4cD175f812f1Ba784a69C1f8AC8dAa52AD7e2B");
+    console.log("bitcoinToken user1", result);
+
+    const tx2 = await contract.append(bitcoinTokenAddress);
+    await tx2.wait();
+  } else {
+    console.log("skipping bitcoinToken");
+  }
 
   result = await contract.balanceOf(owner.address);
   console.log("result4", result);
