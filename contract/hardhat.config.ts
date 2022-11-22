@@ -38,8 +38,19 @@ const config: HardhatUserConfig = {
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     }
   },
+  // https://stackoverflow.com/questions/73618935/hardhat-verification-for-polygon-mumbai-fails
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
+    customChains: [
+      {
+        network: "mumbai",
+        chainId: 80001,
+        urls: {
+          apiURL: "https://api-testnet.polygonscan.com",
+          browserURL: "https://mumbai.polygonscan.com"
+        }
+      }
+    ]
   },
 };
 
