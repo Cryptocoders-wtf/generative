@@ -36,6 +36,7 @@ import { addresses as alphabet_mumbai } from "./addresses/alphabet_mumbai";
 import { addresses as alphabet_localhost } from "./addresses/alphabet_localhost";
 import { addresses as alphatoken_mumbai } from "./addresses/alphatoken_mumbai";
 import { addresses as alphatoken_localhost } from "./addresses/alphatoken_localhost";
+import { addresses as dynamic_mumbai } from "./addresses/dynamic_mumbai";
 
 export const addresses: any = {
   svgHelper: {
@@ -176,4 +177,7 @@ export const addresses: any = {
     localhost: alphatoken_localhost.alphatoken,
     mumbai: alphatoken_mumbai.alphatoken
   },
+  dynamic: {
+    mumbai: dynamic_mumbai.tokenGate,
+  }
 };

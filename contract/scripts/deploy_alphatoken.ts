@@ -3,15 +3,13 @@ import { writeFile } from "fs";
 import { addresses } from "../../src/utils/addresses";
 
 const alphabet = addresses.alphabet[network.name];
-const tokenGateAddress = addresses.tokenGate[network.name];
-const splatterToken = addresses.splatterToken[network.name];
+const tokengate = addresses.dynamic[network.name];
 export const proxy = (network.name == "goerli") ?
     "0x3143867c145F73AF4E03a13DdCbdB555210e2027": // dummy proxy
     "0xa5409ec958c83c3f309868babaca7c86dcb077c1"; // openSea proxy
 
 console.log("alphabet", alphabet);
-console.log("tokenGateAddress", tokenGateAddress);
-console.log("splatterToken", splatterToken);
+console.log("tokengate", tokengate);
 console.log("proxyAddress", proxy);
 
 const waitForUserInput = (text: string) => {
@@ -24,7 +22,7 @@ const waitForUserInput = (text: string) => {
 
 async function main() {
   const factoryToken = await ethers.getContractFactory("AlphabetToken");
-  const token = await factoryToken.deploy(splatterToken, alphabet, proxy);
+  const token = await factoryToken.deploy(tokengate, alphabet, proxy);
   await token.deployed();
   console.log(`      token="${token.address}"`);
 
