@@ -22,7 +22,7 @@ contract AlphabetToken is ProviderToken {
     tokenGate = _tokenGate;
     description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/). All images are dymically generated on the blockchain.";
     mintPrice = 1e16; //0.01 ether, updatable
-    mintLimit = 250; // initial limit, updatable with a hard limit of 1,000
+    mintLimit = 250; // initial limit, updatable with a hard limit of 2,500
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns(string memory) {
@@ -30,7 +30,7 @@ contract AlphabetToken is ProviderToken {
   }
 
   function mint() public override virtual payable returns(uint256 tokenId) {
-    require(nextTokenId < 1000, "Sold out"); // hard limit, regardless of updatable "mintLimit"
+    require(nextTokenId < 2500, "Sold out"); // hard limit, regardless of updatable "mintLimit"
     require(msg.value >= mintPriceFor(msg.sender), 'Must send the mint price');
     require(balanceOf(msg.sender) < 3, "Too many tokens");
     tokenId = super.mint();
