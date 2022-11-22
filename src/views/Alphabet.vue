@@ -29,7 +29,7 @@ export default defineComponent({
     const network =
       typeof route.query.network == "string" ? route.query.network : "mumbai";
     const tokenAddress = addresses.alphabetToken[network];
-    const tokenGateAddress = addresses.splatterToken[network];
+    const tokenGateAddress = addresses.dynamic[network];
     console.log("*** chainId", network, tokenAddress);
     return {
       network,
