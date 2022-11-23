@@ -38,9 +38,11 @@ import { addresses as matrix_localhost } from "./addresses/matrix_localhost";
 import { addresses as matrix_mainet } from "./addresses/matrix_mainnet";
 import { addresses as alphabet_mumbai } from "./addresses/alphabet_mumbai";
 import { addresses as alphabet_localhost } from "./addresses/alphabet_localhost";
+import { addresses as alphabet_mainnet } from "./addresses/alphabet_mainnet";
 import { addresses as alphatoken_mumbai } from "./addresses/alphatoken_mumbai";
 import { addresses as alphatoken_localhost } from "./addresses/alphatoken_localhost";
 import { addresses as dynamic_mumbai } from "./addresses/dynamic_mumbai";
+import { addresses as dynamic_mainnet } from "./addresses/dynamic_mainnet";
 
 export const addresses: any = {
   svgHelper: {
@@ -179,7 +181,8 @@ export const addresses: any = {
   },
   alphabet: {
     localhost: alphabet_localhost.alphabetProvider,
-    mumbai: alphabet_mumbai.alphabetProvider
+    mumbai: alphabet_mumbai.alphabetProvider,
+    mainnet: alphabet_mainnet.alphabetProvider,
   },
   alphabetToken: {
     localhost: alphatoken_localhost.alphatoken,
@@ -187,5 +190,6 @@ export const addresses: any = {
   },
   dynamic: {
     mumbai: dynamic_mumbai.tokenGate,
+    mainnet: dynamic_mainnet.tokenGate,
   }
 };
