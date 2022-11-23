@@ -70,7 +70,7 @@ abstract contract ProviderToken is ERC721P2P {
   /**
     * @notice Override isApprovedForAll to whitelist user's OpenSea proxy accounts to enable gas-less listings.
     */
-  function isApprovedForAll(address owner, address operator) public view override(ERC721, IERC721) returns (bool) {
+  function isApprovedForAll(address owner, address operator) public view virtual override(ERC721, IERC721) returns (bool) {
       // Whitelist OpenSea proxy contract for easy trading.
       if (proxyRegistry.proxies(owner) == operator) {
           return true;
