@@ -31,9 +31,11 @@ import { addresses as color_localhost } from "./addresses/colors_localhost";
 import { addresses as londrina_solid_localhost } from "./addresses/londrina_solid_localhost";
 import { addresses as londrina_solid_mumbai } from "./addresses/londrina_solid_mumbai";
 import { addresses as londrina_solid_goerli } from "./addresses/londrina_solid_goerli";
+import { addresses as londrina_solid_mainnet } from "./addresses/londrina_solid_mainnet";
 import { addresses as matrix_mumbai } from "./addresses/matrix_mumbai";
 import { addresses as matrix_goerli } from "./addresses/matrix_goerli";
 import { addresses as matrix_localhost } from "./addresses/matrix_localhost";
+import { addresses as matrix_mainet } from "./addresses/matrix_mainnet";
 import { addresses as alphabet_mumbai } from "./addresses/alphabet_mumbai";
 import { addresses as alphabet_localhost } from "./addresses/alphabet_localhost";
 import { addresses as alphatoken_mumbai } from "./addresses/alphatoken_mumbai";
@@ -167,11 +169,13 @@ export const addresses: any = {
     mumbai: londrina_solid_mumbai.font,
     localhost: londrina_solid_localhost.font,
     goerli: londrina_solid_goerli.font,
+    mainnet: londrina_solid_mainnet.font,
   },
   matrix: {
     localhost: matrix_localhost.matrix,
     mumbai: matrix_mumbai.matrix,
     goerli: matrix_goerli.matrix,
+    mainnet: matrix_mainet.matrix,
   },
   alphabet: {
     localhost: alphabet_localhost.alphabetProvider,
