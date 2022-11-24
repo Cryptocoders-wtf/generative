@@ -7,18 +7,17 @@
 pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
-import './libs/ProviderToken.sol';
+import './libs/ProviderToken2.sol';
 import "./interfaces/ITokenGate.sol";
 
-contract AlphabetToken is ProviderToken {
+contract AlphabetToken is ProviderToken2 {
   using Strings for uint256;
   ITokenGate immutable tokenGate;
 
   constructor(
     ITokenGate _tokenGate,
-    IAssetProvider _assetProvider,
-    IProxyRegistry _proxyRegistry
-  ) ProviderToken(_assetProvider, _proxyRegistry, "On-Chain Alphabet", "ALPHABET") {
+    IAssetProvider _assetProvider
+  ) ProviderToken2(_assetProvider, "On-Chain Alphabet", "ALPHABET") {
     tokenGate = _tokenGate;
     description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/). All images are dymically generated on the blockchain.";
     mintPrice = 1e16; //0.01 ether, updatable
