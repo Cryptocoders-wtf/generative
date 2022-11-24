@@ -33,7 +33,7 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;
   IFontProvider public font;
-  IOnChainWallet public receiver;
+  IOnChainWallet public receiver; // proxy to pNouns wallet (0x8AE80e0B44205904bE18869240c2eC62D2342785)
 
   constructor(IFontProvider _font, ILayoutGenerator _generator, IColorSchemes _colorSchemes, IOnChainWallet _receiver) {
     font = _font;
