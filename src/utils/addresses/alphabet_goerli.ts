@@ -1,3 +1,4 @@
 export const addresses = {
-  alphabetProvider:"0x02364b9B3a2c6b4c0E8A805100Bce5D00BA2bC2F",
+  wallet:"0xa75d4386629925C4BE12fcF151276Cc1014bbB89",
+  alphabetProvider:"0x2275E92CF001Ed2aCb2024B24dA64D6221aD43E1",
 }

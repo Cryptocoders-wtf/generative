@@ -32,11 +32,13 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;
   IFontProvider public font;
+  address public receiver;
 
-  constructor(IFontProvider _font, ILayoutGenerator _generator, IColorSchemes _colorSchemes) {
+  constructor(IFontProvider _font, ILayoutGenerator _generator, IColorSchemes _colorSchemes, address _receiver) {
     font = _font;
     generator = _generator;
     colorSchemes = _colorSchemes;
+    receiver = _receiver;
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -57,9 +59,13 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
     return 0;
   }
 
+  function setReceiver(address _receiver) external onlyOwner {
+    receiver = _receiver;
+  }
+
   function processPayout(uint256 _assetId) external override payable {
     uint amount = msg.value / 2;
-    address payable pNouns = payable(address(0x8AE80e0B44205904bE18869240c2eC62D2342785));
+    address payable pNouns = payable(receiver);
     pNouns.transfer(amount); // 50% to pNouns
     emit Payout("alphabet", _assetId, pNouns, amount);
 
