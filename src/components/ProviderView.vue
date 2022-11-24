@@ -25,7 +25,7 @@ const ISVGHelper = {
 };
 
 export default defineComponent({
-  props: ["assetProvider", "debugMode", "network"],
+  props: ["assetProvider", "debugMode", "network", "count"],
   setup(props) {
     const images = ref<string[]>([]);
     const route = useRoute();
@@ -61,7 +61,7 @@ export default defineComponent({
 
     const fetchImages = async () => {
       const newImages = [];
-      for (let i = 0; i < sampleColors.length; i++) {
+      for (let i = 0; i < (props.count || sampleColors.length); i++) {
         const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(
           providerAddress,
           i
