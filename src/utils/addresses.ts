@@ -43,6 +43,7 @@ import { addresses as alphatoken_mumbai } from "./addresses/alphatoken_mumbai";
 import { addresses as alphatoken_localhost } from "./addresses/alphatoken_localhost";
 import { addresses as dynamic_mumbai } from "./addresses/dynamic_mumbai";
 import { addresses as dynamic_mainnet } from "./addresses/dynamic_mainnet";
+import { addresses as dynamic_goerli } from "./addresses/dynamic_goerli";
 
 export const addresses: any = {
   svgHelper: {
@@ -191,5 +192,6 @@ export const addresses: any = {
   dynamic: {
     mumbai: dynamic_mumbai.tokenGate,
     mainnet: dynamic_mainnet.tokenGate,
+    goerli: dynamic_goerli.tokenGate,
   }
 };
