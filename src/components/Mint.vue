@@ -13,6 +13,9 @@
           Sorry, minting is available only to "{{ restricted }}" NFT holders at
           this moment.
         </div>
+        <div v-else-if="limit && limit <= balanceOf" class="text-red-500">
+          Sorry, the maximum number of tokens you can mint is {{ limit }}.
+        </div>
         <div v-else>
           <p v-if="isMinting" class="mt-4 mb-4 bg-slate-200 pl-4">
             Processing...
@@ -80,6 +83,7 @@ export default defineComponent({
     "tokenGated",
     "tokenGateAddress",
     "restricted",
+    "limit",
   ],
   components: {
     NetworkGate,
@@ -90,6 +94,7 @@ export default defineComponent({
     const store = useStore();
     const totalBalance = ref<number>(0);
     const totalSupply = ref<number>(0);
+    const balanceOf = ref<number>(0);
     const mintLimit = ref<number>(0);
     const mintPrice = ref<BigNumber>(BigNumber.from(0));
     const mintPriceString = computed(
@@ -105,6 +110,9 @@ export default defineComponent({
         );
         totalBalance.value = result.toNumber();
       }
+      const [balance] = await contractRO.functions.balanceOf(store.state.account);
+      balanceOf.value = balance;
+
       const [value] = await contractRO.functions.mintPriceFor(
         store.state.account
       );
@@ -235,6 +243,7 @@ export default defineComponent({
       tokenName: "ERC721",
       wallet,
       totalBalance,
+      balanceOf,
       mintPriceString,
       isMinting,
       totalSupply,
