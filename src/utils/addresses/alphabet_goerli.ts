@@ -1,4 +1,4 @@
 export const addresses = {
-  wallet:"0xa75d4386629925C4BE12fcF151276Cc1014bbB89",
-  alphabetProvider:"0x2275E92CF001Ed2aCb2024B24dA64D6221aD43E1",
+  wallet:"0x0825F964e96c6ac72a14cD74B70f3682B48fC40e",
+  alphabetProvider:"0x5Cad7e6dFdC0a4Fbd6664aEA2CC100Bb8c915D77",
 }

@@ -21,7 +21,7 @@ async function main() {
   const result = await contract.generateSVGPart(0);
   console.log("svg", result);
 
-  console.log(`npx hardhat verify ${contract.address} ${font} ${matrix} ${colors} ${wallet.address} --network ${network}`);
+  console.log(`npx hardhat verify ${contract.address} ${font} ${matrix} ${colors} ${wallet.address} --network ${network.name}`);
   
   const addresses = `export const addresses = {\n`
   + `  wallet:"${wallet.address}",\n`

@@ -17,6 +17,7 @@ import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "../interfaces/IColorSchemes.sol";
 import "../interfaces/ILayoutGenerator.sol";
 import "fully-on-chain.sol/SVG.sol";
+import '../interfaces/IOnChainWallet.sol';
 
 /**
  * MultiplexProvider create a new asset provider from another asset provider,
@@ -32,9 +33,9 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;
   IFontProvider public font;
-  address public receiver;
+  IOnChainWallet public receiver;
 
-  constructor(IFontProvider _font, ILayoutGenerator _generator, IColorSchemes _colorSchemes, address _receiver) {
+  constructor(IFontProvider _font, ILayoutGenerator _generator, IColorSchemes _colorSchemes, IOnChainWallet _receiver) {
     font = _font;
     generator = _generator;
     colorSchemes = _colorSchemes;
@@ -59,15 +60,14 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
     return 0;
   }
 
-  function setReceiver(address _receiver) external onlyOwner {
+  function setReceiver(IOnChainWallet _receiver) external onlyOwner {
     receiver = _receiver;
   }
 
   function processPayout(uint256 _assetId) external override payable {
     uint amount = msg.value / 2;
-    address payable pNouns = payable(receiver);
-    pNouns.transfer(amount); // 50% to pNouns
-    emit Payout("alphabet", _assetId, pNouns, amount);
+    receiver.deposite{value:amount}();
+    emit Payout("alphabet", _assetId, payable(address(receiver)), amount);
 
     amount = msg.value - amount; // eliminating round error
     font.processPayout{value:amount / 5}(); // 10% distribution to the font provider
