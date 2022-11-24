@@ -26,7 +26,8 @@ async function main() {
     + `  alphatoken:"${token.address}"\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/alphatoken_${network.name}.ts`, addresses, ()=>{});
-  console.log("Complete");  
+
+  console.log(`npx hardhat verify ${token.address} ${tokengate} ${alphabet} --network ${network.name}`);  
 }
 
 main().catch((error) => {
