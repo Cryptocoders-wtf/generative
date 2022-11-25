@@ -7,16 +7,16 @@
       <p v-if="totalBalance > 0">
         You have {{ totalBalance }} whitelist token(s).
       </p>
-      <p>Price: {{ mintPriceString }}</p>
       <div v-if="totalSupply < mintLimit">
-        <div v-if="restricted && totalBalance == 0" class="text-red-500">
-          Sorry, minting is available only to "{{ restricted }}" NFT holders at
-          this moment.
+        <div v-if="restricted && totalBalance == 0" class="text-yellow-500">
+          Minting is available only to "{{ restricted }}" NFT holders at
+          this moment. Please wait for the announcement from @nounsfes. 
         </div>
-        <div v-else-if="limit && limit <= balanceOf" class="text-red-500">
-          Sorry, the maximum number of tokens you can mint is {{ limit }}.
+        <div v-else-if="limit && limit <= balanceOf" class="text-yellow-500">
+          The maximum number of tokens you can mint is {{ limit }}.
         </div>
         <div v-else>
+          <p>Price: {{ mintPriceString }}</p>
           <p v-if="isMinting" class="mt-4 mb-4 bg-slate-200 pl-4">
             Processing...
           </p>
