@@ -30,12 +30,17 @@
         </div>
       </div>
       <div v-else>
-        <button
-          disabled
-          class="mt-2 inline-block rounded bg-red-600 px-6 py-2.5 leading-tight text-white shadow-md"
-        >
-          Sold Out
-        </button>
+        <div v-if="mintLimit == 0">
+          <p>...</p>
+        </div>
+        <div v-else>
+          <button
+            disabled
+            class="mt-2 inline-block rounded bg-red-600 px-6 py-2.5 leading-tight text-white shadow-md"
+          >
+            Sold Out
+          </button>
+        </div>
       </div>
     </NetworkGate>
     <div v-if="tokens.length > 0" class="mt-4">
