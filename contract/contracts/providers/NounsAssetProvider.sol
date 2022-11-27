@@ -72,8 +72,11 @@ contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
     });
 
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
+    svgPart = svgForSeed(seed, tag);
+  }
 
-    string memory encodedSvg = descriptor.generateSVGImage(seed);
+  function svgForSeed(INounsSeeder.Seed memory _seed, string memory _tag) public view returns(string memory svgPart) {
+    string memory encodedSvg = descriptor.generateSVGImage(_seed);
     bytes memory svg = Base64.decode(encodedSvg);
     uint256 length = svg.length;
     uint256 start = 0;
@@ -108,7 +111,7 @@ contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
     */
 
     svgPart = string(abi.encodePacked(
-      '<g id="', tag, '" transform="scale(3.2)" shape-rendering="crispEdges">\n',
+      '<g id="', _tag, '" transform="scale(3.2)" shape-rendering="crispEdges">\n',
       ret,
       '\n</g>\n'));
   }
