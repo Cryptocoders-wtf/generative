@@ -10,14 +10,14 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import './libs/ProviderToken2.sol';
 import "./interfaces/ITokenGate.sol";
 
-contract AlphabetToken is ProviderToken2 {
+contract DotNounsToken is ProviderToken2 {
   using Strings for uint256;
   ITokenGate immutable tokenGate;
 
   constructor(
     ITokenGate _tokenGate,
     IAssetProvider _assetProvider
-  ) ProviderToken2(_assetProvider, "On-Chain Alphabet", "ALPHABET") {
+  ) ProviderToken2(_assetProvider, "Dot Nouns", "DOTNOUNS") {
     tokenGate = _tokenGate;
     description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/). All images are dymically generated on the blockchain.";
     mintPrice = 1e16; //0.01 ether, updatable
@@ -25,7 +25,7 @@ contract AlphabetToken is ProviderToken2 {
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns(string memory) {
-    return string(abi.encodePacked('Alphabet ', _tokenId.toString()));
+    return string(abi.encodePacked('Dot Nouns ', _tokenId.toString()));
   }
 
   function mint() public override virtual payable returns(uint256 tokenId) {
