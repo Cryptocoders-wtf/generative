@@ -51,7 +51,7 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
     (svgPart, tag) = provider.getNounsSVGPart(_assetId);
     svgPart = string(abi.encodePacked(svgPart,
-      '<pattern id="dot32patten" x="0" y="0" width="0.03125" height=".03125">'
+      '<pattern id="dot32patten" viewbox="0 0 32 32" width="0.03125" height=".03125">'
       '<rect width="32" height="32" fill="black"/>'
       '<circle cx="16" cy="16" r="16" fill="white"/>'
       '</pattern>'
