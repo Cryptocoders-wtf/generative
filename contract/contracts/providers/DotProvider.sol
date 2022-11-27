@@ -65,12 +65,11 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
       '</pattern>'
       '<mask id="dot32mask">'
       '<rect fill="url(#dot32patten)" stroke="black" width="100%" height="100%"/>'
-      '</mask>'
-      '<g id="', tag, '">',
-      //'<rect width="1024" height="1024" fill="#d5d7e1" opacity="0.1" />',
-      SVG.rect().fill("#d5d7e1").opacity("0.1").svg(),
-      // '<use href="#',tag0,'" mask="url(#)"/>'
-      SVG.use(tag0).mask("dot32mask").svg(),
-      '</g>'));
+      '</mask>',
+      //'<g id="', tag, '">',
+      SVG.group([
+        SVG.rect().fill("#d5d7e1").opacity("0.1"),
+        SVG.use(tag0).mask("dot32mask")
+      ]).id(tag).svg()));
   }
 }
