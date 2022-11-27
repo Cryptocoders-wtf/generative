@@ -51,8 +51,9 @@ contract SVGTest5Nouns {
     samples[1] = SVG.group(bytes(svgPart));
     (svgPart, svgId) = dotNouns.generateSVGPart(0);
     samples[2] = SVG.group(bytes(svgPart));
+    samples[3] = SVG.use(svgId);
 
-    for (uint i=0; i<3; i++) {
+    for (uint i=0; i<4; i++) {
       int x = int(256 * (i % 4));
       int y = int(256 * (i / 4));
       string memory tag = string(abi.encodePacked("test", i.toString()));
