@@ -37,7 +37,7 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function totalSupply() external view override returns(uint256) {
-    return 300; // HACK: get it from nounsToken 
+    return provider.getNounsTotalSuppy(); 
   }
 
   function processPayout(uint256 _assetId) external override payable {
@@ -59,6 +59,7 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
       '<rect fill="url(#dot32patten)" stroke="black" width="100%" height="100%"/>'
       '</mask>'
       '<g id="', tag, '_dot32">'
+      '<rect width="1024" height="1024" fill="#d5d7e1" opacity="0.1" />'
       '<use href="#',tag,'" mask="url(#dot32mask)"/>'
       '</g>'));
     tag = string(abi.encodePacked(tag, '_dot32'));  
