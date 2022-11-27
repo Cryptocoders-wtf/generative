@@ -101,8 +101,9 @@ contract SVGTest {
 
     samples[11] = SVG.group([
                       SVG.mask(
+                        "test11_mask",
                         SVG.use("test8")
-                      ).id("test11_mask"),                      
+                      ),                      
                       SVG.use("test7")
                         .mask("test11_mask")
                     ]);
@@ -131,6 +132,7 @@ contract SVGTest {
  
     samples[15] = SVG.group([
                       SVG.mask(
+                        "test15_mask",
                         SVG.group([
                           SVG.group([
                             SVG.rect(256, 362, 300, 300),
@@ -143,7 +145,7 @@ contract SVGTest {
                             SVG.rect(712, 412, 100, 200)
                           ]).fill("black")
                         ])
-                      ).id("test15_mask"),                      
+                      ),                      
                       SVG.rect()
                         .fill("red")                      
                         .mask("test15_mask")

@@ -295,8 +295,8 @@ library SVG {
     element.tail = packed(_elements);
   }
 
-  function mask(bytes memory _elements) internal pure returns(Element memory element) {
-    element.head = abi.encodePacked('<mask x_x="x'); // HACK: dummy header for trailing '"'
+  function mask(string memory _id, bytes memory _elements) internal pure returns(Element memory element) {
+    element.head = abi.encodePacked('<mask id="',_id,''); // HACK: dummy header for trailing '"'
     element.tail = abi.encodePacked(
       '">' 
       '<rect x="0" y="0" width="100%" height="100%" fill="black"/>'
@@ -306,8 +306,8 @@ library SVG {
       '</mask>\n');
   }
 
-  function mask(Element memory _element) internal pure returns(Element memory element) {
-    element = mask(svg(_element));
+  function mask(string memory _id, Element memory _element) internal pure returns(Element memory element) {
+    element = mask(_id, svg(_element));
   }
 
   function stencil(bytes memory _elements) internal pure returns(Element memory element) {
