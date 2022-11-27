@@ -14,7 +14,8 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import { Base64 } from 'base64-sol/base64.sol';
 import "assetprovider.sol/IAssetProvider.sol";
-import { INounsDescriptor, INounsSeeder } from '../external/nouns/INounsDescriptor.sol';
+import "../external/nouns/interfaces/INounsDescriptor.sol";
+import "../external/nouns/interfaces/INounsSeeder.sol";
 import { NounsToken } from '../external/nouns/NounsToken.sol';
 
 // IAssetProvider wrapper for composability
@@ -74,6 +75,13 @@ contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
         )
     });
 
+    tag = string(abi.encodePacked(providerKey, _assetId.toString()));
+    svgPart = svgForSeed(seed, tag);
+  }
+
+  function getNounsSVGPart(uint256 _assetId) external view returns(string memory svgPart, string memory tag) {
+    INounsSeeder.Seed memory seed;
+    (seed.background, seed.body, seed.accessory, seed.head, seed.glasses) = nounsToken.seeds(_assetId);
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
     svgPart = svgForSeed(seed, tag);
   }

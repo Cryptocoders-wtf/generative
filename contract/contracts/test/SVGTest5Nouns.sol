@@ -17,6 +17,7 @@ import "../packages/graphics/SVG.sol";
 import "../packages/graphics/Text.sol";
 import "hardhat/console.sol";
 import "assetprovider.sol/IAssetProvider.sol";
+import "../providers/NounsAssetProvider.sol";
 
 contract SVGTest5Nouns {
   using Strings for uint256;
@@ -27,9 +28,9 @@ contract SVGTest5Nouns {
   using TX for string;
   using Trigonometry for uint;
 
-  IAssetProvider nouns;
+  NounsAssetProvider nouns;
 
-  constructor(IAssetProvider _nouns) {
+  constructor(NounsAssetProvider _nouns) {
     nouns = _nouns;
   }
 
@@ -44,7 +45,7 @@ contract SVGTest5Nouns {
 
     string memory svgPart;
     string memory svgId;
-    (svgPart, svgId) = nouns.generateSVGPart(0);
+    (svgPart, svgId) = nouns.getNounsSVGPart(245);
 
     samples[1] = SVG.group(bytes(svgPart));
 
