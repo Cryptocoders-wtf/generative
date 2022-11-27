@@ -1,12 +1,15 @@
 import { ethers, network } from "hardhat";
 import { writeFile } from "fs";
-import { addresses } from "../../src/utils/addresses";
+import { addresses as addresses2 } from "../../src/utils/addresses";
 
-const contractSchemes = addresses.colorSchemes[network.name];
+const contractSchemes = addresses2.colorSchemes[network.name];
+
+import addresses from '@nouns/sdk/dist/contract/addresses.json';
 
 const nounsDescriptor:string = (network.name == "goerli") ?
-  "0x4d1e7066EEbA8F6c86033F3728C004E71328326D": 
-  "0x0Cfdb3Ba1694c2bb2CFACB0339ad7b1Ae5932B63";
+  addresses[5].nounsDescriptor: addresses[1].nounsDescriptor;
+const nounsToken:string = (network.name == "goerli") ?
+  addresses[5].nounsToken: addresses[1].nounsToken;
 
 console.log("nounsDescriptor", nounsDescriptor);
 
@@ -16,7 +19,7 @@ export const proxy = (network.name == "goerli") ?
 
 async function main() {
   const factory = await ethers.getContractFactory("NounsAssetProvider");
-  const contractProvider = await factory.deploy(nounsDescriptor);
+  const contractProvider = await factory.deploy(nounsToken, nounsDescriptor);
   await contractProvider.deployed();
   console.log(`      provider="${contractProvider.address}"`);
 
