@@ -13,8 +13,13 @@ import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "assetprovider.sol/IAssetProvider.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "../providers/NounsAssetProvider.sol";
+import "../packages/graphics/SVG.sol";
 
 contract DotProvider is IAssetProvider, IERC165, Ownable {
+  using Vector for Vector.Struct;
+  using Path for uint[];
+  using SVG for SVG.Element;
+
   NounsAssetProvider public provider;
 
   constructor(NounsAssetProvider _provider) {
@@ -49,7 +54,10 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
-    (svgPart, tag) = provider.getNounsSVGPart(_assetId);
+    string memory tag0;
+    (svgPart, tag0) = provider.getNounsSVGPart(_assetId);
+    tag = string(abi.encodePacked(tag, '_dot32'));
+
     svgPart = string(abi.encodePacked(svgPart,
       '<pattern id="dot32patten" viewbox="0 0 32 32" width="0.03125" height=".03125">'
       '<rect width="32" height="32" fill="black"/>'
@@ -58,10 +66,9 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
       '<mask id="dot32mask">'
       '<rect fill="url(#dot32patten)" stroke="black" width="100%" height="100%"/>'
       '</mask>'
-      '<g id="', tag, '_dot32">'
+      '<g id="', tag, '">'
       '<rect width="1024" height="1024" fill="#d5d7e1" opacity="0.1" />'
-      '<use href="#',tag,'" mask="url(#dot32mask)"/>'
+      '<use href="#',tag0,'" mask="url(#dot32mask)"/>'
       '</g>'));
-    tag = string(abi.encodePacked(tag, '_dot32'));  
   }
 }
