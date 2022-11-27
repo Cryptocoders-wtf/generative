@@ -29,9 +29,11 @@ contract SVGTest5Nouns {
   using Trigonometry for uint;
 
   NounsAssetProvider nouns;
+  IAssetProvider dotNouns;
 
-  constructor(NounsAssetProvider _nouns) {
+  constructor(NounsAssetProvider _nouns, IAssetProvider _dotNouns) {
     nouns = _nouns;
+    dotNouns = _dotNouns;
   }
 
   function main() external view returns(string memory output) {
@@ -47,7 +49,7 @@ contract SVGTest5Nouns {
     string memory svgId;
     (svgPart, svgId) = nouns.getNounsSVGPart(245);
     samples[1] = SVG.group(bytes(svgPart));
-    (svgPart, svgId) = nouns.generateSVGPart(0);
+    (svgPart, svgId) = dotNouns.generateSVGPart(0);
     samples[2] = SVG.group(bytes(svgPart));
 
     for (uint i=0; i<3; i++) {

@@ -12,11 +12,12 @@ pragma solidity ^0.8.6;
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "assetprovider.sol/IAssetProvider.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
+import "../providers/NounsAssetProvider.sol";
 
 contract DotProvider is IAssetProvider, IERC165, Ownable {
-  IAssetProvider public provider;
+  NounsAssetProvider public provider;
 
-  constructor(IAssetProvider _provider) {
+  constructor(NounsAssetProvider _provider) {
     provider = _provider;
   }
 
@@ -36,7 +37,7 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function totalSupply() external view override returns(uint256) {
-    return provider.totalSupply(); 
+    return 300; // HACK: get it from nounsToken 
   }
 
   function processPayout(uint256 _assetId) external override payable {
@@ -48,7 +49,7 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
-    (svgPart, tag) = provider.generateSVGPart(_assetId);
+    (svgPart, tag) = provider.getNounsSVGPart(_assetId);
     svgPart = string(abi.encodePacked(svgPart,
       '<pattern id="dot32patten" x="0" y="0" width="0.03125" height=".03125">'
       '<rect width="32" height="32" fill="black"/>'

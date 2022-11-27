@@ -11,6 +11,7 @@ import { addresses as tokenGate_mumbai } from "./addresses/tokenGate_mumbai";
 import { addresses as sample_goerli } from "./addresses/sample_goerli";
 import { addresses as sample_localhost } from "./addresses/sample_localhost";
 import { addresses as nouns_goerli } from "./addresses/nouns_goerli";
+import { addresses as nouns_localhost } from "./addresses/nouns_localhost";
 import { addresses as store_goerli } from "./addresses/addresses_goerli";
 import { addresses as store_localhost } from "./addresses/addresses_localhost";
 import { addresses as store_mainnet } from "./addresses/addresses_mainnet";
@@ -19,6 +20,7 @@ import { addresses as bitcoin_localhost } from "./addresses/bitcoin_localhost";
 import { addresses as bitcoin_mainnet } from "./addresses/bitcoin_mainnet";
 import { addresses as reddit_goerli } from "./addresses/reddit_goerli";
 import { addresses as dotNouns_goerli } from "./addresses/dotNouns_goerli";
+import { addresses as dotNouns_localhost } from "./addresses/dotNouns_localhost";
 import { addresses as lilnouns_goerli } from "./addresses/lilnouns_goerli";
 import { addresses as circles_localhost } from "./addresses/circles_localhost";
 import { addresses as star_localhost } from "./addresses/star_localhost";
@@ -89,6 +91,7 @@ export const addresses: any = {
   },
   nouns: {
     goerli: nouns_goerli.providerAddress,
+    localhost: nouns_localhost.providerAddress,
   },
   nounsArt: {
     goerli: nouns_goerli.nounsArt,
@@ -139,6 +142,7 @@ export const addresses: any = {
   },
   dotNouns: {
     goerli: dotNouns_goerli.dotNounsArt,
+    localhost: dotNouns_localhost.dotNounsArt,
     mainnet: dotNouns_goerli.dotNounsArt, // HACK
   },
   lilnouns: {
