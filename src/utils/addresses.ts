@@ -93,9 +93,11 @@ export const addresses: any = {
     goerli: nouns_goerli.providerAddress,
     localhost: nouns_localhost.providerAddress,
   },
+  /*
   nounsArt: {
     goerli: nouns_goerli.nounsArt,
   },
+  */
   sample: {
     goerli: sample_goerli.providerAddress,
     localhost: sample_localhost.providerAddress,

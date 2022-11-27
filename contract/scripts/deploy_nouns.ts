@@ -13,24 +13,21 @@ const nounsToken:string = (network.name == "goerli") ?
 
 console.log("nounsDescriptor", nounsDescriptor);
 
-export const proxy = (network.name == "goerli") ?
-    "0x3143867c145F73AF4E03a13DdCbdB555210e2027": // dummy proxy
-    "0xa5409ec958c83c3f309868babaca7c86dcb077c1"; // openSea proxy
-
 async function main() {
   const factory = await ethers.getContractFactory("NounsAssetProvider");
   const contractProvider = await factory.deploy(nounsToken, nounsDescriptor);
   await contractProvider.deployed();
   console.log(`      provider="${contractProvider.address}"`);
 
+/*  
   const factoryArt = await ethers.getContractFactory("MatrixProvider");
   const contractArt = await factoryArt.deploy(contractProvider.address, contractSchemes, 12, "nounsArt", "Nouns Art");
   await contractArt.deployed();
   console.log(`      bitcoinArt="${contractArt.address}"`);  
-
+*/
   const addresses = `export const addresses = {\n`
     + `  providerAddress:"${contractProvider.address}",\n`
-    + `  nounsArt:"${contractArt.address}",\n`
+//    + `  nounsArt:"${contractArt.address}",\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/nouns_${network.name}.ts`, addresses, ()=>{});  
 }
