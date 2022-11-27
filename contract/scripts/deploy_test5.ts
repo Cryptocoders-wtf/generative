@@ -4,10 +4,12 @@ import addresses from '@nouns/sdk/dist/contract/addresses.json';
 
 const nounsDescriptor:string = (network.name == "goerli") ?
   addresses[5].nounsDescriptor: addresses[1].nounsDescriptor;
+const nounsToken:string = (network.name == "goerli") ?
+  addresses[5].nounsToken: addresses[1].nounsToken;
 
 async function main() {
   const factoryNouns = await ethers.getContractFactory("NounsAssetProvider");
-  const nouns = await factoryNouns.deploy(nounsDescriptor);
+  const nouns = await factoryNouns.deploy(nounsToken, nounsDescriptor);
   await nouns.deployed();
   console.log(`      nouns="${nouns.address}"`);
 

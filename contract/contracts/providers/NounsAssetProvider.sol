@@ -15,6 +15,7 @@ import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import { Base64 } from 'base64-sol/base64.sol';
 import "assetprovider.sol/IAssetProvider.sol";
 import { INounsDescriptor, INounsSeeder } from '../external/nouns/INounsDescriptor.sol';
+import { NounsToken } from '../external/nouns/NounsToken.sol';
 
 // IAssetProvider wrapper for composability
 contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
@@ -22,11 +23,13 @@ contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
 
   string constant providerKey = "nouns";
 
+  NounsToken public immutable nounsToken;
   INounsDescriptor public immutable descriptor;
   // Nouns multi-sig wallet
   address public receiver = 0x0BC3807Ec262cB779b38D65b38158acC3bfedE10;
 
-  constructor(INounsDescriptor _descriptor) {
+  constructor(NounsToken _nounsToken, INounsDescriptor _descriptor) {
+    nounsToken = _nounsToken;
     descriptor = _descriptor;
   }
 
