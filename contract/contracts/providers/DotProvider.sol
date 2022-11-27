@@ -68,7 +68,7 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
         SVG.rect().fillRef("dot32patten")
       ),
       SVG.group([
-        SVG.rect().fill("#d5d7e1").opacity("0.1"),
+        SVG.rect().fill("#d5d7e1"),
         SVG.use(tag0).mask("dot32mask")
       ]).id(tag)
     ]).svg());
