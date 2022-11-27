@@ -3,8 +3,7 @@ import { writeFile } from "fs";
 import addresses from '@nouns/sdk/dist/contract/addresses.json';
 
 const nounsDescriptor:string = (network.name == "goerli") ?
-  "0x4d1e7066EEbA8F6c86033F3728C004E71328326D": 
-  addresses[1].nounsDescriptor;
+  addresses[5].nounsDescriptor: addresses[1].nounsDescriptor;
 
 async function main() {
   const factoryNouns = await ethers.getContractFactory("NounsAssetProvider");
