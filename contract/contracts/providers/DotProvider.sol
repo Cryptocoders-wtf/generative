@@ -59,7 +59,7 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
     tag = string(abi.encodePacked(tag, '_dot32'));
 
     svgPart = string(SVG.list([
-      SVG.item(bytes(svgPart)),
+      SVG.element(bytes(svgPart)),
       SVG.pattern("dot32patten", "0 0 32 32", "0.03125", ".03125", SVG.list([
         SVG.rect(0, 0, 32, 32).fill("black"),
         SVG.circle(16, 16, 16).fill("white")
