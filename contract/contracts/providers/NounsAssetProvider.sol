@@ -86,6 +86,10 @@ contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
     svgPart = svgForSeed(seed, tag);
   }
 
+  function getNounsTotalSuppy() external view returns(uint256) {
+    return nounsToken.totalSupply();
+  }
+
   function svgForSeed(INounsSeeder.Seed memory _seed, string memory _tag) public view returns(string memory svgPart) {
     string memory encodedSvg = descriptor.generateSVGImage(_seed);
     bytes memory svg = Base64.decode(encodedSvg);
