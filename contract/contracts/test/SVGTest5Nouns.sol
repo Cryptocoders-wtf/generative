@@ -27,7 +27,10 @@ contract SVGTest5Nouns {
   using TX for string;
   using Trigonometry for uint;
 
-  constructor() {
+  IAssetProvider nouns;
+
+  constructor(IAssetProvider _nouns) {
+    nouns = _nouns;
   }
 
   function main() external view returns(string memory output) {
