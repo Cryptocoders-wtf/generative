@@ -1,9 +1,10 @@
 import { ethers, network } from "hardhat";
 import { writeFile } from "fs";
+import addresses from '@nouns/sdk/dist/contract/addresses.json';
 
 const nounsDescriptor:string = (network.name == "goerli") ?
   "0x4d1e7066EEbA8F6c86033F3728C004E71328326D": 
-  "0x0Cfdb3Ba1694c2bb2CFACB0339ad7b1Ae5932B63";
+  addresses[1].nounsDescriptor;
 
 async function main() {
   const factoryNouns = await ethers.getContractFactory("NounsAssetProvider");
