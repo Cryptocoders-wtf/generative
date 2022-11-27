@@ -42,7 +42,13 @@ contract SVGTest5Nouns {
                       .stroke("blue", 10)
                       .transform("rotate(30 512 512)");
 
-    for (uint i=0; i<1; i++) {
+    string memory svgPart;
+    string memory svgId;
+    (svgPart, svgId) = nouns.generateSVGPart(0);
+
+    samples[1] = SVG.group(bytes(svgPart));
+
+    for (uint i=0; i<2; i++) {
       int x = int(256 * (i % 4));
       int y = int(256 * (i / 4));
       string memory tag = string(abi.encodePacked("test", i.toString()));
