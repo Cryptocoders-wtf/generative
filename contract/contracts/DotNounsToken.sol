@@ -12,7 +12,7 @@ import "./interfaces/ITokenGate.sol";
 
 contract DotNounsToken is ProviderToken2 {
   using Strings for uint256;
-  ITokenGate immutable tokenGate;
+  ITokenGate public immutable tokenGate;
 
   constructor(
     ITokenGate _tokenGate,
