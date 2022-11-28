@@ -21,7 +21,6 @@ contract DotNounsToken is ProviderToken3 {
     tokenGate = _tokenGate;
     description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/). All images are dymically generated on the blockchain.";
     mintPrice = 1e16; //0.01 ether, updatable
-    mintLimit = 250; // initial limit, updatable with a hard limit of 2,500
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns(string memory) {
@@ -34,6 +33,10 @@ contract DotNounsToken is ProviderToken3 {
     require(balanceOf(msg.sender) < 3, "Too many tokens");
     tokenId = super.mint();
     assetProvider.processPayout{value:msg.value}(tokenId); // 100% distribution to the asset provider
+  }
+
+  function mintLimit() public view override returns(uint256) {
+    return assetProvider.totalSupply();
   }
 
   function mintPriceFor(address _wallet) public override view virtual returns(uint256) {

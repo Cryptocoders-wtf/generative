@@ -37,7 +37,7 @@ abstract contract ProviderToken3 is ERC721P2P {
   // To be specified by the concrete contract
   string public description; 
   uint public mintPrice; 
-  uint internal mintLimit; // with a virtual getter
+  uint internal _mintLimit; // with a virtual getter
 
   IAssetProvider public immutable assetProvider;
 
@@ -58,11 +58,11 @@ abstract contract ProviderToken3 is ERC721P2P {
   }
 
   function setMintLimit(uint256 _limit) external onlyOwner {
-    mintLimit = _limit;
+    _mintLimit = _limit;
   }
 
-  function getMintLimit() public virtual returns(uint256) {
-    return mintLimit;
+  function mintLimit() public view virtual returns(uint256) {
+    return _mintLimit;
   }
 
   string constant SVGHeader = '<svg viewBox="0 0 1024 1024'
@@ -121,7 +121,7 @@ abstract contract ProviderToken3 is ERC721P2P {
    * 3. Call the processPayout method of the asset provider with appropriate value
    */
   function mint() public virtual payable returns(uint256 tokenId) {
-    require(nextTokenId < getMintLimit(), "Sold out");
+    require(nextTokenId < mintLimit(), "Sold out");
     tokenId = nextTokenId++; 
     _safeMint(msg.sender, tokenId);
   }
