@@ -156,7 +156,7 @@ library SVG {
 
   // HACK: Solidity does not support literal expression of dynamic array yet
   function packed(Element[8] memory _elements) internal pure returns(bytes memory output) {
-    bytes[] memory svgs = new bytes[](4);
+    bytes[] memory svgs = new bytes[](8);
     svgs[0] = svg(_elements[0]);
     svgs[1] = svg(_elements[1]);
     svgs[2] = svg(_elements[2]);

@@ -60,12 +60,44 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
 
     svgPart = string(SVG.list([
       SVG.element(bytes(svgPart)),
-      SVG.pattern("dot32patten", "0 0 32 32", "0.03125", ".03125", SVG.list([
-        SVG.rect(0, 0, 32, 32).fill("black"),
-        SVG.circle(16, 16, 16).fill("white")
-      ])),
+      SVG.group([
+        SVG.circle(16, 16, 16),
+        SVG.circle(48, 16, 16),
+        SVG.circle(80, 16, 16),
+        SVG.circle(112, 16, 16)
+      ]).id("dot32_4"),
+      SVG.group([
+        SVG.use("dot32_4"),
+        SVG.use("dot32_4").transform("translate(128 0)"),
+        SVG.use("dot32_4").transform("translate(256 0)"),
+        SVG.use("dot32_4").transform("translate(384 0)"),
+        SVG.use("dot32_4").transform("translate(512 0)"),
+        SVG.use("dot32_4").transform("translate(640 0)"),
+        SVG.use("dot32_4").transform("translate(768 0)"),
+        SVG.use("dot32_4").transform("translate(896 0)")
+      ]).id("dot32_32"),
+      SVG.rect(),
+      SVG.group([
+        SVG.use("dot32_32"),
+        SVG.use("dot32_32").transform("translate(0 32)"),
+        SVG.use("dot32_32").transform("translate(0 64)"),
+        SVG.use("dot32_32").transform("translate(0 96)")
+      ]).id("dot32_128"),
+      SVG.group([
+        SVG.use("dot32_128"),
+        SVG.use("dot32_128").transform("translate(0 128)"),
+        SVG.use("dot32_128").transform("translate(0 256)"),
+        SVG.use("dot32_128").transform("translate(0 384)"),
+        SVG.use("dot32_128").transform("translate(0 512)"),
+        SVG.use("dot32_128").transform("translate(0 640)"),
+        SVG.use("dot32_128").transform("translate(0 768)"),
+        SVG.use("dot32_128").transform("translate(0 896)")
+      ]).id("dot32_1024"),
       SVG.mask("dot32mask",
-        SVG.rect().fillRef("dot32patten")
+        SVG.list([
+          SVG.rect().fill("black"),
+          SVG.use("dot32_1024").fill("white")
+        ])
       ),
       SVG.group([
         SVG.rect().fill("#d5d7e1"),
