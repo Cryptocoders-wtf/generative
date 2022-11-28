@@ -29,7 +29,7 @@ export default defineComponent({
     const route = useRoute();
     const network =
       typeof route.query.network == "string" ? route.query.network : "goerli";
-    const tokenAddress = addresses.dotNouns[network];
+    const tokenAddress = addresses.dotNounsToken[network];
     const tokenGateAddress = addresses.dynamic[network];
 
     console.log("*** chainId", network, tokenAddress);

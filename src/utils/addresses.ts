@@ -149,6 +149,7 @@ export const addresses: any = {
   },
   dotNounsToken: {
     localhost: dotNouns_localhost.dotNounsToken,
+    goerli: dotNouns_goerli.dotNounsToken,
   },
   lilnouns: {
     goerli: lilnouns_goerli.providerAddress,
