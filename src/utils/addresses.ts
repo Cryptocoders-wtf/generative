@@ -147,6 +147,9 @@ export const addresses: any = {
     localhost: dotNouns_localhost.dotNounsArt,
     mainnet: dotNouns_goerli.dotNounsArt, // HACK
   },
+  dotNounsToken: {
+    localhost: dotNouns_localhost.dotNounsToken,
+  },
   lilnouns: {
     goerli: lilnouns_goerli.providerAddress,
   },
