@@ -76,7 +76,7 @@ contract DotProvider is IAssetProvider, IERC165, Ownable {
         SVG.use("dot32_4").transform("translate(768 0)"),
         SVG.use("dot32_4").transform("translate(896 0)")
       ]).id("dot32_32"),
-      SVG.rect(),
+      SVG.rect(), // filler to make the array size 8.
       SVG.group([
         SVG.use("dot32_32"),
         SVG.use("dot32_32").transform("translate(0 32)"),
