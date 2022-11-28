@@ -1,41 +1,42 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
     <p>Images from the on-chain asset provider.</p>
-    <div v-if="network != 'localhost'">
-      <ProviderView assetProvider="dotlilArt" />
-      <ProviderView assetProvider="pnouns" />
-      <ProviderView assetProvider="nouns" />
-    </div>
-    <ProviderView assetProvider="dotNouns" />
+    <ProviderView assetProvider="dotNouns" :count="4" />
+    <Mint
+      :network="network"
+      :tokenGated="true"
+      :tokenAddress="tokenAddress"
+      :tokenGateAddress="tokenGateAddress"
+      :limit="1"
+      :xrestricted="'On-Chain Splatter, Bitcoin Art or Alphabet'"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
+import Mint from "@/components/Mint.vue";
 import ProviderView from "@/components/ProviderView.vue";
-import { addresses as localhost } from "@/utils/addresses/sample_localhost";
-import { addresses as goerli } from "@/utils/addresses/sample_goerli";
-
-const allAddresses: any = {
-  localhost,
-  goerli,
-};
+import { addresses } from "@/utils/addresses";
 
 export default defineComponent({
   components: {
     ProviderView,
+    Mint
   },
   setup() {
     const route = useRoute();
     const network =
       typeof route.query.network == "string" ? route.query.network : "goerli";
-    const addresses = allAddresses[network];
-    const tokenAddress = addresses.sampleToken;
+    const tokenAddress = addresses.dotNouns[network];
+    const tokenGateAddress = addresses.dynamic[network];
+
     console.log("*** chainId", network, tokenAddress);
     return {
       network,
       tokenAddress,
+      tokenGateAddress
     };
   },
 });
