@@ -155,6 +155,20 @@ library SVG {
   }
 
   // HACK: Solidity does not support literal expression of dynamic array yet
+  function packed(Element[8] memory _elements) internal pure returns(bytes memory output) {
+    bytes[] memory svgs = new bytes[](4);
+    svgs[0] = svg(_elements[0]);
+    svgs[1] = svg(_elements[1]);
+    svgs[2] = svg(_elements[2]);
+    svgs[3] = svg(_elements[3]);
+    svgs[4] = svg(_elements[4]);
+    svgs[5] = svg(_elements[5]);
+    svgs[6] = svg(_elements[6]);
+    svgs[7] = svg(_elements[7]);
+    output = svgs.packed();
+  }
+
+  // HACK: Solidity does not support literal expression of dynamic array yet
   function packed(Element[4] memory _elements) internal pure returns(bytes memory output) {
     bytes[] memory svgs = new bytes[](4);
     svgs[0] = svg(_elements[0]);
@@ -272,6 +286,10 @@ library SVG {
     elem = group(packed(_elements));
   }
 
+  function group(Element[8] memory _elements) internal pure returns(Element memory elem) {
+    elem = group(packed(_elements));
+  }
+
   function element(bytes memory _body) internal pure returns(Element memory elem) {
     elem.tail = _body;
   }
@@ -292,6 +310,11 @@ library SVG {
 
   // HACK: Solidity does not support literal expression of dynamic array yet
   function list(Element[4] memory _elements) internal pure returns(Element memory elem) {
+    elem.tail = packed(_elements);
+  }
+
+  // HACK: Solidity does not support literal expression of dynamic array yet
+  function list(Element[8] memory _elements) internal pure returns(Element memory elem) {
     elem.tail = packed(_elements);
   }
 
