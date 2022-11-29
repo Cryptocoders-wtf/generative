@@ -1,8 +1,5 @@
 import { ethers, network } from "hardhat";
 import { writeFile } from "fs";
-import { addresses as addresses2 } from "../../src/utils/addresses";
-
-const contractSchemes = addresses2.colorSchemes[network.name];
 
 import addresses from '@nouns/sdk/dist/contract/addresses.json';
 
@@ -19,15 +16,8 @@ async function main() {
   await contractProvider.deployed();
   console.log(`      provider="${contractProvider.address}"`);
 
-/*  
-  const factoryArt = await ethers.getContractFactory("MatrixProvider");
-  const contractArt = await factoryArt.deploy(contractProvider.address, contractSchemes, 12, "nounsArt", "Nouns Art");
-  await contractArt.deployed();
-  console.log(`      bitcoinArt="${contractArt.address}"`);  
-*/
   const addresses = `export const addresses = {\n`
     + `  providerAddress:"${contractProvider.address}",\n`
-//    + `  nounsArt:"${contractArt.address}",\n`
     + `}\n`;
   await writeFile(`../src/utils/addresses/nouns_${network.name}.ts`, addresses, ()=>{});  
 }
