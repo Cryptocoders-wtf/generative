@@ -1,3 +1,3 @@
 export const addresses = {
-  providerAddress:"0x124dDf9BdD2DdaD012ef1D5bBd77c00F05C610DA",
+  providerAddress:"0x1D3EDBa836caB11C26A186873abf0fFeB8bbaE63",
 }
