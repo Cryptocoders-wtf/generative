@@ -22,6 +22,7 @@ import { addresses as reddit_goerli } from "./addresses/reddit_goerli";
 import { addresses as dotNouns_goerli } from "./addresses/dotNouns_goerli";
 import { addresses as dotNouns_localhost } from "./addresses/dotNouns_localhost";
 import { addresses as dotNounsToken_localhost } from "./addresses/dotNounsToken_localhost";
+import { addresses as dotNounsToken_goerli } from "./addresses/dotNounsToken_goerli";
 import { addresses as lilnouns_goerli } from "./addresses/lilnouns_goerli";
 import { addresses as circles_localhost } from "./addresses/circles_localhost";
 import { addresses as star_localhost } from "./addresses/star_localhost";
@@ -151,7 +152,7 @@ export const addresses: any = {
   },
   dotNounsToken: {
     localhost: dotNounsToken_localhost.dotNounsToken,
-    // goerli: dotNounsToken_localhost.dotNounsToken,
+    goerli: dotNounsToken_goerli.dotNounsToken,
   },
   lilnouns: {
     goerli: lilnouns_goerli.providerAddress,
