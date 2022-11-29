@@ -19,7 +19,9 @@ async function main() {
   const addresses = `export const addresses = {\n`
     + `  providerAddress:"${contractProvider.address}",\n`
     + `}\n`;
-  await writeFile(`../src/utils/addresses/nouns_${network.name}.ts`, addresses, ()=>{});  
+  await writeFile(`../src/utils/addresses/nouns_${network.name}.ts`, addresses, ()=>{});
+
+  console.log(`npx hardhat verify ${contractProvider.address} ${nounsToken} ${nounsDescriptor} --network ${network.name}`);
 }
 
 main().catch((error) => {
