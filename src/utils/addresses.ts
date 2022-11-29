@@ -114,7 +114,7 @@ export const addresses: any = {
   },
   bitcoinToken: {
     goerli: bitcoin_goerli.bitcoinToken,
-    localhost: bitcoin_localhost.bitcoinToken,
+    // localhost: bitcoin_localhost.bitcoinToken,
     mainnet: bitcoin_mainnet.bitcoinToken,
   },
   assetStoreProvider: {
