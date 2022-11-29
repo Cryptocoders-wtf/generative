@@ -17,6 +17,17 @@ async function main() {
   await token.deployed();
   console.log(`      token="${token.address}"`);
 
+  const result = await token.totalSupply();
+  console.log("totalSupply", result.toNumber());
+  const result2 = await token.mintLimit();
+  console.log("mintLimit", result2.toNumber());
+  const [owner] = await ethers.getSigners();
+  console.log("owner", owner.address);
+  const result3 = await token.balanceOf(owner.address);
+  console.log("balanceOf", result3.toNumber());
+  // const result4 = await token.mintPriceFor(owner.address);
+  // console.log("mintPriceFor", result4.toNumber());
+
   const output = `export const addresses = {\n`
     + `  dotNounsArt:"${contractArt.address}",\n`
     + `  dotNounsToken:"${token.address}",\n`
