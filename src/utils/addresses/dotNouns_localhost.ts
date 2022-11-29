@@ -1,4 +1,4 @@
 export const addresses = {
-  dotNounsArt:"0xA3BfB8850644482cFdBB5eF8a7Fcc666f71565fb",
-  dotNounsToken:"0xcFa693a6B5d8399b771582afF07B5a8f55D75d40",
+  dotNounsArt:"0xd060c65cA125d9209Ea703136526d6fc3805c833",
+  dotNounsToken:"0x526BE3f5A71BFb2Be27fBeb85459F511030b04C2",
 }
