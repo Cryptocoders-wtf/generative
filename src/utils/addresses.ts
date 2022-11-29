@@ -207,7 +207,7 @@ export const addresses: any = {
   },
   dynamic: {
     mumbai: dynamic_mumbai.tokenGate,
-    localhost: dynamic_mumbai.tokenGate, // already deployed on mainnet!
+    localhost: dynamic_mainnet.tokenGate, // already deployed on mainnet!
     mainnet: dynamic_mainnet.tokenGate,
     goerli: dynamic_goerli.tokenGate,
   }
