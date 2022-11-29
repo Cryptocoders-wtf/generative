@@ -55,7 +55,7 @@ export const addresses: any = {
   svgHelper: {
     goerli: splatter_goerli.svgHelperAddress,
     mumbai: color_mumbai.svgHelper,
-    localhost: color_localhost.svgHelper,
+    localhost: splatter_mainnet.svgHelperAddress, // deployed
     mainnet: splatter_mainnet.svgHelperAddress,
   },
   splatter: {
