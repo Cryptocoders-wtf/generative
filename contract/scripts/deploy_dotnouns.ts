@@ -26,15 +26,13 @@ async function main() {
   const result3 = await token.balanceOf("0x4F1CA5Ac1ab5e119b2C8F015cDC53e618ae9559a");
   console.log("balanceOf", result3.toNumber());
 
-  /*
   const dynamicFactory = await ethers.getContractFactory("DynamicTokenGate");
   const dynamic = dynamicFactory.attach(tokengate);
   const result4 = await dynamic.balanceOf("0x4F1CA5Ac1ab5e119b2C8F015cDC53e618ae9559a");
   console.log("dynamic", result4.toNumber());
-  */
- 
-  //const result4 = await token.mintPriceFor(owner.address);
-  //console.log("mintPriceFor", result4.toNumber() );
+
+  const result5 = await token.mintPriceFor(owner.address);
+  console.log("mintPriceFor", result5 );
 
   const output = `export const addresses = {\n`
     + `  dotNounsArt:"${contractArt.address}",\n`
