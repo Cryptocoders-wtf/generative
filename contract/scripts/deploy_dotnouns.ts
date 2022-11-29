@@ -7,7 +7,7 @@ const tokengate = addresses.dynamic[network.name];
 console.log("nounsProvider", nounsProvider, tokengate);
 
 async function main() {
-  const factoryArt = await ethers.getContractFactory("DotProvider");
+  const factoryArt = await ethers.getContractFactory("DotNounsProvider");
   const contractArt = await factoryArt.deploy(nounsProvider);
   await contractArt.deployed();
   console.log(`      contractArt="${contractArt.address}"`);  

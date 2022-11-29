@@ -15,7 +15,7 @@ import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "../providers/NounsAssetProvider.sol";
 import "../packages/graphics/SVG.sol";
 
-contract DotProvider is IAssetProvider, IERC165, Ownable {
+contract DotNounsProvider is IAssetProvider, IERC165, Ownable {
   using Vector for Vector.Struct;
   using Path for uint[];
   using SVG for SVG.Element;
