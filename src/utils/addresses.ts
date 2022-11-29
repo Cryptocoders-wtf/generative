@@ -21,6 +21,7 @@ import { addresses as bitcoin_mainnet } from "./addresses/bitcoin_mainnet";
 import { addresses as reddit_goerli } from "./addresses/reddit_goerli";
 import { addresses as dotNouns_goerli } from "./addresses/dotNouns_goerli";
 import { addresses as dotNouns_localhost } from "./addresses/dotNouns_localhost";
+import { addresses as dotNounsToken_localhost } from "./addresses/dotNounsToken_localhost";
 import { addresses as lilnouns_goerli } from "./addresses/lilnouns_goerli";
 import { addresses as circles_localhost } from "./addresses/circles_localhost";
 import { addresses as star_localhost } from "./addresses/star_localhost";
@@ -149,8 +150,8 @@ export const addresses: any = {
     mainnet: dotNouns_goerli.dotNounsArt, // HACK
   },
   dotNounsToken: {
-    localhost: dotNouns_localhost.dotNounsToken,
-    goerli: dotNouns_goerli.dotNounsToken,
+    localhost: dotNounsToken_localhost.dotNounsToken,
+    // goerli: dotNounsToken_localhost.dotNounsToken,
   },
   lilnouns: {
     goerli: lilnouns_goerli.providerAddress,
