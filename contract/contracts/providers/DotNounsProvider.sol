@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 /*
- * NounsAssetProvider is a wrapper around NounsDescriptor so that it offers
- * various characters as assets to compose (not individual parts).
+ * DotNounsProvider generates a "dot version" of Nouns characters.
  *
  * Created by Satoshi Nakajima (@snakajima)
  */
@@ -58,6 +57,8 @@ contract DotNounsProvider is IAssetProvider, IERC165, Ownable {
     (svgPart, tag0) = provider.getNounsSVGPart(_assetId);
     tag = string(abi.encodePacked(tag, '_dot32'));
 
+    // We need to use this work-around (1024 circles) because Safari browser is not able to
+    // render <pattern> correctly. 
     svgPart = string(SVG.list([
       SVG.element(bytes(svgPart)),
       SVG.group([
