@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
     <p>Images from the on-chain asset provider.</p>
-    <ProviderView assetProvider="dotNouns" :count="4" :offset="508" />
+    <ProviderView assetProvider="dotNouns" :count="4" :offset="offset" />
     <Mint
       :network="network"
       :tokenGated="true"
@@ -26,6 +26,7 @@ export default defineComponent({
     Mint
   },
   setup() {
+    const offset = ref<number>(0);
     const route = useRoute();
     const network =
       typeof route.query.network == "string" ? route.query.network : "goerli";
@@ -36,7 +37,8 @@ export default defineComponent({
     return {
       network,
       tokenAddress,
-      tokenGateAddress
+      tokenGateAddress,
+      offset
     };
   },
 });
