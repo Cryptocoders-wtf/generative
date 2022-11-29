@@ -26,8 +26,6 @@ contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
 
   NounsToken public immutable nounsToken;
   INounsDescriptor public immutable descriptor;
-  // Nouns multi-sig wallet
-  address public receiver = 0x0BC3807Ec262cB779b38D65b38158acC3bfedE10;
 
   constructor(NounsToken _nounsToken, INounsDescriptor _descriptor) {
     nounsToken = _nounsToken;
@@ -136,13 +134,9 @@ contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function processPayout(uint256 _assetId) external override payable {
-    address payable payableTo = payable(receiver);
+    address payable payableTo = payable(owner());
     payableTo.transfer(msg.value);
     emit Payout(providerKey, _assetId, payableTo, msg.value);
-  }
-
-  function setReceiver(address _receiver) onlyOwner external {
-    receiver = _receiver;
   }
 
   function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
