@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
     <p>Images from the on-chain asset provider.</p>
-    <ProviderView assetProvider="dotNouns" :count="4" />
+    <ProviderView assetProvider="dotNouns" :count="4" :offset="508" />
     <Mint
       :network="network"
       :tokenGated="true"

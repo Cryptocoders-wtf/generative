@@ -25,7 +25,7 @@ const ISVGHelper = {
 };
 
 export default defineComponent({
-  props: ["assetProvider", "debugMode", "network", "count"],
+  props: ["assetProvider", "debugMode", "network", "count", "offset"],
   setup(props) {
     const images = ref<string[]>([]);
     const route = useRoute();
@@ -64,10 +64,10 @@ export default defineComponent({
       for (let i = 0; i < (props.count || sampleColors.length); i++) {
         const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(
           providerAddress,
-          i
+          i + (props.offset || 0)
         );
         // console.log("svgPart", svgPart);
-        const [traits] = await assetProvider.functions.generateTraits(i);
+        const [traits] = await assetProvider.functions.generateTraits(i + (props.offset || 0));
         if (props.debugMode) {
           console.log("gas", gas.toNumber(), traits);
         }
