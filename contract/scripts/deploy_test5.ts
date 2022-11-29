@@ -13,7 +13,7 @@ async function main() {
   await nouns.deployed();
   console.log(`      nouns="${nouns.address}"`);
 
-  const factoryDotNouns = await ethers.getContractFactory("DotProvider");
+  const factoryDotNouns = await ethers.getContractFactory("DotNounsProvider");
   const dotNouns = await factoryDotNouns.deploy(nouns.address);
   await dotNouns.deployed();
   console.log(`      nouns="${dotNouns.address}"`);
