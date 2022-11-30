@@ -22,6 +22,7 @@ import { addresses as bitcoin_mainnet } from "./addresses/bitcoin_mainnet";
 import { addresses as reddit_goerli } from "./addresses/reddit_goerli";
 import { addresses as dotNouns_goerli } from "./addresses/dotNouns_goerli";
 import { addresses as dotNouns_localhost } from "./addresses/dotNouns_localhost";
+import { addresses as dotNouns_mainnet } from "./addresses/dotNouns_mainnet";
 import { addresses as dotNounsToken_localhost } from "./addresses/dotNounsToken_localhost";
 import { addresses as dotNounsToken_goerli } from "./addresses/dotNounsToken_goerli";
 import { addresses as lilnouns_goerli } from "./addresses/lilnouns_goerli";
@@ -150,7 +151,7 @@ export const addresses: any = {
   dotNouns: {
     goerli: dotNouns_goerli.dotNounsArt,
     localhost: dotNouns_localhost.dotNounsArt,
-    mainnet: dotNouns_goerli.dotNounsArt, // HACK
+    mainnet: dotNouns_mainnet.dotNounsArt,
   },
   dotNounsToken: {
     localhost: dotNounsToken_localhost.dotNounsToken,
