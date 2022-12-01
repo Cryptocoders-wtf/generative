@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
-    <p>Images from the on-chain asset provider.</p>
+    <p class="mb-2">Dot Nouns are dynamically generated fully on-chain, taking advantage of the composability of Nouns.</p>
     <ProviderView assetProvider="dotNouns" :count="4" :offset="offset"
       debugMode="true" v-on:minted="minted" />
     <Mint
@@ -9,7 +9,7 @@
       :tokenAddress="tokenAddress"
       :tokenGateAddress="tokenGateAddress"
       :limit="1"
-      :xrestricted="'On-Chain Splatter, Bitcoin Art or Alphabet'"
+      :restricted="'On-Chain Splatter, Bitcoin Art or Alphabet'"
     />
   </div>
 </template>
