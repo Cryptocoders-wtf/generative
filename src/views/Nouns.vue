@@ -2,13 +2,13 @@
   <div class="mx-auto max-w-3xl p-2 text-left">
     <p>Images from the on-chain asset provider.</p>
     <ProviderView assetProvider="dotNouns" :count="4" :offset="offset"
-      debugMode="true" />
+      debugMode="true" v-on:minted="minted" />
     <Mint
       :network="network"
       :tokenGated="true"
       :tokenAddress="tokenAddress"
       :tokenGateAddress="tokenGateAddress"
-      :limit="1"
+      :limit="3"
       :xrestricted="'On-Chain Splatter, Bitcoin Art or Alphabet'"
     />
   </div>
@@ -33,13 +33,17 @@ export default defineComponent({
       typeof route.query.network == "string" ? route.query.network : "goerli";
     const tokenAddress = addresses.dotNounsToken[network];
     const tokenGateAddress = addresses.dynamic[network];
+    const minted = async () => {
+      console.log("***###*** minted event was fired");
+    };
 
     console.log("*** chainId", network, tokenAddress);
     return {
       network,
       tokenAddress,
       tokenGateAddress,
-      offset
+      offset,
+      minted
     };
   },
 });

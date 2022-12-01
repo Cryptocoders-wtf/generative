@@ -90,11 +90,12 @@ export default defineComponent({
     "restricted",
     "limit",
   ],
+  emits: ['minted'],
   components: {
     NetworkGate,
     References,
   },
-  setup(props) {
+  setup(props, context) {
     const route = useRoute();
     const store = useStore();
     const totalBalance = ref<number>(0);
@@ -193,6 +194,7 @@ export default defineComponent({
         async (from, to, tokenId) => {
           console.log("*** event.Transfer calling fetchTokens");
           fetchTokens();
+          context.emit("minted");
         }
       );
     });
