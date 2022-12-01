@@ -34,6 +34,12 @@ contract DotNounsToken is ProviderToken3 {
     require(nextTokenId < 2500, "Sold out"); // hard limit, regardless of updatable "mintLimit"
     require(msg.value >= mintPriceFor(msg.sender), 'Must send the mint price');
     require(balanceOf(msg.sender) < 3, "Too many tokens");
+
+    // Special case for Nouns 245
+    if (nextTokenId == 245) {
+      tokenId = nextTokenId++; 
+      _safeMint(owner(), tokenId);
+    }
     tokenId = super.mint();
 
     uint royalty = msg.value / 5; // 20% to the designer

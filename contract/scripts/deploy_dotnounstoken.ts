@@ -36,7 +36,7 @@ async function main() {
     + `}\n`;
   await writeFile(`../src/utils/addresses/dotNounsToken_${network.name}.ts`, output, ()=>{});
 
-  console.log(`npx hardhat verify ${token.address} ${tokengate} ${dotNouns} ${designer}`);
+  console.log(`npx hardhat verify ${token.address} ${tokengate} ${dotNouns} ${designer} --network ${network.name}`);
 }
 
 main().catch((error) => {

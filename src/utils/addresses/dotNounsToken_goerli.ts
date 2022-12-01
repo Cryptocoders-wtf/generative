@@ -1,3 +1,3 @@
 export const addresses = {
-  dotNounsToken:"0xAC48b9feE5cBF917B0c02b93d5710B092F53f9cA",
+  dotNounsToken:"0x3b14c6858883a232F72cA0c3BA140C393cB63525",
 }

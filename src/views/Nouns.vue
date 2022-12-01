@@ -8,7 +8,7 @@
       :tokenGated="true"
       :tokenAddress="tokenAddress"
       :tokenGateAddress="tokenGateAddress"
-      :limit="3"
+      :limit="1"
       :xrestricted="'On-Chain Splatter, Bitcoin Art or Alphabet'"
     />
   </div>
