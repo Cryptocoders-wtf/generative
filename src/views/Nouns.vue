@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
-    <p class="mb-2">Dot Nouns are dynamically generated fully on-chain, taking advantage of the composability of Nouns.</p>
+    <p class="mb-2">Dot Nouns are dynamically generated on the blockchain, taking advantage of the composability of Nouns.</p>
     <Mint
       :network="network"
       :tokenGated="true"

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="nextImage">
-      <img :src="nextImage" class="mr-1 mb-1 inline-block w-20" />
+      <img :src="nextImage" class="mr-1 mb-1 inline-block w-64" />
     </div>
     <p>Available: {{ `${mintLimit - totalSupply}/${mintLimit}` }}</p>
     <NetworkGate :expectedNetwork="chainId">
