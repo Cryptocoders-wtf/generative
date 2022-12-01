@@ -31,13 +31,13 @@
     </p>
     <p>
       OpenSea:
-      <a href="https://opensea.io/ja/collection/on-chain-splatter" class="underline" target="_blank"
+      <a href="https://opensea.io/collection/on-chain-splatter" class="underline" target="_blank"
         >On-chain Splatter</a
       >,
-      <a href="https://opensea.io/ja/collection/on-chain-bitcoin-art" class="underline" target="_blank"
+      <a href="https://opensea.io/collection/on-chain-bitcoin-art" class="underline" target="_blank"
         >On-chain Bitcoin Art</a
       >,
-      <a href="https://opensea.io/ja/collection/on-chain-alphabet" class="underline" target="_blank"
+      <a href="https://opensea.io/collection/on-chain-alphabet" class="underline" target="_blank"
         >On-chain Alphabet</a
       >
     </p>
