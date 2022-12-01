@@ -1,14 +1,14 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
     <p class="mb-2">Dot Nouns are dynamically generated fully on-chain, taking advantage of the composability of Nouns.</p>
-    <ProviderView assetProvider="dotNouns" :count="4" :offset="offset"
-      debugMode="true" v-on:minted="minted" />
     <Mint
       :network="network"
       :tokenGated="true"
       :tokenAddress="tokenAddress"
       :tokenGateAddress="tokenGateAddress"
       :limit="1"
+      assetProvider="dotNouns"
+      @minted="minted"
       :restricted="'On-Chain Splatter, Bitcoin Art or Alphabet'"
     />
   </div>
