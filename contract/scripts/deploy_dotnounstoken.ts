@@ -5,11 +5,12 @@ import { addresses } from "../../src/utils/addresses";
 const dotNouns = addresses.dotNouns[network.name];
 const tokengate = addresses.dynamic[network.name];
 console.log("nounsProvider", dotNouns, tokengate);
+const designer = "0x14aea32f6e6dcaecfa1bc62776b2e279db09255d";
 
 async function main() {
 
   const factoryToken = await ethers.getContractFactory("DotNounsToken");
-  const token = await factoryToken.deploy(tokengate, dotNouns);
+  const token = await factoryToken.deploy(tokengate, dotNouns, designer);
   await token.deployed();
   console.log(`      token="${token.address}"`);
 
@@ -33,7 +34,9 @@ async function main() {
   const output = `export const addresses = {\n`
     + `  dotNounsToken:"${token.address}",\n`
     + `}\n`;
-  await writeFile(`../src/utils/addresses/dotNounsToken_${network.name}.ts`, output, ()=>{});  
+  await writeFile(`../src/utils/addresses/dotNounsToken_${network.name}.ts`, output, ()=>{});
+
+  console.log(`npx hardhat verify ${token.address} ${tokengate} ${dotNouns} ${designer}`);
 }
 
 main().catch((error) => {

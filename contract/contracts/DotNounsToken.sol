@@ -13,12 +13,15 @@ import "./interfaces/ITokenGate.sol";
 contract DotNounsToken is ProviderToken3 {
   using Strings for uint256;
   ITokenGate public immutable tokenGate;
+  address immutable public designer;
 
   constructor(
     ITokenGate _tokenGate,
-    IAssetProvider _assetProvider
+    IAssetProvider _assetProvider,
+    address _designer
   ) ProviderToken3(_assetProvider, "Dot Nouns", "DOTNOUNS") {
     tokenGate = _tokenGate;
+    designer = _designer;
     description = "This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/). All images are dymically generated on the blockchain.";
     mintPrice = 1e16; //0.01 ether, updatable
   }
@@ -32,7 +35,12 @@ contract DotNounsToken is ProviderToken3 {
     require(msg.value >= mintPriceFor(msg.sender), 'Must send the mint price');
     require(balanceOf(msg.sender) < 3, "Too many tokens");
     tokenId = super.mint();
-    assetProvider.processPayout{value:msg.value}(tokenId); // 100% distribution to the asset provider
+
+    uint royalty = msg.value / 5; // 20% to the designer
+    address payable payableTo = payable(designer);
+    payableTo.transfer(royalty);
+
+    assetProvider.processPayout{value:msg.value - royalty}(tokenId); // 100% distribution to the asset provider
   }
 
   function mintLimit() public view override returns(uint256) {
