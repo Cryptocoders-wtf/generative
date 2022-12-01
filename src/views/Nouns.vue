@@ -23,7 +23,7 @@ import { addresses } from "@/utils/addresses";
 
 export default defineComponent({
   components: {
-    ProviderView,
+    // ProviderView,
     Mint
   },
   setup() {
