@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Cryptocoders-wtf/generative#readme",
   "devDependencies": {
-    "@openzeppelin/contracts": "^4.8.0"
+    "@openzeppelin/contracts": "^4.8.0",
+    "erc721a": "^4.2.3"
   }
 }
