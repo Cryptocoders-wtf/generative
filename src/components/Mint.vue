@@ -2,6 +2,7 @@
   <div>
     <div v-if="nextImage">
       <img :src="nextImage" class="mr-1 mb-1 inline-block w-96" />
+      <p>Next Token Id: {{ `${totalSupply}` }}</p>
     </div>
     <p>Available: {{ `${mintLimit - totalSupply}/${mintLimit}` }}</p>
     <NetworkGate :expectedNetwork="chainId">
