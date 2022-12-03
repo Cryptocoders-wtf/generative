@@ -25,6 +25,7 @@ import { addresses as dotNouns_localhost } from "./addresses/dotNouns_localhost"
 import { addresses as dotNouns_mainnet } from "./addresses/dotNouns_mainnet";
 import { addresses as dotNounsToken_localhost } from "./addresses/dotNounsToken_localhost";
 import { addresses as dotNounsToken_goerli } from "./addresses/dotNounsToken_goerli";
+import { addresses as dotNounsToken_mainnet } from "./addresses/dotNounsToken_mainnet";
 import { addresses as lilnouns_goerli } from "./addresses/lilnouns_goerli";
 import { addresses as circles_localhost } from "./addresses/circles_localhost";
 import { addresses as star_localhost } from "./addresses/star_localhost";
@@ -156,6 +157,7 @@ export const addresses: any = {
   dotNounsToken: {
     localhost: dotNounsToken_localhost.dotNounsToken,
     goerli: dotNounsToken_goerli.dotNounsToken,
+    mainnet: dotNounsToken_mainnet.dotNounsToken,
   },
   lilnouns: {
     goerli: lilnouns_goerli.providerAddress,
