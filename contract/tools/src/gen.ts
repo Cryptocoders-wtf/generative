@@ -82,12 +82,9 @@ const main = async (folder: string) => {
       .join("")
   );
 
-  const stream = createWriteStream(outdir + "/data/data.txt");
-  stream.on("error", (err) => {
-    if (err) console.log(err.message);
-  });
   const constants = array
     .map((item) => {
+
       const length = item.path.length;
       const paths: any[] = [];
       const fills: any[] = [];
@@ -99,47 +96,63 @@ const main = async (folder: string) => {
         stroke.push(`          stroke[${k}] = ${path.stroke || 0};`);
       });
       const code = [
-        `      function parts_${item.name}() internal pure returns(uint16[4] memory sizes, bytes[] memory paths, string[] memory fill, uint8[] memory stroke) {`,
-        `          sizes = [${length}, ${1024}, ${1024}, ${1024}];`,
-        "          paths = new bytes[](sizes[0]);",
-        "          fill = new string[](sizes[0]);",
-        "          stroke = new uint8[](sizes[0]);",
+        `pragma solidity ^0.8.6;`,
+        ``,
+        `import "./IParts.sol";`,
+        ``,
+        `contract LuParts${item.name} is IParts {`,
+        ``,
+        `      function svgData() external pure override returns(uint16 sizes, bytes[] memory paths, string[] memory fill, uint8[] memory stroke) {`,
+        `          sizes = ${length};`,
+        `          paths = new bytes[](${length});`,
+        `          fill = new string[](${length});`,
+        `          stroke = new uint8[](${length});`,
         "",
         paths.join("\n"),
         fills.join("\n"),
         stroke.join("\n"),
         "      }",
+        "}",
       ].join("\n");
       // console.log(item);
       
       // const code = `bytes constant ${item.name} = "${item.bytes}"`;
-      stream.write(`${code}\n`);
+      // console.log(outdir + "/data/" + item.name + ".txt");
+      writeFileSync(outdir + "/data/LuParts" + item.name + ".sol", code);
+      // stream.write(`${code}\n`);
 
       return code;
     })
     .join("\n");
-  console.log(constants);
+  // console.log(constants);
   
+  const stream = createWriteStream(outdir + "/data/data.txt");
+  stream.on("error", (err) => {
+    if (err) console.log(err.message);
+  });
+
+  stream.write(`-- for deploy ---\n`);
+  stream.write(`const cons = [\n`);
   const calls = array
     .map((item) => {
-      const code = `register("${item.char}", ${item.name}, ${1024});`;
+      const code = `  "LuParts${item.name}",`;
       stream.write(`${code}\n`);
+
       return code;
     })
     .join("\n");
-  // console.log(calls);
+  stream.write(`];\n`);
 
   const calls2 = array
-    .map((item) => {
-      const code = `parts["${item.name}"] = parts_${item.name};`
-      stream.write(`${code}\n`);
-      return code;
+    .map((item, index) => {
+      stream.write(`function ${item.name}() external view returns(string memory output) {\n`);
+      stream.write(`    return getParts(${index});      \n`);
+      stream.write(`}\n`);
     })
     .join("\n");
   // console.log(calls);
   console.log(calls2)
       
-
 };
 
 const folder = process.argv[2];
