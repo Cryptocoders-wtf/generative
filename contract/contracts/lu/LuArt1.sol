@@ -86,10 +86,6 @@ contract LuArt1 is ISVGArt {
   }
   
   function BgBlue() internal view returns(bytes memory output) {
-      //      uint8[] memory swapKeys = new uint8[](2);
-      //      swapKeys[0] = 0;
-      //      swapKeys[1] = 1;
-      //      return getParts(0, swapKeys);
       return getParts(0);
   }
   function BgRainbow() internal view returns(bytes memory output) {
