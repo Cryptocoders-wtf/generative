@@ -30,6 +30,18 @@
       >
     </p>
     <p>
+      OpenSea:
+      <a href="https://opensea.io/collection/on-chain-splatter" class="underline" target="_blank"
+        >On-chain Splatter</a
+      >,
+      <a href="https://opensea.io/collection/on-chain-bitcoin-art" class="underline" target="_blank"
+        >On-chain Bitcoin Art</a
+      >,
+      <a href="https://opensea.io/collection/on-chain-alphabet" class="underline" target="_blank"
+        >On-chain Alphabet</a
+      >
+    </p>
+    <p>
       Discord:
       <a href="https://discord.gg/4JGURQujXK" class="underline" target="_blank"
         >On-chain Asset Store</a

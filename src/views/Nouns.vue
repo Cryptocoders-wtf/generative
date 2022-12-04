@@ -1,42 +1,49 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
-    <p>Images from the on-chain asset provider.</p>
-    <div v-if="network != 'localhost'">
-      <ProviderView assetProvider="nouns" />
-      <ProviderView assetProvider="nounsArt" />
-      <ProviderView assetProvider="dotNouns" />
-      <ProviderView assetProvider="dotlilArt" />
-    </div>
-    <ProviderView assetProvider="pnouns" />
+    <p class="mb-2">Dot Nouns are dynamically generated on the blockchain, taking advantage of the composability of Nouns.</p>
+    <Mint
+      :network="network"
+      :tokenGated="true"
+      :tokenAddress="tokenAddress"
+      :tokenGateAddress="tokenGateAddress"
+      :limit="1"
+      assetProvider="dotNouns"
+      @minted="minted"
+      :restricted="'On-Chain Splatter, Bitcoin Art or Alphabet'"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
+import Mint from "@/components/Mint.vue";
 import ProviderView from "@/components/ProviderView.vue";
-import { addresses as localhost } from "@/utils/addresses/sample_localhost";
-import { addresses as goerli } from "@/utils/addresses/sample_goerli";
-
-const allAddresses: any = {
-  localhost,
-  goerli,
-};
+import { addresses } from "@/utils/addresses";
 
 export default defineComponent({
   components: {
-    ProviderView,
+    // ProviderView,
+    Mint
   },
   setup() {
+    const offset = ref<number>(0);
     const route = useRoute();
     const network =
-      typeof route.query.network == "string" ? route.query.network : "goerli";
-    const addresses = allAddresses[network];
-    const tokenAddress = addresses.sampleToken;
+      typeof route.query.network == "string" ? route.query.network : "mainnet";
+    const tokenAddress = addresses.dotNounsToken[network];
+    const tokenGateAddress = addresses.dynamic[network];
+    const minted = async () => {
+      console.log("***###*** minted event was fired");
+    };
+
     console.log("*** chainId", network, tokenAddress);
     return {
       network,
       tokenAddress,
+      tokenGateAddress,
+      offset,
+      minted
     };
   },
 });

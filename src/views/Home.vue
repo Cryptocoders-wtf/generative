@@ -66,6 +66,20 @@
       <code class="bg-gray-200">src/components/Header.vue</code> appropriately
       to add your vue to the menu.
     </p>
+    <h1 class="mt-2 mb-2 text-xl font-bold">Graphics Library</h1>
+    <p>
+      In order to make it easy to develop generative art in Solidity, 
+      we have created an open source library, 
+      <a class="underline" href="https://www.npmjs.com/package/fully-on-chain.sol">fully-on-chain.sol</a>,
+      which allows developers to generative code like this.
+      <pre class="mt-2 text-xs">
+SVG.rect(256, 256, 512, 512)
+  .fill("yellow");
+  .stroke("blue", 10)
+  .transform("rotate(30 512 512)");
+      </pre>
+      <img src="https://i.imgur.com/MLEUGD5.png" />
+    </p>
     <h1 class="mt-2 mb-2 text-xl font-bold">Porting it to Solidity</h1>
     <p class="mb-2">
       The Soidity version of Splatter is avaiable at

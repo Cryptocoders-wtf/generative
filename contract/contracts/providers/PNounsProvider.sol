@@ -154,7 +154,7 @@ contract PNounsPrivider is IAssetProviderEx, Ownable, IERC165 {
     stack.svgNouns = new SVG.Element[](3);
     for (uint i=0; i<stack.idNouns.length; i++) {
       (stack.svg, stack.idNouns[i]) = nounsProvider.generateSVGPart(i + _assetId);
-      stack.svgNouns[i] = SVG.item(bytes(stack.svg));
+      stack.svgNouns[i] = SVG.element(bytes(stack.svg));
     }
 
     svgPart = string(SVG.list([

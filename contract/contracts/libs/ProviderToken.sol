@@ -11,8 +11,9 @@
 
 pragma solidity ^0.8.6;
 
-import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+// import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
+// import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "../packages/ERC721P2P/ERC721P2P.sol";
 import { Base64 } from 'base64-sol/base64.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import { IProxyRegistry } from '../external/opensea/IProxyRegistry.sol';
@@ -28,7 +29,7 @@ import "assetprovider.sol/IAssetProvider.sol";
  *   provider.processPayout{value:msg.value}(assetId)
  *
  */
-abstract contract ProviderToken is Ownable, ERC721 {
+abstract contract ProviderToken is ERC721P2P {
   using Strings for uint256;
   using Strings for uint16;
 
@@ -69,7 +70,7 @@ abstract contract ProviderToken is Ownable, ERC721 {
   /**
     * @notice Override isApprovedForAll to whitelist user's OpenSea proxy accounts to enable gas-less listings.
     */
-  function isApprovedForAll(address owner, address operator) public view override returns (bool) {
+  function isApprovedForAll(address owner, address operator) public view virtual override(ERC721, IERC721) returns (bool) {
       // Whitelist OpenSea proxy contract for easy trading.
       if (proxyRegistry.proxies(owner) == operator) {
           return true;

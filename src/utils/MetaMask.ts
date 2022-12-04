@@ -36,6 +36,7 @@ export const ChainIds = {
   RinkebyTestNet: "0x4",
   Goerli: "0x5",
   Polygon: "0x89",
+  Mumbai: "0x13881",
   Localhost: "0x7a69", // not sure
 };
 
@@ -44,6 +45,7 @@ export const ChainIdMap: any = {
   rinkeby: "0x4",
   goerli: "0x5",
   polygon: "0x89",
+  mumbai: "0x13881", // 80001
   localhost: "0x7a69", // not sure
 };
 

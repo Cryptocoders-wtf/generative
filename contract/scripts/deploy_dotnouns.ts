@@ -3,12 +3,10 @@ import { writeFile } from "fs";
 import { addresses } from "../../src/utils/addresses";
 
 const nounsProvider = addresses.nouns[network.name];
-
 console.log("nounsProvider", nounsProvider);
 
-
 async function main() {
-  const factoryArt = await ethers.getContractFactory("DotProvider");
+  const factoryArt = await ethers.getContractFactory("DotNounsProvider");
   const contractArt = await factoryArt.deploy(nounsProvider);
   await contractArt.deployed();
   console.log(`      contractArt="${contractArt.address}"`);  
@@ -16,7 +14,9 @@ async function main() {
   const output = `export const addresses = {\n`
     + `  dotNounsArt:"${contractArt.address}",\n`
     + `}\n`;
-  await writeFile(`../src/utils/addresses/dotNouns_${network.name}.ts`, output, ()=>{});  
+  await writeFile(`../src/utils/addresses/dotNouns_${network.name}.ts`, output, ()=>{}); 
+
+  console.log(`npx hardhat verify ${contractArt.address} ${nounsProvider} --network ${network.name}`);
 }
 
 main().catch((error) => {

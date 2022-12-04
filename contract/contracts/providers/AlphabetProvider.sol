@@ -17,6 +17,7 @@ import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import "../interfaces/IColorSchemes.sol";
 import "../interfaces/ILayoutGenerator.sol";
 import "fully-on-chain.sol/SVG.sol";
+import '../interfaces/IOnChainWallet.sol';
 
 /**
  * MultiplexProvider create a new asset provider from another asset provider,
@@ -32,11 +33,13 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
   ILayoutGenerator public generator;
   IColorSchemes public colorSchemes;
   IFontProvider public font;
+  IOnChainWallet public receiver; // proxy to pNouns wallet (0x8AE80e0B44205904bE18869240c2eC62D2342785)
 
-  constructor(IFontProvider _font, ILayoutGenerator _generator, IColorSchemes _colorSchemes) {
+  constructor(IFontProvider _font, ILayoutGenerator _generator, IColorSchemes _colorSchemes, IOnChainWallet _receiver) {
     font = _font;
     generator = _generator;
     colorSchemes = _colorSchemes;
+    receiver = _receiver;
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -50,17 +53,29 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function getProviderInfo() external view override returns(ProviderInfo memory) {
-    return ProviderInfo("stencil", "Stencil", this);
+    return ProviderInfo("alphabet", "Alphabet", this);
   }
 
   function totalSupply() external pure override returns(uint256) {
     return 0;
   }
 
+  function setReceiver(IOnChainWallet _receiver) external onlyOwner {
+    receiver = _receiver;
+  }
+
   function processPayout(uint256 _assetId) external override payable {
+    uint amount = msg.value / 2;
+    receiver.deposite{value:amount}();
+    emit Payout("alphabet", _assetId, payable(address(receiver)), amount);
+
+    amount = msg.value - amount; // eliminating round error
+    font.processPayout{value:amount / 5}(); // 10% distribution to the font provider
+
+    amount = amount - amount / 5;
     address payable payableTo = payable(owner());
-    payableTo.transfer(msg.value);
-    emit Payout("stencil", _assetId, payableTo, msg.value);
+    payableTo.transfer(amount);
+    emit Payout("alphabet", _assetId, payableTo, amount);
   }
 
   function generateTraits(uint256 _assetId) external view returns (string memory) {

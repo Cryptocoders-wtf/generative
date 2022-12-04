@@ -14,7 +14,9 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import { Base64 } from 'base64-sol/base64.sol';
 import "assetprovider.sol/IAssetProvider.sol";
-import { INounsDescriptor, INounsSeeder } from '../external/nouns/INounsDescriptor.sol';
+import "../external/nouns/interfaces/INounsDescriptor.sol";
+import "../external/nouns/interfaces/INounsSeeder.sol";
+import { NounsToken } from '../external/nouns/NounsToken.sol';
 
 // IAssetProvider wrapper for composability
 contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
@@ -22,11 +24,11 @@ contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
 
   string constant providerKey = "nouns";
 
+  NounsToken public immutable nounsToken;
   INounsDescriptor public immutable descriptor;
-  // Nouns multi-sig wallet
-  address public receiver = 0x0BC3807Ec262cB779b38D65b38158acC3bfedE10;
 
-  constructor(INounsDescriptor _descriptor) {
+  constructor(NounsToken _nounsToken, INounsDescriptor _descriptor) {
+    nounsToken = _nounsToken;
     descriptor = _descriptor;
   }
 
@@ -72,8 +74,22 @@ contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
     });
 
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
+    svgPart = svgForSeed(seed, tag);
+  }
 
-    string memory encodedSvg = descriptor.generateSVGImage(seed);
+  function getNounsSVGPart(uint256 _assetId) external view returns(string memory svgPart, string memory tag) {
+    INounsSeeder.Seed memory seed;
+    (seed.background, seed.body, seed.accessory, seed.head, seed.glasses) = nounsToken.seeds(_assetId);
+    tag = string(abi.encodePacked(providerKey, _assetId.toString()));
+    svgPart = svgForSeed(seed, tag);
+  }
+
+  function getNounsTotalSuppy() external view returns(uint256) {
+    return nounsToken.totalSupply();
+  }
+
+  function svgForSeed(INounsSeeder.Seed memory _seed, string memory _tag) public view returns(string memory svgPart) {
+    string memory encodedSvg = descriptor.generateSVGImage(_seed);
     bytes memory svg = Base64.decode(encodedSvg);
     uint256 length = svg.length;
     uint256 start = 0;
@@ -86,13 +102,13 @@ contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
     length -= start + 6; // "</svg>"
 
     // substring
+    /*
     bytes memory ret = new bytes(length);
     for(uint i = 0; i < length; i++) {
         ret[i] = svg[i+start];
     }
+    */
 
-    // Failed to attempt to create an assembler version of subtring
-    /*
     bytes memory ret;
     assembly {
       ret := mload(0x40)
@@ -103,12 +119,11 @@ contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
         let data := mload(add(svgMemory, i))
         mstore(add(retMemory, i), data)
       }
-      mstore(0x40, retMemory)
+      mstore(0x40, add(add(ret, 0x20), length))
     }
-    */
 
     svgPart = string(abi.encodePacked(
-      '<g id="', tag, '" transform="scale(3.2)" shape-rendering="crispEdges">\n',
+      '<g id="', _tag, '" transform="scale(3.2)" shape-rendering="crispEdges">\n',
       ret,
       '\n</g>\n'));
   }
@@ -118,13 +133,9 @@ contract NounsAssetProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function processPayout(uint256 _assetId) external override payable {
-    address payable payableTo = payable(receiver);
+    address payable payableTo = payable(owner());
     payableTo.transfer(msg.value);
     emit Payout(providerKey, _assetId, payableTo, msg.value);
-  }
-
-  function setReceiver(address _receiver) onlyOwner external {
-    receiver = _receiver;
   }
 
   function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {

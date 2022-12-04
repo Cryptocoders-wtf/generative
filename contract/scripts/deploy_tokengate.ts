@@ -12,8 +12,10 @@ async function main() {
   await contract.deployed();
   console.log(`      tokenGate="${contract.address}"`);
 
-  const tx = await contract.setWhitelist(whitelist);
-  await tx.wait();
+  if (whitelist) {
+    const tx = await contract.setWhitelist(whitelist);
+    await tx.wait();
+  }
 
   const result2 = await contract.balanceOf(owner.address);
   console.log("result2", result2);

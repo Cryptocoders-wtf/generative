@@ -1,0 +1,27 @@
+{
+  "name": "erc721p2p",
+  "version": "1.0.0",
+  "description": "ERC721 with decentralized trading and enforced creator royalties",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cryptocoders-wtf/generative.git"
+  },
+  "keywords": [
+    "ERC721",
+    "NFT"
+  ],
+  "author": "snakajima",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cryptocoders-wtf/generative/issues"
+  },
+  "homepage": "https://github.com/Cryptocoders-wtf/generative#readme",
+  "devDependencies": {
+    "@openzeppelin/contracts": "^4.8.0",
+    "erc721a": "^4.2.3"
+  }
+}

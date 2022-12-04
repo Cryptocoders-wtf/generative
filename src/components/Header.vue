@@ -13,23 +13,25 @@
       <router-link :to="localizedUrl('/')" class="text-md">{{
         $t("header.home")
       }}</router-link>
+      <!---
       <router-link :to="localizedUrl('/splatter')" class="text-md">
         Splatter
       </router-link>
       <router-link :to="localizedUrl('/bitcoin')" class="text-md">
         Bitcoin
       </router-link>
-      <router-link :to="localizedUrl('/reddit')" class="text-md">
-        Reddit
+      <router-link :to="localizedUrl('/alphabet')" class="text-md">
+        Alphabet
+      </router-link>
+      -->
+      <router-link :to="localizedUrl('/nouns')" class="text-md">
+        Nouns
       </router-link>
       <router-link :to="localizedUrl('/snow')" class="text-md">
         Snow
       </router-link>
       <router-link :to="localizedUrl('/star')" class="text-md">
         Star
-      </router-link>
-      <router-link :to="localizedUrl('/nouns')" class="text-md">
-        Nouns
       </router-link>
       <router-link :to="localizedUrl('/sample')" class="text-md">
         Sample

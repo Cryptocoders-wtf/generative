@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div v-if="nextImage">
+      <img :src="nextImage" class="mr-1 mb-1 inline-block w-96" />
+      <p>Next Token Id: {{ `${totalSupply}` }}</p>
+    </div>
     <p>Available: {{ `${mintLimit - totalSupply}/${mintLimit}` }}</p>
     <NetworkGate :expectedNetwork="chainId">
       <p>Wallet: {{ wallet }}</p>
@@ -7,13 +11,16 @@
       <p v-if="totalBalance > 0">
         You have {{ totalBalance }} whitelist token(s).
       </p>
-      <p>Price: {{ mintPriceString }}</p>
       <div v-if="totalSupply < mintLimit">
-        <div v-if="restricted && totalBalance == 0" class="text-red-500">
-          Sorry, minting is available only to "{{ restricted }}" NFT holders at
-          this moment.
+        <div v-if="restricted && totalBalance == 0" class="text-yellow-500">
+          Minting is available only to "{{ restricted }}" NFT holders at
+          this moment. Please wait for the announcement from @nounsfes. 
+        </div>
+        <div v-else-if="limit && limit <= balanceOf" class="text-yellow-500">
+          The maximum number of tokens you can mint is {{ limit }}.
         </div>
         <div v-else>
+          <p>Price: {{ mintPriceString }}</p>
           <p v-if="isMinting" class="mt-4 mb-4 bg-slate-200 pl-4">
             Processing...
           </p>
@@ -27,12 +34,17 @@
         </div>
       </div>
       <div v-else>
-        <button
-          disabled
-          class="mt-2 inline-block rounded bg-red-600 px-6 py-2.5 leading-tight text-white shadow-md"
-        >
-          Sold Out
-        </button>
+        <div v-if="mintLimit == 0">
+          <p>...</p>
+        </div>
+        <div v-else>
+          <button
+            disabled
+            class="mt-2 inline-block rounded bg-red-600 px-6 py-2.5 leading-tight text-white shadow-md"
+          >
+            Sold Out
+          </button>
+        </div>
       </div>
     </NetworkGate>
     <div v-if="tokens.length > 0" class="mt-4">
@@ -58,12 +70,16 @@ import { getAddresses } from "@/utils/const";
 import References from "@/components/References.vue";
 import { addresses } from "@/utils/addresses";
 import { weiToEther } from "@/utils/currency";
+import { svgImageFromSvgPart, sampleColors } from "@/models/point";
 
 const ProviderTokenEx = {
   wabi: require("@/abis/ProviderToken.json"), // wrapped abi
 };
 const ITokenGate = {
   wabi: require("@/abis/ITokenGate.json"), // wrapped abi
+};
+const ISVGHelper = {
+  wabi: require("@/abis/ISVGHelper.json"), // wrapped abi
 };
 
 console.log("*** addresses", addresses);
@@ -80,22 +96,28 @@ export default defineComponent({
     "tokenGated",
     "tokenGateAddress",
     "restricted",
+    "limit",
+    "assetProvider",
   ],
+  emits: ['minted'],
   components: {
     NetworkGate,
     References,
   },
-  setup(props) {
+  setup(props, context) {
     const route = useRoute();
     const store = useStore();
     const totalBalance = ref<number>(0);
     const totalSupply = ref<number>(0);
+    const balanceOf = ref<number>(0);
     const mintLimit = ref<number>(0);
     const mintPrice = ref<BigNumber>(BigNumber.from(0));
     const mintPriceString = computed(
       () => `${weiToEther(mintPrice.value)} ETH`
     );
     const isMinting = ref<boolean>(false);
+    const nextImage = ref<string | null>(null);
+    const svgHelperAddress = addresses["svgHelper"][props.network];
 
     const checkTokenGate = async () => {
       console.log("### calling totalBalanceOf");
@@ -105,6 +127,9 @@ export default defineComponent({
         );
         totalBalance.value = result.toNumber();
       }
+      const [balance] = await contractRO.functions.balanceOf(store.state.account);
+      balanceOf.value = balance;
+
       const [value] = await contractRO.functions.mintPriceFor(
         store.state.account
       );
@@ -126,7 +151,9 @@ export default defineComponent({
     const provider =
       props.network == "localhost"
         ? new ethers.providers.JsonRpcProvider()
-        : alchemyKey
+        : (props.network == "mumbai") ?
+        new ethers.providers.JsonRpcProvider("https://matic-mumbai.chainstacklabs.com") : 
+        alchemyKey
         ? new ethers.providers.AlchemyProvider(props.network, alchemyKey)
         : new ethers.providers.InfuraProvider(props.network);
 
@@ -140,6 +167,13 @@ export default defineComponent({
       ITokenGate.wabi.abi,
       provider
     );
+    const svgHelper = new ethers.Contract(
+      svgHelperAddress,
+      ISVGHelper.wabi.abi,
+      provider
+    );
+    const providerAddress = addresses[props.assetProvider || "dotNouns"][props.network];
+
     const tokens = ref<Token[]>([]);
     const fetchTokens = async () => {
       const [supply] = await contractRO.functions.totalSupply();
@@ -147,6 +181,15 @@ export default defineComponent({
       const [limit] = await contractRO.functions.mintLimit();
       mintLimit.value = limit.toNumber();
       console.log("totalSupply/mintLimit", totalSupply.value, mintLimit.value);
+      if (totalSupply.value < mintLimit.value) {
+        const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(
+          providerAddress,
+          totalSupply.value
+        );
+        nextImage.value = svgImageFromSvgPart(svgPart, tag, "");
+      } else {
+        nextImage.value = null;
+      }
       const updatedTokens = [];
       for (var tokenId = Math.max(0, supply - 4); tokenId < supply; tokenId++) {
         const [tokenURI, gas] = await contractRO.functions.debugTokenURI(
@@ -178,6 +221,7 @@ export default defineComponent({
         async (from, to, tokenId) => {
           console.log("*** event.Transfer calling fetchTokens");
           fetchTokens();
+          context.emit("minted");
         }
       );
     });
@@ -233,10 +277,12 @@ export default defineComponent({
       tokenName: "ERC721",
       wallet,
       totalBalance,
+      balanceOf,
       mintPriceString,
       isMinting,
       totalSupply,
       mintLimit,
+      nextImage,
     };
   },
 });

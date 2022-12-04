@@ -15,8 +15,36 @@ pragma solidity ^0.8.6;
 import "./IERC721P2P.sol";
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "./opensea/DefaultOperatorFilterer.sol";
 
-abstract contract ERC721P2P is IERC721P2P, ERC721, Ownable {
+// From https://github.com/ProjectOpenSea/operator-filter-registry/blob/main/src/example/ExampleERC721.sol
+abstract contract ERC721WithOperatorFilter is ERC721, DefaultOperatorFilterer {
+  function setApprovalForAll(address operator, bool approved) public override virtual onlyAllowedOperatorApproval(operator) {
+      super.setApprovalForAll(operator, approved);
+  }
+
+  function approve(address operator, uint256 tokenId) public override virtual onlyAllowedOperatorApproval(operator) {
+      super.approve(operator, tokenId);
+  }
+
+  function transferFrom(address from, address to, uint256 tokenId) public override virtual onlyAllowedOperator(from) {
+      super.transferFrom(from, to, tokenId);
+  }
+
+  function safeTransferFrom(address from, address to, uint256 tokenId) public override virtual onlyAllowedOperator(from) {
+      super.safeTransferFrom(from, to, tokenId);
+  }
+
+  function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data)
+      public
+      override virtual
+      onlyAllowedOperator(from)
+  {
+      super.safeTransferFrom(from, to, tokenId, data);
+  }
+}
+
+abstract contract ERC721P2P is IERC721P2P, ERC721WithOperatorFilter, Ownable {
   mapping (uint256 => uint256) prices;
 
   function setPriceOf(uint256 _tokenId, uint256 _price) public override {
