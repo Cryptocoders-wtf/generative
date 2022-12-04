@@ -9,6 +9,7 @@ const nounsToken:string = (network.name == "goerli") ?
   addresses[5].nounsToken: addresses[1].nounsToken;
 
 console.log("nounsDescriptor", nounsDescriptor);
+console.log("nounsToken", nounsToken);
 
 async function main() {
   const factory = await ethers.getContractFactory("NounsAssetProvider");
