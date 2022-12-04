@@ -54,15 +54,15 @@ const findPath = (obj: ElementNode[], isBFS: boolean) => {
       if (element.tagName === 'clipPath') {
         return ;
       }
-      element.children.map((c) => {
-        if (isBFS) {
+      if (isBFS) {
+        element.children.map((c) => {
           children.push(c as ElementNode);
-        } else {
-          findPath(element.children as ElementNode[], isBFS).map((childRet) => {
-            ret.push(childRet);
-          });
-        }
-      });
+        });
+      } else {
+        findPath(element.children as ElementNode[], isBFS).map((childRet) => {
+          ret.push(childRet);
+        });
+      }
     }
     if (element.tagName === "path") {
       ret.push(element);
@@ -125,7 +125,7 @@ const dumpConvertSVG = (paths: any[]) => {
         const d = pathData["path"];
 
         // styles
-        const fill = pathData["fill"];
+        const fill = pathData["fill"].trim();
         const strokeW = pathData["strokeW"];
         const stroke = pathData["stroke"];
         const styles = [];
@@ -171,7 +171,7 @@ const getElementProperty = (element: ElementNode, name: string) => {
 };
 
 const element2fill = (element: ElementNode) => {
-  return getElementProperty(element, "fill");
+  return getElementProperty(element, "fill").trim();
 };
 const element2stroke = (element: ElementNode) => {
   return getElementProperty(element, "stroke");
