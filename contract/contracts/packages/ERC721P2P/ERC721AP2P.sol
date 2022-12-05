@@ -84,7 +84,7 @@ abstract contract ERC721AP2P is IERC721AP2P, ERC721WithOperatorFilter, Ownable {
     */
   }
 
-  function acceptOffer(uint256 _tokenId, IERC721AMarketplace _dealer, uint256 _price) external override {
+  function acceptOffer(uint256 _tokenId, IERC721Marketplace _dealer, uint256 _price) external override {
     setPriceOf(_tokenId, _price);
     _dealer.acceptOffer(this, _tokenId, _price);
   }
