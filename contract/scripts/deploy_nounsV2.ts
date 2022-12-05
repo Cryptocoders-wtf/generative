@@ -11,8 +11,25 @@ console.log("nounsToken", nounsTokenAddress);
 async function main() {
   const factoryNounsToken = await ethers.getContractFactory("NounsToken");
   const nounsToken = factoryNounsToken.attach(nounsTokenAddress);
+
+  const seeds0 = await nounsToken.functions.seeds(0);
+  console.log("seeds0", seeds0);
+  const seeds = {
+    background: seeds0.background,
+    body: seeds0.body,
+    accessory: seeds0.accessory,
+    head: seeds0.head,
+    glasses: seeds0.glasses
+  };
+  console.log("seeds", seeds);
+
   const [nounsDescriptor] = await nounsToken.functions.descriptor();
   console.log("nounsDescriptor", nounsDescriptor);
+  const descriptor = await ethers.getContractAt("INounsDescriptor", nounsDescriptor);
+
+  const svg = await descriptor.generateSVGImage(seeds);
+  console.log(svg);
+  // const svg = await 
 
   const factory = await ethers.getContractFactory("NounsAssetProviderV2");
   const contractProvider = await factory.deploy(nounsTokenAddress, nounsDescriptor);
