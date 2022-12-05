@@ -12,7 +12,7 @@ pragma solidity ^0.8.6;
 
 // import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 // import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "../packages/ERC721P2P/extensions/ERC721AP2P.sol";
+import "../packages/ERC721P2P/ERC721AP2P.sol";
 import { Base64 } from 'base64-sol/base64.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "assetprovider.sol/IAssetProvider.sol";
@@ -27,7 +27,7 @@ import "assetprovider.sol/IAssetProvider.sol";
  *   provider.processPayout{value:msg.value}(assetId)
  *
  */
-abstract contract ProviderToken4 is ERC721AP2P {
+abstract contract ProviderTokenA1 is ERC721AP2P {
   using Strings for uint256;
   using Strings for uint16;
 

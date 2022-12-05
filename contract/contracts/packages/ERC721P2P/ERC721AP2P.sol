@@ -10,7 +10,7 @@ pragma solidity ^0.8.6;
 import "./IERC721AP2P.sol";
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "erc721a/contracts/extensions/ERC721AQueryable.sol";
-import "../opensea/DefaultOperatorFilterer.sol";
+import "./opensea/DefaultOperatorFilterer.sol";
 
 // From https://github.com/ProjectOpenSea/operator-filter-registry/blob/main/src/example/ExampleERC721.sol
 abstract contract ERC721WithOperatorFilter is ERC721A, DefaultOperatorFilterer {
