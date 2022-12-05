@@ -4,7 +4,7 @@ import "./IParts.sol";
 
 contract LuPartsDoor2 is IParts {
 
-      function svgData() external pure override returns(uint16 sizes, bytes[] memory paths, string[] memory fill, uint8[] memory stroke) {
+      function svgData(uint8 inde) external pure override returns(uint16 sizes, bytes[] memory paths, string[] memory fill, uint8[] memory stroke) {
           sizes = 4;
           paths = new bytes[](4);
           fill = new string[](4);

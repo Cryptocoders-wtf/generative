@@ -62,10 +62,7 @@ contract LuToken is ERC721P2P {
    * It generates SVG with the specified style, using the given "SVG Part".
    */
   function generateSVG(uint256 _assetId) internal view returns (string memory) {
-    // Constants of non-value type not yet implemented by Solidity
-
-    //(string memory svgPart, string memory tag) = assetProvider.generateSVGPart(_assetId);
-      return svgArt.getSVG(uint16(_assetId));
+    return svgArt.getSVG(uint16(_assetId % 96));
   }
 
   /**

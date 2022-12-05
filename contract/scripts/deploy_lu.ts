@@ -54,12 +54,19 @@ async function main() {
   console.log(`      test="${contract.address}"`);
   // const result = await contract.getParts(2);
   // const result2 = await contract.Roof05()
-  const result3 = await contract.getSVG(2)
+  const result3 = await contract.getSVG(0)
+  const result4 = await contract.getSVG(1)
+  const result5 = await contract.getSVG(2)
   
   await writeFile(`./cache/lu_test.svg`, result3, ()=>{});  
   // console.log(result);
   // console.log(result2);
   console.log(result3);
+  console.log("---------");
+  console.log(result4);
+  console.log("---------");
+  console.log(result5);
+  console.log("---------");
 
   const factory = await ethers.getContractFactory("LuToken");
   const contract2 = await factory.deploy("Lu", "Lu", contract.address);

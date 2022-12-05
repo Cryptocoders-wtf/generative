@@ -4,7 +4,7 @@ import "./IParts.sol";
 
 contract LuPartsWindows3 is IParts {
 
-      function svgData() external pure override returns(uint16 sizes, bytes[] memory paths, string[] memory fill, uint8[] memory stroke) {
+      function svgData(uint8 index) external pure override returns(uint16 sizes, bytes[] memory paths, string[] memory fill, uint8[] memory stroke) {
           sizes = 12;
           paths = new bytes[](12);
           fill = new string[](12);
