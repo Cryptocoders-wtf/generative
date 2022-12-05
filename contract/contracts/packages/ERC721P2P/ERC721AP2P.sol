@@ -7,7 +7,7 @@
 
 pragma solidity ^0.8.6;
 
-import "./IERC721AP2P.sol";
+import "./IERC721P2P.sol";
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import "erc721a/contracts/extensions/ERC721AQueryable.sol";
 import "./opensea/DefaultOperatorFilterer.sol";
@@ -40,7 +40,7 @@ abstract contract ERC721WithOperatorFilter is ERC721A, DefaultOperatorFilterer {
   }
 }
 
-abstract contract ERC721AP2P is IERC721AP2P, ERC721WithOperatorFilter, Ownable {
+abstract contract ERC721AP2P is IERC721P2PCore, ERC721WithOperatorFilter, Ownable {
   mapping (uint256 => uint256) prices;
 
   function setPriceOf(uint256 _tokenId, uint256 _price) public override {

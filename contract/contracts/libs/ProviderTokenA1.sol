@@ -83,7 +83,7 @@ abstract contract ProviderTokenA1 is ERC721AP2P {
     * @notice A distinct Uniform Resource Identifier (URI) for a given asset.
     * @dev See {IERC721Metadata-tokenURI}.
     */
-  function tokenURI(uint256 _tokenId) public view override(IERC721A,ERC721A) returns (string memory) {
+  function tokenURI(uint256 _tokenId) public view override returns (string memory) {
     require(_exists(_tokenId), 'ProviderToken.tokenURI: nonexistent token');
     bytes memory image = bytes(generateSVG(_tokenId));
 
@@ -130,7 +130,7 @@ abstract contract ProviderTokenA1 is ERC721AP2P {
     return mintPrice;
   }
 
-  function totalSupply() public view override(IERC721A,ERC721A) returns (uint256) {
+  function totalSupply() public view override returns (uint256) {
     return nextTokenId;
   }
 
