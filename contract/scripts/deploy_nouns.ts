@@ -15,16 +15,8 @@ async function main() {
   const nounsToken = await ethers.getContractAt("NounsToken", nounsTokenAddress);
   const nounsDescriptor = await ethers.getContractAt("INounsDescriptor", nounsDescriptorAddress);
 
-  const seeds0 = await nounsToken.functions.seeds(0);
-  console.log("seeds0", seeds0);
-  const seeds = {
-    background: seeds0.background,
-    body: seeds0.body,
-    accessory: seeds0.accessory,
-    head: seeds0.head,
-    glasses: seeds0.glasses
-  };
-  console.log("seeds", seeds);
+  const seeds = await nounsToken.functions.seeds(0);
+  console.log("seeds0", seeds);
   const svg = await nounsDescriptor.generateSVGImage(seeds);
   console.log(svg);
 
