@@ -1,0 +1,22 @@
+{
+  "name": "generative-tools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "format": "prettier --write 'src/**/*.{js,ts,vue}'",
+    "convert": "npx ts-node ./src/gen.ts",
+    "path2path": "npx ts-node ./src/svg2path.ts",
+    "path2solidity": "npx ts-node ./src/gen.ts"
+  },
+  "devDependencies": {
+    "@types/svg-parser": "^2.0.3",
+    "prettier": "^2.7.1"
+  },
+  "dependencies": {
+    "svg-parser": "^2.0.4"
+  }
+}
