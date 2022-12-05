@@ -1,6 +1,7 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
     <p class="mb-2">Dot Nouns are dynamically generated on the blockchain, taking advantage of the composability of Nouns.</p>
+    <ProviderView v-if="false" assetProvider="dotNouns" network="localhost" :offset="500"/>
     <Mint
       :network="network"
       :tokenGated="true"
@@ -23,7 +24,7 @@ import { addresses } from "@/utils/addresses";
 
 export default defineComponent({
   components: {
-    // ProviderView,
+    ProviderView,
     Mint
   },
   setup() {

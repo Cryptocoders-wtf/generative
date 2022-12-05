@@ -3,24 +3,27 @@ import { writeFile } from "fs";
 
 import addresses from '@nouns/sdk/dist/contract/addresses.json';
 
-const nounsDescriptorAddress:string = (network.name == "goerli") ?
-  addresses[5].nounsDescriptor: addresses[1].nounsDescriptor;
 const nounsTokenAddress:string = (network.name == "goerli") ?
   addresses[5].nounsToken: addresses[1].nounsToken;
 
-console.log("nounsDescriptor", nounsDescriptorAddress);
 console.log("nounsToken", nounsTokenAddress);
 
 async function main() {
-  const nounsToken = await ethers.getContractAt("NounsToken", nounsTokenAddress);
-  const nounsDescriptor = await ethers.getContractAt("INounsDescriptor", nounsDescriptorAddress);
+  const factoryNounsToken = await ethers.getContractFactory("NounsToken");
+  const nounsToken = factoryNounsToken.attach(nounsTokenAddress);
+
+  const [nounsDescriptorAddress] = await nounsToken.functions.descriptor();
+  console.log("nounsDescriptor", nounsDescriptorAddress);
+  const nounsDescriptor = await ethers.getContractAt("INounsDescriptorV2", nounsDescriptorAddress);
 
   const seeds = await nounsToken.functions.seeds(0);
-  console.log("seeds0", seeds);
+  console.log("seeds", seeds);
+
   const svg = await nounsDescriptor.generateSVGImage(seeds);
   console.log(svg);
+  // const svg = await 
 
-  const factory = await ethers.getContractFactory("NounsAssetProvider");
+  const factory = await ethers.getContractFactory("NounsAssetProviderV2");
   const contractProvider = await factory.deploy(nounsTokenAddress, nounsDescriptorAddress);
   await contractProvider.deployed();
   console.log(`      provider="${contractProvider.address}"`);
