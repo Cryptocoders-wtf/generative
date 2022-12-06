@@ -37,5 +37,6 @@ interface IERC721P2PCore {
   function acceptOffer(uint256 _tokenId, IERC721Marketplace _dealer, uint256 _price) external;
 }
 
+// deprecated
 interface IERC721P2P is IERC721P2PCore, IERC721 {
 }

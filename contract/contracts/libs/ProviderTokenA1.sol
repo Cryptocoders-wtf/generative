@@ -48,6 +48,10 @@ abstract contract ProviderTokenA1 is ERC721AP2P {
     assetProvider = _assetProvider;
   }
 
+  function setAssetProvider(IAssetProvider _assetProvider) external onlyOwner {
+    assetProvider = _assetProvider; // upgradable
+  }
+
   function setDescription(string memory _description) external onlyOwner {
       description = _description;
   }
