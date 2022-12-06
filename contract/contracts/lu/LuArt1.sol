@@ -151,7 +151,7 @@ contract LuArt1 is ISVGArt {
       return getResizedParts((index % 2) + 10, 0);
   }
   
-  function getSVG(uint16 index) external view override returns(string memory output) {
+  function generateSVGBody(uint16 index) internal view returns(bytes memory output) {
      SVG.Element[] memory samples = new SVG.Element[](10);
 
      // BgBlue
@@ -177,10 +177,20 @@ contract LuArt1 is ISVGArt {
 
      SVG.Element[] memory samples2 = new SVG.Element[](0);
      
+     output = SVG.list(samples).svg();
+  }
+  function getSVGBody(uint16 index) external view override returns(bytes memory output) {
+      output = generateSVGBody(index);
+  }
+
+  function getSVG(uint16 index) external view override returns(string memory output) {
+     SVG.Element[] memory samples = new SVG.Element[](0);
+     
      output = SVG.document(
                            "0 0 1024 1024",
-                           SVG.list(samples2).svg(),
+                           generateSVGBody(index),
                            SVG.list(samples).svg()
                            );
   }
+
 }
