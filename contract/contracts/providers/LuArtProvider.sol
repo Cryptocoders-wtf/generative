@@ -13,7 +13,7 @@ import '@openzeppelin/contracts/interfaces/IERC165.sol';
 // import "../packages/graphics/Path.sol";
 import "../packages/graphics/SVG.sol";
 
-import "../lu/ISVGArt.sol";
+import "../imageParts/lu/ISVGArt.sol";
 
 contract LuArtProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;

@@ -9,8 +9,8 @@
 pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "../packages/graphics/Path.sol";
-import "../packages/graphics/SVG.sol";
+import "../../packages/graphics/Path.sol";
+import "../../packages/graphics/SVG.sol";
 import "hardhat/console.sol";
 
 import "./data/IParts.sol";
