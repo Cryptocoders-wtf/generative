@@ -38,7 +38,7 @@ abstract contract ProviderTokenA1 is ERC721AP2P {
   uint public mintPrice; 
   uint public mintLimit; 
 
-  IAssetProvider public immutable assetProvider;
+  IAssetProvider public assetProvider;
 
   constructor(
     IAssetProvider _assetProvider,

@@ -43,6 +43,12 @@ abstract contract ERC721WithOperatorFilter is ERC721A, DefaultOperatorFilterer {
 abstract contract ERC721AP2P is IERC721P2PCore, ERC721WithOperatorFilter, Ownable {
   mapping (uint256 => uint256) prices;
 
+  function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
+    return
+        interfaceId == type(IERC721P2PCore).interfaceId ||
+        super.supportsInterface(interfaceId);
+  }
+
   function setPriceOf(uint256 _tokenId, uint256 _price) public override {
     require(ownerOf(_tokenId) == msg.sender, "Only the onwer can set the price");
     prices[_tokenId] = _price;
