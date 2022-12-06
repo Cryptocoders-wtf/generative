@@ -1,5 +1,6 @@
 import { ethers, network } from "hardhat";
 import { writeFile } from "fs";
+import { proxy } from "./deploy_sample";
 
 const deploy = async (name: string, args: any) => {
   const factory = await ethers.getContractFactory(name);
@@ -61,6 +62,8 @@ async function main() {
   await writeFile(`./cache/lu_test.svg`, result3, ()=>{});  
   // console.log(result);
   // console.log(result2);
+
+
   console.log(result3);
   console.log("---------");
   console.log(result4);
@@ -68,6 +71,24 @@ async function main() {
   console.log(result5);
   console.log("---------");
 
+  /////
+
+  const providerContract = await deploy("LuArtProvider", contract.address);
+  console.log(`      prodider="${providerContract.address}"`);
+
+  const factoryToken = await ethers.getContractFactory("SampleToken");
+  const token = await factoryToken.deploy(providerContract.address, proxy);
+
+  await token.mint();
+  await token.mint();
+  await token.mint();
+  await token.mint();
+  await token.mint();
+  const svg = await token.tokenURI(1);
+  console.log(svg);
+
+  //////
+/*  
   const factory = await ethers.getContractFactory("LuToken");
   const contract2 = await factory.deploy("Lu", "Lu", contract.address);
   await contract2.deployed();
@@ -91,6 +112,8 @@ async function main() {
   await contract2.mint();
   const svg = await contract2.tokenURI(1);
   console.log(svg);
+*/
+
   /*
   const contract = await deployNFT("LuToken", "Lu", "Lu");
   console.log(`      test="${contract.address}"`);
