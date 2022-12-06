@@ -1,6 +1,5 @@
 import { ethers, network } from "hardhat";
 import { writeFile } from "fs";
-import { proxy } from "./deploy_sample";
 
 const deploy = async (name: string, args: any) => {
   const factory = await ethers.getContractFactory(name);
@@ -76,8 +75,8 @@ async function main() {
   const providerContract = await deploy("LuArtProvider", contract.address);
   console.log(`      prodider="${providerContract.address}"`);
 
-  const factoryToken = await ethers.getContractFactory("SampleToken");
-  const token = await factoryToken.deploy(providerContract.address, proxy);
+  const factoryToken = await ethers.getContractFactory("LuToken");
+  const token = await factoryToken.deploy(providerContract.address);
 
   await token.mint();
   await token.mint();
