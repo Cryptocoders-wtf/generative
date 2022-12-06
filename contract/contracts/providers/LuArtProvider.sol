@@ -62,7 +62,8 @@ contract LuArtProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function generateSVGPart(uint256 _assetId) public view override returns(string memory svgPart, string memory tag) {
-    bytes memory path = svgArt.getSVGBody(uint16(_assetId % 96));
+      // TODO: Must update if the number of variations of LuArt1 increases
+    bytes memory path = svgArt.getSVGBody(uint16(_assetId % 288));
     
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
     svgPart = string(path);
