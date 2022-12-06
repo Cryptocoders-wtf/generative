@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 
 /*
- * Lu test
+ * Lu Art
  * 
- *
- * Created by Isamu Arimoto (@isamu)
+ * Created by Isamu Arimoto (@isamua)
  */
 
 pragma solidity ^0.8.6;

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 /*
- * Created by Satoshi Nakajima (@snakajima)
+ * Created by Isamu Arimoto (@isamua)
  */
 
 pragma solidity ^0.8.6;

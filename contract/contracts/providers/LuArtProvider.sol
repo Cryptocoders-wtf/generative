@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 /*
- * NounsAssetProvider is a wrapper around NounsDescriptor so that it offers
- * various characters as assets to compose (not individual parts).
- *
- * Created by Satoshi Nakajima (@snakajima)
+ * Created by Isamu Arimoto (@isamua)
  */
 
 pragma solidity ^0.8.6;
