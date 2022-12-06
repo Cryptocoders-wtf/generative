@@ -13,8 +13,8 @@ import "../../packages/graphics/Path.sol";
 import "../../packages/graphics/SVG.sol";
 import "hardhat/console.sol";
 
-import "./data/IParts.sol";
-import "./ISVGArt.sol";
+import "../interfaces/IParts.sol";
+import "../interfaces/ISVGArt.sol";
 
 contract LuArt1 is ISVGArt {
   using Strings for uint256;

@@ -1,6 +1,6 @@
 pragma solidity ^0.8.6;
 
-import "./IParts.sol";
+import "../../interfaces/IParts.sol";
 
 contract LuPartsBgBlue is IParts {
       function svgData(uint8 index) external pure override returns(uint16 sizes, bytes[] memory paths, string[] memory fill, uint8[] memory stroke) {
