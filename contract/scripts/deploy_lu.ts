@@ -54,13 +54,42 @@ async function main() {
   console.log(`      test="${contract.address}"`);
   // const result = await contract.getParts(2);
   // const result2 = await contract.Roof05()
-  const result3 = await contract.getSVG(2)
+  const result3 = await contract.getSVG(0)
+  const result4 = await contract.getSVG(1)
+  const result5 = await contract.getSVG(2)
   
   await writeFile(`./cache/lu_test.svg`, result3, ()=>{});  
   // console.log(result);
   // console.log(result2);
-  console.log(result3);
 
+
+  console.log(result3);
+  console.log("---------");
+  console.log(result4);
+  console.log("---------");
+  console.log(result5);
+  console.log("---------");
+
+  /////
+
+  const providerContract = await deploy("LuArtProvider", contract.address);
+  console.log(`      prodider="${providerContract.address}"`);
+
+  const factoryToken = await ethers.getContractFactory("LuToken");
+  const token = await factoryToken.deploy(providerContract.address);
+
+//  await token.mint();
+  console.log("mint")
+  await token.mint( { value: ethers.utils.parseEther("0.001") });
+  await token.mint( { value: ethers.utils.parseEther("0.001") });
+  await token.mint( { value: ethers.utils.parseEther("1") });
+  // await token.mint();
+  // await token.mint();
+  const svg = await token.tokenURI(5);
+  console.log(svg);
+
+  //////
+/*  
   const factory = await ethers.getContractFactory("LuToken");
   const contract2 = await factory.deploy("Lu", "Lu", contract.address);
   await contract2.deployed();
@@ -84,6 +113,8 @@ async function main() {
   await contract2.mint();
   const svg = await contract2.tokenURI(1);
   console.log(svg);
+*/
+
   /*
   const contract = await deployNFT("LuToken", "Lu", "Lu");
   console.log(`      test="${contract.address}"`);
