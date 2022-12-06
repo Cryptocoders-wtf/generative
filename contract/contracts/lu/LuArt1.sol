@@ -174,8 +174,6 @@ contract LuArt1 is ISVGArt {
      // lu 1, 2
      samples[9] = lu((index / 144) % 2);
 
-     SVG.Element[] memory samples2 = new SVG.Element[](0);
-     
      output = SVG.list(samples).svg();
   }
   function getSVGBody(uint16 index) external view override returns(bytes memory output) {

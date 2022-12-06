@@ -78,12 +78,14 @@ async function main() {
   const factoryToken = await ethers.getContractFactory("LuToken");
   const token = await factoryToken.deploy(providerContract.address);
 
-  await token.mint();
-  await token.mint();
-  await token.mint();
-  await token.mint();
-  await token.mint();
-  const svg = await token.tokenURI(1);
+//  await token.mint();
+  console.log("mint")
+  await token.mint( { value: ethers.utils.parseEther("0.001") });
+  await token.mint( { value: ethers.utils.parseEther("0.001") });
+  await token.mint( { value: ethers.utils.parseEther("1") });
+  // await token.mint();
+  // await token.mint();
+  const svg = await token.tokenURI(5);
   console.log(svg);
 
   //////
