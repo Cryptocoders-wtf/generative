@@ -16,7 +16,7 @@ contract LuToken is ProviderTokenA1 {
     IAssetProvider _assetProvider
   ) ProviderTokenA1(_assetProvider, "Laidback Lu", "Laidback Lu") {
     description = "Laidback Lu.";
-    mintPrice = 5e18;
+    mintPrice = 1e16;
     mintLimit = 5000;
   }
 
@@ -39,9 +39,5 @@ contract LuToken is ProviderTokenA1 {
           _safeMint(msg.sender, 1);
           return nextTokenId++;
       }
-
-
   }
-
-
 }
