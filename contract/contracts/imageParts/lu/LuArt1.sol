@@ -11,7 +11,6 @@ pragma solidity ^0.8.6;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "../../packages/graphics/Path.sol";
 import "../../packages/graphics/SVG.sol";
-import "hardhat/console.sol";
 
 import "../interfaces/IParts.sol";
 import "../interfaces/ISVGArt.sol";
@@ -185,8 +184,8 @@ contract LuArt1 is ISVGArt {
      
      output = SVG.document(
                            "0 0 1024 1024",
-                           generateSVGBody(index),
-                           SVG.list(samples).svg()
+                           SVG.list(samples).svg(),
+                           generateSVGBody(index)
                            );
   }
 

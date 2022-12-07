@@ -15,7 +15,7 @@ import "../packages/graphics/SVG.sol";
 
 import "../imageParts/interfaces/ISVGArt.sol";
 
-contract LuArtProvider is IAssetProvider, IERC165, Ownable {
+contract LogoArtProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
   // using Vector for Vector.Struct;
   // using Path for uint[];
@@ -23,7 +23,7 @@ contract LuArtProvider is IAssetProvider, IERC165, Ownable {
 
   ISVGArt immutable svgArt;
 
-  string constant providerKey = "LaidbackLu";
+  string constant providerKey = "Logo1";
   address public receiver;
 
   constructor(
@@ -44,7 +44,7 @@ contract LuArtProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function getProviderInfo() external view override returns(ProviderInfo memory) {
-    return ProviderInfo(providerKey, "Laidback Lu", this);
+    return ProviderInfo(providerKey, "Logo", this);
   }
 
   function totalSupply() external pure override returns(uint256) {
@@ -63,7 +63,7 @@ contract LuArtProvider is IAssetProvider, IERC165, Ownable {
 
   function generateSVGPart(uint256 _assetId) public view override returns(string memory svgPart, string memory tag) {
       // TODO: Must update if the number of variations of LuArt1 increases
-    bytes memory path = svgArt.getSVGBody(uint16(_assetId % 288));
+    bytes memory path = svgArt.getSVGBody(uint16(_assetId));
     
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
     svgPart = string(path);
