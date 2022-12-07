@@ -98,7 +98,7 @@ const main = async (folder: string, prefix: string) => {
       const code = [
         `pragma solidity ^0.8.6;`,
         ``,
-        `import "./IParts.sol";`,
+        `import "../../interfaces/IParts.sol";`,
         ``,
         `contract ${prefix}Parts${item.name} is IParts {`,
         ``,
@@ -145,8 +145,8 @@ const main = async (folder: string, prefix: string) => {
 
   const calls2 = array
     .map((item, index) => {
-      stream.write(`function ${item.name}() external view returns(string memory output) {\n`);
-      stream.write(`    return getParts(${index});      \n`);
+      stream.write(`function ${item.name}() external view returns(bytes memory output) {\n`);
+      stream.write(`    return getParts(${index}, 0);\n`);
       stream.write(`}\n`);
     })
     .join("\n");
