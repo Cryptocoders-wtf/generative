@@ -74,14 +74,16 @@ async function main() {
 
   const providerContract = await deploy("LuArtProvider", contract.address);
   console.log(`      prodider="${providerContract.address}"`);
-
+  const result6 = await providerContract.generateSVGDocument(0);
+  await writeFile(`./cache/lu_test6.svg`, result6, ()=>{});  
+  
   const factoryToken = await ethers.getContractFactory("LuToken");
   const token = await factoryToken.deploy(providerContract.address);
 
 //  await token.mint();
   console.log("mint")
-  await token.mint( { value: ethers.utils.parseEther("0.001") });
-  await token.mint( { value: ethers.utils.parseEther("0.001") });
+  await token.mint( { value: ethers.utils.parseEther("0.01") });
+  await token.mint( { value: ethers.utils.parseEther("0.01") });
   await token.mint( { value: ethers.utils.parseEther("1") });
   // await token.mint();
   // await token.mint();
