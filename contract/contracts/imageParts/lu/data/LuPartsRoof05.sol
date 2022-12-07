@@ -1,6 +1,6 @@
 pragma solidity ^0.8.6;
 
-import "./IParts.sol";
+import "../../interfaces/IParts.sol";
 
 contract LuPartsRoof05 is IParts {
 

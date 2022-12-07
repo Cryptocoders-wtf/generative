@@ -46,7 +46,7 @@ const dumpConvertSVG = (svg: ElementNode, paths: any[]) => {
   return ret;
 };
 
-const main = async (folder: string) => {
+const main = async (folder: string, prefix: string) => {
   const files = readdirSync(folder).filter((fileName) => {
     return fileName.endsWith(".svg");
   });
@@ -100,9 +100,9 @@ const main = async (folder: string) => {
         ``,
         `import "./IParts.sol";`,
         ``,
-        `contract LuParts${item.name} is IParts {`,
+        `contract ${prefix}Parts${item.name} is IParts {`,
         ``,
-        `      function svgData() external pure override returns(uint16 sizes, bytes[] memory paths, string[] memory fill, uint8[] memory stroke) {`,
+        `      function svgData(uint8 index) external pure override returns(uint16 sizes, bytes[] memory paths, string[] memory fill, uint8[] memory stroke) {`,
         `          sizes = ${length};`,
         `          paths = new bytes[](${length});`,
         `          fill = new string[](${length});`,
@@ -118,7 +118,7 @@ const main = async (folder: string) => {
       
       // const code = `bytes constant ${item.name} = "${item.bytes}"`;
       // console.log(outdir + "/data/" + item.name + ".txt");
-      writeFileSync(outdir + "/data/LuParts" + item.name + ".sol", code);
+      writeFileSync(outdir + "/data/" + prefix + "Parts" + item.name + ".sol", code);
       // stream.write(`${code}\n`);
 
       return code;
@@ -135,7 +135,7 @@ const main = async (folder: string) => {
   stream.write(`const cons = [\n`);
   const calls = array
     .map((item) => {
-      const code = `  "LuParts${item.name}",`;
+      const code = `  "${prefix}Parts${item.name}",`;
       stream.write(`${code}\n`);
 
       return code;
@@ -156,10 +156,11 @@ const main = async (folder: string) => {
 };
 
 const folder = process.argv[2];
+const prefix = process.argv[3];
 
 if (!folder) {
   console.log("npm run convert ./targetFolder/");
   process.exit(-1);
 }
 
-main(folder);
+main(folder, prefix);

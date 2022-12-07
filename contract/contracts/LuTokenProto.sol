@@ -5,7 +5,7 @@ pragma solidity ^0.8.6;
 import "./packages/ERC721P2P/ERC721P2P.sol";
 import { Base64 } from 'base64-sol/base64.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "./lu/ISVGArt.sol";
+import "./imageParts/interfaces/ISVGArt.sol";
 
 contract LuTokenProto is ERC721P2P {
   using Strings for uint256;

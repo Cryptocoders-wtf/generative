@@ -1,6 +1,6 @@
 pragma solidity ^0.8.6;
 
-import "./IParts.sol";
+import "../../interfaces/IParts.sol";
 
 contract LuPartsDoor2 is IParts {
 
