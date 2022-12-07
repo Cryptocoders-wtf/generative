@@ -66,7 +66,7 @@ contract LuArtProvider is IAssetProvider, IERC165, Ownable {
     bytes memory path = svgArt.getSVGBody(uint16(_assetId % 288));
     
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
-    svgPart = string(path);
+    svgPart = string(SVG.group(path).id(tag).svg());
   }
 
   function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
@@ -78,11 +78,10 @@ contract LuArtProvider is IAssetProvider, IERC165, Ownable {
     string memory svgPart;
     string memory tag;
     (svgPart, tag) = generateSVGPart(_assetId);
-    SVG.Element[] memory samples = new SVG.Element[](0);
     svgDocument = string(SVG.document(
       "0 0 1024 1024",
-      SVG.list(samples).svg(),
-      bytes(svgPart)
+      bytes(svgPart),
+      SVG.use(tag).svg()
     ));
   }
 }
