@@ -27,8 +27,8 @@ async function main() {
   await contractProvider.deployed();
   console.log(`      provider="${contractProvider.address}"`);
 
-  const svg = await contractProvider.generateSVGDocument(10);
-  await writeFile('./cache/nouns10.svg', svg, ()=>{});
+  const svg = await contractProvider.generateSVGDocument(505);
+  await writeFile('./cache/nouns505.svg', svg, ()=>{});
 
   const addresses = `export const addresses = {\n`
     + `  providerAddress:"${contractProvider.address}",\n`
