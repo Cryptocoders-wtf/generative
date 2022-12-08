@@ -14,14 +14,12 @@ async function main() {
 
   const [nounsDescriptorAddress] = await nounsToken.functions.descriptor();
   console.log("nounsDescriptor", nounsDescriptorAddress);
-  const nounsDescriptor = await ethers.getContractAt("INounsDescriptorV2", nounsDescriptorAddress);
+  const nounsDescriptor = await ethers.getContractAt("INounsDescriptor", nounsDescriptorAddress);
 
   const seeds = await nounsToken.functions.seeds(0);
   console.log("seeds", seeds);
-
   const svg = await nounsDescriptor.generateSVGImage(seeds);
   console.log(svg);
-  // const svg = await 
 
   const factory = await ethers.getContractFactory("NounsAssetProviderV2");
   const contractProvider = await factory.deploy(nounsTokenAddress, nounsDescriptorAddress);

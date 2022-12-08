@@ -16,7 +16,7 @@ async function main() {
   const nounsDescriptor = await ethers.getContractAt("INounsDescriptor", nounsDescriptorAddress);
 
   const seeds = await nounsToken.functions.seeds(0);
-  console.log("seeds0", seeds);
+  console.log("seeds", seeds);
   const svg = await nounsDescriptor.generateSVGImage(seeds);
   console.log(svg);
 
