@@ -16,10 +16,10 @@ async function main() {
   console.log("nounsDescriptor", nounsDescriptorAddress);
   const nounsDescriptor = await ethers.getContractAt("INounsDescriptor", nounsDescriptorAddress);
 
-  const seeds = await nounsToken.functions.seeds(0);
+  const seeds = await nounsToken.functions.seeds(505);
   console.log("seeds", seeds);
-  const svg = await nounsDescriptor.generateSVGImage(seeds);
-  console.log(svg);
+  // const svg = await nounsDescriptor.generateSVGImage(seeds);
+  // console.log(svg);
 
   const factory = await ethers.getContractFactory("NounsAssetProviderV2");
   const contractProvider = await factory.deploy(nounsTokenAddress, nounsDescriptorAddress);
@@ -29,7 +29,7 @@ async function main() {
   const addresses = `export const addresses = {\n`
     + `  providerAddress:"${contractProvider.address}",\n`
     + `}\n`;
-  await writeFile(`../src/utils/addresses/nouns_${network.name}.ts`, addresses, ()=>{});
+  await writeFile(`../src/utils/addresses/nounsV2_${network.name}.ts`, addresses, ()=>{});
 
   console.log(`npx hardhat verify ${contractProvider.address} ${nounsTokenAddress} ${nounsDescriptorAddress} --network ${network.name}`);
 }
