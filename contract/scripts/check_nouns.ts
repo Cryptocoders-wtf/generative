@@ -41,7 +41,7 @@ async function main() {
   console.log(headCountV1.toNumber());
   console.log(glassesCountV1.toNumber());
 
-  for (var assetId=500; assetId < 537; assetId++) {
+  for (var assetId = 0; assetId < 537; assetId++) {
     const seeds = await nounsToken.functions.seeds(assetId);
     // console.log("seeds", seeds);
     if (seeds.background >= backgroundCountV1
@@ -61,3 +61,8 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
+
+/*
+403, 405, 406, 407, 410, 415, 416, 417, 419, 422, 423, 434, 450, 452, 453,
+454, 456, 460, 471, 474, 475, 479, 487, 490, 492, 497, 499, 505, 512, 519
+*/
