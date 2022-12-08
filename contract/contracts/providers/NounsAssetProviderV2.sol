@@ -14,22 +14,22 @@ import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import { Base64 } from 'base64-sol/base64.sol';
 import 'assetprovider.sol/IAssetProvider.sol';
-import '../external/nouns/interfaces/INounsDescriptorV2.sol';
+import '../external/nouns/interfaces/INounsDescriptor.sol';
 import '../external/nouns/interfaces/INounsSeeder.sol';
 import { NounsToken } from '../external/nouns/NounsToken.sol';
+import '../packages/graphics/SVG.sol';
 
 // IAssetProvider wrapper for composability
 contract NounsAssetProviderV2 is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
+  using SVG for SVG.Element;
 
   string constant providerKey = 'nouns';
 
   NounsToken public immutable nounsToken;
-  INounsDescriptorV2 public immutable descriptor;
 
-  constructor(NounsToken _nounsToken, INounsDescriptorV2 _descriptor) {
+  constructor(NounsToken _nounsToken) {
     nounsToken = _nounsToken;
-    descriptor = _descriptor;
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -44,7 +44,8 @@ contract NounsAssetProviderV2 is IAssetProvider, IERC165, Ownable {
     return ProviderInfo(providerKey, 'Nouns', this);
   }
 
-  function generateSVGPart(uint256 _assetId) external view override returns (string memory svgPart, string memory tag) {
+  function generateSVGPart(uint256 _assetId) public view override returns (string memory svgPart, string memory tag) {
+    INounsDescriptor descriptor = INounsDescriptor(address(nounsToken.descriptor())); // @notice explicit downcasting
     uint256 backgroundCount = descriptor.backgroundCount();
     uint256 bodyCount = descriptor.bodyCount();
     uint256 accessoryCount = descriptor.accessoryCount();
@@ -77,6 +78,7 @@ contract NounsAssetProviderV2 is IAssetProvider, IERC165, Ownable {
   }
 
   function svgForSeed(INounsSeeder.Seed memory _seed, string memory _tag) public view returns (string memory svgPart) {
+    INounsDescriptor descriptor = INounsDescriptor(address(nounsToken.descriptor())); // @notice explicit downcasting
     string memory encodedSvg = descriptor.generateSVGImage(_seed);
     bytes memory svg = Base64.decode(encodedSvg);
     uint256 length = svg.length;
@@ -132,5 +134,13 @@ contract NounsAssetProviderV2 is IAssetProvider, IERC165, Ownable {
 
   function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
     // nothing to return
+  }
+
+  // For debugging
+  function generateSVGDocument(uint256 _assetId) external view returns (string memory svgDocument) {
+    string memory svgPart;
+    string memory tag;
+    (svgPart, tag) = generateSVGPart(_assetId);
+    svgDocument = string(SVG.document('0 0 1024 1024', bytes(svgPart), SVG.use(tag).svg()));
   }
 }
