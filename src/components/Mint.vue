@@ -13,8 +13,8 @@
       </p>
       <div v-if="totalSupply < mintLimit">
         <div v-if="restricted && totalBalance == 0" class="text-yellow-500">
-          Minting is available only to "{{ restricted }}" NFT holders at
-          this moment. Please wait for the announcement from @nounsfes. 
+          Minting is available only to "{{ restricted }}" NFT holders at this
+          moment. Please wait for the announcement from @nounsfes.
         </div>
         <div v-else-if="limit && limit <= balanceOf" class="text-yellow-500">
           The maximum number of tokens you can mint is {{ limit }}.
@@ -99,7 +99,7 @@ export default defineComponent({
     "limit",
     "assetProvider",
   ],
-  emits: ['minted'],
+  emits: ["minted"],
   components: {
     NetworkGate,
     References,
@@ -127,7 +127,9 @@ export default defineComponent({
         );
         totalBalance.value = result.toNumber();
       }
-      const [balance] = await contractRO.functions.balanceOf(store.state.account);
+      const [balance] = await contractRO.functions.balanceOf(
+        store.state.account
+      );
       balanceOf.value = balance;
 
       const [value] = await contractRO.functions.mintPriceFor(
@@ -151,9 +153,11 @@ export default defineComponent({
     const provider =
       props.network == "localhost"
         ? new ethers.providers.JsonRpcProvider()
-        : (props.network == "mumbai") ?
-        new ethers.providers.JsonRpcProvider("https://matic-mumbai.chainstacklabs.com") : 
-        alchemyKey
+        : props.network == "mumbai"
+        ? new ethers.providers.JsonRpcProvider(
+            "https://matic-mumbai.chainstacklabs.com"
+          )
+        : alchemyKey
         ? new ethers.providers.AlchemyProvider(props.network, alchemyKey)
         : new ethers.providers.InfuraProvider(props.network);
 
@@ -172,7 +176,8 @@ export default defineComponent({
       ISVGHelper.wabi.abi,
       provider
     );
-    const providerAddress = addresses[props.assetProvider || "dotNouns"][props.network];
+    const providerAddress =
+      addresses[props.assetProvider || "dotNouns"][props.network];
 
     const tokens = ref<Token[]>([]);
     const fetchTokens = async () => {

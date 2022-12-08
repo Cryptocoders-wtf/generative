@@ -139,7 +139,7 @@ export const addresses: any = {
     //localhost: bitcoin_localhost.colorSchemes,
     mainnet: bitcoin_mainnet.colorSchemes,
     localhost: color_localhost.colorSchemes,
-    mumbai: color_mumbai.colorSchemes
+    mumbai: color_mumbai.colorSchemes,
   },
   reddit: {
     goerli: reddit_goerli.redditArtProvider,
@@ -218,5 +218,5 @@ export const addresses: any = {
     localhost: dynamic_mainnet.tokenGate, // already deployed on mainnet!
     mainnet: dynamic_mainnet.tokenGate,
     goerli: dynamic_goerli.tokenGate,
-  }
+  },
 };

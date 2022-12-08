@@ -18,7 +18,8 @@
     "hardhat": "^2.11.2",
     "prettier-plugin-solidity": "^1.0.0",
     "randomizer.sol": "^1.0.0",
-    "trigonometry.sol": "^1.0.0"
+    "trigonometry.sol": "^1.0.0",
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
     "base64-sol": "^1.1.0"
