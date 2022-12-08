@@ -30,10 +30,14 @@ library Randomizer {
 
   /**
    * Returns a randomized value based on the original value and ration (in percentage).
-   * It also returns an updated seed. 
+   * It also returns an updated seed.
    */
-  function randomize(Seed memory _seed, uint256 _value, uint256 _ratio) internal pure returns (Seed memory seed, uint256 value) {
-    uint256 limit = _value * _ratio / 100;
+  function randomize(
+    Seed memory _seed,
+    uint256 _value,
+    uint256 _ratio
+  ) internal pure returns (Seed memory seed, uint256 value) {
+    uint256 limit = (_value * _ratio) / 100;
     uint256 delta;
     (seed, delta) = random(_seed, limit * 2);
     value = _value - limit + delta;

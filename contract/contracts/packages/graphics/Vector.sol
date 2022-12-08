@@ -9,7 +9,7 @@
 
 pragma solidity ^0.8.6;
 
-import "trigonometry.sol/Trigonometry.sol";
+import 'trigonometry.sol/Trigonometry.sol';
 
 library Vector {
   using Trigonometry for uint;
@@ -22,33 +22,33 @@ library Vector {
     int y; // fixed point * ONE
   }
 
-  function vector(int _x, int _y) internal pure returns(Struct memory newVector) {
+  function vector(int _x, int _y) internal pure returns (Struct memory newVector) {
     newVector.x = _x * ONE;
     newVector.y = _y * ONE;
   }
 
-  function vectorWithAngle(int _angle, int _radius) internal pure returns(Struct memory newVector) {
+  function vectorWithAngle(int _angle, int _radius) internal pure returns (Struct memory newVector) {
     uint angle = uint(_angle + (PI2 << 64));
     newVector.x = _radius * angle.cos();
     newVector.y = _radius * angle.sin();
   }
 
-  function div(Struct memory _vector, int _value) internal pure returns(Struct memory newVector) {
+  function div(Struct memory _vector, int _value) internal pure returns (Struct memory newVector) {
     newVector.x = _vector.x / _value;
     newVector.y = _vector.y / _value;
   }
 
-  function mul(Struct memory _vector, int _value) internal pure returns(Struct memory newVector) {
+  function mul(Struct memory _vector, int _value) internal pure returns (Struct memory newVector) {
     newVector.x = _vector.x * _value;
     newVector.y = _vector.y * _value;
   }
 
-  function add(Struct memory _vector, Struct memory _vector2) internal pure returns(Struct memory newVector) {
+  function add(Struct memory _vector, Struct memory _vector2) internal pure returns (Struct memory newVector) {
     newVector.x = _vector.x + _vector2.x;
     newVector.y = _vector.y + _vector2.y;
   }
 
-  function rotate(Struct memory _vector, int _angle) internal pure returns(Struct memory newVector) {
+  function rotate(Struct memory _vector, int _angle) internal pure returns (Struct memory newVector) {
     uint angle = uint(_angle + (PI2 << 64));
     int cos = angle.cos();
     int sin = angle.sin();
