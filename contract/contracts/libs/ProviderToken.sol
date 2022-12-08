@@ -4,7 +4,7 @@
  * This is a part of an effort to create a decentralized autonomous marketplace for digital assets,
  * which allows artists and developers to sell their arts and generative arts.
  *
- * Please see "https://fullyonchain.xyz/" for details. 
+ * Please see "https://fullyonchain.xyz/" for details.
  *
  * Created by Satoshi Nakajima (@snakajima)
  */
@@ -13,11 +13,11 @@ pragma solidity ^0.8.6;
 
 // import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 // import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "../packages/ERC721P2P/ERC721P2P.sol";
+import '../packages/ERC721P2P/ERC721P2P.sol';
 import { Base64 } from 'base64-sol/base64.sol';
-import "@openzeppelin/contracts/utils/Strings.sol";
+import '@openzeppelin/contracts/utils/Strings.sol';
 import { IProxyRegistry } from '../external/opensea/IProxyRegistry.sol';
-import "assetprovider.sol/IAssetProvider.sol";
+import 'assetprovider.sol/IAssetProvider.sol';
 
 /**
  * ProviderToken is an abstract implentation of ERC721, which is built on top of an asset provider.
@@ -36,9 +36,9 @@ abstract contract ProviderToken is ERC721P2P {
   uint public nextTokenId;
 
   // To be specified by the concrete contract
-  string public description; 
-  uint public mintPrice; 
-  uint public mintLimit; 
+  string public description;
+  uint public mintPrice;
+  uint public mintLimit;
 
   // OpenSea's Proxy Registry
   IProxyRegistry public immutable proxyRegistry;
@@ -50,13 +50,13 @@ abstract contract ProviderToken is ERC721P2P {
     IProxyRegistry _proxyRegistry,
     string memory _title,
     string memory _shortTitle
-  ) ERC721(_title, _shortTitle)  {
+  ) ERC721(_title, _shortTitle) {
     assetProvider = _assetProvider;
     proxyRegistry = _proxyRegistry;
   }
 
   function setDescription(string memory _description) external onlyOwner {
-      description = _description;
+    description = _description;
   }
 
   function setMintPrice(uint256 _price) external onlyOwner {
@@ -68,19 +68,23 @@ abstract contract ProviderToken is ERC721P2P {
   }
 
   /**
-    * @notice Override isApprovedForAll to whitelist user's OpenSea proxy accounts to enable gas-less listings.
-    */
-  function isApprovedForAll(address owner, address operator) public view virtual override(ERC721, IERC721) returns (bool) {
-      // Whitelist OpenSea proxy contract for easy trading.
-      if (proxyRegistry.proxies(owner) == operator) {
-          return true;
-      }
-      return super.isApprovedForAll(owner, operator);
+   * @notice Override isApprovedForAll to whitelist user's OpenSea proxy accounts to enable gas-less listings.
+   */
+  function isApprovedForAll(
+    address owner,
+    address operator
+  ) public view virtual override(ERC721, IERC721) returns (bool) {
+    // Whitelist OpenSea proxy contract for easy trading.
+    if (proxyRegistry.proxies(owner) == operator) {
+      return true;
+    }
+    return super.isApprovedForAll(owner, operator);
   }
 
-  string constant SVGHeader = '<svg viewBox="0 0 1024 1024'
-      '"  xmlns="http://www.w3.org/2000/svg">\n'
-      '<defs>\n';
+  string constant SVGHeader =
+    '<svg viewBox="0 0 1024 1024'
+    '"  xmlns="http://www.w3.org/2000/svg">\n'
+    '<defs>\n';
 
   /*
    * A function of IAssetStoreToken interface.
@@ -89,41 +93,52 @@ abstract contract ProviderToken is ERC721P2P {
   function generateSVG(uint256 _assetId) internal view returns (string memory) {
     // Constants of non-value type not yet implemented by Solidity
     (string memory svgPart, string memory tag) = assetProvider.generateSVGPart(_assetId);
-    return string(abi.encodePacked(
-      SVGHeader, 
-      svgPart,
-      '</defs>\n'
-      '<use href="#', tag, '" />\n'
-      '</svg>\n'));
+    return
+      string(
+        abi.encodePacked(
+          SVGHeader,
+          svgPart,
+          '</defs>\n'
+          '<use href="#',
+          tag,
+          '" />\n'
+          '</svg>\n'
+        )
+      );
   }
 
   /**
-    * @notice A distinct Uniform Resource Identifier (URI) for a given asset.
-    * @dev See {IERC721Metadata-tokenURI}.
-    */
+   * @notice A distinct Uniform Resource Identifier (URI) for a given asset.
+   * @dev See {IERC721Metadata-tokenURI}.
+   */
   function tokenURI(uint256 _tokenId) public view override returns (string memory) {
     require(_exists(_tokenId), 'ProviderToken.tokenURI: nonexistent token');
     bytes memory image = bytes(generateSVG(_tokenId));
 
-    return string(
-      abi.encodePacked(
-        'data:application/json;base64,',
-        Base64.encode(
-          bytes(
-            abi.encodePacked(
-              '{"name":"', tokenName(_tokenId), 
-                '","description":"', description, 
-                '","attributes":[', generateTraits(_tokenId), 
-                '],"image":"data:image/svg+xml;base64,', 
-                Base64.encode(image), 
-              '"}')
+    return
+      string(
+        abi.encodePacked(
+          'data:application/json;base64,',
+          Base64.encode(
+            bytes(
+              abi.encodePacked(
+                '{"name":"',
+                tokenName(_tokenId),
+                '","description":"',
+                description,
+                '","attributes":[',
+                generateTraits(_tokenId),
+                '],"image":"data:image/svg+xml;base64,',
+                Base64.encode(image),
+                '"}'
+              )
+            )
           )
         )
-      )
-    );
+      );
   }
 
-  function tokenName(uint256 _tokenId) internal view virtual returns(string memory) {
+  function tokenName(uint256 _tokenId) internal view virtual returns (string memory) {
     return _tokenId.toString();
   }
 
@@ -133,17 +148,17 @@ abstract contract ProviderToken is ERC721P2P {
    * 2. Check for the required payment, by calling mintPriceFor()
    * 3. Call the processPayout method of the asset provider with appropriate value
    */
-  function mint() public virtual payable returns(uint256 tokenId) {
-    require(nextTokenId < mintLimit, "Sold out");
-    tokenId = nextTokenId++; 
+  function mint() public payable virtual returns (uint256 tokenId) {
+    require(nextTokenId < mintLimit, 'Sold out');
+    tokenId = nextTokenId++;
     _safeMint(msg.sender, tokenId);
   }
 
   /**
    * The concreate contract may override to offer custom pricing,
-   * such as token-gated discount. 
+   * such as token-gated discount.
    */
-  function mintPriceFor(address) public virtual view returns(uint256) {
+  function mintPriceFor(address) public view virtual returns (uint256) {
     return mintPrice;
   }
 

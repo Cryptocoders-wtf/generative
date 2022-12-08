@@ -10,13 +10,13 @@
 pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
-import "assetprovider.sol/IAssetProvider.sol";
-import "randomizer.sol/Randomizer.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
+import 'assetprovider.sol/IAssetProvider.sol';
+import 'randomizer.sol/Randomizer.sol';
+import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
-import "../interfaces/IColorSchemes.sol";
-import "../interfaces/ILayoutGenerator.sol";
-import "fully-on-chain.sol/SVG.sol";
+import '../interfaces/IColorSchemes.sol';
+import '../interfaces/ILayoutGenerator.sol';
+import 'fully-on-chain.sol/SVG.sol';
 import '../interfaces/IOnChainWallet.sol';
 
 /**
@@ -43,20 +43,18 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-    return
-      interfaceId == type(IAssetProvider).interfaceId ||
-      interfaceId == type(IERC165).interfaceId;
+    return interfaceId == type(IAssetProvider).interfaceId || interfaceId == type(IERC165).interfaceId;
   }
 
-  function getOwner() external override view returns (address) {
+  function getOwner() external view override returns (address) {
     return owner();
   }
 
-  function getProviderInfo() external view override returns(ProviderInfo memory) {
-    return ProviderInfo("alphabet", "Alphabet", this);
+  function getProviderInfo() external view override returns (ProviderInfo memory) {
+    return ProviderInfo('alphabet', 'Alphabet', this);
   }
 
-  function totalSupply() external pure override returns(uint256) {
+  function totalSupply() external pure override returns (uint256) {
     return 0;
   }
 
@@ -64,32 +62,32 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
     receiver = _receiver;
   }
 
-  function processPayout(uint256 _assetId) external override payable {
+  function processPayout(uint256 _assetId) external payable override {
     uint amount = msg.value / 2;
-    receiver.deposite{value:amount}();
-    emit Payout("alphabet", _assetId, payable(address(receiver)), amount);
+    receiver.deposite{ value: amount }();
+    emit Payout('alphabet', _assetId, payable(address(receiver)), amount);
 
     amount = msg.value - amount; // eliminating round error
-    font.processPayout{value:amount / 5}(); // 10% distribution to the font provider
+    font.processPayout{ value: amount / 5 }(); // 10% distribution to the font provider
 
     amount = amount - amount / 5;
     address payable payableTo = payable(owner());
     payableTo.transfer(amount);
-    emit Payout("alphabet", _assetId, payableTo, amount);
+    emit Payout('alphabet', _assetId, payableTo, amount);
   }
 
   function generateTraits(uint256 _assetId) external view returns (string memory) {
     return colorSchemes.generateTraits(_assetId);
   }
 
-  function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
+  function generateSVGPart(uint256 _assetId) external view override returns (string memory svgPart, string memory tag) {
     Randomizer.Seed memory seed;
     string[] memory scheme;
     (seed, scheme) = colorSchemes.getColorScheme(_assetId);
-    tag = string(abi.encodePacked("alphabet", _assetId.toString()));
+    tag = string(abi.encodePacked('alphabet', _assetId.toString()));
 
-    for (uint i=0; i<scheme.length; i++) {
-      scheme[i] = string(abi.encodePacked('#', scheme[i]));      
+    for (uint i = 0; i < scheme.length; i++) {
+      scheme[i] = string(abi.encodePacked('#', scheme[i]));
     }
 
     ILayoutGenerator.Node[] memory nodes;
@@ -97,21 +95,26 @@ contract AlphabetProvider is IAssetProvider, IERC165, Ownable {
 
     SVG.Element[] memory parts = new SVG.Element[](nodes.length);
     bytes memory text = new bytes(1);
-    bytes memory scrabble = bytes("AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIII"
-                              "IIIIIJKLLLLMMNNNNNNOOOOOOPPQRRTTTTTTUUUUVVWWXYYZ");
+    bytes memory scrabble = bytes(
+      'AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIII'
+      'IIIIIJKLLLLMMNNNNNNOOOOOOPPQRRTTTTTTUUUUVVWWXYYZ'
+    );
     for (uint i = 0; i < nodes.length; i++) {
       ILayoutGenerator.Node memory node = nodes[i];
       uint index;
       (seed, index) = seed.random(scrabble.length);
       text[0] = scrabble[index];
       uint width = font.widthOf(string(text));
-      width = ((1024 - width) / 2 * node.size) / 1024;
-      parts[i] = SVG.group([
-                    SVG.rect(int(node.x), int(node.y), node.size, node.size)
-                      .fill(scheme[i % scheme.length]),
-                    SVG.text(font, string(text))
-                      .transform(TX.translate(int(node.x + width), int(node.y + node.size/10)).scale1000(node.size))]);
+      width = (((1024 - width) / 2) * node.size) / 1024;
+      parts[i] = SVG.group(
+        [
+          SVG.rect(int(node.x), int(node.y), node.size, node.size).fill(scheme[i % scheme.length]),
+          SVG.text(font, string(text)).transform(
+            TX.translate(int(node.x + width), int(node.y + node.size / 10)).scale1000(node.size)
+          )
+        ]
+      );
     }
-    svgPart = string(SVG.group(parts).id(tag).fill("#222").svg());
+    svgPart = string(SVG.group(parts).id(tag).fill('#222').svg());
   }
 }
