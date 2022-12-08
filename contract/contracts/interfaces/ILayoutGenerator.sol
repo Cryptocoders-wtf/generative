@@ -9,7 +9,7 @@
 
 pragma solidity ^0.8.6;
 
-import "randomizer.sol/Randomizer.sol";
+import 'randomizer.sol/Randomizer.sol';
 
 interface ILayoutGenerator {
   struct Node {
@@ -19,6 +19,8 @@ interface ILayoutGenerator {
     string scale;
   }
 
-  function generate(Randomizer.Seed memory _seed, uint _props)
-              external view returns(Randomizer.Seed memory seed, Node[] memory nodes);
+  function generate(
+    Randomizer.Seed memory _seed,
+    uint _props
+  ) external view returns (Randomizer.Seed memory seed, Node[] memory nodes);
 }

@@ -9,15 +9,15 @@
 
 pragma solidity ^0.8.6;
 
-import "randomizer.sol/Randomizer.sol";
-import "trigonometry.sol/Trigonometry.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "../packages/graphics/Path.sol";
-import "../packages/graphics/SVG.sol";
-import "../packages/graphics/Text.sol";
-import "hardhat/console.sol";
-import "assetprovider.sol/IAssetProvider.sol";
-import "../providers/NounsAssetProvider.sol";
+import 'randomizer.sol/Randomizer.sol';
+import 'trigonometry.sol/Trigonometry.sol';
+import '@openzeppelin/contracts/utils/Strings.sol';
+import '../packages/graphics/Path.sol';
+import '../packages/graphics/SVG.sol';
+import '../packages/graphics/Text.sol';
+import 'hardhat/console.sol';
+import 'assetprovider.sol/IAssetProvider.sol';
+import '../providers/NounsAssetProvider.sol';
 
 contract SVGTest5Nouns {
   using Strings for uint256;
@@ -36,14 +36,11 @@ contract SVGTest5Nouns {
     dotNouns = _dotNouns;
   }
 
-  function main() external view returns(string memory output) {
+  function main() external view returns (string memory output) {
     SVG.Element[] memory samples = new SVG.Element[](16);
     SVG.Element[] memory uses = new SVG.Element[](16);
 
-    samples[0] = SVG.rect(256, 256, 512, 512)
-                      .fill("yellow")
-                      .stroke("blue", 10)
-                      .transform("rotate(30 512 512)");
+    samples[0] = SVG.rect(256, 256, 512, 512).fill('yellow').stroke('blue', 10).transform('rotate(30 512 512)');
 
     string memory svgPart;
     string memory svgId;
@@ -53,22 +50,14 @@ contract SVGTest5Nouns {
     samples[2] = SVG.group(bytes(svgPart));
     samples[3] = SVG.use(svgId);
 
-    for (uint i=0; i<4; i++) {
+    for (uint i = 0; i < 4; i++) {
       int x = int(256 * (i % 4));
       int y = int(256 * (i / 4));
-      string memory tag = string(abi.encodePacked("test", i.toString()));
+      string memory tag = string(abi.encodePacked('test', i.toString()));
       samples[i] = samples[i].id(tag);
-      uses[i] = SVG.group([
-        SVG.rect().fill("#c0c0c0"), 
-        SVG.use(tag)
-      ]).transform((TX.translate(x, y).scale("0.24"))); 
+      uses[i] = SVG.group([SVG.rect().fill('#c0c0c0'), SVG.use(tag)]).transform((TX.translate(x, y).scale('0.24')));
     }
 
-    output = SVG.document(
-      "0 0 1024 1024",
-      SVG.list(samples).svg(),
-      SVG.list(uses).svg()
-    );
+    output = SVG.document('0 0 1024 1024', SVG.list(samples).svg(), SVG.list(uses).svg());
   }
 }
-

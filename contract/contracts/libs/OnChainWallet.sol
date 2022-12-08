@@ -12,8 +12,7 @@ import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import '../interfaces/IOnChainWallet.sol';
 
 contract OnChainWallet is Ownable, IOnChainWallet {
-  function deposite() external payable override {
-  }
+  function deposite() external payable override {}
 
   function withdraw(uint _amount) public override onlyOwner {
     address payable payableTo = payable(owner());

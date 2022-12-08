@@ -10,12 +10,12 @@
 pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
-import "assetprovider.sol/IAssetProvider.sol";
-import "randomizer.sol/Randomizer.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
+import 'assetprovider.sol/IAssetProvider.sol';
+import 'randomizer.sol/Randomizer.sol';
+import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
-import "hardhat/console.sol";
-import "../interfaces/IColorSchemes.sol";
+import 'hardhat/console.sol';
+import '../interfaces/IColorSchemes.sol';
 
 /**
  * MultiplexProvider create a new asset provider from another asset provider,
@@ -33,7 +33,13 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
   IAssetProvider public provider;
   IColorSchemes public colorSchemes;
 
-  constructor(IAssetProvider _provider, IColorSchemes _colorSchemes, uint256 _assetId, string memory _key, string memory _name) {
+  constructor(
+    IAssetProvider _provider,
+    IColorSchemes _colorSchemes,
+    uint256 _assetId,
+    string memory _key,
+    string memory _name
+  ) {
     provider = _provider;
     colorSchemes = _colorSchemes;
     providerKey = _key;
@@ -42,26 +48,24 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-    return
-      interfaceId == type(IAssetProvider).interfaceId ||
-      interfaceId == type(IERC165).interfaceId;
+    return interfaceId == type(IAssetProvider).interfaceId || interfaceId == type(IERC165).interfaceId;
   }
 
-  function getOwner() external override view returns (address) {
+  function getOwner() external view override returns (address) {
     return owner();
   }
 
-  function getProviderInfo() external view override returns(ProviderInfo memory) {
+  function getProviderInfo() external view override returns (ProviderInfo memory) {
     return ProviderInfo(providerKey, providerName, this);
   }
 
-  function totalSupply() external pure override returns(uint256) {
-    return 0; 
+  function totalSupply() external pure override returns (uint256) {
+    return 0;
   }
 
-  function processPayout(uint256) external override payable {
-    // Notice that we don't use the specified _assetId. 
-    provider.processPayout{value:msg.value}(providerAssetId);
+  function processPayout(uint256) external payable override {
+    // Notice that we don't use the specified _assetId.
+    provider.processPayout{ value: msg.value }(providerAssetId);
   }
 
   function generateTraits(uint256 _assetId) external view returns (string memory) {
@@ -74,14 +78,14 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
     uint sizeVar;
   }
 
-  function generateSVGPart(uint256 _assetId) external view override returns(string memory svgPart, string memory tag) {
+  function generateSVGPart(uint256 _assetId) external view override returns (string memory svgPart, string memory tag) {
     Properties memory props;
     Randomizer.Seed memory seed;
     (seed, props.scheme) = colorSchemes.getColorScheme(_assetId);
     (seed, props.count) = seed.random(18);
     props.count += 6;
     props.sizeVar = 18 - (props.count - 6) / 2;
-    
+
     string memory defs;
     string memory tagPart;
     (defs, tagPart) = provider.generateSVGPart(providerAssetId);
@@ -101,7 +105,7 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
       if (size < 100) {
         zero = '0';
       }
-      uint margin = (1024 - 1024 * size / 1000) / 2;
+      uint margin = (1024 - (1024 * size) / 1000) / 2;
       uint x;
       uint y;
       (seed, x) = seed.randomize(margin, 100);
@@ -109,16 +113,24 @@ contract RepeatProvider is IAssetProvider, IERC165, Ownable {
       uint angle;
       (seed, angle) = seed.random(60);
       angle *= 60;
-      body = abi.encodePacked(body, '" transform="translate(',
-        x.toString(), ',', y.toString(),
-        ') scale(0.',zero, size.toString(),', 0.',zero, size.toString(),') rotate(',angle.toString(),', 512, 512)" />\n');
+      body = abi.encodePacked(
+        body,
+        '" transform="translate(',
+        x.toString(),
+        ',',
+        y.toString(),
+        ') scale(0.',
+        zero,
+        size.toString(),
+        ', 0.',
+        zero,
+        size.toString(),
+        ') rotate(',
+        angle.toString(),
+        ', 512, 512)" />\n'
+      );
     }
 
-    svgPart = string(abi.encodePacked(
-      defs,
-      '<g id="', tag, '">\n',
-      body,
-      '</g>\n'
-    ));
+    svgPart = string(abi.encodePacked(defs, '<g id="', tag, '">\n', body, '</g>\n'));
   }
 }

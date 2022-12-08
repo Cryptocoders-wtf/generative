@@ -10,13 +10,16 @@
 pragma solidity ^0.8.6;
 
 interface IFontProvider {
-  function height() external view returns(uint);
-  function baseline() external view returns(uint);
-  function widthOf(string memory _char) external view returns(uint);
-  function pathOf(string memory _char) external view returns(bytes memory);
+  function height() external view returns (uint);
+
+  function baseline() external view returns (uint);
+
+  function widthOf(string memory _char) external view returns (uint);
+
+  function pathOf(string memory _char) external view returns (bytes memory);
 
   /**
-   * This function processes the royalty payment from the decentralized autonomous marketplace. 
+   * This function processes the royalty payment from the decentralized autonomous marketplace.
    */
   function processPayout() external payable;
 

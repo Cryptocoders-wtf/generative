@@ -10,7 +10,11 @@
 pragma solidity ^0.8.6;
 
 library Text {
-  function extractLine(string memory _text, uint _index, uint _ch) internal pure returns(string memory line, uint index) {
+  function extractLine(
+    string memory _text,
+    uint _index,
+    uint _ch
+  ) internal pure returns (string memory line, uint index) {
     uint length = bytes(_text).length;
     assembly {
       line := mload(0x40)
@@ -19,7 +23,11 @@ library Text {
       let word := 0
       let shift := 0
       let i
-      for {i := _index} lt(i, length) {i := add(i, 1)} {
+      for {
+        i := _index
+      } lt(i, length) {
+        i := add(i, 1)
+      } {
         if eq(shift, 0) {
           word := mload(rbuf)
           mstore(wbuf, word)
@@ -40,19 +48,18 @@ library Text {
     }
   }
 
-
-  function split(string memory _str, uint _ch) internal pure returns(string[] memory strs) {
+  function split(string memory _str, uint _ch) internal pure returns (string[] memory strs) {
     uint length = bytes(_str).length;
     uint count;
-    for (uint i=0; i<length; i+=1) {
-      (,i) = extractLine(_str, i, _ch);
-      count+=1;
+    for (uint i = 0; i < length; i += 1) {
+      (, i) = extractLine(_str, i, _ch);
+      count += 1;
     }
     strs = new string[](count);
     count = 0;
-    for (uint i=0; i<length; i+=1) {
-      (strs[count],i) = extractLine(_str, i, _ch);
-      count+=1;
+    for (uint i = 0; i < length; i += 1) {
+      (strs[count], i) = extractLine(_str, i, _ch);
+      count += 1;
     }
   }
 }
