@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/Cryptocoders-wtf/generative/issues"
   },
-  "homepage": "https://github.com/Cryptocoders-wtf/generative/tree/main/contract/contracts/packages/graphics",
+  "homepage": "https://github.com/Cryptocoders-wtf/generative/tree/main/contract/contracts/packages/graphics#readme",
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
     "bytes-array.sol": "^1.0.2",
