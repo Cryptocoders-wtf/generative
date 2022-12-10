@@ -12,10 +12,14 @@ import './libs/ProviderTokenA1.sol';
 contract LuToken is ProviderTokenA1 {
   using Strings for uint256;
 
-  constructor(IAssetProvider _assetProvider) ProviderTokenA1(_assetProvider, 'Laidback Lu', 'Laidback Lu') {
+  // lu committee
+  address public committee;
+
+  constructor(IAssetProvider _assetProvider, address _committee) ProviderTokenA1(_assetProvider, 'Laidback Lu', 'Laidback Lu') {
     description = 'Laidback Lu.';
     mintPrice = 1e16;
     mintLimit = 5000;
+    committee = _committee;
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns (string memory) {
@@ -35,7 +39,12 @@ contract LuToken is ProviderTokenA1 {
       }
       require(msg.value >= mintPrice, 'Must send the mint price');
       _safeMint(msg.sender, 1);
+      
+      address payable payableTo = payable(committee);
+      payableTo.transfer(address(this).balance);
+      
       return nextTokenId++;
     }
   }
+
 }
