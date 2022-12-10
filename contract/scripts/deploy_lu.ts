@@ -77,8 +77,10 @@ async function main() {
   const result6 = await providerContract.generateSVGDocument(0);
   await writeFile(`./cache/lu_test6.svg`, result6, ()=>{});  
   
+
+  const committee = "0x818Fb9d440968dB9fCB06EEF53C7734Ad70f6F0e"; // ai
   const factoryToken = await ethers.getContractFactory("LuToken");
-  const token = await factoryToken.deploy(providerContract.address);
+  const token = await factoryToken.deploy(providerContract.address, committee);
   console.log(`      contract="${token.address}"`);
 
 //  await token.mint();
