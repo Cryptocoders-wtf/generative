@@ -37,7 +37,7 @@ contract SVGTest7Filter {
 
     samples[0] = SVG.group([SVG.rect(256, 256, 640, 640).fill('yellow'), SVG.circle(320, 320, 280)]);
     samples[1] = SVG.group([SVGFilter.roughPaper("roughPaper"), 
-                            SVG.rect(256, 256, 640, 640).fill('yellow')]);
+                            SVG.rect(256, 256, 640, 640).fill('yellow').filter('roughPaper')]);
 
     for (uint i = 0; i < 2; i++) {
       int x = int(256 * (i % 4));
