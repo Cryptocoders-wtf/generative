@@ -12,7 +12,7 @@ pragma solidity ^0.8.6;
 import './SVG.sol';
 
 library SVGFilter {
-  function rouchPaper(string memory id) internal pure returns (SVG.Element memory elem) {
+  function roughPaper(string memory id) internal pure returns (SVG.Element memory elem) {
     elem.head = abi.encodePacked('<filter style="color-interpolation-filters:sRGB;" id="', id);
     elem.tail = bytes(
       '" >'

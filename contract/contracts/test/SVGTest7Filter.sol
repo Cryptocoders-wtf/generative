@@ -14,6 +14,7 @@ import 'trigonometry.sol/Trigonometry.sol';
 import '@openzeppelin/contracts/utils/Strings.sol';
 import '../packages/graphics/Path.sol';
 import '../packages/graphics/SVG.sol';
+import '../packages/graphics/SVGFilter.sol';
 import '../packages/graphics/Text.sol';
 import '../fonts/LondrinaSolid.sol';
 import 'hardhat/console.sol';
@@ -35,8 +36,10 @@ contract SVGTest7Filter {
     SVG.Element[] memory uses = new SVG.Element[](16);
 
     samples[0] = SVG.group([SVG.rect(256, 256, 640, 640).fill('yellow'), SVG.circle(320, 320, 280)]);
+    samples[1] = SVG.group([SVGFilter.roughPaper("roughPaper"), 
+                            SVG.rect(256, 256, 640, 640).fill('yellow')]);
 
-    for (uint i = 0; i < 1; i++) {
+    for (uint i = 0; i < 2; i++) {
       int x = int(256 * (i % 4));
       int y = int(256 * (i / 4));
       string memory tag = string(abi.encodePacked('test', i.toString()));
