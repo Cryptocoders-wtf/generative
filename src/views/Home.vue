@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
-    <h1 class="mt-2 mb-2 text-xl font-bold">Fully On-Chain Generative Art</h1>
+    <h1 class="mt-2 mb-2 text-xl font-bold">Fully On-chain Generative Art</h1>
     <p class="mb-2">
       This is a website for developers who are interested in
       <b>fully on-chain generative art</b>, which means
