@@ -11,6 +11,7 @@
     "url": "git+https://github.com/Cryptocoders-wtf/generative.git"
   },
   "keywords": [
+    "Solidity",
     "ERC721",
     "NFT"
   ],
@@ -19,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/Cryptocoders-wtf/generative/issues"
   },
-  "homepage": "https://github.com/Cryptocoders-wtf/generative#readme",
+  "homepage": "https://github.com/Cryptocoders-wtf/generative/tree/main/contract/contracts/packages/ERC721P2P#readme",
   "devDependencies": {
     "@openzeppelin/contracts": "^4.8.0",
     "erc721a": "^4.2.3"
