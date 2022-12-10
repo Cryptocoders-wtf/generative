@@ -4,6 +4,9 @@
  * AssetComposer allows developers to create a composition from a collection of
  * assets (in AssetStore) and compositions.
  *
+ * The AssetStore repository is here
+ * https://github.com/Cryptocoders-wtf/assetstore-contract
+ *
  * Created by Satoshi Nakajima (@snakajima)
  */
 
