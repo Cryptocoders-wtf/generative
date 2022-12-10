@@ -41,6 +41,16 @@ npx hardhat run ./scripts/deploy_splatter.ts
 
 [Fully-On-Chain.sol](https://github.com/Cryptocoders-wtf/generative/tree/main/contract/contracts/packages/graphics)
 
+[Randomizer.sol](https://github.com/Cryptocoders-wtf/generative/tree/main/contract/contracts/packages/randomizer)
+
+[trigonometry.sol](https://github.com/Cryptocoders-wtf/generative/tree/main/contract/contracts/packages/trigonometry)
+
+[assetprovider.sol](https://github.com/Cryptocoders-wtf/generative/tree/main/contract/contracts/packages/assetProvider)
+
+[bytes-array.sol](https://github.com/Cryptocoders-wtf/generative/tree/main/contract/contracts/packages/bytesarray)
+
+[erc721p2p](https://github.com/Cryptocoders-wtf/generative/tree/main/contract/contracts/packages/ERC721P2P)
+
 ### Related Web site
 
 [Fully On-Chain Generative Art](https://fullyonchain.xyz/)
