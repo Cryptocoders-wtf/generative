@@ -893,6 +893,11 @@
   resolved "https://registry.yarnpkg.com/@material-design-icons/svg/-/svg-0.11.4.tgz#1722706cb7c2b9dc83d4d3b41fdc0725dfad25cf"
   integrity sha512-RpLynQIfs1HcFUoBro7MwgRqXXvbFHQwyNJ5jaGQSXVbec8CTzzhU389Vfi/88Ug+hnK7rW9vPk/SfOQNzoS+A==
 
+"@metamask/detect-provider@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@metamask/detect-provider/-/detect-provider-2.0.0.tgz#4bc2795e5e6f7d8b84b2e845058d2f222c99917d"
+  integrity sha512-sFpN+TX13E9fdBDh9lvQeZdJn4qYoRb/6QF2oZZK/Pn559IhCFacPMU1rMuqyXoFQF3JSJfii2l98B87QDPeCQ==
+
 "@metamask/eth-sig-util@^4.0.0":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@metamask/eth-sig-util/-/eth-sig-util-4.0.1.tgz#3ad61f6ea9ad73ba5b19db780d40d9aae5157088"
