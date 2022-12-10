@@ -12,7 +12,7 @@
       :tokenAddress="tokenAddress"
       :tokenGateAddress="tokenGateAddress"
       :limit="1"
-      :xrestricted="'On-Chain Splatter or Bitcoin Art'"
+      :xrestricted="'On-chain Splatter or Bitcoin Art'"
     />
   </div>
 </template>

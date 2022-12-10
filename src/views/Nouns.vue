@@ -18,7 +18,7 @@
       :limit="1"
       assetProvider="dotNouns"
       @minted="minted"
-      :restricted="'On-Chain Splatter, Bitcoin Art or Alphabet'"
+      :restricted="'On-chain Splatter, Bitcoin Art or Alphabet'"
     />
   </div>
 </template>
