@@ -31,13 +31,16 @@ contract SVGTest7Filter {
   constructor() {
   }
 
-  function main() external view returns (string memory output) {
+  function main() external pure returns (string memory output) {
     SVG.Element[] memory samples = new SVG.Element[](16);
     SVG.Element[] memory uses = new SVG.Element[](16);
 
-    samples[0] = SVG.group([SVG.rect(256, 256, 640, 640).fill('yellow'), SVG.circle(320, 320, 280)]);
+    samples[0] = SVG.group([SVG.rect(256, 256, 640, 640).fill('yellow'), 
+                            SVG.circle(320, 320, 280).fill('red')]);
     samples[1] = SVG.group([SVGFilter.roughPaper("roughPaper"), 
-                            SVG.rect(256, 256, 640, 640).fill('yellow').filter('roughPaper')]);
+                            SVG.group([SVG.rect(256, 256, 640, 640).fill('yellow'), 
+                                       SVG.circle(320, 320, 280).fill('red')])
+                              .filter('roughPaper')]);
 
     for (uint i = 0; i < 2; i++) {
       int x = int(256 * (i % 4));
