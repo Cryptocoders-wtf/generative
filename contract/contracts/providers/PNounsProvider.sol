@@ -136,14 +136,14 @@ contract PNounsPrivider is IAssetProviderEx, Ownable, IERC165 {
     stack.width = SVG.textWidth(font, 'pNouns');
     stack.pnouns = SVG.text(font, 'pNouns').fill('#224455').transform(TX.scale1000((1000 * 1024) / stack.width));
 
-    if (_assetId < 9) {
-      stack.seriesText = string(abi.encodePacked('000', (_assetId + 1).toString(), '/2000'));
-    } else if (_assetId < 99) {
-      stack.seriesText = string(abi.encodePacked('00', (_assetId + 1).toString(), '/2000'));
-    } else if (_assetId < 999) {
-      stack.seriesText = string(abi.encodePacked('0', (_assetId + 1).toString(), '/2000'));
+    if (_assetId < 10) {
+      stack.seriesText = string(abi.encodePacked('000', _assetId.toString(), '/2000'));
+    } else if (_assetId < 100) {
+      stack.seriesText = string(abi.encodePacked('00', _assetId.toString(), '/2000'));
+    } else if (_assetId < 1000) {
+      stack.seriesText = string(abi.encodePacked('0', _assetId.toString(), '/2000'));
     } else {
-      stack.seriesText = string(abi.encodePacked((_assetId + 1).toString(), '/2000'));
+      stack.seriesText = string(abi.encodePacked(_assetId.toString(), '/2000'));
     }
     stack.width = SVG.textWidth(font, stack.seriesText);
     stack.series = SVG.text(font, stack.seriesText).fill('#224455').transform(

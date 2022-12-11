@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
     <ProviderView assetProvider="star" debugMode="true" />
-    <ProviderView assetProvider="nounsV2" debugMode="true" network="mainnet" />
+    <ProviderView assetProvider="pnouns" debugMode="true" />
     <ProviderView assetProvider="paperNouns" debugMode="true" network="mainnet" :offset="500" />
   </div>
 </template>
