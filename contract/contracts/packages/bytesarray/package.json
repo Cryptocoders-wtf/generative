@@ -1,6 +1,6 @@
 {
   "name": "bytes-array.sol",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Efficient way to combine an array of bytes",
   "main": "index.js",
   "scripts": {
