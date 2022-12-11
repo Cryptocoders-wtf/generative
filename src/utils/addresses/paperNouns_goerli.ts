@@ -1,3 +1,3 @@
 export const addresses = {
-  dotNounsArt:"0x10a1B2d2073a7B487bB97BF565980B9d5051EAf3",
+  dotNounsArt:"0x4EA1b6958765447B9A6Be1E9AEF42Ad756c3cf36",
 }
