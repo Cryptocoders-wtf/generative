@@ -14,7 +14,7 @@
       <b>decentralized autonomous marketplace</b> for generative arts soon).
     </p>
     <p class="mb-2" id="series">
-      We have released four <b>fully on-chain generative NFT collections</b> so far 
+      We have released four <b>Fully On-chain Generative NFT collections</b> so far 
       (please click the iamge to see the secondary market on OpenSea).
     <ul>
 
