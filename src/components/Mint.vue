@@ -13,7 +13,7 @@
       </p>
       <div v-if="totalSupply < mintLimit">
         <div v-if="restricted && totalBalance == 0" class="text-yellow-500">
-          Minting is available only to "{{ restricted }}" NFT holders at this
+          Minting is available only to <a href="/#series" class="underline">{{ restricted }} holders</a> at this
           moment. Please wait for the announcement from @nounsfes.
         </div>
         <div v-else-if="limit && limit <= balanceOf" class="text-yellow-500">

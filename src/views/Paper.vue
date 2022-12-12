@@ -9,6 +9,7 @@
       assetProvider="paperNouns"
       network="mainnet"
       :offset="0"
+      :count="4"
     />
     <Mint
       :network="network"

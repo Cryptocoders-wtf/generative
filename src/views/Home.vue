@@ -13,8 +13,8 @@
       It can even generate revenue autonomously (we will launch a
       <b>decentralized autonomous marketplace</b> for generative arts soon).
     </p>
-    <p class="mb-2">
-      We have released four fully on-chain generative NFT collections so far.
+    <p class="mb-2" id="series">
+      We have released four <b>fully on-chain generative NFT collections</b> so far.
     <ul>
 
       <li><a
