@@ -7,6 +7,7 @@ import Home from "../views/Home.vue";
 import Splatter from "../views/Splatter.vue";
 import Snow from "../views/Snow.vue";
 import Nouns from "../views/Nouns.vue";
+import Paper from "../views/Paper.vue";
 import Bitcoin from "../views/Bitcoin.vue";
 import Reddit from "../views/Reddit.vue";
 import Sample from "../views/Sample.vue";
@@ -30,6 +31,10 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "nouns",
     component: Nouns,
+  },
+  {
+    path: "paper",
+    component: Paper,
   },
   {
     path: "bitcoin",
