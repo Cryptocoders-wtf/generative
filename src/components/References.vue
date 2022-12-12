@@ -48,6 +48,12 @@
         class="underline"
         target="_blank"
         >On-chain Alphabet</a
+      >,
+      <a
+        href="https://opensea.io/collection/dot-nouns"
+        class="underline"
+        target="_blank"
+        >Dot Nouns</a
       >
     </p>
     <p>
