@@ -44,6 +44,7 @@ contract PaperNounsToken is ProviderToken4 {
   }
 
   function approve(address operator, uint256 tokenId) public virtual override(ERC721WithOperatorFilter, IERC721) {
+    require(!locked, "The contract is locked during the initial minting.");
     super.approve(operator, tokenId);
   }
 
