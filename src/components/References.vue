@@ -53,7 +53,7 @@
     <p>
       Discord:
       <a href="https://discord.gg/4JGURQujXK" class="underline" target="_blank"
-        >On-chain Asset Store</a
+        >Fully On-chain</a
       >
     </p>
     <p>
