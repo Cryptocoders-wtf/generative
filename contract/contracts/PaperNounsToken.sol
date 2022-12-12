@@ -77,14 +77,14 @@ contract PaperNounsToken is ProviderToken4 {
   }
 
   function mintPriceFor(address _wallet) public view virtual override returns (uint256) {
-    if (balanceOf(_wallet) == 1) {
-      return mintPrice * 2; // x2 for second
+    if (balanceOf(_wallet) > 0) {
+      return mintPrice * 4; // x4 for second
     }
     if (tokenGate.balanceOf(_wallet) > 0) {
       return mintPrice / 2; // 50% off
     }
     if (locked) {
-      return mintPrice * 4; // x4 while locked
+      return mintPrice * 4; // x4 while locked for non-WL holders
     }
     return mintPrice;
   }

@@ -1,3 +1,3 @@
 export const addresses = {
-  token:"0x450A017FaA44C5A63F7Ab1524260FbEE16c92A62",
+  token:"0x5a0B17eF8F281f484E88483E7b152acb446F8A25",
 }
