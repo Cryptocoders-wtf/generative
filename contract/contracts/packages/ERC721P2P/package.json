@@ -1,6 +1,6 @@
 {
   "name": "erc721p2p",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "ERC721 with decentralized trading and enforced creator royalties",
   "main": "index.js",
   "scripts": {

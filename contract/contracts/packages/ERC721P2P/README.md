@@ -1,5 +1,3 @@
-# ERC721P2P: Decentralized NFT
-
 ## A major flaw of ERC721
 
 While NFT is playing a very important role to bring more people into the Web3 ecosystem and even create new income opportunities for artists, the protocol itself, ERC721, is still very immature and has a few fundamental issues.
@@ -27,7 +25,7 @@ In order to solve this problem, we need to create a new mechanism, which perform
 Decentralized transactions will become possible by adding three methods to ERC721.
 
 ```
-interface ERC721P2P is ERC721 {
+interface ERC721P2PCore {
   function setPriceOf(uint256 _tokenId, uint256 _price) external;
   function getPriceOf(uint256 _tokenId) external view returns(uint256);
   function purchase(uint256 _tokenId, address _wallet) external payable;
@@ -51,14 +49,14 @@ There are a few possible ways to support this scenario, but I think the decentra
 
 ```
 interface IERC721Marketplace {
-  function makeAnOffer(ERC721P2P _contract, uint256 _tokenId, uint256 _price) external payable;
-  function withdrawAnOffer(ERC721P2P _contract, uint256 _tokenId) external;
-  function getTheBestOffer(ERC721P2P _contract, uint256 _tokenId) external view 
+  function makeAnOffer(ERC721P2PCore _contract, uint256 _tokenId, uint256 _price) external payable;
+  function withdrawAnOffer(ERC721P2PCore _contract, uint256 _tokenId) external;
+  function getTheBestOffer(ERC721P2PCore _contract, uint256 _tokenId) external view 
       returns(uint256, address);
-  function acceptOffer(ERC721P2P _contract, uint256 _tokenId, uint256 _price) external;
+  function acceptOffer(ERC721P2PCore _contract, uint256 _tokenId, uint256 _price) external;
 }
 
-interface ERC721P2P is ERC721 {
+interface ERC721P2PCore {
   function setPriceOf(uint256 _tokenId, uint256 _price) external;
   function getPriceOf(uint256 _tokenId) external view returns(uint256);
   function purchase(uint256 _tokenId, address _wallet) external payable;
@@ -70,7 +68,7 @@ The buyer makes an offer by calling the *makenAnOffer* method at an autonomous m
 
 The seller (or other buyers) can see the current best offer (on that particular marketplace) by calling the *getTheBestOffer* method.
 
-The buyer accepts this offer by calling the *acceptOffer* method of the ERC721P2P contract, which matches the asking price to the offer price, and calls the *acceptOffer* method of the specified autonomous marketplace.
+The buyer accepts this offer by calling the *acceptOffer* method of the ERC721P2PCore contract, which matches the asking price to the offer price, and calls the *acceptOffer* method of the specified autonomous marketplace.
 
 The autonomous marketplace calls back the *purhase* method with the money from the buyer, and let it complete the transaction.
 
