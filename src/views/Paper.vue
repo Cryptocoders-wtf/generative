@@ -7,7 +7,7 @@
     <ProviderView
       v-if="true"
       assetProvider="paperNouns"
-      network="mainnet"
+      network="goerli"
       :offset="0"
       :count="4"
     />
@@ -40,9 +40,11 @@ export default defineComponent({
     const offset = ref<number>(0);
     const route = useRoute();
     const network =
-      typeof route.query.network == "string" ? route.query.network : "localhost";
+      typeof route.query.network == "string" ? route.query.network : "goerli";
     const tokenAddress = addresses.paperNounsToken[network];
     const tokenGateAddress = addresses.dynamic[network];
+    console.log("*** address2", tokenAddress, tokenGateAddress);
+
     const minted = async () => {
       console.log("***###*** minted event was fired");
     };

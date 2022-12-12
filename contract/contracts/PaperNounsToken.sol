@@ -34,6 +34,7 @@ contract PaperNounsToken is ProviderToken4 {
     locked = _locked;
   }
 
+  // Disable any approve and transfer during the initial minting
   function setApprovalForAll(
     address operator,
     bool approved
@@ -42,12 +43,13 @@ contract PaperNounsToken is ProviderToken4 {
     super.setApprovalForAll(operator, approved);
   }
 
-  function _beforeTokenTransfer(
-      address,
-      address,
-      uint256
-  ) internal override view {
+  function approve(address operator, uint256 tokenId) public virtual override(ERC721WithOperatorFilter, IERC721) {
+    super.approve(operator, tokenId);
+  }
+
+  function _isApprovedOrOwner(address spender, uint256 tokenId) internal view override returns (bool) {
     require(!locked, "The contract is locked during the initial minting.");
+    return super._isApprovedOrOwner(spender, tokenId);
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns (string memory) {

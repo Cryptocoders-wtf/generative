@@ -33,6 +33,7 @@ import { addresses as paperNouns_goerli } from "./addresses/paperNouns_goerli";
 import { addresses as paperNouns_localhost } from "./addresses/paperNouns_localhost";
 import { addresses as paperNouns_mainnet } from "./addresses/paperNouns_mainnet";
 import { addresses as paperNounsToken_localhost } from "./addresses/paperNounsToken_localhost";
+import { addresses as paperNounsToken_goerli } from "./addresses/paperNounsToken_goerli";
 import { addresses as lilnouns_goerli } from "./addresses/lilnouns_goerli";
 import { addresses as circles_localhost } from "./addresses/circles_localhost";
 import { addresses as star_localhost } from "./addresses/star_localhost";
@@ -178,6 +179,7 @@ export const addresses: any = {
   },
   paperNounsToken: {
     localhost: paperNounsToken_localhost.token,
+    goerli: paperNounsToken_goerli.token,
   },
   lilnouns: {
     goerli: lilnouns_goerli.providerAddress,
