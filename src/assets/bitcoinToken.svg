@@ -1,0 +1,105 @@
+<svg viewBox="0 0 1024 1024"  xmlns="http://www.w3.org/2000/svg">
+<defs>
+ <g id="asset1506" desc="Material Icons (Apache 2.0)/Logos/Bitcoin Logo">
+  <path d="M738 439 c10 -68 -42 -105 -113 -129 l23 -92 -56 -14 -22 90 c-15 -4 -30 -7 -45 -11 l23 -90 -56 -14 -23 92 c-12 -3 -24 -6 -36 -8 l0 0 -77 -19 -15 60 c0 0 42 10 41 10 23 6 27 21 26 33 l-26 105 c2 0 4 1 6 2 -2 0 -4 -1 -6 -1 l-37 147 c-3 7 -10 17 -26 13 1 1 -41 -10 -41 -10 l-28 64 73 18 c14 3 27 7 40 10 l-23 93 56 14 23 -92 c15 4 30 8 45 12 l-23 92 56 14 23 -93 c96 18 168 11 198 -76 24 -70 -1 -110 -52 -136 37 -8 64 -33 72 -82 l0 0 zm-128 180 c-17 70 -135 32 -173 23 l31 -124 c38 10 160 28 142 101 zm17 -181 c-16 63 -114 31 -145 23 l28 -112 c32 8 134 23 117 89 l0 0 z" />
+ </g>
+<g id="asset1506_coin"><circle cx="511" cy="511" r="511" /><use href="#asset1506" fill="#FFF"/></g><g id="bitcoinArt50">
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(388,150) scale(0.093, 0.093) rotate(2460, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(404,122) scale(0.077, 0.077) rotate(900, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(96,635) scale(0.079, 0.079) rotate(1320, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(921,79) scale(0.099, 0.099) rotate(1860, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(25,858) scale(0.126, 0.126) rotate(540, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(113,214) scale(0.090, 0.090) rotate(420, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(372,424) scale(0.088, 0.088) rotate(1800, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(196,328) scale(0.128, 0.128) rotate(1260, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(116,221) scale(0.117, 0.117) rotate(2100, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(344,420) scale(0.072, 0.072) rotate(300, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(723,0) scale(0.138, 0.138) rotate(1320, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(237,840) scale(0.088, 0.088) rotate(60, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(146,447) scale(0.107, 0.107) rotate(2400, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(667,175) scale(0.112, 0.112) rotate(3420, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(748,404) scale(0.112, 0.112) rotate(1620, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(675,644) scale(0.096, 0.096) rotate(360, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(254,868) scale(0.117, 0.117) rotate(1680, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(461,558) scale(0.072, 0.072) rotate(1500, 512, 512)" />
+<use href="#asset1506_coin" fill="#B1661A" transform="translate(230,520) scale(0.072, 0.072) rotate(2820, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(584,74) scale(0.088, 0.088) rotate(3120, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(260,312) scale(0.080, 0.080) rotate(1380, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(844,518) scale(0.081, 0.081) rotate(2940, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(773,506) scale(0.090, 0.090) rotate(60, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(122,472) scale(0.083, 0.083) rotate(3480, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(272,163) scale(0.082, 0.082) rotate(2280, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(748,362) scale(0.081, 0.081) rotate(780, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(406,293) scale(0.120, 0.120) rotate(1380, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(148,363) scale(0.087, 0.087) rotate(3060, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(629,828) scale(0.076, 0.076) rotate(3000, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(403,594) scale(0.074, 0.074) rotate(2400, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(557,313) scale(0.128, 0.128) rotate(840, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(703,400) scale(0.072, 0.072) rotate(360, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(98,748) scale(0.081, 0.081) rotate(2820, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(520,279) scale(0.100, 0.100) rotate(3180, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(338,102) scale(0.182, 0.182) rotate(3240, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(639,239) scale(0.072, 0.072) rotate(3060, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(802,904) scale(0.105, 0.105) rotate(3240, 512, 512)" />
+<use href="#asset1506_coin" fill="#DB3F14" transform="translate(802,420) scale(0.084, 0.084) rotate(2040, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(698,263) scale(0.080, 0.080) rotate(840, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(318,749) scale(0.072, 0.072) rotate(1620, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(121,342) scale(0.102, 0.102) rotate(2940, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(649,370) scale(0.072, 0.072) rotate(2040, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(290,72) scale(0.080, 0.080) rotate(1620, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(265,671) scale(0.193, 0.193) rotate(840, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(335,521) scale(0.104, 0.104) rotate(2760, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(570,135) scale(0.072, 0.072) rotate(1260, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(393,843) scale(0.149, 0.149) rotate(3120, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(342,666) scale(0.126, 0.126) rotate(300, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(772,315) scale(0.082, 0.082) rotate(720, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(78,612) scale(0.144, 0.144) rotate(1080, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(172,647) scale(0.094, 0.094) rotate(1140, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(364,888) scale(0.075, 0.075) rotate(780, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(111,45) scale(0.162, 0.162) rotate(300, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(313,540) scale(0.075, 0.075) rotate(1080, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(708,829) scale(0.116, 0.116) rotate(1140, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(635,633) scale(0.105, 0.105) rotate(2760, 512, 512)" />
+<use href="#asset1506_coin" fill="#F9BE02" transform="translate(574,698) scale(0.094, 0.094) rotate(3000, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(336,653) scale(0.081, 0.081) rotate(1860, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(252,617) scale(0.107, 0.107) rotate(3000, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(641,478) scale(0.127, 0.127) rotate(3300, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(0,448) scale(0.072, 0.072) rotate(2640, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(315,429) scale(0.142, 0.142) rotate(2340, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(28,232) scale(0.072, 0.072) rotate(2100, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(463,720) scale(0.079, 0.079) rotate(1320, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(85,714) scale(0.160, 0.160) rotate(2160, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(732,682) scale(0.072, 0.072) rotate(540, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(182,195) scale(0.107, 0.107) rotate(2940, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(514,217) scale(0.074, 0.074) rotate(1800, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(205,278) scale(0.081, 0.081) rotate(3420, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(499,116) scale(0.135, 0.135) rotate(840, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(728,795) scale(0.122, 0.122) rotate(2100, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(921,500) scale(0.078, 0.078) rotate(3540, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(737,838) scale(0.105, 0.105) rotate(1500, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(652,460) scale(0.152, 0.152) rotate(2220, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(859,587) scale(0.105, 0.105) rotate(3540, 512, 512)" />
+<use href="#asset1506_coin" fill="#FFE33A" transform="translate(820,667) scale(0.079, 0.079) rotate(120, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(448,691) scale(0.138, 0.138) rotate(1680, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(899,333) scale(0.082, 0.082) rotate(60, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(916,829) scale(0.075, 0.075) rotate(1560, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(423,896) scale(0.114, 0.114) rotate(2700, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(439,657) scale(0.093, 0.093) rotate(1860, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(101,617) scale(0.108, 0.108) rotate(1440, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(34,41) scale(0.094, 0.094) rotate(3300, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(343,720) scale(0.081, 0.081) rotate(720, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(72,457) scale(0.080, 0.080) rotate(1740, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(592,870) scale(0.122, 0.122) rotate(2340, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(719,898) scale(0.084, 0.084) rotate(0, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(177,277) scale(0.100, 0.100) rotate(2580, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(318,206) scale(0.096, 0.096) rotate(1200, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(198,364) scale(0.072, 0.072) rotate(480, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(593,119) scale(0.072, 0.072) rotate(2760, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(714,175) scale(0.153, 0.153) rotate(120, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(597,315) scale(0.072, 0.072) rotate(2280, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(477,899) scale(0.079, 0.079) rotate(1440, 512, 512)" />
+<use href="#asset1506_coin" fill="#7FAE2E" transform="translate(919,638) scale(0.092, 0.092) rotate(2100, 512, 512)" />
+</g>
+</defs>
+<use href="#bitcoinArt50" />
+</svg>

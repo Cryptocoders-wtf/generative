@@ -14,33 +14,34 @@
       <b>decentralized autonomous marketplace</b> for generative arts soon).
     </p>
     <p class="mb-2" id="series">
-      We have released four <b>fully on-chain generative NFT collections</b> so far.
+      We have released four <b>fully on-chain generative NFT collections</b> so far 
+      (please click the iamge to see the secondary market on OpenSea).
     <ul>
 
-      <li><a
+        <a
         href="https://opensea.io/collection/on-chain-splatter"
         class="underline"
         target="_blank"
-        >On-chain Splatter</a
-      ></li>
-      <li><a
+        ><img class="w-32 inline-block mr-2" src="@/assets/splatterToken.svg" /></a
+      >
+      <a
         href="https://opensea.io/collection/on-chain-bitcoin-art"
         class="underline"
         target="_blank"
-        >On-chain Bitcoin Art</a
-      ></li>
-      <li><a
+        ><img class="w-32 inline-block mr-2" src="@/assets/bitcoinToken.svg" /></a
+      >
+      <a
         href="https://opensea.io/collection/on-chain-alphabet"
         class="underline"
         target="_blank"
-        >On-chain Alphabet</a
-      ></li>
-      <li><a
+        ><img class="w-32 inline-block mr-2" src="@/assets/alphabetToken.svg" /></a
+      >
+      <a
         href="https://opensea.io/collection/dot-nouns"
         class="underline"
         target="_blank"
-        >Dot Nouns</a
-      ></li>
+        ><img class="w-32 inline-block mr-2" src="@/assets/dotNounsToken.svg" /></a
+      >
     </ul>
 
     </p>
