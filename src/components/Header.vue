@@ -27,7 +27,7 @@
       <router-link :to="localizedUrl('/nouns')" class="text-md">
         Nouns
       </router-link>
-      <router-link v-if="false" :to="localizedUrl('/paper')" class="text-md">
+      <router-link :to="localizedUrl('/paper')" class="text-md">
         Paper
       </router-link>
       <router-link :to="localizedUrl('/star')" class="text-md">
