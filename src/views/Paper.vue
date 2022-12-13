@@ -7,7 +7,7 @@
     <ProviderView
       v-if="true"
       assetProvider="paperNouns"
-      network="goerli"
+      network="mainnet"
       :offset="0"
       :count="4"
     />
