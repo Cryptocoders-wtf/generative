@@ -61,7 +61,7 @@ contract PaperNounsToken is ProviderToken4 {
   }
 
   function toBeGifted(uint256 _tokenId) public pure returns(bool) {
-    uint256[35] memory list = [uint256(1), 5, 6, 8, 245, 403, 405, 406, 407, 410, 415, 416, 417, 419, 422, 423, 434, 450, 452, 453,
+    uint256[35] memory list = [uint256(1), 4, 5, 8, 245, 403, 405, 406, 407, 410, 415, 416, 417, 419, 422, 423, 434, 450, 452, 453,
 454, 456, 460, 471, 474, 475, 479, 487, 490, 492, 497, 499, 505, 512, 519];
     for (uint i = 0; i < list.length; i++) {
       if (list[i] == _tokenId) {
