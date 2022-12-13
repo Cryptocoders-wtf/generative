@@ -2,14 +2,15 @@ import { ethers, network } from "hardhat";
 import { writeFile } from "fs";
 import { addresses } from "../../src/utils/addresses";
 
-const dotNouns = addresses.paperNouns[network.name];
+const paperNouns = addresses.paperNouns[network.name];
 const tokengate = addresses.dynamic[network.name];
-console.log("nounsProvider", dotNouns, tokengate);
+const dotNounsToken = addresses.dotNounsToken[network.name];
+console.log("nounsProvider", paperNouns, tokengate);
 
 async function main() {
 
   const factoryToken = await ethers.getContractFactory("PaperNounsToken");
-  const token = await factoryToken.deploy(tokengate, dotNouns);
+  const token = await factoryToken.deploy(tokengate, paperNouns, dotNounsToken);
   await token.deployed();
   console.log(`      token="${token.address}"`);
 
@@ -35,7 +36,7 @@ async function main() {
     + `}\n`;
   await writeFile(`../src/utils/addresses/paperNounsToken_${network.name}.ts`, output, ()=>{});
 
-  console.log(`npx hardhat verify ${token.address} ${tokengate} ${dotNouns} --network ${network.name}`);
+  console.log(`npx hardhat verify ${token.address} ${tokengate} ${paperNouns} ${dotNounsToken} --network ${network.name}`);
 }
 
 main().catch((error) => {

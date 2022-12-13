@@ -20,14 +20,17 @@ contract PaperNounsToken is ProviderToken4 {
   using Strings for uint256;
   ITokenGate public immutable tokenGate;
   bool public locked = true;
+  IERC721 public dotNouns;
 
   constructor(
     ITokenGate _tokenGate,
-    IAssetProvider _assetProvider
+    IAssetProvider _assetProvider,
+    IERC721 _dotNouns
   ) ProviderToken4(_assetProvider, 'Paper Nouns', 'PAPERNOUNS') {
     tokenGate = _tokenGate;
     description = 'This is a part of Fully On-chain Generative Art project (https://fullyonchain.xyz/). All images are dymically generated on the blockchain.';
     mintPrice = 1e16; //0.01 ether, updatable
+    dotNouns = _dotNouns;
   }
 
   function setLock(bool _locked) external onlyOwner {
@@ -54,7 +57,17 @@ contract PaperNounsToken is ProviderToken4 {
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns (string memory) {
-    return string(abi.encodePacked('Dot Nouns ', _tokenId.toString()));
+    return string(abi.encodePacked('Paper Nouns ', _tokenId.toString()));
+  }
+
+  function toBeGifted(uint256 _tokenId) public pure returns(bool) {
+    uint256[4] memory list = [uint256(2), 5, 6, 8];
+    for (uint i = 0; i < list.length; i++) {
+      if (list[i] == _tokenId) {
+        return true;
+      }
+    }
+    return false;
   }
 
   function mint() public payable virtual override returns (uint256 tokenId) {
@@ -63,9 +76,14 @@ contract PaperNounsToken is ProviderToken4 {
     require(balanceOf(msg.sender) < 3, 'Too many tokens');
 
     // Special case for Nouns 245
-    if (nextTokenId == 245) {
+    while (toBeGifted(nextTokenId)) {
       tokenId = nextTokenId++;
-      _safeMint(owner(), tokenId);
+      address dotNounsOwner = dotNouns.ownerOf(tokenId);
+      if (dotNounsOwner != address(0)) {
+        _safeMint(dotNounsOwner, tokenId);
+      } else {
+        break;
+      }
     }
     tokenId = super.mint();
 
