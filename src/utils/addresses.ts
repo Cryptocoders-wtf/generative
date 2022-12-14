@@ -41,6 +41,7 @@ import { addresses as star_goerli } from "./addresses/star_goerli";
 import { addresses as star_mumbai } from "./addresses/star_mumbai";
 import { addresses as pnouns_goerli } from "./addresses/pnouns_goerli";
 import { addresses as pnouns_localhost } from "./addresses/pnouns_localhost";
+import { addresses as pnouns_mainnet } from "./addresses/pnouns_mainnet";
 import { addresses as color_mumbai } from "./addresses/colors_mumbai";
 import { addresses as color_localhost } from "./addresses/colors_localhost";
 import { addresses as londrina_solid_localhost } from "./addresses/londrina_solid_localhost";
@@ -210,6 +211,7 @@ export const addresses: any = {
   pnouns: {
     goerli: pnouns_goerli.pnouns,
     localhost: pnouns_localhost.pnouns,
+    mainnet: pnouns_mainnet.pnouns,
   },
   londrina_solid: {
     mumbai: londrina_solid_mumbai.font,
