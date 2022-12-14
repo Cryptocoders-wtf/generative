@@ -14,7 +14,7 @@ async function main() {
   await contract.deployed();
   console.log(`      contract="${contract.address}"`);
 
-  for (let i=0; i<3; i++) {
+  for (let i=0; i<11; i++) {
     const n = Math.pow(2,i);
     const result = await contract.generateSVGDocument(n);
     await writeFile(`./cache/pnouns${n}.svg`, result, ()=>{});
@@ -24,7 +24,9 @@ async function main() {
   const addresses = `export const addresses = {\n`
     + `  pnouns:"${contract.address}",\n`
     + `}\n`;
-  await writeFile(`../src/utils/addresses/pnouns_${network.name}.ts`, addresses, ()=>{});  
+  await writeFile(`../src/utils/addresses/pnouns_${network.name}.ts`, addresses, ()=>{});
+  
+  console.log(`npx hardhat verify ${contract.address} ${lonrinaFont} ${nounsProvider} --network ${network.name}`);
 }
 
 main().catch((error) => {
