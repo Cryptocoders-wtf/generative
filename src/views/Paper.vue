@@ -5,7 +5,7 @@
       the composability of Nouns.
     </p>
     <ProviderView
-      v-if="true"
+      v-if="false"
       assetProvider="paperNouns"
       network="mainnet"
       :offset="0"
@@ -40,7 +40,7 @@ export default defineComponent({
     const offset = ref<number>(0);
     const route = useRoute();
     const network =
-      typeof route.query.network == "string" ? route.query.network : "goerli";
+      typeof route.query.network == "string" ? route.query.network : "mainnet";
     const tokenAddress = addresses.paperNounsToken[network];
     const tokenGateAddress = addresses.dynamic[network];
     console.log("*** address2", tokenAddress, tokenGateAddress);
