@@ -16,10 +16,10 @@
       :tokenGated="true"
       :tokenAddress="tokenAddress"
       :tokenGateAddress="tokenGateAddress"
-      :limit="1"
+      :limit="3"
       assetProvider="paperNouns"
       @minted="minted"
-      :restricted="'Fully On-chain NFT collection series'"
+      :xrestricted="'Fully On-chain NFT collection series'"
     />
   </div>
 </template>

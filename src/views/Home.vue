@@ -14,33 +14,45 @@
       <b>decentralized autonomous marketplace</b> for generative arts soon).
     </p>
     <p class="mb-2" id="series">
-      We have released four <b>Fully On-chain Generative NFT collections</b> so far 
-      (please click the iamge to see the secondary market on OpenSea).
+      We have released six <b>Fully On-chain Generative NFT collections</b> so far 
+      (please click the images to see the secondary market on OpenSea).
     <ul>
 
         <a
         href="https://opensea.io/collection/on-chain-splatter"
         class="underline"
         target="_blank"
-        ><img class="w-32 inline-block mr-2" src="@/assets/splatterToken.svg" /></a
+        ><img class="w-28 inline-block mr-2" src="@/assets/splatterToken.svg" /></a
       >
       <a
         href="https://opensea.io/collection/on-chain-bitcoin-art"
         class="underline"
         target="_blank"
-        ><img class="w-32 inline-block mr-2" src="@/assets/bitcoinToken.svg" /></a
+        ><img class="w-28 inline-block mr-2" src="@/assets/bitcoinToken.svg" /></a
       >
       <a
         href="https://opensea.io/collection/on-chain-alphabet"
         class="underline"
         target="_blank"
-        ><img class="w-32 inline-block mr-2" src="@/assets/alphabetToken.svg" /></a
+        ><img class="w-28 inline-block mr-2" src="@/assets/alphabetToken.svg" /></a
       >
       <a
         href="https://opensea.io/collection/dot-nouns"
         class="underline"
         target="_blank"
-        ><img class="w-32 inline-block mr-2" src="@/assets/dotNounsToken.svg" /></a
+        ><img class="w-28 inline-block mr-2" src="@/assets/dotNounsToken.svg" /></a
+      >
+      <a
+        href="https://opensea.io/collection/paper-nouns"
+        class="underline"
+        target="_blank"
+        ><img class="w-28 inline-block mr-2" src="@/assets/paperNouns1.svg" /></a
+      >
+      <a
+        href="https://opensea.io/collection/pnouns-nft"
+        class="underline"
+        target="_blank"
+        ><img class="w-28 inline-block mr-2" src="@/assets/pnouns1.svg" /></a
       >
     </ul>
 
