@@ -17,7 +17,16 @@ import { svgImageFromSvgPart, sampleColors } from "@/models/point";
 import { getProvider, getSvgHelper, getAssetProvider } from "@/utils/const";
 
 export default defineComponent({
-  props: ["assetProvider", "debugMode", "network", "count", "offset"],
+  props: {
+    assetProvider: {
+      type: String,
+      required: true,
+    },
+    debugMode: Boolean,
+    network: String,
+    count: Number,
+    offset: Number
+  },
   setup(props) {
     const images = ref<string[]>([]);
     const route = useRoute();
