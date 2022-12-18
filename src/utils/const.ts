@@ -67,6 +67,9 @@ const ITokenGate = {
 const ProviderTokenEx = {
   wabi: require("@/abis/ProviderToken.json"), // wrapped abi
 };
+const IAssetProvider = {
+  wabi: require("@/abis/IAssetProvider.json"), // wrapped abi
+};
 
 export const getSvgHelper = (
   network: string,
@@ -87,6 +90,20 @@ export const getTokenGate = (
 ) => {
   const tokenGate = new ethers.Contract(address, ITokenGate.wabi.abi, provider);
   return tokenGate;
+};
+
+export const getAssetProvider = (
+  assetProviderName: string,
+  network: string,
+  provider: ethers.providers.Provider | ethers.Signer | undefined,
+) => {
+  const providerAddress = addresses[assetProviderName][network];
+  const assetProvider = new ethers.Contract(
+    providerAddress,
+    IAssetProvider.wabi.abi,
+    provider
+  );
+  return assetProvider;
 };
 
 export const getContractRO = (

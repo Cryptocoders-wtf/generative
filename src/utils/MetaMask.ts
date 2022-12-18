@@ -1,4 +1,4 @@
-import store from "../store";
+import store from "@/store";
 
 export const requestAccount = async () => {
   const ethereum = store.state.ethereum;
