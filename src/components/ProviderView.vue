@@ -13,16 +13,8 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
-import { addresses } from "@/utils/addresses";
-import { ethers } from "ethers";
 import { svgImageFromSvgPart, sampleColors } from "@/models/point";
-
-const IAssetProvider = {
-  wabi: require("@/abis/IAssetProvider.json"), // wrapped abi
-};
-const ISVGHelper = {
-  wabi: require("@/abis/ISVGHelper.json"), // wrapped abi
-};
+import { getProvider, getSvgHelper, getAssetProvider } from "@/utils/const";
 
 export default defineComponent({
   props: ["assetProvider", "debugMode", "network", "count", "offset"],
@@ -35,35 +27,13 @@ export default defineComponent({
         : props.network || "goerli"
     ) as string;
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
-    // console.log("*** network", network, alchemyKey);
-
-    const providerAddress = addresses[props.assetProvider][network];
-    const svgHelperAddress = addresses["svgHelper"][network];
-    // console.log("*** address", providerAddress, svgHelperAddress);
-    const provider =
-      network == "localhost"
-        ? new ethers.providers.JsonRpcProvider()
-        : network == "mumbai"
-        ? new ethers.providers.JsonRpcProvider(
-            "https://matic-mumbai.chainstacklabs.com"
-          )
-        : alchemyKey
-        ? new ethers.providers.AlchemyProvider(network, alchemyKey)
-        : new ethers.providers.InfuraProvider(network);
-
+    const provider = getProvider(network, alchemyKey);
     console.log("*****", network, provider);
 
-    const assetProvider = new ethers.Contract(
-      providerAddress,
-      IAssetProvider.wabi.abi,
-      provider
-    );
-    const svgHelper = new ethers.Contract(
-      svgHelperAddress,
-      ISVGHelper.wabi.abi,
-      provider
-    );
-    // console.log("*** assetProvider", assetProvider.functions);
+    const assetProvider = getAssetProvider(props.assetProvider, network, provider);
+    const providerAddress = assetProvider.address;
+
+    const svgHelper = getSvgHelper(network, provider);
 
     const fetchImages = async () => {
       const newImages = [];
