@@ -113,7 +113,6 @@ export default defineComponent({
     const provider = getProvider(props.network, alchemyKey);
 
     const contractRO = getContractRO(props.tokenAddress, provider);
-    const svgHelper = getSvgHelper(props.network, provider);
 
     const checkTokenGate = async () => {
       console.log("### calling totalBalanceOf");
@@ -150,6 +149,7 @@ export default defineComponent({
 
     const tokens = ref<Token[]>([]);
     const fetchTokens = async () => {
+      const svgHelper = getSvgHelper(props.network, provider);
       const [supply] = await contractRO.functions.totalSupply();
       totalSupply.value = supply.toNumber();
       const [limit] = await contractRO.functions.mintLimit();
