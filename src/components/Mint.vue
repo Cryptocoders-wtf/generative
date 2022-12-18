@@ -98,6 +98,7 @@ export default defineComponent({
   setup(props, context) {
     const route = useRoute();
     const store = useStore();
+
     const totalBalance = ref<number>(0);
     const totalSupply = ref<number>(0);
     const balanceOf = ref<number>(0);
@@ -212,11 +213,11 @@ export default defineComponent({
       if (networkContext.value == null) {
         return;
       }
-      const { provider, signer, contract } = networkContext.value;
+      const { contract } = networkContext.value;
       console.log("*** minting", weiToEther(mintPrice.value));
-      const txParams = { value: mintPrice.value };
       isMinting.value = true;
       try {
+      const txParams = { value: mintPrice.value };
         const tx = await contract.functions.mint(txParams);
         console.log("mint:tx");
         const result = await tx.wait();
