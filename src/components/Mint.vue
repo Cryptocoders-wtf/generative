@@ -138,12 +138,11 @@ export default defineComponent({
       console.log("*** checkTokenGate", weiToEther(mintPrice.value));
     };
 
-    const account = computed(() => {
-      if (store.state.account == null) {
-        return null;
+    const account = computed(() => store.state.account);
+    watch(account, (v) => {
+      if (v) {
+        checkTokenGate();
       }
-      checkTokenGate();
-      return store.state.account;
     });
     const wallet = computed(() => displayAddress(account.value));
 
