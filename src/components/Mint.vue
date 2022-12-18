@@ -67,21 +67,11 @@ import { useRoute } from "vue-router";
 import { BigNumber, ethers } from "ethers";
 import { ChainIdMap, displayAddress } from "../utils/MetaMask";
 import NetworkGate from "@/components/NetworkGate.vue";
-import { getAddresses, getProvider, decodeTokenData } from "@/utils/const";
+import { getAddresses, getProvider, decodeTokenData, getSvgHelper, getTokenGate, getContractRO } from "@/utils/const";
 import References from "@/components/References.vue";
 import { addresses } from "@/utils/addresses";
 import { weiToEther } from "@/utils/currency";
 import { svgImageFromSvgPart, sampleColors } from "@/models/point";
-
-const ProviderTokenEx = {
-  wabi: require("@/abis/ProviderToken.json"), // wrapped abi
-};
-const ITokenGate = {
-  wabi: require("@/abis/ITokenGate.json"), // wrapped abi
-};
-const ISVGHelper = {
-  wabi: require("@/abis/ISVGHelper.json"), // wrapped abi
-};
 
 console.log("*** addresses", addresses);
 
@@ -116,7 +106,6 @@ export default defineComponent({
     const mintPriceString = computed(() => weiToEther(mintPrice.value));
     const isMinting = ref<boolean>(false);
     const nextImage = ref<string | null>(null);
-    const svgHelperAddress = addresses["svgHelper"][props.network];
 
     const checkTokenGate = async () => {
       console.log("### calling totalBalanceOf");
@@ -150,21 +139,10 @@ export default defineComponent({
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider = getProvider(props.network, alchemyKey);
 
-    const contractRO = new ethers.Contract(
-      props.tokenAddress,
-      ProviderTokenEx.wabi.abi,
-      provider
-    );
-    const tokenGate = new ethers.Contract(
-      props.tokenGateAddress, //
-      ITokenGate.wabi.abi,
-      provider
-    );
-    const svgHelper = new ethers.Contract(
-      svgHelperAddress,
-      ISVGHelper.wabi.abi,
-      provider
-    );
+    const contractRO = getContractRO(props.tokenAddress, provider);
+    const tokenGate = getTokenGate(props.tokenGateAddress, provider);
+    const svgHelper = getSvgHelper(props.network, provider);
+    
     const providerAddress =
       addresses[props.assetProvider || "dotNouns"][props.network];
 
@@ -224,11 +202,7 @@ export default defineComponent({
           store.state.ethereum
         );
         const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          props.tokenAddress,
-          ProviderTokenEx.wabi.abi,
-          signer
-        );
+        const contract = getContractRO(props.tokenAddress, signer);
 
         return { provider, signer, contract };
       }

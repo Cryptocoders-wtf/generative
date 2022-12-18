@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { addresses } from "@/utils/addresses";
 
 export const getAddresses = (network: string, contentAddress: string) => {
   const EtherscanBase = (() => {
@@ -55,4 +56,42 @@ export const decodeTokenData = (tokenURI: string) => {
   const svg = Buffer.from(svgData, "base64").toString();
 
   return { json, svg };
+};
+
+const ISVGHelper = {
+  wabi: require("@/abis/ISVGHelper.json"), // wrapped abi
+};
+
+export const getSvgHelper = (network: string, provider: ethers.providers.Provider | ethers.Signer | undefined) => {
+  const svgHelperAddress = addresses["svgHelper"][network]; 
+  const svgHelper = new ethers.Contract(
+    svgHelperAddress,
+    ISVGHelper.wabi.abi,
+    provider
+  );
+  return svgHelper;
+};
+
+const ITokenGate = {
+  wabi: require("@/abis/ITokenGate.json"), // wrapped abi
+};
+export const getTokenGate = (address: string, provider: ethers.providers.Provider | ethers.Signer | undefined) => {
+  const tokenGate = new ethers.Contract(
+    address,
+    ITokenGate.wabi.abi,
+    provider
+  );
+  return tokenGate;
+}
+
+const ProviderTokenEx = {
+  wabi: require("@/abis/ProviderToken.json"), // wrapped abi
+};
+export const getContractRO = (address: string, provider: ethers.providers.Provider | ethers.Signer | undefined) => {
+  const contractRO = new ethers.Contract(
+    address,
+    ProviderTokenEx.wabi.abi,
+    provider
+  );
+  return contractRO;
 };
