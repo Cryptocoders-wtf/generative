@@ -1,3 +1,5 @@
+import { ethers } from "ethers";
+
 export const getAddresses = (network: string, contentAddress: string) => {
   const EtherscanBase = (() => {
     if (network == "rinkeby") {
@@ -28,4 +30,29 @@ export const getAddresses = (network: string, contentAddress: string) => {
     EtherscanToken,
     OpenSeaPath,
   };
+};
+
+export const getProvider = (
+  network: string,
+  alchemyKey: string | undefined
+) => {
+  return network == "localhost"
+    ? new ethers.providers.JsonRpcProvider()
+    : network == "mumbai"
+    ? new ethers.providers.JsonRpcProvider(
+        "https://matic-mumbai.chainstacklabs.com"
+      )
+    : alchemyKey
+    ? new ethers.providers.AlchemyProvider(network, alchemyKey)
+    : new ethers.providers.InfuraProvider(network);
+};
+
+export const decodeTokenData = (tokenURI: string) => {
+  const data = tokenURI.substring(29); // HACK: hardcoded
+  const decoded = Buffer.from(data, "base64");
+  const json = JSON.parse(decoded.toString());
+  const svgData = json.image.substring(26); // hardcoded
+  const svg = Buffer.from(svgData, "base64").toString();
+
+  return { json, svg };
 };

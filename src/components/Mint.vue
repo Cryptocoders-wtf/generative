@@ -13,14 +13,15 @@
       </p>
       <div v-if="totalSupply < mintLimit">
         <div v-if="restricted && totalBalance == 0" class="text-yellow-500">
-          Minting is available only to <a href="/#series" class="underline">{{ restricted }}</a> holders at this
-          moment. Please wait for the announcement from @nounsfes.
+          Minting is available only to
+          <a href="/#series" class="underline">{{ restricted }}</a> holders at
+          this moment. Please wait for the announcement from @nounsfes.
         </div>
         <div v-else-if="limit && limit <= balanceOf" class="text-yellow-500">
           The maximum number of tokens you can mint is {{ limit }}.
         </div>
         <div v-else>
-          <p>Price: {{ mintPriceString }}</p>
+          <p>Price: {{ mintPriceString }} ETH</p>
           <p v-if="isMinting" class="mt-4 mb-4 bg-slate-200 pl-4">
             Processing...
           </p>
@@ -66,7 +67,7 @@ import { useRoute } from "vue-router";
 import { BigNumber, ethers } from "ethers";
 import { ChainIdMap, displayAddress } from "../utils/MetaMask";
 import NetworkGate from "@/components/NetworkGate.vue";
-import { getAddresses } from "@/utils/const";
+import { getAddresses, getProvider, decodeTokenData } from "@/utils/const";
 import References from "@/components/References.vue";
 import { addresses } from "@/utils/addresses";
 import { weiToEther } from "@/utils/currency";
@@ -112,9 +113,7 @@ export default defineComponent({
     const balanceOf = ref<number>(0);
     const mintLimit = ref<number>(0);
     const mintPrice = ref<BigNumber>(BigNumber.from(0));
-    const mintPriceString = computed(
-      () => `${weiToEther(mintPrice.value)} ETH`
-    );
+    const mintPriceString = computed(() => weiToEther(mintPrice.value));
     const isMinting = ref<boolean>(false);
     const nextImage = ref<string | null>(null);
     const svgHelperAddress = addresses["svgHelper"][props.network];
@@ -150,16 +149,7 @@ export default defineComponent({
 
     const chainId = ChainIdMap[props.network];
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
-    const provider =
-      props.network == "localhost"
-        ? new ethers.providers.JsonRpcProvider()
-        : props.network == "mumbai"
-        ? new ethers.providers.JsonRpcProvider(
-            "https://matic-mumbai.chainstacklabs.com"
-          )
-        : alchemyKey
-        ? new ethers.providers.AlchemyProvider(props.network, alchemyKey)
-        : new ethers.providers.InfuraProvider(props.network);
+    const provider = getProvider(props.network, alchemyKey);
 
     const contractRO = new ethers.Contract(
       props.tokenAddress,
@@ -195,20 +185,15 @@ export default defineComponent({
       } else {
         nextImage.value = null;
       }
-      const updatedTokens = [];
-      for (var tokenId = Math.max(0, supply - 4); tokenId < supply; tokenId++) {
+      tokens.value = [];
+      for (let tokenId = Math.max(0, supply - 4); tokenId < supply; tokenId++) {
         const [tokenURI, gas] = await contractRO.functions.debugTokenURI(
           tokenId
         );
         console.log("gas", tokenId, gas.toNumber());
-        const data = tokenURI.substring(29); // HACK: hardcoded
-        const decoded = Buffer.from(data, "base64");
-        const json = JSON.parse(decoded.toString());
-        updatedTokens.push({ tokenId, image: json.image });
-        const svgData = json.image.substring(26); // hardcoded
-        const svg = Buffer.from(svgData, "base64").toString();
+        const { json } = decodeTokenData(tokenURI);
+        tokens.value.push({ tokenId, image: json.image });
       }
-      tokens.value = updatedTokens;
     };
     fetchTokens();
     const once = async () => {
