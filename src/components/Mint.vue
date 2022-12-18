@@ -64,8 +64,8 @@
 import { defineComponent, computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { BigNumber, ethers } from "ethers";
-import { ChainIdMap, displayAddress } from "../utils/MetaMask";
+import { BigNumber } from "ethers";
+import { ChainIdMap, displayAddress } from "@/utils/MetaMask";
 import NetworkGate from "@/components/NetworkGate.vue";
 import { getAddresses, getProvider, decodeTokenData, getSvgHelper, getTokenGate, getContractRO } from "@/utils/const";
 import { getBalanceFromContractRO, getMintPriceForFromContractRO, getTotalSupplyFromContractRO, getMintLimitFromContractRO, getDebugTokenURI }  from "@/utils/const";
@@ -109,7 +109,9 @@ export default defineComponent({
     const isMinting = ref<boolean>(false);
     const nextImage = ref<string | null>(null);
 
-    const chainId = ChainIdMap[props.network];
+    const affiliateId =
+      typeof route.query.ref == "string" ? parseInt(route.query.ref) || 0 : 0;
+    
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider = getProvider(props.network, alchemyKey);
 
@@ -137,7 +139,6 @@ export default defineComponent({
     });
     const wallet = computed(() => displayAddress(account.value));
 
-    
     const providerAddress =
       addresses[props.assetProvider || "dotNouns"][props.network];
 
@@ -185,17 +186,11 @@ export default defineComponent({
       );
     });
 
-    const affiliateId =
-      typeof route.query.ref == "string" ? parseInt(route.query.ref) || 0 : 0;
-
+    const chainId = ChainIdMap[props.network];
     const networkContext = computed(() => {
-      if (store.state.account && store.state.chainId == chainId) {
-        const provider = new ethers.providers.Web3Provider(
-          store.state.ethereum
-        );
-        const signer = provider.getSigner();
+      const signer = store.getters.getSigner(chainId);
+      if (signer) {
         const contract = getContractRO(props.tokenAddress, signer);
-
         return { provider, signer, contract };
       }
       return null;

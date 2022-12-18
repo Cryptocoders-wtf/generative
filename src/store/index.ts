@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
-import { startMonitoringMetamask } from "../utils/MetaMask";
+import { ethers } from "ethers";
+import { startMonitoringMetamask } from "@/utils/MetaMask";
 
 interface State {
   ethereum: any | null;
@@ -42,6 +43,16 @@ export default createStore<State>({
         return "";
       }
       return account.substring(0, 6) + "..." + account.substring(38);
+    },
+    getSigner: (state: State) => (chainId: string) => {
+      if (state.account && state.chainId == chainId) {
+        const provider = new ethers.providers.Web3Provider(
+          state.ethereum
+        );
+        const signer = provider.getSigner();
+        return signer;
+      }
+      return null;
     },
   },
   actions: {},
