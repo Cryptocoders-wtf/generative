@@ -67,8 +67,21 @@ import { useRoute } from "vue-router";
 import { BigNumber } from "ethers";
 import { ChainIdMap, displayAddress } from "@/utils/MetaMask";
 import NetworkGate from "@/components/NetworkGate.vue";
-import { getAddresses, getProvider, decodeTokenData, getSvgHelper, getTokenGate, getContractRO } from "@/utils/const";
-import { getBalanceFromContractRO, getMintPriceForFromContractRO, getTotalSupplyFromContractRO, getMintLimitFromContractRO, getDebugTokenURI }  from "@/utils/const";
+import {
+  getAddresses,
+  getProvider,
+  decodeTokenData,
+  getSvgHelper,
+  getTokenGate,
+  getContractRO,
+} from "@/utils/const";
+import {
+  getBalanceFromContractRO,
+  getMintPriceForFromContractRO,
+  getTotalSupplyFromContractRO,
+  getMintLimitFromContractRO,
+  getDebugTokenURI,
+} from "@/utils/const";
 import References from "@/components/References.vue";
 import { addresses } from "@/utils/addresses";
 import { weiToEther } from "@/utils/currency";
@@ -111,7 +124,7 @@ export default defineComponent({
 
     const affiliateId =
       typeof route.query.ref == "string" ? parseInt(route.query.ref) || 0 : 0;
-    
+
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider = getProvider(props.network, alchemyKey);
 
@@ -126,8 +139,14 @@ export default defineComponent({
         );
         totalBalance.value = result.toNumber();
       }
-      balanceOf.value = await getBalanceFromContractRO(contractRO, store.state.account);
-      mintPrice.value = await getMintPriceForFromContractRO(contractRO, store.state.account);
+      balanceOf.value = await getBalanceFromContractRO(
+        contractRO,
+        store.state.account
+      );
+      mintPrice.value = await getMintPriceForFromContractRO(
+        contractRO,
+        store.state.account
+      );
       console.log("*** checkTokenGate", weiToEther(mintPrice.value));
     };
 
@@ -158,8 +177,12 @@ export default defineComponent({
         nextImage.value = null;
       }
       tokens.value = [];
-      for (let tokenId = Math.max(0, totalSupply.value - 4); tokenId < totalSupply.value; tokenId++) {
-        const { tokenURI, gas} = await getDebugTokenURI(contractRO, tokenId);
+      for (
+        let tokenId = Math.max(0, totalSupply.value - 4);
+        tokenId < totalSupply.value;
+        tokenId++
+      ) {
+        const { tokenURI, gas } = await getDebugTokenURI(contractRO, tokenId);
         console.log("gas", tokenId, gas);
         const { json } = decodeTokenData(tokenURI);
         tokens.value.push({ tokenId, image: json.image });
@@ -203,7 +226,7 @@ export default defineComponent({
       console.log("*** minting", weiToEther(mintPrice.value));
       isMinting.value = true;
       try {
-      const txParams = { value: mintPrice.value };
+        const txParams = { value: mintPrice.value };
         const tx = await contract.functions.mint(txParams);
         console.log("mint:tx");
         const result = await tx.wait();

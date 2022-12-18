@@ -46,9 +46,7 @@ export default createStore<State>({
     },
     getSigner: (state: State) => (chainId: string) => {
       if (state.account && state.chainId == chainId) {
-        const provider = new ethers.providers.Web3Provider(
-          state.ethereum
-        );
+        const provider = new ethers.providers.Web3Provider(state.ethereum);
         const signer = provider.getSigner();
         return signer;
       }
