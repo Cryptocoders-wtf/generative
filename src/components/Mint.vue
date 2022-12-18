@@ -108,9 +108,17 @@ export default defineComponent({
     const isMinting = ref<boolean>(false);
     const nextImage = ref<string | null>(null);
 
+    const chainId = ChainIdMap[props.network];
+    const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
+    const provider = getProvider(props.network, alchemyKey);
+
+    const contractRO = getContractRO(props.tokenAddress, provider);
+    const svgHelper = getSvgHelper(props.network, provider);
+
     const checkTokenGate = async () => {
       console.log("### calling totalBalanceOf");
       if (props.tokenGated) {
+        const tokenGate = getTokenGate(props.tokenGateAddress, provider);
         const [result] = await tokenGate.functions.balanceOf(
           store.state.account
         );
@@ -136,13 +144,6 @@ export default defineComponent({
     });
     const wallet = computed(() => displayAddress(account.value));
 
-    const chainId = ChainIdMap[props.network];
-    const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
-    const provider = getProvider(props.network, alchemyKey);
-
-    const contractRO = getContractRO(props.tokenAddress, provider);
-    const tokenGate = getTokenGate(props.tokenGateAddress, provider);
-    const svgHelper = getSvgHelper(props.network, provider);
     
     const providerAddress =
       addresses[props.assetProvider || "dotNouns"][props.network];
