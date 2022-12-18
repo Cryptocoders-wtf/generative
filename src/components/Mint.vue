@@ -95,15 +95,30 @@ interface Token {
 }
 
 export default defineComponent({
-  props: [
-    "network",
-    "tokenAddress",
-    "tokenGated",
-    "tokenGateAddress",
-    "restricted",
-    "limit",
-    "assetProvider",
-  ],
+  props: {
+    network: {
+      type: String,
+      required: true,
+    },
+    tokenAddress: {
+      type: String,
+      required: true,
+    },
+    tokenGated: {
+      type: Boolean,
+      required: true,
+    },
+    tokenGateAddress: {
+      type: String,
+      required: true,
+    },
+    restricted: {
+      type: String,
+    },
+    assetProvider: {
+      type: String,
+    },
+  },
   emits: ["minted"],
   components: {
     NetworkGate,
@@ -158,14 +173,15 @@ export default defineComponent({
     });
     const wallet = computed(() => displayAddress(account.value));
 
-    const providerAddress =
-      addresses[props.assetProvider || "dotNouns"][props.network];
-
     const tokens = ref<Token[]>([]);
     const fetchTokens = async () => {
       const svgHelper = getSvgHelper(props.network, provider);
       totalSupply.value = await getTotalSupplyFromContractRO(contractRO);
       mintLimit.value = await getMintLimitFromContractRO(contractRO);
+
+      const providerAddress =
+        addresses[props.assetProvider || "dotNouns"][props.network];
+
       console.log("totalSupply/mintLimit", totalSupply.value, mintLimit.value);
       if (totalSupply.value < mintLimit.value) {
         const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(
