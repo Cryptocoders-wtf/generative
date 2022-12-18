@@ -68,6 +68,7 @@ import { BigNumber, ethers } from "ethers";
 import { ChainIdMap, displayAddress } from "../utils/MetaMask";
 import NetworkGate from "@/components/NetworkGate.vue";
 import { getAddresses, getProvider, decodeTokenData, getSvgHelper, getTokenGate, getContractRO } from "@/utils/const";
+import { getBalanceFromContractRO, getMintPriceForFromContractRO, getTotalSupplyFromContractRO, getMintLimitFromContractRO, getDebugTokenURI }  from "@/utils/const";
 import References from "@/components/References.vue";
 import { addresses } from "@/utils/addresses";
 import { weiToEther } from "@/utils/currency";
@@ -123,15 +124,8 @@ export default defineComponent({
         );
         totalBalance.value = result.toNumber();
       }
-      const [balance] = await contractRO.functions.balanceOf(
-        store.state.account
-      );
-      balanceOf.value = balance;
-
-      const [value] = await contractRO.functions.mintPriceFor(
-        store.state.account
-      );
-      mintPrice.value = value;
+      balanceOf.value = await getBalanceFromContractRO(contractRO, store.state.account);
+      mintPrice.value = await getMintPriceForFromContractRO(contractRO, store.state.account);
       console.log("*** checkTokenGate", weiToEther(mintPrice.value));
     };
 
@@ -150,10 +144,8 @@ export default defineComponent({
     const tokens = ref<Token[]>([]);
     const fetchTokens = async () => {
       const svgHelper = getSvgHelper(props.network, provider);
-      const [supply] = await contractRO.functions.totalSupply();
-      totalSupply.value = supply.toNumber();
-      const [limit] = await contractRO.functions.mintLimit();
-      mintLimit.value = limit.toNumber();
+      totalSupply.value = await getTotalSupplyFromContractRO(contractRO);
+      mintLimit.value = await getMintLimitFromContractRO(contractRO);
       console.log("totalSupply/mintLimit", totalSupply.value, mintLimit.value);
       if (totalSupply.value < mintLimit.value) {
         const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(
@@ -165,11 +157,9 @@ export default defineComponent({
         nextImage.value = null;
       }
       tokens.value = [];
-      for (let tokenId = Math.max(0, supply - 4); tokenId < supply; tokenId++) {
-        const [tokenURI, gas] = await contractRO.functions.debugTokenURI(
-          tokenId
-        );
-        console.log("gas", tokenId, gas.toNumber());
+      for (let tokenId = Math.max(0, totalSupply.value - 4); tokenId < totalSupply.value; tokenId++) {
+        const { tokenURI, gas} = await getDebugTokenURI(contractRO, tokenId);
+        console.log("gas", tokenId, gas);
         const { json } = decodeTokenData(tokenURI);
         tokens.value.push({ tokenId, image: json.image });
       }

@@ -96,3 +96,29 @@ export const getContractRO = (address: string, provider: ethers.providers.Provid
   return contractRO;
 };
 
+// ContractRO functions
+export const getBalanceFromContractRO = async (contractRO: ethers.Contract, account: string) => {
+  const [balance] = await contractRO.functions.balanceOf(
+    account
+  );
+  return balance;
+};
+export const getMintPriceForFromContractRO = async (contractRO: ethers.Contract, account: string) => {
+  const [value] = await contractRO.functions.mintPriceFor(
+    account
+  );
+  return value;
+};
+export const getTotalSupplyFromContractRO = async (contractRO: ethers.Contract) => {
+  const [supply] = await contractRO.functions.totalSupply();
+  return supply.toNumber();
+};
+
+export const getMintLimitFromContractRO = async (contractRO: ethers.Contract) => {
+  const [limit] = await contractRO.functions.mintLimit();
+  return limit.toNumber();
+};
+export const getDebugTokenURI =  async (contractRO: ethers.Contract, tokenId: number) => {
+  const [tokenURI, gas] = await contractRO.functions.debugTokenURI(tokenId);
+  return {tokenURI, gas: gas.toNumber() };
+};
