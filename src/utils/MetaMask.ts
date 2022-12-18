@@ -1,3 +1,4 @@
+import detectEthereumProvider from '@metamask/detect-provider';
 import store from "../store";
 
 export const requestAccount = async () => {
@@ -5,7 +6,6 @@ export const requestAccount = async () => {
   if (!ethereum) {
     return null;
   }
-  console.log(ethereum.request);
   const accounts = await ethereum.request({ method: "eth_requestAccounts" });
   return accounts.length > 0 ? accounts[0] : null;
 };
@@ -49,14 +49,14 @@ export const ChainIdMap: any = {
   localhost: "0x7a69", // not sure
 };
 
-export const initializeEthereum = () => {
-  const setEthereum = () => {
-    const ethereum = (window as any).ethereum;
+export const initializeEthereum = async () => {
+  const setEthereum = async () => {
+    const ethereum = await detectEthereumProvider();
     if (store.state.ethereum != ethereum) {
       store.commit("setEthereum", ethereum);
     }
   };
-  const ethereum = (window as any).ethereum;
+  const ethereum = await detectEthereumProvider();
   if (ethereum) {
     setEthereum();
   } else {
