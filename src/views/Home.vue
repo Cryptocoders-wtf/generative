@@ -8,54 +8,52 @@
     </p>
     <p class="mb-2">
       Unlike images stored on HTTP servers or IPFS, on-chain generative arts are
-      truly decentralized and composable (i.e., it is possible re-use and remix images 
-      from other smart contracts).
-      It can even generate revenue autonomously (we will launch a
+      truly decentralized and composable (i.e., it is possible re-use and remix
+      images from other smart contracts). It can even generate revenue
+      autonomously (we will launch a
       <b>decentralized autonomous marketplace</b> for generative arts soon).
     </p>
     <p class="mb-2" id="series">
-      We have released six <b>Fully On-chain Generative NFT collections</b> so far 
-      (please click the images to see the secondary market on OpenSea).
-    <ul>
-
-        <a
+      We have released six <b>Fully On-chain Generative NFT collections</b> so
+      far (please click the images to see the secondary market on OpenSea).
+    </p>
+    <p>
+      <a
         href="https://opensea.io/collection/on-chain-splatter"
         class="underline"
         target="_blank"
-        ><img class="w-28 inline-block mr-2" src="@/assets/splatterToken.svg" /></a
-      >
+        ><img class="mr-2 inline-block w-28" src="@/assets/splatterToken.svg"
+      /></a>
       <a
         href="https://opensea.io/collection/on-chain-bitcoin-art"
         class="underline"
         target="_blank"
-        ><img class="w-28 inline-block mr-2" src="@/assets/bitcoinToken.svg" /></a
-      >
+        ><img class="mr-2 inline-block w-28" src="@/assets/bitcoinToken.svg"
+      /></a>
       <a
         href="https://opensea.io/collection/on-chain-alphabet"
         class="underline"
         target="_blank"
-        ><img class="w-28 inline-block mr-2" src="@/assets/alphabetToken.svg" /></a
-      >
+        ><img class="mr-2 inline-block w-28" src="@/assets/alphabetToken.svg"
+      /></a>
       <a
         href="https://opensea.io/collection/dot-nouns"
         class="underline"
         target="_blank"
-        ><img class="w-28 inline-block mr-2" src="@/assets/dotNounsToken.svg" /></a
-      >
+        ><img class="mr-2 inline-block w-28" src="@/assets/dotNounsToken.svg"
+      /></a>
       <a
         href="https://opensea.io/collection/paper-nouns"
         class="underline"
         target="_blank"
-        ><img class="w-28 inline-block mr-2" src="@/assets/paperNouns1.svg" /></a
-      >
+        ><img class="mr-2 inline-block w-28" src="@/assets/paperNouns1.svg"
+      /></a>
       <a
         href="https://opensea.io/collection/pnouns-nft"
         class="underline"
         target="_blank"
-        ><img class="w-28 inline-block mr-2" src="@/assets/pnouns1.svg" /></a
-      >
-    </ul>
-
+        ><img class="mr-2 inline-block w-28" src="@/assets/pnouns1.svg"
+      /></a>
     </p>
     <p class="mt-2 mb-2">
       Traditional on-chain NFTs, such as Nouns, had very poor graphics (see
@@ -113,18 +111,22 @@
     </p>
     <h1 class="mt-2 mb-2 text-xl font-bold">Graphics Library</h1>
     <p>
-      In order to make it easy to develop generative art in Solidity, 
-      we have created an open source library, 
-      <a class="underline" href="https://www.npmjs.com/package/fully-on-chain.sol">fully-on-chain.sol</a>,
-      which allows developers to generative code like this.
-      <pre class="mt-2 text-xs">
+      In order to make it easy to develop generative art in Solidity, we have
+      created an open source library,
+      <a
+        class="underline"
+        href="https://www.npmjs.com/package/fully-on-chain.sol"
+        >fully-on-chain.sol</a
+      >, which allows developers to generative code like this.
+    </p>
+    <pre class="mt-2 text-xs">
 SVG.rect(256, 256, 512, 512)
   .fill("yellow");
   .stroke("blue", 10)
   .transform("rotate(30 512 512)");
-      </pre>
-      <img src="https://i.imgur.com/MLEUGD5.png" />
-    </p>
+      </pre
+    >
+    <img src="https://i.imgur.com/MLEUGD5.png" />
     <h1 class="mt-2 mb-2 text-xl font-bold">Porting it to Solidity</h1>
     <p class="mb-2">
       The Soidity version of Splatter is avaiable at

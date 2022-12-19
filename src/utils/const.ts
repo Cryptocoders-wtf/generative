@@ -95,7 +95,7 @@ export const getTokenGate = (
 export const getAssetProvider = (
   assetProviderName: string,
   network: string,
-  provider: ethers.providers.Provider | ethers.Signer | undefined,
+  provider: ethers.providers.Provider | ethers.Signer | undefined
 ) => {
   const providerAddress = addresses[assetProviderName][network];
   const assetProvider = new ethers.Contract(
@@ -106,50 +106,50 @@ export const getAssetProvider = (
   return assetProvider;
 };
 
-export const getContractRO = (
+export const getTokenContract = (
   address: string,
   provider: ethers.providers.Provider | ethers.Signer | undefined
 ) => {
-  const contractRO = new ethers.Contract(
+  const tokenContract = new ethers.Contract(
     address,
     ProviderTokenEx.wabi.abi,
     provider
   );
-  return contractRO;
+  return tokenContract;
 };
 
-// ContractRO functions
-export const getBalanceFromContractRO = async (
-  contractRO: ethers.Contract,
+// Token Contract functions
+export const getBalanceFromTokenContract = async (
+  tokenContract: ethers.Contract,
   account: string
 ) => {
-  const [balance] = await contractRO.functions.balanceOf(account);
+  const [balance] = await tokenContract.functions.balanceOf(account);
   return balance;
 };
-export const getMintPriceForFromContractRO = async (
-  contractRO: ethers.Contract,
+export const getMintPriceForFromTokenContract = async (
+  tokenContract: ethers.Contract,
   account: string
 ) => {
-  const [value] = await contractRO.functions.mintPriceFor(account);
+  const [value] = await tokenContract.functions.mintPriceFor(account);
   return value;
 };
-export const getTotalSupplyFromContractRO = async (
-  contractRO: ethers.Contract
+export const getTotalSupplyFromTokenContract = async (
+  tokenContract: ethers.Contract
 ) => {
-  const [supply] = await contractRO.functions.totalSupply();
+  const [supply] = await tokenContract.functions.totalSupply();
   return supply.toNumber();
 };
 
-export const getMintLimitFromContractRO = async (
-  contractRO: ethers.Contract
+export const getMintLimitFromTokenContract = async (
+  tokenContract: ethers.Contract
 ) => {
-  const [limit] = await contractRO.functions.mintLimit();
+  const [limit] = await tokenContract.functions.mintLimit();
   return limit.toNumber();
 };
 export const getDebugTokenURI = async (
-  contractRO: ethers.Contract,
+  tokenContract: ethers.Contract,
   tokenId: number
 ) => {
-  const [tokenURI, gas] = await contractRO.functions.debugTokenURI(tokenId);
+  const [tokenURI, gas] = await tokenContract.functions.debugTokenURI(tokenId);
   return { tokenURI, gas: gas.toNumber() };
 };
