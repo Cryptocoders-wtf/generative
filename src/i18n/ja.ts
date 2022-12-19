@@ -5,6 +5,7 @@ const lang = {
     home: "ホーム",
   },
   message: {
+    notFoundMessage: "ページがありません",
     touchToUpdate: "イメージをクリックすると再度生成します。",
     resources: "Resources",
   },

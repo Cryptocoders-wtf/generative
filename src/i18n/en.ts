@@ -9,6 +9,7 @@ const lang = {
     nometamask: "No Metamask",
   },
   message: {
+    notFoundMessage: "Page not found.",
     touchToUpdate: "Click images to regenerate.",
     processing: "Processing...",
     resources: "Resources",
