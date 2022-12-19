@@ -25,7 +25,7 @@ export default defineComponent({
     debugMode: Boolean,
     network: String,
     count: Number,
-    offset: Number
+    offset: Number,
   },
   setup(props) {
     const images = ref<string[]>([]);
@@ -39,7 +39,11 @@ export default defineComponent({
     const provider = getProvider(network, alchemyKey);
     console.log("*****", network, provider);
 
-    const assetProvider = getAssetProvider(props.assetProvider, network, provider);
+    const assetProvider = getAssetProvider(
+      props.assetProvider,
+      network,
+      provider
+    );
     const providerAddress = assetProvider.address;
 
     const svgHelper = getSvgHelper(network, provider);

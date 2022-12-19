@@ -95,7 +95,7 @@ export const getTokenGate = (
 export const getAssetProvider = (
   assetProviderName: string,
   network: string,
-  provider: ethers.providers.Provider | ethers.Signer | undefined,
+  provider: ethers.providers.Provider | ethers.Signer | undefined
 ) => {
   const providerAddress = addresses[assetProviderName][network];
   const assetProvider = new ethers.Contract(

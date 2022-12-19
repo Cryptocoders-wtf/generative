@@ -1,8 +1,8 @@
 <template>
   <div class="mx-auto max-w-3xl p-2 text-left">
     <p class="mb-2">
-      Paper Nouns are dynamically generated on the blockchain, taking advantage of
-      the composability of Nouns.
+      Paper Nouns are dynamically generated on the blockchain, taking advantage
+      of the composability of Nouns.
     </p>
     <ProviderView
       v-if="false"
