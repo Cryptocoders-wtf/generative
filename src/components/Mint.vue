@@ -76,10 +76,10 @@ import {
   getTokenContract,
 } from "@/utils/const";
 import {
-  getBalanceFromContractRO,
-  getMintPriceForFromContractRO,
-  getTotalSupplyFromContractRO,
-  getMintLimitFromContractRO,
+  getBalanceFromTokenContract,
+  getMintPriceForFromTokenContract,
+  getTotalSupplyFromTokenContract,
+  getMintLimitFromTokenContract,
   getDebugTokenURI,
 } from "@/utils/const";
 import References from "@/components/References.vue";
@@ -143,6 +143,7 @@ export default defineComponent({
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider = getProvider(props.network, alchemyKey);
 
+    // RO means read only.
     const contractRO = getTokenContract(props.tokenAddress, provider);
 
     const checkTokenGate = async () => {
@@ -154,11 +155,11 @@ export default defineComponent({
         );
         totalBalance.value = result.toNumber();
       }
-      balanceOf.value = await getBalanceFromContractRO(
+      balanceOf.value = await getBalanceFromTokenContract(
         contractRO,
         store.state.account
       );
-      mintPrice.value = await getMintPriceForFromContractRO(
+      mintPrice.value = await getMintPriceForFromTokenContract(
         contractRO,
         store.state.account
       );
@@ -176,8 +177,8 @@ export default defineComponent({
     const tokens = ref<Token[]>([]);
     const fetchTokens = async () => {
       const svgHelper = getSvgHelper(props.network, provider);
-      totalSupply.value = await getTotalSupplyFromContractRO(contractRO);
-      mintLimit.value = await getMintLimitFromContractRO(contractRO);
+      totalSupply.value = await getTotalSupplyFromTokenContract(contractRO);
+      mintLimit.value = await getMintLimitFromTokenContract(contractRO);
 
       const providerAddress =
         addresses[props.assetProvider || "dotNouns"][props.network];
