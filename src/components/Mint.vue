@@ -73,7 +73,7 @@ import {
   decodeTokenData,
   getSvgHelper,
   getTokenGate,
-  getContractRO,
+  getTokenContract,
 } from "@/utils/const";
 import {
   getBalanceFromContractRO,
@@ -143,7 +143,7 @@ export default defineComponent({
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider = getProvider(props.network, alchemyKey);
 
-    const contractRO = getContractRO(props.tokenAddress, provider);
+    const contractRO = getTokenContract(props.tokenAddress, provider);
 
     const checkTokenGate = async () => {
       console.log("### calling totalBalanceOf");
@@ -229,7 +229,7 @@ export default defineComponent({
     const networkContext = computed(() => {
       const signer = store.getters.getSigner(chainId);
       if (signer) {
-        const contract = getContractRO(props.tokenAddress, signer);
+        const contract = getTokenContract(props.tokenAddress, signer);
         return { provider, signer, contract };
       }
       return null;

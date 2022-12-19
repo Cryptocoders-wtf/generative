@@ -106,7 +106,7 @@ export const getAssetProvider = (
   return assetProvider;
 };
 
-export const getContractRO = (
+export const getTokenContract = (
   address: string,
   provider: ethers.providers.Provider | ethers.Signer | undefined
 ) => {
