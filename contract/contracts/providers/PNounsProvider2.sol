@@ -73,7 +73,7 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
     int y;
   }
 
-  function circles(uint _assetId, string[] memory idNouns) internal pure returns (SVG.Element memory) {
+  function circles(uint _assetId) internal pure returns (SVG.Element memory) {
     string[4] memory colors = ['red', 'green', 'yellow', 'blue'];
     uint count = 10;
     SVG.Element[] memory elements = new SVG.Element[](count);
@@ -105,17 +105,7 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
       (seed, stack.degree) = seed.random(0x4000);
       stack.x = 512 + (stack.degree.cos() * int(stack.distance)) / Vector.ONE;
       stack.y = 512 + (stack.degree.sin() * int(stack.distance)) / Vector.ONE;
-      elements[i] = SVG.group(
-        [
-          SVG.use(idNouns[i % idNouns.length]).transform(
-            TX
-              .translate(stack.x - int(stack.radius), stack.y - int(stack.radius))
-              .scale1000((1000 * stack.radius) / 512)
-              .rotate(string(abi.encodePacked(stack.rotate.toString(), ',512,512')))
-          ),
-          SVG.circle(stack.x, stack.y, int(stack.radius + stack.radius / 10)).fill(colors[i % 4]).opacity('0.333')
-        ]
-      );
+      elements[i] = SVG.circle(stack.x, stack.y, int(stack.radius + stack.radius / 10)).fill(colors[i % 4]).opacity('0.333');
     }
     return SVG.group(elements);
   }
@@ -165,7 +155,7 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
             SVG
               .group(
                 [
-                  circles(_assetId, stack.idNouns).transform('translate(102,204) scale(0.8)'),
+                  circles(_assetId).transform('translate(102,204) scale(0.8)'),
                   stack.pnouns,
                   stack.series
                 ]

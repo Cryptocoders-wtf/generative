@@ -1,10 +1,9 @@
 import { ethers, network } from "hardhat";
 import { writeFile } from "fs";
-import addresses from '@nouns/sdk/dist/contract/addresses.json';
-import { addresses as addresses2 } from "../../src/utils/addresses";
+import { addresses } from "../../src/utils/addresses";
 
-const nounsProvider = addresses2.nounsV2[network.name];
-const lonrinaFont = addresses2.londrina_solid[network.name];
+const nounsProvider = addresses.nounsV2[network.name];
+const lonrinaFont = addresses.londrina_solid[network.name];
 
 const designer = "0x14aea32f6e6dcaecfa1bc62776b2e279db09255d";
 
