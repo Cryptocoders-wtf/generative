@@ -158,7 +158,7 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
                   circles(_assetId).transform('translate(102,204) scale(0.8)'),
                   stack.pnouns,
                   stack.series,
-                  SVG.use(stack.idNouns[0]).transform('translate(102,204) scale(0.8)')
+                  SVG.use(stack.idNouns[0]).transform('translate(154,204) scale(0.7)')
                 ]
               )
               .id(tag)
