@@ -8,7 +8,7 @@
 pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
-import 'assetprovider.sol/IAssetProvider.sol';
+import './NounsAssetProviderV2.sol';
 import 'randomizer.sol/Randomizer.sol';
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 import '../packages/graphics/Path.sol';
@@ -26,9 +26,9 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
   using Trigonometry for uint;
 
   IFontProvider public immutable font;
-  IAssetProvider public immutable nounsProvider;
+  NounsAssetProviderV2 public immutable nounsProvider;
 
-  constructor(IFontProvider _font, IAssetProvider _nounsProvider) {
+  constructor(IFontProvider _font, NounsAssetProviderV2 _nounsProvider) {
     font = _font;
     nounsProvider = _nounsProvider;
   }
@@ -144,7 +144,7 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
     stack.idNouns = new string[](3);
     stack.svgNouns = new SVG.Element[](3);
     for (uint i = 0; i < stack.idNouns.length; i++) {
-      (stack.svg, stack.idNouns[i]) = nounsProvider.generateSVGPart(i + _assetId);
+      (stack.svg, stack.idNouns[i]) = nounsProvider.getNounsSVGPart(i + _assetId);
       stack.svgNouns[i] = SVG.element(bytes(stack.svg));
     }
     stack.nouns = SVG.group([
