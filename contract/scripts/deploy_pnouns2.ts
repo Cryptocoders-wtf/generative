@@ -4,7 +4,7 @@ import { addresses } from "../../src/utils/addresses";
 
 const nounsProvider = addresses.nounsV2[network.name];
 const lonrinaFont = addresses.londrina_solid[network.name];
-const nounsId = 3;
+const nounsId = 2;
 
 async function main() {
   const factory = await ethers.getContractFactory("PNounsPrivider2");
@@ -13,13 +13,16 @@ async function main() {
   console.log(`      contract="${contract.address}"`);
 
   for (let i=0; i<11; i++) {
-    if (i==5) {
-      await contract.setNounsId(nounsId + 1);
+    if (i == 5) {
+      console.log("switching nounsId");
+      const tx = await contract.setNounsId(nounsId + 1);
+      await tx.wait();
     }
+    const currentId = await contract.nounsId();
     const n = Math.pow(2,i);
     const result = await contract.generateSVGDocument(n);
     await writeFile(`./cache/pnouns2_${n}.svg`, result, ()=>{});
-    console.log("output", n);  
+    console.log("output", n, currentId);  
   }
 
   const addresses = `export const addresses = {\n`

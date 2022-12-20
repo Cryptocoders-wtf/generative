@@ -27,7 +27,7 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
 
   IFontProvider public immutable font;
   NounsAssetProviderV2 public immutable nounsProvider;
-  uint256 nounsId;
+  uint256 public nounsId;
 
   constructor(IFontProvider _font, NounsAssetProviderV2 _nounsProvider, uint256 _nounsId) {
     font = _font;
