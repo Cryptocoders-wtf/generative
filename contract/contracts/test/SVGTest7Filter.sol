@@ -42,13 +42,42 @@ contract SVGTest7Filter {
                                        SVG.circle(320, 320, 280).fill('red')])
                               .filter('roughPaper')]);
     samples[2] = SVG.group([
-      SVG.polygon("0, 0, 512, 512, 1024, 0").fill('yellow'),
-      SVG.polygon("0, 0, 512, 512, 0, 1024").fill('red'),
-      SVG.polygon("0, 1024, 512, 512, 1024, 1024").fill('yellow'),
-      SVG.polygon("1024, 0, 512, 512, 1024, 1024").fill('red')
+      SVG.linearGradient('silver', 
+        SVG.list([
+          SVG.stop(0).stopColor('#777'), 
+          SVG.stop(50).stopColor('#eee'), 
+          SVG.stop(100).stopColor('#777')
+        ])).x1('0%').x2('0%').y1('0%').y2('100%'),
+      SVG.linearGradient('silver2', 
+        SVG.list([
+          SVG.stop(0).stopColor('#444'), 
+          SVG.stop(50).stopColor('#eee'), 
+          SVG.stop(100).stopColor('#777')
+        ])).x1('0%').x2('0%').y1('0%').y2('100%'),
+      SVG.group([
+        SVG.polygon("0, 0, 512, 512, 1024, 0").fillRef('silver'),
+        SVG.polygon("0, 0, 512, 512, 0, 1024").fillRef('silver2'),
+        SVG.polygon("0, 1024, 512, 512, 1024, 1024").fillRef('silver'),
+        SVG.polygon("1024, 0, 512, 512, 1024, 1024").fillRef('silver2')
+      ]).id("metal")
     ]);
 
-    for (uint i = 0; i < 3; i++) {
+    samples[3] = SVG.group(
+      SVG.use("metal").transform("scale(.0625)").id("cell")
+    );
+
+    SVG.Element[] memory cells = new SVG.Element[](16);
+    for (uint i = 0; i < 16; i++) {
+      cells[i] = SVG.use("cell").transform(TX.translate(int(i * 64), 0));      
+    }
+    samples[4] = SVG.group(SVG.group(cells).id("cell16"));
+
+    for (uint i = 0; i < 16; i++) {
+      cells[i] = SVG.use("cell16").transform(TX.translate(0, int(i * 64)));      
+    }
+    samples[5] = SVG.group(cells);
+
+    for (uint i = 0; i < 6; i++) {
       int x = int(256 * (i % 4));
       int y = int(256 * (i / 4));
       string memory tag = string(abi.encodePacked('test', i.toString()));
