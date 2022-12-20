@@ -113,8 +113,8 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
   struct StackFrame2 {
     uint width;
     SVG.Element pnouns;
-    string[] idNouns;
-    SVG.Element[] svgNouns;
+    string idNouns;
+    SVG.Element svgNouns;
     string svg;
     string seriesText;
     SVG.Element series;
@@ -141,22 +141,18 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
       TX.translate(1024 - int(stack.width / 10), 1024 - 102).scale('0.1')
     );
 
-    stack.idNouns = new string[](3);
-    stack.svgNouns = new SVG.Element[](3);
-    for (uint i = 0; i < stack.idNouns.length; i++) {
-      (stack.svg, stack.idNouns[i]) = nounsProvider.getNounsSVGPart(i + _assetId);
-      stack.svgNouns[i] = SVG.element(bytes(stack.svg));
-    }
+    (stack.svg, stack.idNouns) = nounsProvider.getNounsSVGPart(2);
+    stack.svgNouns = SVG.element(bytes(stack.svg));
     stack.nouns = SVG.group([
                     SVG.rect().fill("#d5d7e1"),
-                    SVG.use(stack.idNouns[0])
+                    SVG.use(stack.idNouns)
                   ]).transform('translate(204,300) scale(0.6)').mask("circleMask");
 
     svgPart = string(
       SVG
         .list(
           [
-            SVG.list(stack.svgNouns),
+            stack.svgNouns,
             SVG.mask(
               "circleMask",
               SVG.circle(512, 512, 512).fill("white")
