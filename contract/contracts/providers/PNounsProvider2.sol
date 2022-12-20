@@ -27,10 +27,16 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
 
   IFontProvider public immutable font;
   NounsAssetProviderV2 public immutable nounsProvider;
+  uint256 nounsId;
 
-  constructor(IFontProvider _font, NounsAssetProviderV2 _nounsProvider) {
+  constructor(IFontProvider _font, NounsAssetProviderV2 _nounsProvider, uint256 _nounsId) {
     font = _font;
     nounsProvider = _nounsProvider;
+    nounsId = _nounsId;
+  }
+
+  function setNounsId(uint256 _nounsId) external onlyOwner {
+    nounsId = _nounsId;
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -141,7 +147,7 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
       TX.translate(1024 - int(stack.width / 10), 1024 - 102).scale('0.1')
     );
 
-    (stack.svg, stack.idNouns) = nounsProvider.getNounsSVGPart(2);
+    (stack.svg, stack.idNouns) = nounsProvider.getNounsSVGPart(nounsId);
     stack.svgNouns = SVG.element(bytes(stack.svg));
     stack.nouns = SVG.group([
                     SVG.rect().fill("#d5d7e1"),

@@ -1,3 +1,3 @@
 export const addresses = {
-  pnouns:"0x9AC558E0305c566F9CcB919267d9941195497563",
+  pnouns:"0x6b3Fa495c434e03FafB61544e547AC1de7e0B846",
 }
