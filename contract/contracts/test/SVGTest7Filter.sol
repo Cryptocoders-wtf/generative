@@ -41,8 +41,12 @@ contract SVGTest7Filter {
                             SVG.group([SVG.rect(256, 256, 640, 640).fill('yellow'), 
                                        SVG.circle(320, 320, 280).fill('red')])
                               .filter('roughPaper')]);
+    samples[2] = SVG.group([
+      SVG.polygon("0, 0, 512, 512, 1024, 0").fill('yellow'),
+      SVG.polygon("0, 1024, 512, 512, 1024, 1024").fill('yellow')
+    ]);
 
-    for (uint i = 0; i < 2; i++) {
+    for (uint i = 0; i < 3; i++) {
       int x = int(256 * (i % 4));
       int y = int(256 * (i / 4));
       string memory tag = string(abi.encodePacked('test', i.toString()));
