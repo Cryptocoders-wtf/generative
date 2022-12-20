@@ -43,7 +43,9 @@ contract SVGTest7Filter {
                               .filter('roughPaper')]);
     samples[2] = SVG.group([
       SVG.polygon("0, 0, 512, 512, 1024, 0").fill('yellow'),
-      SVG.polygon("0, 1024, 512, 512, 1024, 1024").fill('yellow')
+      SVG.polygon("0, 0, 512, 512, 0, 1024").fill('red'),
+      SVG.polygon("0, 1024, 512, 512, 1024, 1024").fill('yellow'),
+      SVG.polygon("1024, 0, 512, 512, 1024, 1024").fill('red')
     ]);
 
     for (uint i = 0; i < 3; i++) {
