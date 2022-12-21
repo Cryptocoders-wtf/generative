@@ -1,4 +1,5 @@
 import { ref, computed } from "vue";
+import { useStore } from "vuex";
 import { ethers, BigNumber } from "ethers";
 import { addresses } from "@/utils/addresses";
 import { svgImageFromSvgPart } from "@/models/point";
@@ -246,5 +247,22 @@ export const useCheckTokenGate = (
     mintPrice,
 
     checkTokenGate,
+  };
+};
+
+export const useNetworkContext = (chainId: string, tokenAddress: string) => {
+  const store = useStore();
+
+  const networkContext = computed(() => {
+    const signer = store.getters.getSigner(chainId);
+    if (signer) {
+      const contract = getTokenContract(tokenAddress, signer);
+      return { signer, contract };
+    }
+    return null;
+  });
+
+  return {
+    networkContext,
   };
 };

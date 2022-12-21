@@ -69,15 +69,12 @@ import NetworkGate from "@/components/NetworkGate.vue";
 import {
   getAddresses,
   getProvider,
-  getTokenGate,
   getTokenContract,
   useFetchTokens,
   useCheckTokenGate,
+  useNetworkContext,
 } from "@/utils/const";
-import {
-  getBalanceFromTokenContract,
-  getMintPriceForFromTokenContract,
-} from "@/utils/const";
+
 import References from "@/components/References.vue";
 import { addresses } from "@/utils/addresses";
 import { weiToEther } from "@/utils/currency";
@@ -176,14 +173,8 @@ export default defineComponent({
     });
 
     const chainId = ChainIdMap[props.network];
-    const networkContext = computed(() => {
-      const signer = store.getters.getSigner(chainId);
-      if (signer) {
-        const contract = getTokenContract(props.tokenAddress, signer);
-        return { provider, signer, contract };
-      }
-      return null;
-    });
+    const { networkContext } = useNetworkContext(chainId, props.tokenAddress);
+
     const mint = async () => {
       if (networkContext.value == null) {
         return;
