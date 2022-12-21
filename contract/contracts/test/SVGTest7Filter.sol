@@ -43,24 +43,36 @@ contract SVGTest7Filter {
                               .filter('roughPaper')]);
 
     samples[2] = SVG.group([
-      SVG.linearGradient('shine1', 
-        SVG.list([
-          SVG.stop(0).stopColor('#FFF0'), 
-          SVG.stop(50).stopColor('#FFF6'), 
-          SVG.stop(100).stopColor('#FFF0')
-        ])).x1('80%').x2('20%').y1('0%').y2('100%'),
-      SVG.linearGradient('shine2', 
-        SVG.list([
-          SVG.stop(0).stopColor('#FFF0'), 
-          SVG.stop(50).stopColor('#FFF8'), 
-          SVG.stop(100).stopColor('#FFF0')
-        ])).x1('100%').x2('0%').y1('0%').y2('100%'),
-      SVG.linearGradient('shine3', 
-        SVG.list([
-          SVG.stop(0).stopColor('#FFF0'), 
-          SVG.stop(50).stopColor('#FFF6'), 
-          SVG.stop(100).stopColor('#FFF0')
-        ])).x1('100%').x2('0%').y1('20%').y2('80%'),
+      SVG.list([
+        SVG.linearGradient('shine1', 
+          SVG.list([
+            SVG.stop(0).stopColor('#FFF0'), 
+            SVG.stop(50).stopColor('#FFF6'), 
+            SVG.stop(100).stopColor('#FFF0')
+          ])).x1('80%').x2('20%').y1('0%').y2('100%'),
+        SVG.linearGradient('shine2', 
+          SVG.list([
+            SVG.stop(0).stopColor('#FFF0'), 
+            SVG.stop(50).stopColor('#FFF8'), 
+            SVG.stop(100).stopColor('#FFF0')
+          ])).x1('100%').x2('0%').y1('0%').y2('100%'),
+        SVG.linearGradient('shine3', 
+          SVG.list([
+            SVG.stop(0).stopColor('#FFF0'), 
+            SVG.stop(50).stopColor('#FFF6'), 
+            SVG.stop(100).stopColor('#FFF0')
+          ])).x1('100%').x2('0%').y1('20%').y2('80%'),
+        SVG.linearGradient('shine4', 
+          SVG.list([
+            SVG.stop(0).stopColor('#FFF0'), 
+            SVG.stop(20).stopColor('#FFF7'),
+            SVG.list([
+              SVG.stop(50).stopColor('#FFF3'), 
+              SVG.stop(70).stopColor('#FFF5'), 
+              SVG.stop(100).stopColor('#FFF0')
+            ]) 
+          ])).x1('20%').x2('80%').y1('0%').y2('100%')
+      ]),
       SVG.group([
         SVG.rect().fill('#444'),
         SVG.rect().fillRef('shine1'),
@@ -84,7 +96,12 @@ contract SVGTest7Filter {
     }
     samples[5] = SVG.group(cells);
 
-    for (uint i = 0; i < 6; i++) {
+    samples[6] = SVG.group([
+      SVG.use('test5'),
+      SVG.rect().fillRef('shine4')
+    ]);
+
+    for (uint i = 0; i < 7; i++) {
       int x = int(256 * (i % 4));
       int y = int(256 * (i / 4));
       string memory tag = string(abi.encodePacked('test', i.toString()));
