@@ -60,7 +60,7 @@ contract SVGTest7Filter {
           SVG.stop(0).stopColor('#FFF0'), 
           SVG.stop(50).stopColor('#FFF6'), 
           SVG.stop(100).stopColor('#FFF0')
-        ])).x1('120%').x2('-20%').y1('0%').y2('100%'),
+        ])).x1('100%').x2('0%').y1('20%').y2('80%'),
       SVG.group([
         SVG.rect().fill('#444'),
         SVG.rect().fillRef('shine1'),
