@@ -1,5 +1,5 @@
-import { ref } from "vue";
-import { ethers } from "ethers";
+import { ref, computed } from "vue";
+import { ethers, BigNumber } from "ethers";
 import { addresses } from "@/utils/addresses";
 import { svgImageFromSvgPart } from "@/models/point";
 
@@ -211,5 +211,40 @@ export const useFetchTokens = (
     tokens,
 
     fetchTokens,
+  };
+};
+
+export const useCheckTokenGate = (
+  tokenGateAddress: string,
+  tokenGated: boolean,
+  provider:
+    | ethers.providers.JsonRpcProvider
+    | ethers.providers.AlchemyProvider
+    | ethers.providers.InfuraProvider,
+  contractRO: ethers.Contract
+) => {
+  const totalBalance = ref<number>(0);
+  const balanceOf = ref<number>(0);
+  const mintPrice = ref<BigNumber>(BigNumber.from(0));
+
+  const checkTokenGate = async (account: string) => {
+    console.log("### calling totalBalanceOf");
+    if (tokenGated) {
+      const tokenGate = getTokenGate(tokenGateAddress, provider);
+      const [result] = await tokenGate.functions.balanceOf(account);
+      totalBalance.value = result.toNumber();
+    }
+    balanceOf.value = await getBalanceFromTokenContract(contractRO, account);
+    mintPrice.value = await getMintPriceForFromTokenContract(
+      contractRO,
+      account
+    );
+  };
+  return {
+    totalBalance,
+    balanceOf,
+    mintPrice,
+
+    checkTokenGate,
   };
 };

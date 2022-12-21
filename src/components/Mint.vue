@@ -64,7 +64,6 @@
 import { defineComponent, computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { BigNumber } from "ethers";
 import { ChainIdMap, displayAddress } from "@/utils/MetaMask";
 import NetworkGate from "@/components/NetworkGate.vue";
 import {
@@ -73,6 +72,7 @@ import {
   getTokenGate,
   getTokenContract,
   useFetchTokens,
+  useCheckTokenGate,
 } from "@/utils/const";
 import {
   getBalanceFromTokenContract,
@@ -118,10 +118,6 @@ export default defineComponent({
     const route = useRoute();
     const store = useStore();
 
-    const totalBalance = ref<number>(0);
-    const balanceOf = ref<number>(0);
-    const mintPrice = ref<BigNumber>(BigNumber.from(0));
-    const mintPriceString = computed(() => weiToEther(mintPrice.value));
     const isMinting = ref<boolean>(false);
 
     const affiliateId =
@@ -133,30 +129,24 @@ export default defineComponent({
     // RO means read only.
     const contractRO = getTokenContract(props.tokenAddress, provider);
 
-    const checkTokenGate = async () => {
-      console.log("### calling totalBalanceOf");
-      if (props.tokenGated) {
-        const tokenGate = getTokenGate(props.tokenGateAddress, provider);
-        const [result] = await tokenGate.functions.balanceOf(
-          store.state.account
-        );
-        totalBalance.value = result.toNumber();
-      }
-      balanceOf.value = await getBalanceFromTokenContract(
-        contractRO,
-        store.state.account
-      );
-      mintPrice.value = await getMintPriceForFromTokenContract(
-        contractRO,
-        store.state.account
-      );
-      console.log("*** checkTokenGate", weiToEther(mintPrice.value));
-    };
+    const {
+      totalBalance,
+      balanceOf,
+      mintPrice,
+
+      checkTokenGate,
+    } = useCheckTokenGate(
+      props.tokenGateAddress,
+      props.tokenGated,
+      provider,
+      contractRO
+    );
+    const mintPriceString = computed(() => weiToEther(mintPrice.value));
 
     const account = computed(() => store.state.account);
     watch(account, (v) => {
       if (v) {
-        checkTokenGate();
+        checkTokenGate(account.value);
       }
     });
     const wallet = computed(() => displayAddress(account.value));
@@ -207,7 +197,7 @@ export default defineComponent({
         console.log("mint:tx");
         const result = await tx.wait();
         console.log("mint:gasUsed", result.gasUsed.toNumber());
-        await checkTokenGate();
+        await checkTokenGate(account.value);
       } catch (e) {
         console.error(e);
       }
