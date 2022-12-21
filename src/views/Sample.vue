@@ -26,8 +26,9 @@ import Mint from "@/components/Mint.vue";
 import ProviderView from "@/components/ProviderView.vue";
 import { addresses as localhost } from "@/utils/addresses/sample_localhost";
 import { addresses as goerli } from "@/utils/addresses/sample_goerli";
+import { Addresses } from "@/utils/addresses";
 
-const allAddresses: any = {
+const allAddresses: Addresses = {
   localhost,
   goerli,
 };

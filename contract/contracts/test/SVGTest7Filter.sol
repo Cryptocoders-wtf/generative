@@ -42,7 +42,66 @@ contract SVGTest7Filter {
                                        SVG.circle(320, 320, 280).fill('red')])
                               .filter('roughPaper')]);
 
-    for (uint i = 0; i < 2; i++) {
+    samples[2] = SVG.group([
+      SVG.list([
+        SVG.linearGradient('shine1', 
+          SVG.list([
+            SVG.stop(0).stopColor('#FFF0'), 
+            SVG.stop(50).stopColor('#FFF6'), 
+            SVG.stop(100).stopColor('#FFF0')
+          ])).x1('80%').x2('20%').y1('0%').y2('100%'),
+        SVG.linearGradient('shine2', 
+          SVG.list([
+            SVG.stop(0).stopColor('#FFF0'), 
+            SVG.stop(50).stopColor('#FFF8'), 
+            SVG.stop(100).stopColor('#FFF0')
+          ])).x1('100%').x2('0%').y1('0%').y2('100%'),
+        SVG.linearGradient('shine3', 
+          SVG.list([
+            SVG.stop(0).stopColor('#FFF0'), 
+            SVG.stop(50).stopColor('#FFF6'), 
+            SVG.stop(100).stopColor('#FFF0')
+          ])).x1('100%').x2('0%').y1('20%').y2('80%'),
+        SVG.linearGradient('shine4', 
+          SVG.list([
+            SVG.stop(0).stopColor('#FFF0'), 
+            SVG.stop(20).stopColor('#FFF7'),
+            SVG.list([
+              SVG.stop(50).stopColor('#FFF3'), 
+              SVG.stop(70).stopColor('#FFF5'), 
+              SVG.stop(100).stopColor('#FFF0')
+            ]) 
+          ])).x1('20%').x2('80%').y1('0%').y2('100%')
+      ]),
+      SVG.group([
+        SVG.rect().fill('#444'),
+        SVG.rect().fillRef('shine1'),
+        SVG.rect().fillRef('shine2'),
+        SVG.rect().fillRef('shine3')
+      ])
+    ]);
+
+    samples[3] = SVG.group(
+      SVG.use("test2").transform("scale(.0625)").id("cell")
+    );
+
+    SVG.Element[] memory cells = new SVG.Element[](16);
+    for (uint i = 0; i < 16; i++) {
+      cells[i] = SVG.use("cell").transform(TX.translate(int(i * 64), 0));      
+    }
+    samples[4] = SVG.group(SVG.group(cells).id("cell16"));
+
+    for (uint i = 0; i < 16; i++) {
+      cells[i] = SVG.use("cell16").transform(TX.translate(0, int(i * 64)));      
+    }
+    samples[5] = SVG.group(cells);
+
+    samples[6] = SVG.group([
+      SVG.use('test5'),
+      SVG.rect().fillRef('shine4')
+    ]);
+
+    for (uint i = 0; i < 7; i++) {
       int x = int(256 * (i % 4));
       int y = int(256 * (i / 4));
       string memory tag = string(abi.encodePacked('test', i.toString()));

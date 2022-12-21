@@ -1,5 +1,8 @@
-import { ethers } from "ethers";
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+import { ethers, BigNumber } from "ethers";
 import { addresses } from "@/utils/addresses";
+import { svgImageFromSvgPart } from "@/models/point";
 
 export const getAddresses = (network: string, contentAddress: string) => {
   const EtherscanBase = (() => {
@@ -48,7 +51,7 @@ export const getProvider = (
     : new ethers.providers.InfuraProvider(network);
 };
 
-export const decodeTokenData = (tokenURI: string) => {
+const decodeTokenData = (tokenURI: string) => {
   const data = tokenURI.substring(29); // HACK: hardcoded
   const decoded = Buffer.from(data, "base64");
   const json = JSON.parse(decoded.toString());
@@ -84,7 +87,7 @@ export const getSvgHelper = (
   return svgHelper;
 };
 
-export const getTokenGate = (
+const getTokenGate = (
   address: string,
   provider: ethers.providers.Provider | ethers.Signer | undefined
 ) => {
@@ -119,37 +122,147 @@ export const getTokenContract = (
 };
 
 // Token Contract functions
-export const getBalanceFromTokenContract = async (
+const getBalanceFromTokenContract = async (
   tokenContract: ethers.Contract,
   account: string
 ) => {
   const [balance] = await tokenContract.functions.balanceOf(account);
   return balance;
 };
-export const getMintPriceForFromTokenContract = async (
+const getMintPriceForFromTokenContract = async (
   tokenContract: ethers.Contract,
   account: string
 ) => {
   const [value] = await tokenContract.functions.mintPriceFor(account);
   return value;
 };
-export const getTotalSupplyFromTokenContract = async (
+const getTotalSupplyFromTokenContract = async (
   tokenContract: ethers.Contract
 ) => {
   const [supply] = await tokenContract.functions.totalSupply();
   return supply.toNumber();
 };
 
-export const getMintLimitFromTokenContract = async (
+const getMintLimitFromTokenContract = async (
   tokenContract: ethers.Contract
 ) => {
   const [limit] = await tokenContract.functions.mintLimit();
   return limit.toNumber();
 };
-export const getDebugTokenURI = async (
+const getDebugTokenURI = async (
   tokenContract: ethers.Contract,
   tokenId: number
 ) => {
   const [tokenURI, gas] = await tokenContract.functions.debugTokenURI(tokenId);
   return { tokenURI, gas: gas.toNumber() };
+};
+
+interface Token {
+  tokenId: number;
+  image: string;
+}
+
+export const useFetchTokens = (
+  network: string,
+  assetProvider: string | undefined,
+  provider:
+    | ethers.providers.JsonRpcProvider
+    | ethers.providers.AlchemyProvider
+    | ethers.providers.InfuraProvider,
+  contractRO: ethers.Contract
+) => {
+  const totalSupply = ref<number>(0);
+  const mintLimit = ref<number>(0);
+  const nextImage = ref<string | null>(null);
+  const tokens = ref<Token[]>([]);
+
+  const fetchTokens = async () => {
+    const svgHelper = getSvgHelper(network, provider);
+    totalSupply.value = await getTotalSupplyFromTokenContract(contractRO);
+    mintLimit.value = await getMintLimitFromTokenContract(contractRO);
+
+    const providerAddress = addresses[assetProvider || "dotNouns"][network];
+
+    console.log("totalSupply/mintLimit", totalSupply.value, mintLimit.value);
+    if (totalSupply.value < mintLimit.value) {
+      const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(
+        providerAddress,
+        totalSupply.value
+      );
+      nextImage.value = svgImageFromSvgPart(svgPart, tag, "");
+    } else {
+      nextImage.value = null;
+    }
+    tokens.value = [];
+    for (
+      let tokenId = Math.max(0, totalSupply.value - 4);
+      tokenId < totalSupply.value;
+      tokenId++
+    ) {
+      const { tokenURI, gas } = await getDebugTokenURI(contractRO, tokenId);
+      console.log("gas", tokenId, gas);
+      const { json } = decodeTokenData(tokenURI);
+      tokens.value.push({ tokenId, image: json.image });
+    }
+  };
+  return {
+    totalSupply,
+    mintLimit,
+    nextImage,
+    tokens,
+
+    fetchTokens,
+  };
+};
+
+export const useCheckTokenGate = (
+  tokenGateAddress: string,
+  tokenGated: boolean,
+  provider:
+    | ethers.providers.JsonRpcProvider
+    | ethers.providers.AlchemyProvider
+    | ethers.providers.InfuraProvider,
+  contractRO: ethers.Contract
+) => {
+  const totalBalance = ref<number>(0);
+  const balanceOf = ref<number>(0);
+  const mintPrice = ref<BigNumber>(BigNumber.from(0));
+
+  const checkTokenGate = async (account: string) => {
+    console.log("### calling totalBalanceOf");
+    if (tokenGated) {
+      const tokenGate = getTokenGate(tokenGateAddress, provider);
+      const [result] = await tokenGate.functions.balanceOf(account);
+      totalBalance.value = result.toNumber();
+    }
+    balanceOf.value = await getBalanceFromTokenContract(contractRO, account);
+    mintPrice.value = await getMintPriceForFromTokenContract(
+      contractRO,
+      account
+    );
+  };
+  return {
+    totalBalance,
+    balanceOf,
+    mintPrice,
+
+    checkTokenGate,
+  };
+};
+
+export const useNetworkContext = (chainId: string, tokenAddress: string) => {
+  const store = useStore();
+
+  const networkContext = computed(() => {
+    const signer = store.getters.getSigner(chainId);
+    if (signer) {
+      const contract = getTokenContract(tokenAddress, signer);
+      return { signer, contract };
+    }
+    return null;
+  });
+
+  return {
+    networkContext,
+  };
 };

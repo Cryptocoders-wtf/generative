@@ -66,7 +66,10 @@ import { addresses as dynamic_mainnet } from "./addresses/dynamic_mainnet";
 import { addresses as dynamic_goerli } from "./addresses/dynamic_goerli";
 import { addresses as dynamic_localhost } from "./addresses/dynamic_localhost";
 
-export const addresses: any = {
+export interface Addresses {[key: string]: {[key: string]: string }}
+export interface WhiteList {[key: string]: string[] }
+
+export const addresses: Addresses = {
   svgHelper: {
     goerli: splatter_goerli.svgHelperAddress,
     mumbai: color_mumbai.svgHelper,
