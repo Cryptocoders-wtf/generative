@@ -4,6 +4,14 @@ import { ethers, BigNumber } from "ethers";
 import { addresses } from "@/utils/addresses";
 import { svgImageFromSvgPart } from "@/models/point";
 
+interface Token {
+  tokenId: number;
+  image: string;
+}
+
+type Provider = ethers.providers.JsonRpcProvider | ethers.providers.AlchemyProvider | ethers.providers.InfuraProvider
+type ProviderOrSigner = ethers.providers.Provider | ethers.Signer | undefined;
+
 export const getAddresses = (network: string, contentAddress: string) => {
   const EtherscanBase = (() => {
     if (network == "rinkeby") {
@@ -35,7 +43,6 @@ export const getAddresses = (network: string, contentAddress: string) => {
     OpenSeaPath,
   };
 };
-
 export const getProvider = (
   network: string,
   alchemyKey: string | undefined
@@ -76,7 +83,7 @@ const IAssetProvider = {
 
 export const getSvgHelper = (
   network: string,
-  provider: ethers.providers.Provider | ethers.Signer | undefined
+  provider: ProviderOrSigner,
 ) => {
   const svgHelperAddress = addresses["svgHelper"][network];
   const svgHelper = new ethers.Contract(
@@ -89,7 +96,7 @@ export const getSvgHelper = (
 
 const getTokenGate = (
   address: string,
-  provider: ethers.providers.Provider | ethers.Signer | undefined
+  provider: ProviderOrSigner
 ) => {
   const tokenGate = new ethers.Contract(address, ITokenGate.wabi.abi, provider);
   return tokenGate;
@@ -98,7 +105,7 @@ const getTokenGate = (
 export const getAssetProvider = (
   assetProviderName: string,
   network: string,
-  provider: ethers.providers.Provider | ethers.Signer | undefined
+  provider: ProviderOrSigner
 ) => {
   const providerAddress = addresses[assetProviderName][network];
   const assetProvider = new ethers.Contract(
@@ -111,8 +118,20 @@ export const getAssetProvider = (
 
 export const getTokenContract = (
   address: string,
-  provider: ethers.providers.Provider | ethers.Signer | undefined
-) => {
+  provider: ProviderOrSigner
+): ethers.Contract => {
+  const tokenContract = new ethers.Contract(
+    address,
+    ProviderTokenEx.wabi.abi,
+    provider
+  );
+  return tokenContract;
+};
+
+export const getSVGTokenContract = (
+  address: string,
+  provider: ProviderOrSigner
+): ethers.Contract => {
   const tokenContract = new ethers.Contract(
     address,
     ProviderTokenEx.wabi.abi,
@@ -157,18 +176,11 @@ const getDebugTokenURI = async (
   return { tokenURI, gas: gas.toNumber() };
 };
 
-interface Token {
-  tokenId: number;
-  image: string;
-}
 
 export const useFetchTokens = (
   network: string,
   assetProvider: string | undefined,
-  provider:
-    | ethers.providers.JsonRpcProvider
-    | ethers.providers.AlchemyProvider
-    | ethers.providers.InfuraProvider,
+  provider: Provider,
   contractRO: ethers.Contract
 ) => {
   const totalSupply = ref<number>(0);
@@ -218,10 +230,7 @@ export const useFetchTokens = (
 export const useCheckTokenGate = (
   tokenGateAddress: string,
   tokenGated: boolean,
-  provider:
-    | ethers.providers.JsonRpcProvider
-    | ethers.providers.AlchemyProvider
-    | ethers.providers.InfuraProvider,
+  provider: Provider,
   contractRO: ethers.Contract
 ) => {
   const totalBalance = ref<number>(0);
@@ -250,13 +259,20 @@ export const useCheckTokenGate = (
   };
 };
 
-export const useNetworkContext = (chainId: string, tokenAddress: string) => {
+export const _useNetworkContext = (
+  chainId: string,
+  tokenAddress: string,
+  func: (
+    address: string,
+    provider: ProviderOrSigner
+  ) => ethers.Contract
+) => {
   const store = useStore();
 
   const networkContext = computed(() => {
     const signer = store.getters.getSigner(chainId);
     if (signer) {
-      const contract = getTokenContract(tokenAddress, signer);
+      const contract = func(tokenAddress, signer);
       return { signer, contract };
     }
     return null;
@@ -265,4 +281,8 @@ export const useNetworkContext = (chainId: string, tokenAddress: string) => {
   return {
     networkContext,
   };
+};
+
+export const useTokenNetworkContext = (chainId: string, tokenAddress: string) => {
+  return _useNetworkContext(chainId, tokenAddress, getTokenContract);
 };
