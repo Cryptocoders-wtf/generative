@@ -171,6 +171,11 @@ library SVG {
     elem.tail = '"/>\n';
   }
 
+  function polygon(string memory _points) internal pure returns (Element memory elem) {
+    elem.head = abi.encodePacked('<polygon points="', _points);
+    elem.tail = '"/>\n';
+  }
+
   function stop(uint ratio) internal pure returns (Element memory elem) {
     elem.head = abi.encodePacked('<stop offset="', ratio.toString(), '%');
     elem.tail = '"/>\n';
