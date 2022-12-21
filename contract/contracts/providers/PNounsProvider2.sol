@@ -96,13 +96,14 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
         (seed, stack.rotate) = seed.random(360);
       } else if (stack.trait == 1) {
         (seed, stack.distance) = seed.random(100);
-        stack.distance += 200;
+        stack.distance += 320; // instaead of 200
         (seed, stack.radius) = seed.random(70);
         stack.radius += 70;
         (seed, stack.rotate) = seed.random(240);
         stack.rotate += 240;
       } else {
         (seed, stack.distance) = seed.random(180);
+        stack.distance += 100; // instaead of 0
         (seed, stack.radius) = seed.random(70);
         stack.radius += 180;
         (seed, stack.rotate) = seed.random(120);
