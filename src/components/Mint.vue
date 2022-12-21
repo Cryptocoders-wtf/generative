@@ -144,14 +144,14 @@ export default defineComponent({
     const mintPriceString = computed(() => weiToEther(mintPrice.value));
 
     const account = computed(() => store.state.account);
-    if (account.value) {
-      checkTokenGate(account.value); 
-    }
-    watch(account, (v) => {
+    const callCheckTokenGate = (v: string) => {
       if (v) {
-        checkTokenGate(account.value);
+        checkTokenGate(v);
       }
-    });
+    }
+    callCheckTokenGate(account.value);
+    watch(account, callCheckTokenGate);
+
     const wallet = computed(() => displayAddress(account.value));
 
     const { fetchTokens, totalSupply, nextImage, tokens, mintLimit } =
