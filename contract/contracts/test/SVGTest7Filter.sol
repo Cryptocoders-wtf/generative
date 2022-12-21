@@ -41,29 +41,36 @@ contract SVGTest7Filter {
                             SVG.group([SVG.rect(256, 256, 640, 640).fill('yellow'), 
                                        SVG.circle(320, 320, 280).fill('red')])
                               .filter('roughPaper')]);
+
     samples[2] = SVG.group([
-      SVG.linearGradient('silver', 
+      SVG.linearGradient('shine1', 
         SVG.list([
-          SVG.stop(0).stopColor('#777'), 
-          SVG.stop(50).stopColor('#eee'), 
-          SVG.stop(100).stopColor('#777')
-        ])).x1('0%').x2('0%').y1('0%').y2('100%'),
-      SVG.linearGradient('silver2', 
+          SVG.stop(0).stopColor('#FFF0'), 
+          SVG.stop(50).stopColor('#FFF6'), 
+          SVG.stop(100).stopColor('#FFF0')
+        ])).x1('80%').x2('20%').y1('0%').y2('100%'),
+      SVG.linearGradient('shine2', 
         SVG.list([
-          SVG.stop(0).stopColor('#444'), 
-          SVG.stop(50).stopColor('#eee'), 
-          SVG.stop(100).stopColor('#777')
-        ])).x1('0%').x2('0%').y1('0%').y2('100%'),
+          SVG.stop(0).stopColor('#FFF0'), 
+          SVG.stop(50).stopColor('#FFF8'), 
+          SVG.stop(100).stopColor('#FFF0')
+        ])).x1('100%').x2('0%').y1('0%').y2('100%'),
+      SVG.linearGradient('shine3', 
+        SVG.list([
+          SVG.stop(0).stopColor('#FFF0'), 
+          SVG.stop(50).stopColor('#FFF6'), 
+          SVG.stop(100).stopColor('#FFF0')
+        ])).x1('120%').x2('-20%').y1('0%').y2('100%'),
       SVG.group([
-        SVG.polygon("0, 0, 512, 512, 1024, 0").fillRef('silver'),
-        SVG.polygon("0, 0, 512, 512, 0, 1024").fillRef('silver2'),
-        SVG.polygon("0, 1024, 512, 512, 1024, 1024").fillRef('silver'),
-        SVG.polygon("1024, 0, 512, 512, 1024, 1024").fillRef('silver2')
-      ]).id("metal")
+        SVG.rect().fill('#444'),
+        SVG.rect().fillRef('shine1'),
+        SVG.rect().fillRef('shine2'),
+        SVG.rect().fillRef('shine3')
+      ])
     ]);
 
     samples[3] = SVG.group(
-      SVG.use("metal").transform("scale(.0625)").id("cell")
+      SVG.use("test2").transform("scale(.0625)").id("cell")
     );
 
     SVG.Element[] memory cells = new SVG.Element[](16);
