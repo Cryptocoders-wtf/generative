@@ -105,6 +105,9 @@ export default defineComponent({
     assetProvider: {
       type: String,
     },
+    limit: {
+      type: Number,
+    },
   },
   emits: ["minted"],
   components: {
