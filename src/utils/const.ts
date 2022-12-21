@@ -51,7 +51,7 @@ export const getProvider = (
     : new ethers.providers.InfuraProvider(network);
 };
 
-export const decodeTokenData = (tokenURI: string) => {
+const decodeTokenData = (tokenURI: string) => {
   const data = tokenURI.substring(29); // HACK: hardcoded
   const decoded = Buffer.from(data, "base64");
   const json = JSON.parse(decoded.toString());
@@ -87,7 +87,7 @@ export const getSvgHelper = (
   return svgHelper;
 };
 
-export const getTokenGate = (
+const getTokenGate = (
   address: string,
   provider: ethers.providers.Provider | ethers.Signer | undefined
 ) => {
@@ -122,34 +122,34 @@ export const getTokenContract = (
 };
 
 // Token Contract functions
-export const getBalanceFromTokenContract = async (
+const getBalanceFromTokenContract = async (
   tokenContract: ethers.Contract,
   account: string
 ) => {
   const [balance] = await tokenContract.functions.balanceOf(account);
   return balance;
 };
-export const getMintPriceForFromTokenContract = async (
+const getMintPriceForFromTokenContract = async (
   tokenContract: ethers.Contract,
   account: string
 ) => {
   const [value] = await tokenContract.functions.mintPriceFor(account);
   return value;
 };
-export const getTotalSupplyFromTokenContract = async (
+const getTotalSupplyFromTokenContract = async (
   tokenContract: ethers.Contract
 ) => {
   const [supply] = await tokenContract.functions.totalSupply();
   return supply.toNumber();
 };
 
-export const getMintLimitFromTokenContract = async (
+const getMintLimitFromTokenContract = async (
   tokenContract: ethers.Contract
 ) => {
   const [limit] = await tokenContract.functions.mintLimit();
   return limit.toNumber();
 };
-export const getDebugTokenURI = async (
+const getDebugTokenURI = async (
   tokenContract: ethers.Contract,
   tokenId: number
 ) => {
