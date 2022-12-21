@@ -1472,6 +1472,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/svg-parser@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@types/svg-parser/-/svg-parser-2.0.3.tgz#a840615540e96e3b5819a9ce31e077efadfdefe2"
+  integrity sha512-PKEmDmVWO8f4wwSZDHKHtdnYRM5NI4dCB0lawtUYpxfGhhuQ0qUky80qk6CR8SZhFrRcJmNnWOpN+8uh/X9qgg==
+
 "@types/uuid@^8.3.4":
   version "8.3.4"
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.4.tgz#bd86a43617df0594787d38b735f55c805becf1bc"
@@ -6646,6 +6651,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
+svg-parser@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/svg-parser/-/svg-parser-2.0.4.tgz#fdc2e29e13951736140b76cb122c8ee6630eb6b5"
+  integrity sha512-e4hG1hRwoOdRb37cIMSgzNsxyzKfayW6VOflrwvR+/bzrkyxY/31WkbgnQpgtrNp1SdpJvpUAGTa/ZoiPNDuRQ==
+
 svgo@^2.7.0:
   version "2.8.0"
   resolved "https://registry.npmjs.org/svgo/-/svgo-2.8.0.tgz"
@@ -7309,6 +7319,18 @@ ws@^8.4.2:
   version "8.5.0"
   resolved "https://registry.npmjs.org/ws/-/ws-8.5.0.tgz"
   integrity sha512-BWX0SWVgLPzYwF8lTzEy1egjhS4S4OEAHfsO8o65WOVsrnSRGaSiUaa9e0ggGlkMTtBlmOpEXiie9RUcBO86qg==
+
+xml-formatter@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/xml-formatter/-/xml-formatter-3.2.0.tgz#e07e923414e32476f52f1eef9efb48fa1431d483"
+  integrity sha512-PYROODIUDHz1SDFePg2VThajPOuSmvo/PrYRKARcSc9xxKKs62EN9uar60IIxxknzmOSNDAxlylpw34bQp0g/Q==
+  dependencies:
+    xml-parser-xo "^4.0.1"
+
+xml-parser-xo@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/xml-parser-xo/-/xml-parser-xo-4.0.1.tgz#d89d09d0a0e7524f35f654c71274e1b4d0f2f43a"
+  integrity sha512-wJmRjzVZr7D+kYSajd3zqT7tt+y9L2vVWp+s7ARxzPMtk/gZcTY0KB14B801QX2D2wqIQ1d3bV/LgcnwlpKyyg==
 
 xtend@^4.0.2:
   version "4.0.2"
