@@ -1,5 +1,7 @@
+import { ref } from "vue";
 import { ethers } from "ethers";
 import { addresses } from "@/utils/addresses";
+import { svgImageFromSvgPart } from "@/models/point";
 
 export const getAddresses = (network: string, contentAddress: string) => {
   const EtherscanBase = (() => {
@@ -152,4 +154,62 @@ export const getDebugTokenURI = async (
 ) => {
   const [tokenURI, gas] = await tokenContract.functions.debugTokenURI(tokenId);
   return { tokenURI, gas: gas.toNumber() };
+};
+
+interface Token {
+  tokenId: number;
+  image: string;
+}
+
+export const useFetchTokens = (
+  network: string,
+  assetProvider: string | undefined,
+  provider:
+    | ethers.providers.JsonRpcProvider
+    | ethers.providers.AlchemyProvider
+    | ethers.providers.InfuraProvider,
+  contractRO: ethers.Contract
+) => {
+  const totalSupply = ref<number>(0);
+  const mintLimit = ref<number>(0);
+  const nextImage = ref<string | null>(null);
+  const tokens = ref<Token[]>([]);
+
+  const fetchTokens = async () => {
+    const svgHelper = getSvgHelper(network, provider);
+    totalSupply.value = await getTotalSupplyFromTokenContract(contractRO);
+    mintLimit.value = await getMintLimitFromTokenContract(contractRO);
+
+    const providerAddress = addresses[assetProvider || "dotNouns"][network];
+
+    console.log("totalSupply/mintLimit", totalSupply.value, mintLimit.value);
+    if (totalSupply.value < mintLimit.value) {
+      const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(
+        providerAddress,
+        totalSupply.value
+      );
+      nextImage.value = svgImageFromSvgPart(svgPart, tag, "");
+    } else {
+      nextImage.value = null;
+    }
+    tokens.value = [];
+    for (
+      let tokenId = Math.max(0, totalSupply.value - 4);
+      tokenId < totalSupply.value;
+      tokenId++
+    ) {
+      const { tokenURI, gas } = await getDebugTokenURI(contractRO, tokenId);
+      console.log("gas", tokenId, gas);
+      const { json } = decodeTokenData(tokenURI);
+      tokens.value.push({ tokenId, image: json.image });
+    }
+  };
+  return {
+    totalSupply,
+    mintLimit,
+    nextImage,
+    tokens,
+
+    fetchTokens,
+  };
 };

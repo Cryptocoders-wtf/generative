@@ -70,29 +70,19 @@ import NetworkGate from "@/components/NetworkGate.vue";
 import {
   getAddresses,
   getProvider,
-  decodeTokenData,
-  getSvgHelper,
   getTokenGate,
   getTokenContract,
+  useFetchTokens,
 } from "@/utils/const";
 import {
   getBalanceFromTokenContract,
   getMintPriceForFromTokenContract,
-  getTotalSupplyFromTokenContract,
-  getMintLimitFromTokenContract,
-  getDebugTokenURI,
 } from "@/utils/const";
 import References from "@/components/References.vue";
 import { addresses } from "@/utils/addresses";
 import { weiToEther } from "@/utils/currency";
-import { svgImageFromSvgPart, sampleColors } from "@/models/point";
 
 console.log("*** addresses", addresses);
-
-interface Token {
-  tokenId: number;
-  image: string;
-}
 
 export default defineComponent({
   props: {
@@ -129,13 +119,10 @@ export default defineComponent({
     const store = useStore();
 
     const totalBalance = ref<number>(0);
-    const totalSupply = ref<number>(0);
     const balanceOf = ref<number>(0);
-    const mintLimit = ref<number>(0);
     const mintPrice = ref<BigNumber>(BigNumber.from(0));
     const mintPriceString = computed(() => weiToEther(mintPrice.value));
     const isMinting = ref<boolean>(false);
-    const nextImage = ref<string | null>(null);
 
     const affiliateId =
       typeof route.query.ref == "string" ? parseInt(route.query.ref) || 0 : 0;
@@ -174,37 +161,9 @@ export default defineComponent({
     });
     const wallet = computed(() => displayAddress(account.value));
 
-    const tokens = ref<Token[]>([]);
-    const fetchTokens = async () => {
-      const svgHelper = getSvgHelper(props.network, provider);
-      totalSupply.value = await getTotalSupplyFromTokenContract(contractRO);
-      mintLimit.value = await getMintLimitFromTokenContract(contractRO);
+    const { fetchTokens, totalSupply, nextImage, tokens, mintLimit } =
+      useFetchTokens(props.network, props.assetProvider, provider, contractRO);
 
-      const providerAddress =
-        addresses[props.assetProvider || "dotNouns"][props.network];
-
-      console.log("totalSupply/mintLimit", totalSupply.value, mintLimit.value);
-      if (totalSupply.value < mintLimit.value) {
-        const [svgPart, tag, gas] = await svgHelper.functions.generateSVGPart(
-          providerAddress,
-          totalSupply.value
-        );
-        nextImage.value = svgImageFromSvgPart(svgPart, tag, "");
-      } else {
-        nextImage.value = null;
-      }
-      tokens.value = [];
-      for (
-        let tokenId = Math.max(0, totalSupply.value - 4);
-        tokenId < totalSupply.value;
-        tokenId++
-      ) {
-        const { tokenURI, gas } = await getDebugTokenURI(contractRO, tokenId);
-        console.log("gas", tokenId, gas);
-        const { json } = decodeTokenData(tokenURI);
-        tokens.value.push({ tokenId, image: json.image });
-      }
-    };
     fetchTokens();
     const once = async () => {
       /*
