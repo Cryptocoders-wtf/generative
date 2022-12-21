@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 import Mint from "@/components/Mint.vue";
 import ProviderView from "@/components/ProviderView.vue";

@@ -1,6 +1,6 @@
-import { parse, ElementNode, Node } from "svg-parser";
+import { parse, ElementNode } from "svg-parser";
 
-import { normalizePath, compressPath, solidityString } from "./pathUtils";
+import { normalizePath } from "./pathUtils";
 
 // svg to svg
 const circle2path = (element: ElementNode) => {
@@ -218,7 +218,7 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
   const obj = parse(svtText);
 
   const svg = obj.children[0] as ElementNode;
-  const { height, width, max } = getSvgSize(svg);
+  const { max } = getSvgSize(svg);
 
   const pathElements = findPath(svg.children as ElementNode[], isBFS);
   const path = pathElements.map((element: ElementNode) => {

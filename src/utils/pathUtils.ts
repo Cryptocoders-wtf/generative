@@ -49,7 +49,7 @@ const reduceFun = <T>(
 };
 
 const prepareBody = (body: string) => {
-  let ret = body.replace(regexFloatG, (str: string) => {
+  let ret = body.replace(regexFloatG, () => {
     return "0";
   });
   ret = ret.replace(regexNumG, (str: string) => {
