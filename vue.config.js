@@ -17,6 +17,8 @@ module.exports = {
         "buffer": require.resolve('buffer/'),
         "http": 'agent-base',
         "https": 'agent-base',
+        "fs": false,
+        "path": false,
         "stream": false,
         "crypto": false,
         "os": false,

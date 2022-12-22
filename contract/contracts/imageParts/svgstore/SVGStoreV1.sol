@@ -22,10 +22,7 @@ contract SVGStoreV1 is ISVGStoreV1 {
       SVG.Element[] memory elements = new SVG.Element[](size);
       for (uint i = 0; i < size; i++) {
           SVG.Element memory tmp = SVG.path(Path.decode(asset.paths[i]));
-          if (
-              keccak256(abi.encodePacked(asset.fills[i])) != keccak256(abi.encodePacked('')) &&
-              keccak256(abi.encodePacked(asset.fills[i])) != keccak256(abi.encodePacked('none'))
-              ) {
+          if (keccak256(abi.encodePacked(asset.fills[i])) != keccak256(abi.encodePacked(''))) {
               tmp = tmp.fill(asset.fills[i]);
           }
           if (asset.strokes[i] != 0) {

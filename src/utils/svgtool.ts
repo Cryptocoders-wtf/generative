@@ -1,6 +1,7 @@
 import { parse, ElementNode } from "svg-parser";
 
 import { normalizePath } from "./pathUtils";
+import css from "css";
 
 // svg to svg
 const circle2path = (element: ElementNode) => {
@@ -46,6 +47,7 @@ const rect2path = (element: ElementNode) => {
 // end of svg to svg
 
 const findPath = (obj: ElementNode[], isBFS: boolean) => {
+  console.log(obj);
   const ret: ElementNode[] = [];
 
   const children: ElementNode[] = [];
@@ -54,15 +56,22 @@ const findPath = (obj: ElementNode[], isBFS: boolean) => {
       if (element.tagName === 'clipPath') {
         return ;
       }
-      element.children.map((c) => {
-        if (isBFS) {
+      if (element.tagName === 'defs') {
+        return ;
+      }
+      if (element?.properties?.transform) {
+        console.log(element?.properties?.transform);
+      }
+      if (isBFS) {
+        element.children.map((c) => {
           children.push(c as ElementNode);
-        } else {
-          findPath(element.children as ElementNode[], isBFS).map((childRet) => {
-            ret.push(childRet);
-          });
-        }
-      });
+
+        });
+      } else {
+        findPath(element.children as ElementNode[], isBFS).map((childRet) => {
+          ret.push(childRet);
+        });
+      }
     }
     if (element.tagName === "path") {
       ret.push(element);
@@ -200,12 +209,12 @@ const element2translate = (element: ElementNode) => {
   return [];
 };
 
-const elementToData = (element: ElementNode, max: number) => {
-  const fill = element2fill(element);
-  const stroke = element2stroke(element);
-  const strokeWidth = element2strokeWidth(element, max);
+const elementToData = (element: ElementNode, style: any, max: number) => {
+  const fill = style["fill"] || element2fill(element);
+  console.log(fill);
+  const stroke = style["stroke"] || element2stroke(element);
+  const strokeWidth = style["stroke-width"] || element2strokeWidth(element, max);
   const translate = element2translate(element);
-
   return {
     path: normalizePath(String(element.properties?.d) || "", Number(max)),
     fill,
@@ -214,16 +223,54 @@ const elementToData = (element: ElementNode, max: number) => {
     translate,
   };
 }
+/*
+const findCSS = (children: ElementNode[]) => {
+  const cssObj = children.find(child => {
+    return child.tagName === "style";
+  });
+  if (cssObj) {
+    // console.log(css.children[0].value);
+    const a = cssObj.children.map((c: any) => {
+      return c.value
+    }).join("");
+    const obj = css.parse(a);
+    const rules = obj?.stylesheet?.rules.reduce((tmp: any, rule: any) => {
+      rule.selectors.map((sele: string) => {
+        if (sele.startsWith(".")) {
+          const name = sele.replace(/^\./, "");
+          if (!tmp[name]) {
+            tmp[name] = {};
+          }
+          rule.declarations.map((dec: any) => {
+            tmp[name][dec.property] = dec.value;
+          });
+          //console.log(rule.declarations)
+        }
+      });
+
+      return tmp;
+    }, {});
+    return rules;
+  }
+  return {};
+  };
+*/
 export const convSVG2Path = (svtText: string, isBFS: boolean) => {
   const obj = parse(svtText);
 
   const svg = obj.children[0] as ElementNode;
+
   const { max } = getSvgSize(svg);
+  // const css = findCSS(svg.children as ElementNode[]);
 
   const pathElements = findPath(svg.children as ElementNode[], isBFS);
+  console.log(pathElements);
   const path = pathElements.map((element: ElementNode) => {
-    return elementToData(element, max);
+    const className = element?.properties?.class || "";
+    // const style = (css[className]) ? css[className] : {};
+    return elementToData(element, {}, max);
   });
+  console.log(path);
   return path;
 }
 

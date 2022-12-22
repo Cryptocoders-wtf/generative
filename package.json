@@ -11,6 +11,7 @@
   "dependencies": {
     "@vueuse/head": "^0.7.7",
     "core-js": "^3.24.0",
+    "css": "^3.0.0",
     "ethers": "^5.6.9",
     "svg-parser": "^2.0.4",
     "twitter-api-sdk": "^1.2.1",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@material-design-icons/svg": "^0.11.4",
+    "@types/css": "^0.0.33",
     "@types/svg-parser": "^2.0.3",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.19.0",

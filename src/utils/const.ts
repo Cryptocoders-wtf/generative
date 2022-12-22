@@ -77,6 +77,9 @@ const ITokenGate = {
 const ProviderTokenEx = {
   wabi: require("@/abis/ProviderToken.json"), // wrapped abi
 };
+const ProviderSVGTokenEx = {
+  wabi: require("@/abis/SVGTokenV1.json"), // wrapped abi
+};
 const IAssetProvider = {
   wabi: require("@/abis/IAssetProvider.json"), // wrapped abi
 };
@@ -134,7 +137,7 @@ export const getSVGTokenContract = (
 ): ethers.Contract => {
   const tokenContract = new ethers.Contract(
     address,
-    ProviderTokenEx.wabi.abi,
+    ProviderSVGTokenEx.wabi.abi,
     provider
   );
   return tokenContract;
@@ -271,6 +274,7 @@ export const _useNetworkContext = (
 
   const networkContext = computed(() => {
     const signer = store.getters.getSigner(chainId);
+    console.log(signer, chainId);
     if (signer) {
       const contract = func(tokenAddress, signer);
       return { signer, contract };
@@ -285,4 +289,8 @@ export const _useNetworkContext = (
 
 export const useTokenNetworkContext = (chainId: string, tokenAddress: string) => {
   return _useNetworkContext(chainId, tokenAddress, getTokenContract);
+};
+
+export const useSVGTokenNetworkContext = (chainId: string, tokenAddress: string) => {
+  return _useNetworkContext(chainId, tokenAddress, getSVGTokenContract);
 };
