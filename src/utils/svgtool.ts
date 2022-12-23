@@ -206,18 +206,18 @@ const element2stroke = (element: ElementNode) => {
 const normalizePos = (pos: number, max: number) => {
   return (pos * 1024) / max;
 };
-const element2strokeWidth = (element: ElementNode, max: number) => {
+const rawStroke = (element: ElementNode, max: number) => {
   if ((element.properties || {})["stroke-width"]) {
-    const str = (element.properties || {})["stroke-width"] || "";
-    const match = String(str).match(/^\d+/);
-    return match ? normalizePos(Number(match[0]), max) : str;
+    return (element.properties || {})["stroke-width"] || "";
   }
-
   const styles = style2elem((element.properties?.style as string) || "");
-  const match = (styles["stroke-width"] || "").match(/^\d+/);
-  const stroke = match ? normalizePos(match[0], max) : 0;
-
-  return Math.round(stroke);
+  return (styles["stroke-width"] || "");
+  
+};
+const element2strokeWidth = (element: ElementNode, max: number) => {
+  const str = rawStroke(element, max);
+  const match = String(str).match(/^\d+/);
+  return Math.round(match ? normalizePos(Number(match[0]), max) : 0);
 };
 
 const element2translate = (element: ElementNode) => {
