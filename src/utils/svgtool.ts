@@ -1,6 +1,6 @@
 import { parse, ElementNode } from "svg-parser";
 
-import { normalizePath } from "./pathUtils";
+import { normalizePath, transformPath } from "./pathUtils";
 import css from "css";
 
 // svg to svg
@@ -46,12 +46,14 @@ const rect2path = (element: ElementNode) => {
 };
 // end of svg to svg
 
-const findPath = (obj: ElementNode[], isBFS: boolean) => {
-  console.log(obj);
-  const ret: ElementNode[] = [];
+const findPath = (obj: ElementNode[], transform: any, isBFS: boolean) => {
+  const ret: {ele: ElementNode, transform: string}[] = [];
 
   const children: ElementNode[] = [];
   obj.map((element) => {
+    if (element?.properties?.transform) {
+      transform = element?.properties?.transform;
+    }
     if (element.children) {
       if (element.tagName === 'clipPath') {
         return ;
@@ -59,51 +61,48 @@ const findPath = (obj: ElementNode[], isBFS: boolean) => {
       if (element.tagName === 'defs') {
         return ;
       }
-      if (element?.properties?.transform) {
-        console.log(element?.properties?.transform);
-      }
       if (isBFS) {
         element.children.map((c) => {
           children.push(c as ElementNode);
 
         });
       } else {
-        findPath(element.children as ElementNode[], isBFS).map((childRet) => {
+        findPath(element.children as ElementNode[], transform, isBFS).map((childRet) => {
           ret.push(childRet);
         });
       }
     }
     if (element.tagName === "path") {
-      ret.push(element);
+      ret.push({ele: element, transform});
     }
     if (element.tagName === "circle") {
       if (element.properties) {
         element.properties.d = circle2path(element);
       }
-      ret.push(element);
+      ret.push({ele: element, transform});
     }
     if (element.tagName === "ellipse") {
       if (element.properties) {
         element.properties.d = ellipse2path(element);
       }
-      ret.push(element);
+      ret.push({ele: element, transform});
     }
     if (element.tagName === "rect") {
       if (element.properties) {
         element.properties.d = rect2path(element);
       }
-      ret.push(element);
+      ret.push({ele: element, transform});
     }
     if (element.tagName === "polygon") {
       if (element.properties) {
         element.properties.d = polygon2path(element);
       }
-      ret.push(element);
+      ret.push({ele: element, transform});
     }
   });
   if (isBFS) {
     if (children.length > 0) {
-      findPath(children as ElementNode[], isBFS).map((childRet) => {
+      findPath(children as ElementNode[], transform, isBFS).map((childRet) => {
         ret.push(childRet);
       });
     }
@@ -113,12 +112,13 @@ const findPath = (obj: ElementNode[], isBFS: boolean) => {
 
 const getSvgSize = (svg: ElementNode) => {
   const viewBox = ((svg.properties?.viewBox as string) || "").split(" ");
-  const originalWidth = parseInt(viewBox[2], 10);
-  const originalHeight = parseInt(viewBox[3], 10);
+
+  const originalWidth = parseInt(viewBox[2], 10) || parseInt(String(svg?.properties?.width || ''));
+  const originalHeight = parseInt(viewBox[3], 10) ||  parseInt(String(svg?.properties?.height || ''));
+
   const max = Math.max(originalWidth, originalHeight);
   const width = Math.round((originalWidth * 1024) / max);
   const height = Math.round((originalHeight * 1024) / max);
-
   return { height, width, max };
 };
 
@@ -126,7 +126,7 @@ const getSvgSize = (svg: ElementNode) => {
 
 // end of properties
 
-const dumpConvertSVG = (paths: any[]) => {
+export const dumpConvertSVG = (paths: any[]) => {
   const ret =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">\n\t<g>\n` +
     paths
@@ -209,14 +209,14 @@ const element2translate = (element: ElementNode) => {
   return [];
 };
 
-const elementToData = (element: ElementNode, style: any, max: number) => {
+const elementToData = (element: ElementNode, max: number, style: any, transform = {}) => {
   const fill = style["fill"] || element2fill(element);
-  console.log(fill);
   const stroke = style["stroke"] || element2stroke(element);
   const strokeWidth = style["stroke-width"] || element2strokeWidth(element, max);
   const translate = element2translate(element);
+
   return {
-    path: normalizePath(String(element.properties?.d) || "", Number(max)),
+    path: normalizePath(transformPath(String(element.properties?.d) || "", transform), Number(max)),
     fill,
     stroke,
     strokeW: strokeWidth,
@@ -255,30 +255,42 @@ const findCSS = (children: ElementNode[]) => {
   return {};
   };
 */
+
+const parseTransform = (tag: string) => {
+  // translate(-345.00001,-497.04311)
+  const found = tag.match(/translate\(([\d-.]+),([\d-.]+)/);
+  if (found && found.length === 3) {
+    console.log(found);
+    return {
+      w: Number(found[1]),
+      h: Number(found[2])
+    }
+  }
+  return {};
+};
+
 export const convSVG2Path = (svtText: string, isBFS: boolean) => {
   const obj = parse(svtText);
-
+  console.log(obj);
+  // const transform = { w: 345, h: 497};
+  const transform = { };
+  
   const svg = obj.children[0] as ElementNode;
 
   const { max } = getSvgSize(svg);
   // const css = findCSS(svg.children as ElementNode[]);
-
-  const pathElements = findPath(svg.children as ElementNode[], isBFS);
-  console.log(pathElements);
-  const path = pathElements.map((element: ElementNode) => {
-    const className = element?.properties?.class || "";
+  
+  const pathElements = findPath(svg.children as ElementNode[], {}, isBFS);
+  const path = pathElements.map((element: {ele: ElementNode, transform: any}) => {
+    const className = element?.ele?.properties?.class || "";
     // const style = (css[className]) ? css[className] : {};
-    return elementToData(element, {}, max);
+    const transform = parseTransform(element.transform);
+    console.log(transform);
+    return elementToData(element?.ele,  max, {}, transform);
   });
   console.log(path);
   return path;
 }
-
-export const convSVG2SVG = (svtText: string, isBFS: boolean) => {
-  const path = convSVG2Path(svtText, isBFS);
-  const convertedSVG = dumpConvertSVG(path);
-  return convertedSVG;
-};
 
 export const svg2imgSrc = (svg: string) => {
   return "data:image/svg+xml;base64," +

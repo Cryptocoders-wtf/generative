@@ -59,9 +59,19 @@ const prepareBody = (body: string) => {
   return items;
 };
 
-export const normalizePath = (body: string, width: number) => {
+export const transformPath = (body: string, transform: any) => {
   const items = prepareBody(body);
 
+  if (items[0] === 'm' && transform.w && transform.h) {
+    items[1] = String(Number(items[1]) + transform.w);
+    items[2] = String(Number(items[2]) + transform.h);
+  }
+  // console.log(items);
+  return items.join(" ");
+}
+export const normalizePath = (body: string, width: number) => {
+  const items = prepareBody(body);
+  // console.log(items);
   const func1 = (value: number) => {
     return value.toString();
   };
@@ -74,6 +84,7 @@ export const normalizePath = (body: string, width: number) => {
     offset: 0,
     numArray: [],
   });
+  // console.log(numArray);
   return numArray.join(" ");
 };
 

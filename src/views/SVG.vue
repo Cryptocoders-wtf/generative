@@ -20,18 +20,11 @@
         <img :src="svgData" class="mx-4 mt-4 h-48 w-48" />
       </div>
       <div class="flex-item" v-if="convedSVGData">
-        after1<br />
+        after<br />
         <img
           :src="convedSVGData"
           class="mx-4 mt-4 h-48 w-48"
           />
-      </div>
-      <div class="flex-item" v-if="convedSVGData2">
-        after2<br />
-        <img
-          :src="convedSVGData2"
-          class="mx-4 mt-4 h-48 w-48"
-        />
       </div>
     </div>
     <NetworkGate :expectedNetwork="chainId">
@@ -40,7 +33,7 @@
       </div>
       <div v-for="(token, k) in tokens" :key="k" class="mx-8">
         {{token.name}}
-        <img :src="token.image" class="w-36" />
+        <img :src="token.image" class="w-36 border-2" />
       </div>
     </NetworkGate>
   </div>
@@ -48,7 +41,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { convSVG2SVG, svg2imgSrc } from "@/utils/svgtool";
+import { svg2imgSrc } from "@/utils/svgtool";
 import format from "xml-formatter";
 
 import { data } from "./data";
@@ -65,7 +58,7 @@ import {
 
 //
 import { parse } from "svg-parser";
-import { convSVG2Path } from "@/utils/svgtool";
+import { convSVG2Path, dumpConvertSVG } from "@/utils/svgtool";
 import { compressPath } from "@/utils/pathUtils";
 
 
@@ -78,11 +71,9 @@ export default defineComponent({
 
     const svgData = ref("");
     const convedSVGData = ref("");
-    const convedSVGData2 = ref("");
 
     const svgText = ref("");
     const convedSVGText = ref("");
-    const convedSVGText2 = ref("");
 
     const pathData = ref<any>();
     
@@ -90,16 +81,10 @@ export default defineComponent({
       svgText.value = await file.value.text();
       svgData.value = svg2imgSrc(svgText.value);
 
-      convedSVGText.value = convSVG2SVG(svgText.value, true);
-      console.log( convedSVGText.value )
-      pathData.value = convSVG2Path( convedSVGText.value, false);
-      console.log(pathData.value);
 
+      pathData.value = convSVG2Path(svgText.value, true);
+      convedSVGText.value = dumpConvertSVG(pathData.value);
       convedSVGData.value = svg2imgSrc(convedSVGText.value);
-
-      convedSVGText2.value = convSVG2SVG(svgText.value, true);
-      convedSVGData2.value = svg2imgSrc(convedSVGText2.value);
-
     };
 
     const uploadFile = (e: any) => {
@@ -173,7 +158,7 @@ export default defineComponent({
           const ret = await tokenContract.tokenURI(token - i);
           const data = JSON.parse(atob(ret.split(",")[1]));
           tokens.value.push(data);
-          console.log(data);
+          // console.log(data);
         }
       }
     });
@@ -188,10 +173,8 @@ export default defineComponent({
       svgText,
       convedSVGText,
 
-      convedSVGText2,
-      convedSVGData2,
-
       format,
+
       // mint
       mint,
       chainId,
