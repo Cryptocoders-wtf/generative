@@ -15,6 +15,7 @@ import Experiment from "@/views/Experiment.vue";
 import Star from "@/views/Star.vue";
 import Alphabet from "@/views/Alphabet.vue";
 import Svg from "@/views/SVG.vue";
+import SvgTest from "@/views/SVGTest.vue";
 
 const routeChildren: Array<RouteRecordRaw> = [
   {
@@ -56,6 +57,10 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "svg",
     component: Svg,
+  },
+  {
+    path: "svgtest",
+    component: SvgTest,
   },
   {
     path: "alphabet",

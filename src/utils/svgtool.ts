@@ -257,10 +257,8 @@ const findCSS = (children: ElementNode[]) => {
 */
 
 const parseTransform = (tag: string) => {
-  // translate(-345.00001,-497.04311)
   const found = tag.match(/translate\(([\d-.]+),([\d-.]+)/);
   if (found && found.length === 3) {
-    console.log(found);
     return {
       w: Number(found[1]),
       h: Number(found[2])
@@ -273,19 +271,18 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
   const obj = parse(svtText);
   console.log(obj);
   // const transform = { w: 345, h: 497};
-  const transform = { };
+  // const transform = { };
   
   const svg = obj.children[0] as ElementNode;
 
   const { max } = getSvgSize(svg);
   // const css = findCSS(svg.children as ElementNode[]);
   
-  const pathElements = findPath(svg.children as ElementNode[], {}, isBFS);
+  const pathElements = findPath(svg.children as ElementNode[], "", isBFS);
   const path = pathElements.map((element: {ele: ElementNode, transform: any}) => {
     const className = element?.ele?.properties?.class || "";
     // const style = (css[className]) ? css[className] : {};
-    const transform = parseTransform(element.transform);
-    console.log(transform);
+    const transform = parseTransform(element.transform||"");
     return elementToData(element?.ele,  max, {}, transform);
   });
   console.log(path);

@@ -2,6 +2,14 @@ const webpack = require('webpack');
 
 module.exports = {
   configureWebpack: {
+    module: {
+      rules: [
+        {
+          resourceQuery: /raw/,
+          type: 'asset/source',
+        }
+      ],
+    },
     plugins: [
       new webpack.ProvidePlugin({
         Buffer: ['buffer', 'Buffer'],
