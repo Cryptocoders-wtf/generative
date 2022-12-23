@@ -2,6 +2,14 @@ const webpack = require('webpack');
 
 module.exports = {
   configureWebpack: {
+    module: {
+      rules: [
+        {
+          resourceQuery: /raw/,
+          type: 'asset/source',
+        }
+      ],
+    },
     plugins: [
       new webpack.ProvidePlugin({
         Buffer: ['buffer', 'Buffer'],
@@ -17,6 +25,8 @@ module.exports = {
         "buffer": require.resolve('buffer/'),
         "http": 'agent-base',
         "https": 'agent-base',
+        "fs": false,
+        "path": false,
         "stream": false,
         "crypto": false,
         "os": false,

@@ -72,7 +72,7 @@ import {
   getTokenContract,
   useFetchTokens,
   useCheckTokenGate,
-  useNetworkContext,
+  useTokenNetworkContext,
 } from "@/utils/const";
 
 import References from "@/components/References.vue";
@@ -179,7 +179,7 @@ export default defineComponent({
     });
 
     const chainId = ChainIdMap[props.network];
-    const { networkContext } = useNetworkContext(chainId, props.tokenAddress);
+    const { networkContext } = useTokenNetworkContext(chainId, props.tokenAddress);
 
     const mint = async () => {
       if (networkContext.value == null) {
