@@ -209,10 +209,11 @@ const element2translate = (element: ElementNode) => {
   return [];
 };
 
-const elementToData = (element: ElementNode, max: number, style: any, transform = {}) => {
+const elementToData = (element: ElementNode, max: number, ratio: number, style: any, transform = {}) => {
   const fill = style["fill"] || element2fill(element);
   const stroke = style["stroke"] || element2stroke(element);
-  const strokeWidth = style["stroke-width"] || element2strokeWidth(element, max);
+  console.log(ratio);
+  const strokeWidth = (style["stroke-width"] || element2strokeWidth(element, max)) * ratio;
   const translate = element2translate(element);
 
   return {
@@ -276,6 +277,7 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
   const svg = obj.children[0] as ElementNode;
 
   const { max } = getSvgSize(svg);
+  const ratio = Math.round( 1024 / max);
   // const css = findCSS(svg.children as ElementNode[]);
   
   const pathElements = findPath(svg.children as ElementNode[], "", isBFS);
@@ -283,7 +285,7 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
     const className = element?.ele?.properties?.class || "";
     // const style = (css[className]) ? css[className] : {};
     const transform = parseTransform(element.transform||"");
-    return elementToData(element?.ele,  max, {}, transform);
+    return elementToData(element?.ele,  max, ratio, {}, transform);
   });
   console.log(path);
   return path;
