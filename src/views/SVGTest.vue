@@ -18,11 +18,12 @@ import semi2 from "../svgs/Character_Long2_Semi.svg?raw";
 import hanafuda from "../svgs/Hanafuda_April_Tanzaku_Alt.svg?raw";
 import lix from "../svgs/Liuxingti.svg?raw";
 import ss from "../svgs/SingularitySociety-LogoType-Color.svg?raw";
+import svg from "../svgs/Sustainable_Development_Goals.svg?raw";
 
 export default defineComponent({
   setup(props) {
     const svgs = [
-      semi, semi2, hanafuda, lix, ss
+      semi, semi2, hanafuda, lix, ss, svg
     ].map((svgText) => {
       const convedPath = convSVG2Path(svgText as string, true);
       const convedSVGText = dumpConvertSVG(convedPath);
