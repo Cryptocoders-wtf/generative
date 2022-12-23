@@ -9,7 +9,10 @@ interface Token {
   image: string;
 }
 
-type Provider = ethers.providers.JsonRpcProvider | ethers.providers.AlchemyProvider | ethers.providers.InfuraProvider
+type Provider =
+  | ethers.providers.JsonRpcProvider
+  | ethers.providers.AlchemyProvider
+  | ethers.providers.InfuraProvider;
 type ProviderOrSigner = ethers.providers.Provider | ethers.Signer | undefined;
 
 export const getAddresses = (network: string, contentAddress: string) => {
@@ -84,10 +87,7 @@ const IAssetProvider = {
   wabi: require("@/abis/IAssetProvider.json"), // wrapped abi
 };
 
-export const getSvgHelper = (
-  network: string,
-  provider: ProviderOrSigner,
-) => {
+export const getSvgHelper = (network: string, provider: ProviderOrSigner) => {
   const svgHelperAddress = addresses["svgHelper"][network];
   const svgHelper = new ethers.Contract(
     svgHelperAddress,
@@ -97,10 +97,7 @@ export const getSvgHelper = (
   return svgHelper;
 };
 
-const getTokenGate = (
-  address: string,
-  provider: ProviderOrSigner
-) => {
+const getTokenGate = (address: string, provider: ProviderOrSigner) => {
   const tokenGate = new ethers.Contract(address, ITokenGate.wabi.abi, provider);
   return tokenGate;
 };
@@ -178,7 +175,6 @@ const getDebugTokenURI = async (
   const [tokenURI, gas] = await tokenContract.functions.debugTokenURI(tokenId);
   return { tokenURI, gas: gas.toNumber() };
 };
-
 
 export const useFetchTokens = (
   network: string,
@@ -265,10 +261,7 @@ export const useCheckTokenGate = (
 export const _useNetworkContext = (
   chainId: string,
   tokenAddress: string,
-  func: (
-    address: string,
-    provider: ProviderOrSigner
-  ) => ethers.Contract
+  func: (address: string, provider: ProviderOrSigner) => ethers.Contract
 ) => {
   const store = useStore();
 
@@ -287,10 +280,16 @@ export const _useNetworkContext = (
   };
 };
 
-export const useTokenNetworkContext = (chainId: string, tokenAddress: string) => {
+export const useTokenNetworkContext = (
+  chainId: string,
+  tokenAddress: string
+) => {
   return _useNetworkContext(chainId, tokenAddress, getTokenContract);
 };
 
-export const useSVGTokenNetworkContext = (chainId: string, tokenAddress: string) => {
+export const useSVGTokenNetworkContext = (
+  chainId: string,
+  tokenAddress: string
+) => {
   return _useNetworkContext(chainId, tokenAddress, getSVGTokenContract);
 };

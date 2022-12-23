@@ -31,7 +31,7 @@ export interface ProviderRpcError extends Error {
   data?: unknown;
 }
 
-export const ChainIdMap: {[key: string]: string} = {
+export const ChainIdMap: { [key: string]: string } = {
   mainnet: "0x1",
   rinkeby: "0x4",
   goerli: "0x5",

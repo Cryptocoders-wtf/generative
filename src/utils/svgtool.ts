@@ -39,9 +39,9 @@ const line2path = (element: ElementNode) => {
 };
 
 const getNumber = (item: string | number | undefined) => {
-  const match = String(item).match(/^(\d+)%$/)
+  const match = String(item).match(/^(\d+)%$/);
   if (match) {
-    return Number(match[1]) * 1024 / 100;
+    return (Number(match[1]) * 1024) / 100;
   }
   return item;
 };
@@ -55,7 +55,7 @@ const rect2path = (element: ElementNode) => {
 // end of svg to svg
 
 const findPath = (obj: ElementNode[], transform: any, isBFS: boolean) => {
-  const ret: {ele: ElementNode, transform: string}[] = [];
+  const ret: { ele: ElementNode; transform: string }[] = [];
 
   const children: ElementNode[] = [];
   obj.map((element) => {
@@ -63,55 +63,56 @@ const findPath = (obj: ElementNode[], transform: any, isBFS: boolean) => {
       transform = element?.properties?.transform;
     }
     if (element.children) {
-      if (element.tagName === 'clipPath') {
-        return ;
+      if (element.tagName === "clipPath") {
+        return;
       }
-      if (element.tagName === 'defs') {
-        return ;
+      if (element.tagName === "defs") {
+        return;
       }
       if (isBFS) {
         element.children.map((c) => {
           children.push(c as ElementNode);
-
         });
       } else {
-        findPath(element.children as ElementNode[], transform, isBFS).map((childRet) => {
-          ret.push(childRet);
-        });
+        findPath(element.children as ElementNode[], transform, isBFS).map(
+          (childRet) => {
+            ret.push(childRet);
+          }
+        );
       }
     }
     if (element.tagName === "path") {
-      ret.push({ele: element, transform});
+      ret.push({ ele: element, transform });
     }
     if (element.tagName === "circle") {
       if (element.properties) {
         element.properties.d = circle2path(element);
       }
-      ret.push({ele: element, transform});
+      ret.push({ ele: element, transform });
     }
     if (element.tagName === "ellipse") {
       if (element.properties) {
         element.properties.d = ellipse2path(element);
       }
-      ret.push({ele: element, transform});
+      ret.push({ ele: element, transform });
     }
     if (element.tagName === "line") {
       if (element.properties) {
         element.properties.d = line2path(element);
       }
-      ret.push({ele: element, transform});
+      ret.push({ ele: element, transform });
     }
     if (element.tagName === "rect") {
       if (element.properties) {
         element.properties.d = rect2path(element);
       }
-      ret.push({ele: element, transform});
+      ret.push({ ele: element, transform });
     }
     if (element.tagName === "polygon") {
       if (element.properties) {
         element.properties.d = polygon2path(element);
       }
-      ret.push({ele: element, transform});
+      ret.push({ ele: element, transform });
     }
   });
   if (isBFS) {
@@ -127,8 +128,10 @@ const findPath = (obj: ElementNode[], transform: any, isBFS: boolean) => {
 const getSvgSize = (svg: ElementNode) => {
   const viewBox = ((svg.properties?.viewBox as string) || "").split(" ");
 
-  const originalWidth = parseInt(viewBox[2], 10) || parseInt(String(svg?.properties?.width || ''));
-  const originalHeight = parseInt(viewBox[3], 10) ||  parseInt(String(svg?.properties?.height || ''));
+  const originalWidth =
+    parseInt(viewBox[2], 10) || parseInt(String(svg?.properties?.width || ""));
+  const originalHeight =
+    parseInt(viewBox[3], 10) || parseInt(String(svg?.properties?.height || ""));
 
   const max = Math.max(originalWidth, originalHeight);
   const width = Math.round((originalWidth * 1024) / max);
@@ -223,21 +226,31 @@ const element2translate = (element: ElementNode) => {
   return [];
 };
 
-const elementToData = (element: ElementNode, max: number, ratio: number, style: any, transform = {}) => {
+const elementToData = (
+  element: ElementNode,
+  max: number,
+  ratio: number,
+  style: any,
+  transform = {}
+) => {
   const fill = style["fill"] || element2fill(element);
   const stroke = style["stroke"] || element2stroke(element);
   console.log(ratio);
-  const strokeWidth = (style["stroke-width"] || element2strokeWidth(element, max)) * ratio;
+  const strokeWidth =
+    (style["stroke-width"] || element2strokeWidth(element, max)) * ratio;
   const translate = element2translate(element);
 
   return {
-    path: normalizePath(transformPath(String(element.properties?.d) || "", transform), Number(max)),
+    path: normalizePath(
+      transformPath(String(element.properties?.d) || "", transform),
+      Number(max)
+    ),
     fill,
     stroke,
     strokeW: strokeWidth,
     translate,
   };
-}
+};
 /*
 const findCSS = (children: ElementNode[]) => {
   const cssObj = children.find(child => {
@@ -276,8 +289,8 @@ const parseTransform = (tag: string) => {
   if (found && found.length === 3) {
     return {
       w: Number(found[1]),
-      h: Number(found[2])
-    }
+      h: Number(found[2]),
+    };
   }
   return {};
 };
@@ -287,27 +300,26 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
   console.log(obj);
   // const transform = { w: 345, h: 497};
   // const transform = { };
-  
+
   const svg = obj.children[0] as ElementNode;
 
   const { max } = getSvgSize(svg);
-  const ratio = Math.round( 1024 / max);
+  const ratio = Math.round(1024 / max);
   // const css = findCSS(svg.children as ElementNode[]);
-  
+
   const pathElements = findPath(svg.children as ElementNode[], "", isBFS);
-  const path = pathElements.map((element: {ele: ElementNode, transform: any}) => {
-    const className = element?.ele?.properties?.class || "";
-    // const style = (css[className]) ? css[className] : {};
-    const transform = parseTransform(element.transform||"");
-    return elementToData(element?.ele,  max, ratio, {}, transform);
-  });
+  const path = pathElements.map(
+    (element: { ele: ElementNode; transform: any }) => {
+      const className = element?.ele?.properties?.class || "";
+      // const style = (css[className]) ? css[className] : {};
+      const transform = parseTransform(element.transform || "");
+      return elementToData(element?.ele, max, ratio, {}, transform);
+    }
+  );
   console.log(path);
   return path;
-}
-
-export const svg2imgSrc = (svg: string) => {
-  return "data:image/svg+xml;base64," +
-    btoa(unescape(encodeURIComponent(svg)));
-
 };
 
+export const svg2imgSrc = (svg: string) => {
+  return "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svg)));
+};

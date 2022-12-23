@@ -1,8 +1,8 @@
 <template>
   <div class="m-8">
     <div v-for="(svg, k) in svgs" :key="k" class="flex">
-      <img :src="svg.originalImageData" class="w-48 flex-item border-2 m-2"/>
-      <img :src="svg.convedImageData" class="w-48 flex-item border-2 m-2" />
+      <img :src="svg.originalImageData" class="flex-item m-2 w-48 border-2" />
+      <img :src="svg.convedImageData" class="flex-item m-2 w-48 border-2" />
     </div>
   </div>
 </template>
@@ -31,12 +31,23 @@ import E0C5 from "../svgs/emoji/E0C5.svg?raw";
 
 import pnounsNFT_font_question from "../svgs/font/pnounsNFT_font_question.svg?raw";
 
-
 export default defineComponent({
   setup(props) {
     const svgs = [
-      f1F439, f1F6FC, f1F94A, f1F989, f1F9A5, f1FAE3, BurkinaFaso, E0C5, 
-      semi, semi2, hanafuda, lix, ss, svg,
+      f1F439,
+      f1F6FC,
+      f1F94A,
+      f1F989,
+      f1F9A5,
+      f1FAE3,
+      BurkinaFaso,
+      E0C5,
+      semi,
+      semi2,
+      hanafuda,
+      lix,
+      ss,
+      svg,
       pnounsNFT_font_question,
     ].map((svgText) => {
       const convedPath = convSVG2Path(svgText as string, true);
@@ -46,12 +57,12 @@ export default defineComponent({
         originalImageData: svg2imgSrc(svgText as string),
         convedImageData: svg2imgSrc(convedSVGText as string),
       };
-      // imgsrc: 
-    })
+      // imgsrc:
+    });
 
     return {
       svgs,
     };
-  }
+  },
 });
 </script>

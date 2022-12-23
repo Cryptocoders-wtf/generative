@@ -62,13 +62,13 @@ const prepareBody = (body: string) => {
 export const transformPath = (body: string, transform: any) => {
   const items = prepareBody(body);
 
-  if (items[0] === 'm' && transform.w && transform.h) {
+  if (items[0] === "m" && transform.w && transform.h) {
     items[1] = String(Number(items[1]) + transform.w);
     items[2] = String(Number(items[2]) + transform.h);
   }
   // console.log(items);
   return items.join(" ");
-}
+};
 export const normalizePath = (body: string, width: number) => {
   const items = prepareBody(body);
   // console.log(items);

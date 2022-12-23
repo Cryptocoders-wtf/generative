@@ -21,10 +21,7 @@
       </div>
       <div class="flex-item" v-if="convedSVGData">
         after<br />
-        <img
-          :src="convedSVGData"
-          class="mx-4 mt-4 h-48 w-48"
-          />
+        <img :src="convedSVGData" class="mx-4 mt-4 h-48 w-48" />
       </div>
     </div>
     <NetworkGate :expectedNetwork="chainId">
@@ -32,7 +29,7 @@
         <div @click="mint" class="cursor-pointer">mint</div>
       </div>
       <div v-for="(token, k) in tokens" :key="k" class="mx-8">
-        {{token.name}}
+        {{ token.name }}
         <img :src="token.image" class="w-36 border-2" />
       </div>
     </NetworkGate>
@@ -61,7 +58,6 @@ import { parse } from "svg-parser";
 import { convSVG2Path, dumpConvertSVG } from "@/utils/svgtool";
 import { compressPath } from "@/utils/pathUtils";
 
-
 export default defineComponent({
   components: {
     NetworkGate,
@@ -76,11 +72,10 @@ export default defineComponent({
     const convedSVGText = ref("");
 
     const pathData = ref<any>();
-    
+
     const readSVGData = async () => {
       svgText.value = await file.value.text();
       svgData.value = svg2imgSrc(svgText.value);
-
 
       pathData.value = convSVG2Path(svgText.value, true);
       convedSVGText.value = dumpConvertSVG(pathData.value);
@@ -100,7 +95,6 @@ export default defineComponent({
       }
     };
 
-
     // store      contract="0x2625760C4A8e8101801D3a48eE64B2bEA42f1E96"
     // provider      contract="0xFE5f411481565fbF70D8D33D992C78196E014b90"
     // token      contract="0xD6b040736e948621c5b6E0a494473c47a6113eA8"
@@ -112,7 +106,7 @@ export default defineComponent({
     const network = "localhost";
     const tokenAddress = "0xcC4c41415fc68B2fBf70102742A83cDe435e0Ca7";
     const chainId = ChainIdMap[network];
-    
+
     const { networkContext } = useSVGTokenNetworkContext(chainId, tokenAddress);
 
     const isMinting = ref<boolean>(false);
@@ -130,8 +124,10 @@ export default defineComponent({
       };
       pathData.value.map((a: any) => {
         // const stroke = a.stroke === "none" ? 0 : (a.stroke.startsWith("#") ? 0 : (a.stroke || 0));
-        
-        ret.paths.push("0x" + Buffer.from(compressPath(a.path, 1024)).toString('hex'));
+
+        ret.paths.push(
+          "0x" + Buffer.from(compressPath(a.path, 1024)).toString("hex")
+        );
         ret.fills.push(a.fill);
         ret.strokes.push(a.strokeW);
       });
@@ -153,8 +149,8 @@ export default defineComponent({
     const tokens = ref<any[]>([]);
     tokenContract.totalSupply().then(async (nextId: BigNumber) => {
       const token = nextId.toNumber() - 1;
-      for(let i = 0; i < 10; i ++) {
-        if (token - i > 0 ) {
+      for (let i = 0; i < 10; i++) {
+        if (token - i > 0) {
           const ret = await tokenContract.tokenURI(token - i);
           const data = JSON.parse(atob(ret.split(",")[1]));
           tokens.value.push(data);

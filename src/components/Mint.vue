@@ -148,7 +148,7 @@ export default defineComponent({
       if (v) {
         checkTokenGate(v);
       }
-    }
+    };
     callCheckTokenGate(account.value);
     watch(account, callCheckTokenGate);
 
@@ -179,7 +179,10 @@ export default defineComponent({
     });
 
     const chainId = ChainIdMap[props.network];
-    const { networkContext } = useTokenNetworkContext(chainId, props.tokenAddress);
+    const { networkContext } = useTokenNetworkContext(
+      chainId,
+      props.tokenAddress
+    );
 
     const mint = async () => {
       if (networkContext.value == null) {
