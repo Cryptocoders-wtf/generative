@@ -30,6 +30,14 @@ const ellipse2path = (element: ElementNode) => {
   },0 a ${rx},${ry} 0 1,0 ${-(rx * 2)},0`;
 };
 
+const line2path = (element: ElementNode) => {
+  const x1 = Number(element.properties?.x1);
+  const y1 = Number(element.properties?.y1);
+  const x2 = Number(element.properties?.x2);
+  const y2 = Number(element.properties?.y2);
+  return `M ${x1} ${y1} L ${x2} ${y2}`;
+};
+
 const getNumber = (item: string | number | undefined) => {
   const match = String(item).match(/^(\d+)%$/)
   if (match) {
@@ -84,6 +92,12 @@ const findPath = (obj: ElementNode[], transform: any, isBFS: boolean) => {
     if (element.tagName === "ellipse") {
       if (element.properties) {
         element.properties.d = ellipse2path(element);
+      }
+      ret.push({ele: element, transform});
+    }
+    if (element.tagName === "line") {
+      if (element.properties) {
+        element.properties.d = line2path(element);
       }
       ret.push({ele: element, transform});
     }
