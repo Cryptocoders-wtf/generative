@@ -208,8 +208,11 @@ const normalizePos = (pos: number, max: number) => {
 };
 const element2strokeWidth = (element: ElementNode, max: number) => {
   if ((element.properties || {})["stroke-width"]) {
-    return (element.properties || {})["stroke-width"];
+    const str = (element.properties || {})["stroke-width"] || "";
+    const match = String(str).match(/^\d+/);
+    return match ? Number(match[0]) : str;
   }
+
   const styles = style2elem((element.properties?.style as string) || "");
   const match = (styles["stroke-width"] || "").match(/^\d+/);
   const stroke = match ? normalizePos(match[0], max) : 0;
@@ -235,7 +238,6 @@ const elementToData = (
 ) => {
   const fill = style["fill"] || element2fill(element);
   const stroke = style["stroke"] || element2stroke(element);
-  console.log(ratio);
   const strokeWidth =
     (style["stroke-width"] || element2strokeWidth(element, max)) * ratio;
   const translate = element2translate(element);
