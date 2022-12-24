@@ -234,6 +234,8 @@ const element2translate = (element: ElementNode) => {
   return [];
 };
 
+const defaultStrokeWidth = 1;
+
 const elementToData = (
   element: ElementNode,
   max: number,
@@ -246,7 +248,7 @@ const elementToData = (
     element2strokeWidth(element, max) || style["stroke-width"] || 0
   );
 
-  const strokeWidth = _strokeWidth > 0 ? _strokeWidth : stroke ? 1 : 0;
+  const strokeWidth = _strokeWidth > 0 ? _strokeWidth : stroke ? defaultStrokeWidth : 0;
   const translate = element2translate(element);
 
   return {
@@ -307,10 +309,6 @@ const parseTransform = (tag: string) => {
 
 export const convSVG2Path = (svtText: string, isBFS: boolean) => {
   const obj = parse(svtText);
-  // console.log(obj);
-  // const transform = { w: 345, h: 497};
-  // const transform = { };
-
   const svg = obj.children[0] as ElementNode;
 
   const { max } = getSvgSize(svg);
