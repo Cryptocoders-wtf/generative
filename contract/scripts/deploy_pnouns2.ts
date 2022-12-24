@@ -4,7 +4,7 @@ import { addresses } from "../../src/utils/addresses";
 
 const nounsProvider = addresses.nounsV2[network.name];
 const lonrinaFont = addresses.londrina_solid[network.name];
-const nounsId = 2;
+const nounsId = (network.name == "goerli") ? 4 : 553;
 
 async function main() {
   const factory = await ethers.getContractFactory("PNounsPrivider2");
@@ -13,7 +13,7 @@ async function main() {
   console.log(`      contract="${contract.address}"`);
 
   for (let i=0; i<11; i++) {
-    if (i == 5) {
+    if (i == 5 && network.name == "goerli") {
       console.log("switching nounsId");
       const tx = await contract.setNounsId(nounsId + 1);
       await tx.wait();
