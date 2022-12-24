@@ -114,6 +114,12 @@ const findPath = (obj: ElementNode[], transform: any, isBFS: boolean) => {
       }
       ret.push({ ele: element, transform });
     }
+    if (element.tagName === "polyline") {
+      if (element.properties) {
+        element.properties.d = polygon2path(element);
+      }
+      ret.push({ ele: element, transform });
+    }
   });
   if (isBFS) {
     if (children.length > 0) {
@@ -158,10 +164,10 @@ export const dumpConvertSVG = (paths: any[]) => {
         if (fill) {
           styles.push(`fill:${fill}`);
         }
-        if (strokeW || stroke) {
+        if (strokeW) {
           styles.push(`stroke-linecap:round;stroke-linejoin:round`);
           styles.push(`stroke-width:${strokeW || 3}`);
-          styles.push(`stroke:${stroke || "#000"}`);
+          styles.push(`stroke:${"#000"}`);
         }
         const style = styles.join(";");
 
@@ -211,8 +217,7 @@ const rawStroke = (element: ElementNode, max: number) => {
     return (element.properties || {})["stroke-width"] || "";
   }
   const styles = style2elem((element.properties?.style as string) || "");
-  return (styles["stroke-width"] || "");
-  
+  return styles["stroke-width"] || "";
 };
 const element2strokeWidth = (element: ElementNode, max: number) => {
   const str = rawStroke(element, max);
@@ -235,10 +240,13 @@ const elementToData = (
   style: any,
   transform = {}
 ) => {
-  const fill = style["fill"] || element2fill(element);
-  const stroke = style["stroke"] || element2stroke(element);
-  const strokeWidth =
-    Math.round((style["stroke-width"] || element2strokeWidth(element, max)));
+  const fill = element2fill(element) || style["fill"];
+  const stroke = element2stroke(element) || style["stroke"];
+  const _strokeWidth = Math.round(
+    element2strokeWidth(element, max) || style["stroke-width"] || 0
+  );
+
+  const strokeWidth = _strokeWidth > 0 ? _strokeWidth : stroke ? 1 : 0;
   const translate = element2translate(element);
 
   return {
@@ -252,16 +260,18 @@ const elementToData = (
     translate,
   };
 };
-/*
+
 const findCSS = (children: ElementNode[]) => {
-  const cssObj = children.find(child => {
+  const cssObj = children.find((child) => {
     return child.tagName === "style";
   });
   if (cssObj) {
     // console.log(css.children[0].value);
-    const a = cssObj.children.map((c: any) => {
-      return c.value
-    }).join("");
+    const a = cssObj.children
+      .map((c: any) => {
+        return c.value;
+      })
+      .join("");
     const obj = css.parse(a);
     const rules = obj?.stylesheet?.rules.reduce((tmp: any, rule: any) => {
       rule.selectors.map((sele: string) => {
@@ -282,8 +292,7 @@ const findCSS = (children: ElementNode[]) => {
     return rules;
   }
   return {};
-  };
-*/
+};
 
 const parseTransform = (tag: string) => {
   const found = tag.match(/translate\(([\d-.]+),([\d-.]+)/);
@@ -298,25 +307,25 @@ const parseTransform = (tag: string) => {
 
 export const convSVG2Path = (svtText: string, isBFS: boolean) => {
   const obj = parse(svtText);
-  console.log(obj);
+  // console.log(obj);
   // const transform = { w: 345, h: 497};
   // const transform = { };
 
   const svg = obj.children[0] as ElementNode;
 
   const { max } = getSvgSize(svg);
-  // const css = findCSS(svg.children as ElementNode[]);
-
+  const css = findCSS(svg.children as ElementNode[]);
+  // console.log(css);
   const pathElements = findPath(svg.children as ElementNode[], "", isBFS);
   const path = pathElements.map(
     (element: { ele: ElementNode; transform: any }) => {
       const className = element?.ele?.properties?.class || "";
-      // const style = (css[className]) ? css[className] : {};
+      const style = css[className] ? css[className] : {};
       const transform = parseTransform(element.transform || "");
-      return elementToData(element?.ele, max, {}, transform);
+      return elementToData(element?.ele, max, style, transform);
     }
   );
-  console.log(path);
+  // console.log(path);
   return path;
 };
 
