@@ -69,6 +69,19 @@ export const transformPath = (body: string, transform: any) => {
   // console.log(items);
   return items.join(" ");
 };
+
+export const matrixPath = (body: string, matrix: any) => {
+  const items = prepareBody(body);
+  
+  // TODO matrix
+  // if valid matrix
+  // newX = matrix.scaleX * x + matrix.skewY * y + matrix.translateX;
+  // newY = matrix.skewY * x + matrix.scaleY * y + matrix.translateY; 
+  
+  return items.join(" ");
+
+};
+
 export const normalizePath = (body: string, width: number) => {
   const items = prepareBody(body);
   // console.log(items);

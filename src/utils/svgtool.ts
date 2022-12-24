@@ -1,6 +1,6 @@
 import { parse, ElementNode } from "svg-parser";
 
-import { normalizePath, transformPath } from "./pathUtils";
+import { normalizePath, transformPath, matrixPath } from "./pathUtils";
 import css from "css";
 
 // svg to svg
@@ -225,41 +225,33 @@ const element2strokeWidth = (element: ElementNode, max: number) => {
   return Math.round(match ? normalizePos(Number(match[0]), max) : 0);
 };
 
-const element2translate = (element: ElementNode) => {
-  const transform = getElementProperty(element, "transform");
-  const match = (transform || "").match(/translate\((\d+),(\d+)\)/);
-  if (match) {
-    return [Number(match[1]), Number(match[2])];
-  }
-  return [];
-};
-
-const defaultStrokeWidth = 1;
+const defaultStrokeWidth = 0;
 
 const elementToData = (
   element: ElementNode,
   max: number,
   style: any,
-  transform = {}
+  transform = {},
+  matrix = {},
 ) => {
   const fill = element2fill(element) || style["fill"];
   const stroke = element2stroke(element) || style["stroke"];
   const _strokeWidth = Math.round(
     element2strokeWidth(element, max) || style["stroke-width"] || 0
   );
-
   const strokeWidth = _strokeWidth > 0 ? _strokeWidth : stroke ? defaultStrokeWidth : 0;
-  const translate = element2translate(element);
-
+  
   return {
     path: normalizePath(
-      transformPath(String(element.properties?.d) || "", transform),
+      matrixPath(
+        transformPath(String(element.properties?.d) || "", transform),
+        matrix,
+      ),
       Number(max)
     ),
     fill,
     stroke,
     strokeW: strokeWidth,
-    translate,
   };
 };
 
@@ -307,6 +299,21 @@ const parseTransform = (tag: string) => {
   return {};
 };
 
+const parseMatrix = (tag: string) => {
+  const found = tag.match(/matrix\(([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+)/);
+  if (found && found.length === 7) {
+    return {
+      scaleX: Number(found[1]),
+      skewY: Number(found[2]),
+      skewX: Number(found[3]),
+      scaleY: Number(found[4]),
+      translateX: Number(found[5]),
+      translateY: Number(found[6]),
+    };
+  }
+  return {};
+};
+
 export const convSVG2Path = (svtText: string, isBFS: boolean) => {
   const obj = parse(svtText);
   const svg = obj.children[0] as ElementNode;
@@ -320,6 +327,8 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
       const className = element?.ele?.properties?.class || "";
       const style = css[className] ? css[className] : {};
       const transform = parseTransform(element.transform || "");
+      const matrix = parseMatrix(element.transform || "");
+      // console.log(matrix);
       return elementToData(element?.ele, max, style, transform);
     }
   );
