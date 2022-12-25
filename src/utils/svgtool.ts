@@ -20,6 +20,13 @@ const polygon2path = (element: ElementNode) => {
   return "M" + x0 + "," + y0 + "L" + points.join(" ") + "z";
 };
 
+const polyline2path = (element: ElementNode) => {
+  const points = ((element.properties?.points as string) || "").split(/\s+|,/);
+  const x0 = points.shift();
+  const y0 = points.shift();
+  return "M" + x0 + "," + y0 + "L" + points.join(" ") + "";
+};
+
 const ellipse2path = (element: ElementNode) => {
   const cx = Number(element.properties?.cx);
   const cy = Number(element.properties?.cy);
@@ -116,7 +123,7 @@ const findPath = (obj: ElementNode[], transform: any, isBFS: boolean) => {
     }
     if (element.tagName === "polyline") {
       if (element.properties) {
-        element.properties.d = polygon2path(element);
+        element.properties.d = polyline2path(element);
       }
       ret.push({ ele: element, transform });
     }
