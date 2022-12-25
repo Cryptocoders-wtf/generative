@@ -1,6 +1,6 @@
 import { parse, ElementNode } from "svg-parser";
 
-import { normalizePath, transformPath } from "./pathUtils";
+import { normalizePath, transformPath, matrixPath } from "./pathUtils";
 import css from "css";
 
 // svg to svg
@@ -18,6 +18,13 @@ const polygon2path = (element: ElementNode) => {
   const x0 = points.shift();
   const y0 = points.shift();
   return "M" + x0 + "," + y0 + "L" + points.join(" ") + "z";
+};
+
+const polyline2path = (element: ElementNode) => {
+  const points = ((element.properties?.points as string) || "").split(/\s+|,/);
+  const x0 = points.shift();
+  const y0 = points.shift();
+  return "M" + x0 + "," + y0 + "L" + points.join(" ") + "";
 };
 
 const ellipse2path = (element: ElementNode) => {
@@ -114,6 +121,12 @@ const findPath = (obj: ElementNode[], transform: any, isBFS: boolean) => {
       }
       ret.push({ ele: element, transform });
     }
+    if (element.tagName === "polyline") {
+      if (element.properties) {
+        element.properties.d = polyline2path(element);
+      }
+      ret.push({ ele: element, transform });
+    }
   });
   if (isBFS) {
     if (children.length > 0) {
@@ -158,10 +171,10 @@ export const dumpConvertSVG = (paths: any[]) => {
         if (fill) {
           styles.push(`fill:${fill}`);
         }
-        if (strokeW || stroke) {
+        if (strokeW) {
           styles.push(`stroke-linecap:round;stroke-linejoin:round`);
           styles.push(`stroke-width:${strokeW || 3}`);
-          styles.push(`stroke:${stroke || "#000"}`);
+          styles.push(`stroke:${"#000"}`);
         }
         const style = styles.join(";");
 
@@ -219,49 +232,47 @@ const element2strokeWidth = (element: ElementNode, max: number) => {
   return Math.round(match ? normalizePos(Number(match[0]), max) : 0);
 };
 
-const element2translate = (element: ElementNode) => {
-  const transform = getElementProperty(element, "transform");
-  const match = (transform || "").match(/translate\((\d+),(\d+)\)/);
-  if (match) {
-    return [Number(match[1]), Number(match[2])];
-  }
-  return [];
-};
+const defaultStrokeWidth = 0;
 
 const elementToData = (
   element: ElementNode,
   max: number,
   style: any,
-  transform = {}
+  transform = {},
+  matrix = {},
 ) => {
-  const fill = style["fill"] || element2fill(element);
-  const stroke = style["stroke"] || element2stroke(element);
-  const strokeWidth = Math.round(
-    style["stroke-width"] || element2strokeWidth(element, max)
+  const fill = element2fill(element) || style["fill"];
+  const stroke = element2stroke(element) || style["stroke"];
+  const _strokeWidth = Math.round(
+    element2strokeWidth(element, max) || style["stroke-width"] || 0
   );
-  const translate = element2translate(element);
-
+  const strokeWidth = _strokeWidth > 0 ? _strokeWidth : stroke ? defaultStrokeWidth : 0;
+  
   return {
     path: normalizePath(
-      transformPath(String(element.properties?.d) || "", transform),
+      matrixPath(
+        transformPath(String(element.properties?.d) || "", transform),
+        matrix,
+      ),
       Number(max)
     ),
     fill,
     stroke,
     strokeW: strokeWidth,
-    translate,
   };
 };
-/*
+
 const findCSS = (children: ElementNode[]) => {
-  const cssObj = children.find(child => {
+  const cssObj = children.find((child) => {
     return child.tagName === "style";
   });
   if (cssObj) {
     // console.log(css.children[0].value);
-    const a = cssObj.children.map((c: any) => {
-      return c.value
-    }).join("");
+    const a = cssObj.children
+      .map((c: any) => {
+        return c.value;
+      })
+      .join("");
     const obj = css.parse(a);
     const rules = obj?.stylesheet?.rules.reduce((tmp: any, rule: any) => {
       rule.selectors.map((sele: string) => {
@@ -282,8 +293,7 @@ const findCSS = (children: ElementNode[]) => {
     return rules;
   }
   return {};
-  };
-*/
+};
 
 const parseTransform = (tag: string) => {
   const found = tag.match(/translate\(([\d-.]+),([\d-.]+)/);
@@ -296,27 +306,40 @@ const parseTransform = (tag: string) => {
   return {};
 };
 
+const parseMatrix = (tag: string) => {
+  const found = tag.match(/matrix\(([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+)/);
+  if (found && found.length === 7) {
+    return {
+      scaleX: Number(found[1]),
+      skewY: Number(found[2]),
+      skewX: Number(found[3]),
+      scaleY: Number(found[4]),
+      translateX: Number(found[5]),
+      translateY: Number(found[6]),
+    };
+  }
+  return {};
+};
+
 export const convSVG2Path = (svtText: string, isBFS: boolean) => {
   const obj = parse(svtText);
-  console.log(obj);
-  // const transform = { w: 345, h: 497};
-  // const transform = { };
-
   const svg = obj.children[0] as ElementNode;
 
   const { max } = getSvgSize(svg);
-  // const css = findCSS(svg.children as ElementNode[]);
-
+  const css = findCSS(svg.children as ElementNode[]);
+  // console.log(css);
   const pathElements = findPath(svg.children as ElementNode[], "", isBFS);
   const path = pathElements.map(
     (element: { ele: ElementNode; transform: any }) => {
       const className = element?.ele?.properties?.class || "";
-      // const style = (css[className]) ? css[className] : {};
+      const style = css[className] ? css[className] : {};
       const transform = parseTransform(element.transform || "");
-      return elementToData(element?.ele, max, {}, transform);
+      const matrix = parseMatrix(element.transform || "");
+      // console.log(matrix);
+      return elementToData(element?.ele, max, style, transform);
     }
   );
-  console.log(path);
+  // console.log(path);
   return path;
 };
 
