@@ -1,5 +1,26 @@
 <template>
   <div class="home">
+    <h2>Store</h2>
+    <div class="mx-8">
+    <div class="flex items-center justify-center space-x-8">
+      mesasge:
+      <input
+        type="text"
+        class="w-full rounded-md border-2 "
+        v-model="storeMessage"
+        />
+      <div class="flex">
+        <div @click="debug" class="cursor-pointer">debug</div>
+      </div>
+      
+    </div>
+    <div v-if="debugImg">
+      <img :src="debugImg" class="w-36"/>
+    </div>
+  </div>
+    
+    <hr />
+    <h2>Token</h2>
     <div class="flex items-center justify-center space-x-8">
       mesasge:
       <input
@@ -43,6 +64,7 @@ import { BigNumber } from "ethers";
 import { ChainIdMap, displayAddress } from "@/utils/MetaMask";
 import {
   useMessageTokenNetworkContext,
+  useMessageStoreNetworkContext,
   getProvider,
   getMessageTokenContract,
 } from "@/utils/const";
@@ -57,15 +79,53 @@ export default defineComponent({
     NetworkGate,
   },
   setup(props) {
+    const storeMessage = ref("this is a pen");
     const message = ref("test");
     const color = ref("skyblue");
+    
 
+    // store      contract="0xC0BF43A4Ca27e0976195E6661b099742f10507e5"
+    // provider      contract="0x9D3DA37d36BB0B825CD319ed129c2872b893f538"
+    // token      contract="0x59C4e2c6a6dC27c259D6d067a039c831e1ff4947"
+    
     const network = "localhost";
-    const tokenAddress = "0xF9c0bF1CFAAB883ADb95fed4cfD60133BffaB18a";
+    const tokenAddress = "0x59C4e2c6a6dC27c259D6d067a039c831e1ff4947";
+    const storeAddress = "0xC0BF43A4Ca27e0976195E6661b099742f10507e5";
+    
     const chainId = ChainIdMap[network];
 
     const { networkContext } = useMessageTokenNetworkContext(chainId, tokenAddress);
 
+    const { networkContext: storeContext } = useMessageStoreNetworkContext(chainId, storeAddress);
+
+    const debugImg = ref("");
+    const debug = async () => {
+      if (storeContext.value == null) {
+        return;
+      }
+      const { contract } = storeContext.value;
+      isMinting.value = true;
+
+      try {
+        const ret = ["", "","",""];
+        for(let i = 0; i < 4; i ++) {
+          ret[i] = storeMessage.value.split(" ")[i] || "";
+        }
+        const res = await contract.functions.getSVGMessage(ret, "pink");
+        
+        // const result = await tx.wait();
+        // console.log("mint:gasUsed", result.gasUsed.toNumber());
+        debugImg.value = "data:image/svg+xml;base64," + Buffer.from(res[0]).toString("base64")
+        // console.log(img);
+        console.log(res[0]);
+        
+      } catch (e) {
+        console.error(e);
+      }
+      isMinting.value = false;
+    };
+
+    
     const isMinting = ref<boolean>(false);
     const mint = async () => {
       if (networkContext.value == null) {
@@ -100,6 +160,7 @@ export default defineComponent({
         if (token - i > 0) {
           const ret = await tokenContract.tokenURI(token - i);
           const data = JSON.parse(atob(ret.split(",")[1]));
+          console.log(data);
           tokens.value.push(data);
         }
       }
@@ -109,6 +170,11 @@ export default defineComponent({
       message,
       color,
 
+      // debug
+      debug,
+      storeMessage,
+      debugImg,
+      
       // mint
       mint,
       chainId,
