@@ -59,6 +59,10 @@ async function main() {
   console.log("---nft1---");
   console.log(nft1);
 */
+  const messageSVG = await store.getSVGMessage([
+    "This","is","a","pen"
+  ], "pink");
+  console.log(messageSVG);
   console.log(`store      contract="${store.address}"`);
 
   console.log(`provider      contract="${provider.address}"`);

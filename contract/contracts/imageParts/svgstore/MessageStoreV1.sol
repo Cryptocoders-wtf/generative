@@ -49,5 +49,27 @@ contract MessageStoreV1 is IMessageStoreV1 {
 
         output = SVG.document('0 0 1024 1024', SVG.list(samples).svg(), generateSVGBody(index));
     }
+    
 
+    function getSVGMessage(string[4] memory messages, string memory color) external view override returns (string memory output) {
+        SVG.Element[] memory samples = new SVG.Element[](4);
+
+        output = SVG.document('0 0 1024 1024', SVG.list(samples).svg(), generateSVGBody(messages, color));
+    }
+
+    function generateSVGBody(string[4] memory messages, string memory color) internal view returns (bytes memory output) {
+        SVG.Element[] memory elements = new SVG.Element[](4);
+
+        SVG.Element memory tmp = SVG.group([
+                                            SVG.text(font, messages[0]),
+                                            SVG.text(font, messages[1]).transform('translate(0 1024)'),
+                                            SVG.text(font, messages[2]).transform('translate(0 2048)'),
+                                            SVG.text(font, messages[3]).transform('translate(0 3072)')
+                                           ]).transform(TX.scale1000(240));
+        tmp = tmp.fill(color);
+        elements[0] = tmp;
+        
+        output = SVG.list(elements).svg();
+    }
+    
 }
