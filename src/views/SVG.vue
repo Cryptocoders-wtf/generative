@@ -104,7 +104,7 @@ export default defineComponent({
     // provider      contract="0x8D81A3DCd17030cD5F23Ac7370e4Efb10D2b3cA4"
     // token      contract="0xcC4c41415fc68B2fBf70102742A83cDe435e0Ca7"
     const network = "localhost";
-    const tokenAddress = "0xcC4c41415fc68B2fBf70102742A83cDe435e0Ca7";
+    const tokenAddress = "0x124dDf9BdD2DdaD012ef1D5bBd77c00F05C610DA";
     const chainId = ChainIdMap[network];
 
     const { networkContext } = useSVGTokenNetworkContext(chainId, tokenAddress);
