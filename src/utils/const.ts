@@ -83,6 +83,12 @@ const ProviderTokenEx = {
 const ProviderSVGTokenEx = {
   wabi: require("@/abis/SVGTokenV1.json"), // wrapped abi
 };
+const ProviderMessageTokenEx = {
+  wabi: require("@/abis/MessageToken.json"), // wrapped abi
+};
+const ProviderMessageStoreEx = {
+  wabi: require("@/abis/MessageStoreV1.json"), // wrapped abi
+};
 const IAssetProvider = {
   wabi: require("@/abis/IAssetProvider.json"), // wrapped abi
 };
@@ -135,6 +141,31 @@ export const getSVGTokenContract = (
   const tokenContract = new ethers.Contract(
     address,
     ProviderSVGTokenEx.wabi.abi,
+    provider
+  );
+  return tokenContract;
+};
+
+
+export const getMessageTokenContract = (
+  address: string,
+  provider: ProviderOrSigner
+): ethers.Contract => {
+  const tokenContract = new ethers.Contract(
+    address,
+    ProviderMessageTokenEx.wabi.abi,
+    provider
+  );
+  return tokenContract;
+};
+
+export const getMessageStoreContract = (
+  address: string,
+  provider: ProviderOrSigner
+): ethers.Contract => {
+  const tokenContract = new ethers.Contract(
+    address,
+    ProviderMessageStoreEx.wabi.abi,
     provider
   );
   return tokenContract;
@@ -292,4 +323,18 @@ export const useSVGTokenNetworkContext = (
   tokenAddress: string
 ) => {
   return _useNetworkContext(chainId, tokenAddress, getSVGTokenContract);
+};
+
+export const useMessageTokenNetworkContext = (
+  chainId: string,
+  tokenAddress: string
+) => {
+  return _useNetworkContext(chainId, tokenAddress, getMessageTokenContract);
+};
+
+export const useMessageStoreNetworkContext = (
+  chainId: string,
+  tokenAddress: string
+) => {
+  return _useNetworkContext(chainId, tokenAddress, getMessageStoreContract);
 };
