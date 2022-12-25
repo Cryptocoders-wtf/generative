@@ -72,6 +72,7 @@ export const transformPath = (body: string, transform: any) => {
 
 export const matrixPath = (body: string, matrix: any) => {
   const items = prepareBody(body);
+  console.log(items);
   
   // TODO matrix
   // if valid matrix

@@ -14,8 +14,10 @@ import Sample from "@/views/Sample.vue";
 import Experiment from "@/views/Experiment.vue";
 import Star from "@/views/Star.vue";
 import Alphabet from "@/views/Alphabet.vue";
+
 import Svg from "@/views/SVG.vue";
 import SvgTest from "@/views/SVGTest.vue";
+import Message from "@/views/Message.vue";
 
 const routeChildren: Array<RouteRecordRaw> = [
   {
@@ -61,6 +63,10 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "svgtest",
     component: SvgTest,
+  },
+  {
+    path: "message",
+    component: Message,
   },
   {
     path: "alphabet",
