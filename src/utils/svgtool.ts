@@ -211,8 +211,7 @@ const rawStroke = (element: ElementNode, max: number) => {
     return (element.properties || {})["stroke-width"] || "";
   }
   const styles = style2elem((element.properties?.style as string) || "");
-  return (styles["stroke-width"] || "");
-  
+  return styles["stroke-width"] || "";
 };
 const element2strokeWidth = (element: ElementNode, max: number) => {
   const str = rawStroke(element, max);
@@ -237,8 +236,9 @@ const elementToData = (
 ) => {
   const fill = style["fill"] || element2fill(element);
   const stroke = style["stroke"] || element2stroke(element);
-  const strokeWidth =
-    Math.round((style["stroke-width"] || element2strokeWidth(element, max)));
+  const strokeWidth = Math.round(
+    style["stroke-width"] || element2strokeWidth(element, max)
+  );
   const translate = element2translate(element);
 
   return {
