@@ -2,6 +2,7 @@ pragma solidity ^0.8.6;
 
 import '../../packages/graphics/Path.sol';
 import '../../packages/graphics/SVG.sol';
+import '../../packages/graphics/Text.sol';
 
 import '../interfaces/IMessageStoreV1.sol';
 import '../../packages/graphics/IFontProvider.sol';
@@ -51,25 +52,38 @@ contract MessageStoreV1 is IMessageStoreV1 {
     }
     
 
-    function getSVGMessage(string[4] memory messages, string memory color) external view override returns (string memory output) {
-        SVG.Element[] memory samples = new SVG.Element[](4);
+    function getSVGMessage(string memory message, string memory color) external view override returns (string memory output) {
+        SVG.Element[] memory samples = new SVG.Element[](1);
 
-        output = SVG.document('0 0 1024 1024', SVG.list(samples).svg(), generateSVGBody(messages, color));
+        output = SVG.document('0 0 1024 1024', SVG.list(samples).svg(), generateSVGBody(message, color));
     }
 
-    function generateSVGBody(string[4] memory messages, string memory color) internal view returns (bytes memory output) {
-        SVG.Element[] memory elements = new SVG.Element[](4);
+    function test(string memory message) external view returns (string[] memory output) {
+        output = Text.split(message, 0x0a);
+    }
 
-        SVG.Element memory tmp = SVG.group([
-                                            SVG.text(font, messages[0]),
-                                            SVG.text(font, messages[1]).transform('translate(0 1024)'),
-                                            SVG.text(font, messages[2]).transform('translate(0 2048)'),
-                                            SVG.text(font, messages[3]).transform('translate(0 3072)')
-                                           ]).transform(TX.scale1000(240));
-        tmp = tmp.fill(color);
-        elements[0] = tmp;
+    function generateSVGBody(string memory message, string memory color) internal view returns (bytes memory output) {
+        string[] memory messages = Text.split(message, 0x0a); // \n
+        SVG.Element[] memory elements = new SVG.Element[](messages.length);
         
-        output = SVG.list(elements).svg();
+        uint256 maxWidth = 1024 * 4;
+        for (uint256 i = 0; i < messages.length; i++) {
+            uint256 width = SVG.textWidth(font, messages[i]);
+            if (width > maxWidth) {
+                maxWidth = width;
+            }
+            elements[i] = SVG.text(font, messages[i]).transform(TX.translate(0, int(1024 * i)));
+        }
+
+        uint256 scale = 1024 * 1000 / maxWidth;
+            
+        SVG.Element memory tmp = SVG.group(elements).transform(TX.scale1000(scale));
+        tmp = tmp.fill(color);
+
+        SVG.Element[] memory lists =  new SVG.Element[](1);
+        lists[0] = tmp;
+        
+        output = SVG.list(lists).svg();
     }
     
 }
