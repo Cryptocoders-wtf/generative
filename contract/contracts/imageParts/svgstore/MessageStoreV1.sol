@@ -66,9 +66,10 @@ contract MessageStoreV1 is IMessageStoreV1 {
     string memory color,
     Box memory box
   ) internal view returns (bytes memory output) {
-    string[] memory messages = Text.split(message, 0x0a); // \n
+    string[] memory messages = Text.split(message, 0x0a); // split \n
     SVG.Element[] memory elements = new SVG.Element[](messages.length);
 
+    // default w scale 1/4
     uint256 maxWidth = box.w * 4;
     for (uint256 i = 0; i < messages.length; i++) {
       uint256 width = SVG.textWidth(font, messages[i]);
@@ -77,12 +78,14 @@ contract MessageStoreV1 is IMessageStoreV1 {
       }
       elements[i] = SVG.text(font, messages[i]).transform(TX.translate(0, int(font.height() * i)));
     }
+    /*
     uint256 scaleW = (box.w * 1000) / maxWidth;
-
     uint256 maxHeight = font.height() * messages.length;
     uint256 scaleH = (box.h * 1000) / maxHeight;
     uint256 scale = Math.min(scaleW, scaleH);
-
+    */
+    uint256 scale = Math.min((box.w * 1000) / maxWidth, (box.h * 1000) / (font.height() * messages.length));
+    
     SVG.Element memory tmp = SVG.group(elements).transform(TX.scale1000(scale));
     tmp = tmp.fill(color);
 
