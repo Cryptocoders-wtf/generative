@@ -2,53 +2,62 @@
   <div class="home">
     <h2>Store</h2>
     <div class="mx-8">
-    <div class="flex items-center justify-center space-x-8">
-      mesasge:
-      <input
-        type="text"
-        class="w-full rounded-md border-2 "
-        v-model="storeMessage"
-        />
-      <div class="flex">
-        <div @click="debug" class="cursor-pointer">debug</div>
+      <div>
+        mesasge:
+        <textarea
+          type="text"
+          rows="8"
+          class="w-full rounded-md border-2 resize"
+          v-model="storeMessage"
+          />
+        <div>
+          <button @click="debug"
+                  class="mt-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+                  
+                  >debug</button>
+        </div>
+      </div>
+      <div v-if="debugImg">
+        <img :src="debugImg" class="w-36 border-2"/>
+      </div>
+
+    </div>
+    
+    <hr class="my-4"/>
+    <h2>Token</h2>
+    <div class="mx-8"> 
+      <div class="flex items-center justify-center space-x-8">
+        mesasge:
+        <input
+          type="text"
+          class="w-full rounded-md border-2 "
+          v-model="message"
+          />
+        
+      </div>
+      <div class="flex items-center justify-center space-x-8">
+        color:
+        <input
+          type="text"
+          class="w-full rounded-md border-2 "
+          v-model="color"
+          />
+        <br/>
       </div>
       
+      <NetworkGate :expectedNetwork="chainId">
+        <div class="flex">
+          <button @click="mint"
+                  class="mt-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+                  >mint
+          </button>
+        </div>
+        <div v-for="(token, k) in tokens" :key="k">
+          {{ token.name }}
+          <img :src="token.image" class="w-36 border-2" />
+        </div>
+      </NetworkGate>
     </div>
-    <div v-if="debugImg">
-      <img :src="debugImg" class="w-36"/>
-    </div>
-  </div>
-    
-    <hr />
-    <h2>Token</h2>
-    <div class="flex items-center justify-center space-x-8">
-      mesasge:
-      <input
-        type="text"
-        class="w-full rounded-md border-2 "
-        v-model="message"
-        />
-
-    </div>
-    <div class="flex items-center justify-center space-x-8">
-      color:
-      <input
-        type="text"
-        class="w-full rounded-md border-2 "
-        v-model="color"
-        />
-      <br/>
-    </div>
-
-    <NetworkGate :expectedNetwork="chainId">
-      <div class="flex">
-        <div @click="mint" class="cursor-pointer">mint</div>
-      </div>
-      <div v-for="(token, k) in tokens" :key="k" class="mx-8">
-        {{ token.name }}
-        <img :src="token.image" class="w-36 border-2" />
-      </div>
-    </NetworkGate>
   </div>
 </template>
 
@@ -79,18 +88,17 @@ export default defineComponent({
     NetworkGate,
   },
   setup(props) {
-    const storeMessage = ref("this is a pen");
+    const storeMessage = ref("this|is|a|pen");
     const message = ref("test");
     const color = ref("skyblue");
     
-
-    // store      contract="0xC0BF43A4Ca27e0976195E6661b099742f10507e5"
-    // provider      contract="0x9D3DA37d36BB0B825CD319ed129c2872b893f538"
-    // token      contract="0x59C4e2c6a6dC27c259D6d067a039c831e1ff4947"
+    // store      contract="0x32cd5ecdA7f2B8633C00A0434DE28Db111E60636"
+    // provider      contract="0x55027d3dBBcEA0327eF73eFd74ba0Af42A13A966"
+    // token      contract="0x9eb52339B52e71B1EFD5537947e75D23b3a7719B"
     
     const network = "localhost";
-    const tokenAddress = "0x59C4e2c6a6dC27c259D6d067a039c831e1ff4947";
-    const storeAddress = "0xC0BF43A4Ca27e0976195E6661b099742f10507e5";
+    const tokenAddress = "0x9eb52339B52e71B1EFD5537947e75D23b3a7719B";
+    const storeAddress = "0x32cd5ecdA7f2B8633C00A0434DE28Db111E60636";
     
     const chainId = ChainIdMap[network];
 
@@ -107,11 +115,7 @@ export default defineComponent({
       isMinting.value = true;
 
       try {
-        const ret = ["", "","",""];
-        for(let i = 0; i < 4; i ++) {
-          ret[i] = storeMessage.value.split(" ")[i] || "";
-        }
-        const res = await contract.functions.getSVGMessage(ret, "pink");
+        const res = await contract.functions.getSVGMessage(storeMessage.value||"", "pink");
         
         // const result = await tx.wait();
         // console.log("mint:gasUsed", result.gasUsed.toNumber());

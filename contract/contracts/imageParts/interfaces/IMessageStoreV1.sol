@@ -14,6 +14,6 @@ interface IMessageStoreV1 {
 
     function getSVG(uint256 index) external view returns (string memory output);
 
-    function getSVGMessage(string[4] memory messages, string memory color) external view returns (string memory output);
+    function getSVGMessage(string memory message, string memory color) external view returns (string memory output);
 
 }

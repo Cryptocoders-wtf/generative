@@ -17,7 +17,6 @@ const deployNFT = async (name: string, args: any, args2: any) => {
   // console.log(`      test="${contract.address}"`);
 };
 async function main() {
-
   const factorySVGStore = await ethers.getContractFactory("MessageStoreV1");
   const store = await factorySVGStore.deploy("0x980aAc123617e2B2ea407081Ceb72d5854BAa3D1");
 
@@ -59,10 +58,12 @@ async function main() {
   console.log("---nft1---");
   console.log(nft1);
 */
-  const messageSVG = await store.getSVGMessage([
-    "This","is","a","pen"
-  ], "pink");
+  const messageSVG = await store.getSVGMessage("This\n is\n a\n pen", "pink");
   console.log(messageSVG);
+
+  const testMessage = await store.test("This\nis\na\npen");
+  console.log(testMessage);
+  
   console.log(`store      contract="${store.address}"`);
 
   console.log(`provider      contract="${provider.address}"`);
