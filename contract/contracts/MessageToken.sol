@@ -17,7 +17,10 @@ contract MessageToken is ProviderTokenA1 {
   IMessageStoreV1 immutable messageStore;
   mapping(uint256 => uint256) assetIds; // tokenId => assetId
 
-  constructor(IAssetProvider _assetProvider, IMessageStoreV1 _messageStore) ProviderTokenA1(_assetProvider, 'MessageToken', 'MessageToken') {
+  constructor(
+    IAssetProvider _assetProvider,
+    IMessageStoreV1 _messageStore
+  ) ProviderTokenA1(_assetProvider, 'MessageToken', 'MessageToken') {
     description = 'MessageToken';
     messageStore = _messageStore;
     mintLimit = 1e50;
@@ -28,15 +31,15 @@ contract MessageToken is ProviderTokenA1 {
   }
 
   function mint() public payable override returns (uint256 tokenId) {
-      require(false, 'must not call');
+    require(false, 'must not call');
   }
-  
+
   function mintWithAsset(IMessageStoreV1.Asset memory asset) public returns (uint256 tokenId) {
-      uint256 assetId = messageStore.register(asset);
-      tokenId = super.mint();
-      assetIds[tokenId ] = assetId;
+    uint256 assetId = messageStore.register(asset);
+    tokenId = super.mint();
+    assetIds[tokenId] = assetId;
   }
-  
+
   function tokenURI(uint256 _tokenId) public view override returns (string memory) {
     uint256 assetId = assetIds[_tokenId];
     require(_exists(_tokenId), 'MessageToken.tokenURI: nonexistent token');
@@ -64,5 +67,4 @@ contract MessageToken is ProviderTokenA1 {
         )
       );
   }
-
 }

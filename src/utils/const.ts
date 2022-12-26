@@ -146,7 +146,6 @@ export const getSVGTokenContract = (
   return tokenContract;
 };
 
-
 export const getMessageTokenContract = (
   address: string,
   provider: ProviderOrSigner

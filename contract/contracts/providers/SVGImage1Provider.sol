@@ -26,7 +26,7 @@ contract SVGImage1Provider is IAssetProvider, IERC165, Ownable {
   address public receiver;
 
   constructor(ISVGStoreV1 _svgStore) {
-      svgStore = _svgStore;
+    svgStore = _svgStore;
     receiver = owner();
   }
 
@@ -57,9 +57,9 @@ contract SVGImage1Provider is IAssetProvider, IERC165, Ownable {
   }
 
   function generateSVGPart(uint256 _assetId) public view override returns (string memory svgPart, string memory tag) {
-      bytes memory path = svgStore.getSVGBody(_assetId);
-      tag = string(abi.encodePacked(providerKey, _assetId.toString()));
-      svgPart = string(SVG.group(path).id(tag).svg());
+    bytes memory path = svgStore.getSVGBody(_assetId);
+    tag = string(abi.encodePacked(providerKey, _assetId.toString()));
+    svgPart = string(SVG.group(path).id(tag).svg());
   }
 
   function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {

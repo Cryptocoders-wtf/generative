@@ -24,8 +24,8 @@ contract MessageProvider is IAssetProvider, IERC165, Ownable {
   address public receiver;
 
   constructor(IMessageStoreV1 _messageStore) {
-      messageStore = _messageStore;
-      receiver = owner();
+    messageStore = _messageStore;
+    receiver = owner();
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -55,9 +55,9 @@ contract MessageProvider is IAssetProvider, IERC165, Ownable {
   }
 
   function generateSVGPart(uint256 _assetId) public view override returns (string memory svgPart, string memory tag) {
-      bytes memory path = messageStore.getSVGBody(_assetId);
-      tag = string(abi.encodePacked(providerKey, _assetId.toString()));
-      svgPart = string(SVG.group(path).id(tag).svg());
+    bytes memory path = messageStore.getSVGBody(_assetId);
+    tag = string(abi.encodePacked(providerKey, _assetId.toString()));
+    svgPart = string(SVG.group(path).id(tag).svg());
   }
 
   function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {

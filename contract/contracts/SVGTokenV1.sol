@@ -17,7 +17,10 @@ contract SVGTokenV1 is ProviderTokenA1 {
   ISVGStoreV1 public immutable svgStoreV1;
   mapping(uint256 => uint256) assetIds; // tokenId => assetId
 
-  constructor(IAssetProvider _assetProvider, ISVGStoreV1 _svgStore) ProviderTokenA1(_assetProvider, 'SVGTokenV1', 'SVGTokenV1') {
+  constructor(
+    IAssetProvider _assetProvider,
+    ISVGStoreV1 _svgStore
+  ) ProviderTokenA1(_assetProvider, 'SVGTokenV1', 'SVGTokenV1') {
     description = 'SVGTokenV1';
     svgStoreV1 = _svgStore;
     mintLimit = 1e50;
@@ -28,15 +31,15 @@ contract SVGTokenV1 is ProviderTokenA1 {
   }
 
   function mint() public payable override returns (uint256 tokenId) {
-      require(false, 'must not call');
+    require(false, 'must not call');
   }
-  
+
   function mintWithAsset(ISVGStoreV1.Asset memory asset) public returns (uint256 tokenId) {
-      uint256 assetId = svgStoreV1.register(asset);
-      tokenId = super.mint();
-      assetIds[tokenId ] = assetId;
+    uint256 assetId = svgStoreV1.register(asset);
+    tokenId = super.mint();
+    assetIds[tokenId] = assetId;
   }
-  
+
   function tokenURI(uint256 _tokenId) public view override returns (string memory) {
     uint256 assetId = assetIds[_tokenId];
     require(_exists(_tokenId), 'SVGToken.tokenURI: nonexistent token');
@@ -64,5 +67,4 @@ contract SVGTokenV1 is ProviderTokenA1 {
         )
       );
   }
-
 }

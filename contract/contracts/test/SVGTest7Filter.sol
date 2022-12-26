@@ -28,78 +28,107 @@ contract SVGTest7Filter {
   using TX for string;
   using Trigonometry for uint;
 
-  constructor() {
-  }
+  constructor() {}
 
   function main() external pure returns (string memory output) {
     SVG.Element[] memory samples = new SVG.Element[](16);
     SVG.Element[] memory uses = new SVG.Element[](16);
 
-    samples[0] = SVG.group([SVG.rect(256, 256, 640, 640).fill('yellow'), 
-                            SVG.circle(320, 320, 280).fill('red')]);
-    samples[1] = SVG.group([SVGFilter.roughPaper("roughPaper"), 
-                            SVG.group([SVG.rect(256, 256, 640, 640).fill('yellow'), 
-                                       SVG.circle(320, 320, 280).fill('red')])
-                              .filter('roughPaper')]);
-
-    samples[2] = SVG.group([
-      SVG.list([
-        SVG.linearGradient('shine1', 
-          SVG.list([
-            SVG.stop(0).stopColor('#FFF0'), 
-            SVG.stop(50).stopColor('#FFF6'), 
-            SVG.stop(100).stopColor('#FFF0')
-          ])).x1('80%').x2('20%').y1('0%').y2('100%'),
-        SVG.linearGradient('shine2', 
-          SVG.list([
-            SVG.stop(0).stopColor('#FFF0'), 
-            SVG.stop(50).stopColor('#FFF8'), 
-            SVG.stop(100).stopColor('#FFF0')
-          ])).x1('100%').x2('0%').y1('0%').y2('100%'),
-        SVG.linearGradient('shine3', 
-          SVG.list([
-            SVG.stop(0).stopColor('#FFF0'), 
-            SVG.stop(50).stopColor('#FFF6'), 
-            SVG.stop(100).stopColor('#FFF0')
-          ])).x1('100%').x2('0%').y1('20%').y2('80%'),
-        SVG.linearGradient('shine4', 
-          SVG.list([
-            SVG.stop(0).stopColor('#FFF0'), 
-            SVG.stop(20).stopColor('#FFF7'),
-            SVG.list([
-              SVG.stop(50).stopColor('#FFF3'), 
-              SVG.stop(70).stopColor('#FFF5'), 
-              SVG.stop(100).stopColor('#FFF0')
-            ]) 
-          ])).x1('20%').x2('80%').y1('0%').y2('100%')
-      ]),
-      SVG.group([
-        SVG.rect().fill('#444'),
-        SVG.rect().fillRef('shine1'),
-        SVG.rect().fillRef('shine2'),
-        SVG.rect().fillRef('shine3')
-      ])
-    ]);
-
-    samples[3] = SVG.group(
-      SVG.use("test2").transform("scale(.0625)").id("cell")
+    samples[0] = SVG.group([SVG.rect(256, 256, 640, 640).fill('yellow'), SVG.circle(320, 320, 280).fill('red')]);
+    samples[1] = SVG.group(
+      [
+        SVGFilter.roughPaper('roughPaper'),
+        SVG.group([SVG.rect(256, 256, 640, 640).fill('yellow'), SVG.circle(320, 320, 280).fill('red')]).filter(
+          'roughPaper'
+        )
+      ]
     );
+
+    samples[2] = SVG.group(
+      [
+        SVG.list(
+          [
+            SVG
+              .linearGradient(
+                'shine1',
+                SVG.list(
+                  [SVG.stop(0).stopColor('#FFF0'), SVG.stop(50).stopColor('#FFF6'), SVG.stop(100).stopColor('#FFF0')]
+                )
+              )
+              .x1('80%')
+              .x2('20%')
+              .y1('0%')
+              .y2('100%'),
+            SVG
+              .linearGradient(
+                'shine2',
+                SVG.list(
+                  [SVG.stop(0).stopColor('#FFF0'), SVG.stop(50).stopColor('#FFF8'), SVG.stop(100).stopColor('#FFF0')]
+                )
+              )
+              .x1('100%')
+              .x2('0%')
+              .y1('0%')
+              .y2('100%'),
+            SVG
+              .linearGradient(
+                'shine3',
+                SVG.list(
+                  [SVG.stop(0).stopColor('#FFF0'), SVG.stop(50).stopColor('#FFF6'), SVG.stop(100).stopColor('#FFF0')]
+                )
+              )
+              .x1('100%')
+              .x2('0%')
+              .y1('20%')
+              .y2('80%'),
+            SVG
+              .linearGradient(
+                'shine4',
+                SVG.list(
+                  [
+                    SVG.stop(0).stopColor('#FFF0'),
+                    SVG.stop(20).stopColor('#FFF7'),
+                    SVG.list(
+                      [
+                        SVG.stop(50).stopColor('#FFF3'),
+                        SVG.stop(70).stopColor('#FFF5'),
+                        SVG.stop(100).stopColor('#FFF0')
+                      ]
+                    )
+                  ]
+                )
+              )
+              .x1('20%')
+              .x2('80%')
+              .y1('0%')
+              .y2('100%')
+          ]
+        ),
+        SVG.group(
+          [
+            SVG.rect().fill('#444'),
+            SVG.rect().fillRef('shine1'),
+            SVG.rect().fillRef('shine2'),
+            SVG.rect().fillRef('shine3')
+          ]
+        )
+      ]
+    );
+
+    samples[3] = SVG.group(SVG.use('test2').transform('scale(.0625)').id('cell'));
 
     SVG.Element[] memory cells = new SVG.Element[](16);
     for (uint i = 0; i < 16; i++) {
-      cells[i] = SVG.use("cell").transform(TX.translate(int(i * 64), 0));      
+      cells[i] = SVG.use('cell').transform(TX.translate(int(i * 64), 0));
     }
-    samples[4] = SVG.group(SVG.group(cells).id("cell16"));
+    samples[4] = SVG.group(SVG.group(cells).id('cell16'));
 
     for (uint i = 0; i < 16; i++) {
-      cells[i] = SVG.use("cell16").transform(TX.translate(0, int(i * 64)));      
+      cells[i] = SVG.use('cell16').transform(TX.translate(0, int(i * 64)));
     }
     samples[5] = SVG.group(cells);
 
-    samples[6] = SVG.group([
-      SVG.use('test5'),
-      SVG.rect().fillRef('shine4')
-    ]);
+    samples[6] = SVG.group([SVG.use('test5'), SVG.rect().fillRef('shine4')]);
 
     for (uint i = 0; i < 7; i++) {
       int x = int(256 * (i % 4));

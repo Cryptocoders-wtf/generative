@@ -112,7 +112,9 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
       (seed, stack.degree) = seed.random(0x4000);
       stack.x = 512 + (stack.degree.cos() * int(stack.distance)) / Vector.ONE;
       stack.y = 512 + (stack.degree.sin() * int(stack.distance)) / Vector.ONE;
-      elements[i] = SVG.circle(stack.x, stack.y, int(stack.radius + stack.radius / 10)).fill(colors[i % 4]).opacity('0.333');
+      elements[i] = SVG.circle(stack.x, stack.y, int(stack.radius + stack.radius / 10)).fill(colors[i % 4]).opacity(
+        '0.333'
+      );
     }
     return SVG.group(elements);
   }
@@ -150,28 +152,20 @@ contract PNounsPrivider2 is IAssetProviderEx, Ownable, IERC165 {
 
     (stack.svg, stack.idNouns) = nounsProvider.getNounsSVGPart(nounsId);
     stack.svgNouns = SVG.element(bytes(stack.svg));
-    stack.nouns = SVG.group([
-                    SVG.rect().fill("#d5d7e1"),
-                    SVG.use(stack.idNouns)
-                  ]).transform('translate(204,300) scale(0.6)').mask("circleMask");
+    stack.nouns = SVG
+      .group([SVG.rect().fill('#d5d7e1'), SVG.use(stack.idNouns)])
+      .transform('translate(204,300) scale(0.6)')
+      .mask('circleMask');
 
     svgPart = string(
       SVG
         .list(
           [
             stack.svgNouns,
-            SVG.mask(
-              "circleMask",
-              SVG.circle(512, 512, 512).fill("white")
-            ),
+            SVG.mask('circleMask', SVG.circle(512, 512, 512).fill('white')),
             SVG
               .group(
-                [
-                  circles(_assetId).transform('translate(102,204) scale(0.8)'),
-                  stack.pnouns,
-                  stack.series,
-                  stack.nouns
-                ]
+                [circles(_assetId).transform('translate(102,204) scale(0.8)'), stack.pnouns, stack.series, stack.nouns]
               )
               .id(tag)
           ]

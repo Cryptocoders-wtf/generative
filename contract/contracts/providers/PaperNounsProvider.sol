@@ -64,10 +64,8 @@ contract PaperNounsProvider is IAssetProvider, IERC165, Ownable {
         .list(
           [
             SVG.element(bytes(svgPart)),
-            SVGFilter.roughPaper("roughPaper"),
-            SVG.group([SVG.rect().fill('#d5d7e1'), SVG.use(tag0).mask('dot32mask')])
-              .filter("roughPaper")
-              .id(tag)
+            SVGFilter.roughPaper('roughPaper'),
+            SVG.group([SVG.rect().fill('#d5d7e1'), SVG.use(tag0).mask('dot32mask')]).filter('roughPaper').id(tag)
           ]
         )
         .svg()

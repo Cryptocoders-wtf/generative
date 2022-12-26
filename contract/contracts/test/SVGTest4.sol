@@ -89,9 +89,13 @@ contract SVGTest4 {
             ]
           )
           .transform(TX.scale1000(100)),
-        SVG.text(font, Text.split('I will not let you down,\nno matter what it takes.\nYou have my word for it.\nRegards,', 0x0a), 1024).transform(
-          TX.translate(0, int(384))
-        ),
+        SVG
+          .text(
+            font,
+            Text.split('I will not let you down,\nno matter what it takes.\nYou have my word for it.\nRegards,', 0x0a),
+            1024
+          )
+          .transform(TX.translate(0, int(384))),
         SVG.text(font, '11:46 AM Oct 19, 2022').fill('grey').transform(TX.translate(0, int(921)).scale1000(100))
       ]
     );

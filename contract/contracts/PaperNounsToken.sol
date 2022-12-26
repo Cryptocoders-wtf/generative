@@ -47,17 +47,17 @@ contract PaperNounsToken is ProviderToken4 {
     address operator,
     bool approved
   ) public virtual override(ERC721WithOperatorFilter, IERC721) {
-    require(!locked, "The contract is locked during the initial minting.");
+    require(!locked, 'The contract is locked during the initial minting.');
     super.setApprovalForAll(operator, approved);
   }
 
   function approve(address operator, uint256 tokenId) public virtual override(ERC721WithOperatorFilter, IERC721) {
-    require(!locked, "The contract is locked during the initial minting.");
+    require(!locked, 'The contract is locked during the initial minting.');
     super.approve(operator, tokenId);
   }
 
   function _isApprovedOrOwner(address spender, uint256 tokenId) internal view override returns (bool) {
-    require(!locked, "The contract is locked during the initial minting.");
+    require(!locked, 'The contract is locked during the initial minting.');
     return super._isApprovedOrOwner(spender, tokenId);
   }
 
@@ -65,9 +65,42 @@ contract PaperNounsToken is ProviderToken4 {
     return string(abi.encodePacked('Paper Nouns ', _tokenId.toString()));
   }
 
-  function toBeGifted(uint256 _tokenId) public pure returns(bool) {
-    uint256[33] memory list = [uint256(1), 245, 403, 405, 406, 407, 410, 415, 416, 417, 419, 422, 423, 434, 450, 452, 453,
-454, 456, 460, 471, 474, 475, 479, 487, 490, 492, 497, 499, 505, 512, 519, 543];
+  function toBeGifted(uint256 _tokenId) public pure returns (bool) {
+    uint256[33] memory list = [
+      uint256(1),
+      245,
+      403,
+      405,
+      406,
+      407,
+      410,
+      415,
+      416,
+      417,
+      419,
+      422,
+      423,
+      434,
+      450,
+      452,
+      453,
+      454,
+      456,
+      460,
+      471,
+      474,
+      475,
+      479,
+      487,
+      490,
+      492,
+      497,
+      499,
+      505,
+      512,
+      519,
+      543
+    ];
     for (uint i = 0; i < list.length; i++) {
       if (list[i] == _tokenId) {
         return true;

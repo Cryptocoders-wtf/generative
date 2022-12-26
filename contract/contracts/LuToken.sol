@@ -15,7 +15,10 @@ contract LuToken is ProviderTokenA1 {
   // lu committee
   address public committee;
 
-  constructor(IAssetProvider _assetProvider, address _committee) ProviderTokenA1(_assetProvider, 'Laidback Lu', 'Laidback Lu') {
+  constructor(
+    IAssetProvider _assetProvider,
+    address _committee
+  ) ProviderTokenA1(_assetProvider, 'Laidback Lu', 'Laidback Lu') {
     description = 'Laidback Lu.';
     mintPrice = 1e16;
     mintLimit = 5000;
@@ -39,12 +42,11 @@ contract LuToken is ProviderTokenA1 {
       }
       require(msg.value >= mintPrice, 'Must send the mint price');
       _safeMint(msg.sender, 1);
-      
+
       address payable payableTo = payable(committee);
       payableTo.transfer(address(this).balance);
-      
+
       return nextTokenId++;
     }
   }
-
 }

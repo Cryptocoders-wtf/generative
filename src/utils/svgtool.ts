@@ -239,20 +239,21 @@ const elementToData = (
   max: number,
   style: any,
   transform = {},
-  matrix = {},
+  matrix = {}
 ) => {
   const fill = element2fill(element) || style["fill"];
   const stroke = element2stroke(element) || style["stroke"];
   const _strokeWidth = Math.round(
     element2strokeWidth(element, max) || style["stroke-width"] || 0
   );
-  const strokeWidth = _strokeWidth > 0 ? _strokeWidth : stroke ? defaultStrokeWidth : 0;
-  
+  const strokeWidth =
+    _strokeWidth > 0 ? _strokeWidth : stroke ? defaultStrokeWidth : 0;
+
   return {
     path: normalizePath(
       matrixPath(
         transformPath(String(element.properties?.d) || "", transform),
-        matrix,
+        matrix
       ),
       Number(max)
     ),
@@ -307,7 +308,9 @@ const parseTransform = (tag: string) => {
 };
 
 const parseMatrix = (tag: string) => {
-  const found = tag.match(/matrix\(([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+)/);
+  const found = tag.match(
+    /matrix\(([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+)/
+  );
   if (found && found.length === 7) {
     return {
       scaleX: Number(found[1]),
