@@ -9,7 +9,14 @@
           rows="8"
           class="w-full resize rounded-md border-2"
           v-model="storeMessage"
-        />
+          />
+      </div>
+      <div class="flex items-center justify-center space-x-8">
+        color:
+        <input type="text" class="w-full rounded-md border-2" v-model="color" />
+        <br />
+      </div>
+      <div>
         <div>
           <button
             @click="debug"
@@ -29,9 +36,10 @@
     <div class="mx-8">
       <div class="flex items-center justify-center space-x-8">
         mesasge:
-        <input
+        <textarea
           type="text"
-          class="w-full rounded-md border-2"
+          rows="8"
+          class="w-full resize rounded-md border-2"
           v-model="message"
         />
       </div>
@@ -62,8 +70,6 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-// import { data } from "./data";
-
 // mint
 import NetworkGate from "@/components/NetworkGate.vue";
 import { BigNumber } from "ethers";
@@ -85,17 +91,17 @@ export default defineComponent({
     NetworkGate,
   },
   setup(props) {
-    const storeMessage = ref("this|is|a|pen");
+    const storeMessage = ref("this\nis\na\npen");
     const message = ref("test");
     const color = ref("skyblue");
 
-    // store      contract="0x32cd5ecdA7f2B8633C00A0434DE28Db111E60636"
-    // provider      contract="0x55027d3dBBcEA0327eF73eFd74ba0Af42A13A966"
-    // token      contract="0x9eb52339B52e71B1EFD5537947e75D23b3a7719B"
-
+    // store      contract="0x3818eAb6Ca8Bf427222bfACFA706c514145F4104"
+    // provider      contract="0xa8fcCF4D0e2f2c4451123fF2F9ddFc9be465Fa1d"
+    // token      contract="0xc3b99d27eF3B07C94Ee3cFD670281F0CF98A02f1"
+    
     const network = "localhost";
-    const tokenAddress = "0x9eb52339B52e71B1EFD5537947e75D23b3a7719B";
-    const storeAddress = "0x32cd5ecdA7f2B8633C00A0434DE28Db111E60636";
+    const tokenAddress = "0xc3b99d27eF3B07C94Ee3cFD670281F0CF98A02f1";
+    const storeAddress = "0x3818eAb6Ca8Bf427222bfACFA706c514145F4104";
 
     const chainId = ChainIdMap[network];
 
@@ -120,7 +126,7 @@ export default defineComponent({
       try {
         const res = await contract.functions.getSVGMessage(
           storeMessage.value || "",
-          "pink"
+          color.value,
         );
 
         // const result = await tx.wait();

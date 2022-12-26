@@ -39,9 +39,6 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { svg2imgSrc } from "@/utils/svgtool";
-import format from "xml-formatter";
-
-// import { data } from "./data";
 
 // mint
 import NetworkGate from "@/components/NetworkGate.vue";
@@ -168,8 +165,6 @@ export default defineComponent({
 
       svgText,
       convedSVGText,
-
-      format,
 
       // mint
       mint,

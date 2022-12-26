@@ -6,6 +6,7 @@ import '../../packages/graphics/Text.sol';
 
 import '../interfaces/IMessageStoreV1.sol';
 import '../../packages/graphics/IFontProvider.sol';
+import '@openzeppelin/contracts/utils/math/Math.sol';
 
 contract MessageStoreV1 is IMessageStoreV1 {
   using SVG for SVG.Element;
@@ -28,20 +29,10 @@ contract MessageStoreV1 is IMessageStoreV1 {
 
   function generateSVGBody(uint256 id) internal view returns (bytes memory output) {
     Asset memory asset = partsList[id];
-    SVG.Element[] memory elements = new SVG.Element[](1);
-    /*        
-        SVG.Element memory tmp = SVG.group([
-                                            SVG.text(font, asset.message),
-                                            SVG.text(font, asset.message)
-                                            ]).transform(TX.scale1000(240));
-        */
-    SVG.Element memory tmp = SVG.text(font, asset.message).transform(TX.scale1000(240));
-    tmp = tmp.fill(asset.color);
-    elements[0] = tmp;
-
-    output = SVG.list(elements).svg();
+    output = generateSVGBody(asset.message, asset.color);
   }
 
+  // for provider
   function getSVGBody(uint256 index) external view override returns (bytes memory output) {
     output = generateSVGBody(index);
   }
@@ -52,6 +43,7 @@ contract MessageStoreV1 is IMessageStoreV1 {
     output = SVG.document('0 0 1024 1024', SVG.list(samples).svg(), generateSVGBody(index));
   }
 
+  // for web
   function getSVGMessage(
     string memory message,
     string memory color
@@ -78,7 +70,9 @@ contract MessageStoreV1 is IMessageStoreV1 {
       elements[i] = SVG.text(font, messages[i]).transform(TX.translate(0, int(1024 * i)));
     }
 
-    uint256 scale = (1024 * 1000) / maxWidth;
+    uint256 maxHeight = 1024 * messages.length;
+    
+    uint256 scale = (1024 * 1000) / Math.max(maxWidth, maxHeight);
 
     SVG.Element memory tmp = SVG.group(elements).transform(TX.scale1000(scale));
     tmp = tmp.fill(color);
