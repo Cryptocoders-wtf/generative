@@ -51,13 +51,13 @@ library Text {
   function split(string memory _str, uint _ch) internal pure returns (string[] memory strs) {
     uint length = bytes(_str).length;
     uint count;
-    for (uint i = 0; i < length; i += 1) {
+    for (uint i = 0; i < length;) {
       (, i) = extractLine(_str, i, _ch);
       count += 1;
     }
     strs = new string[](count);
     count = 0;
-    for (uint i = 0; i < length; i += 1) {
+    for (uint i = 0; i < length;) {
       (strs[count], i) = extractLine(_str, i, _ch);
       count += 1;
     }
