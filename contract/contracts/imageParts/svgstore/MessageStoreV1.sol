@@ -29,7 +29,10 @@ contract MessageStoreV1 is IMessageStoreV1 {
 
   function generateSVGBody(uint256 id) internal view returns (bytes memory output) {
     Asset memory asset = partsList[id];
-    output = generateSVGBody(asset.message, asset.color);
+    Box memory box;
+    box.w = 1024;
+    box.h = 1024;
+    output = generateSVGBody(asset.message, asset.color, box);
   }
 
   // for provider
@@ -46,33 +49,39 @@ contract MessageStoreV1 is IMessageStoreV1 {
   // for web
   function getSVGMessage(
     string memory message,
-    string memory color
+    string memory color,
+    Box memory box
   ) external view override returns (string memory output) {
     SVG.Element[] memory samples = new SVG.Element[](1);
 
-    output = SVG.document('0 0 1024 1024', SVG.list(samples).svg(), generateSVGBody(message, color));
+    output = SVG.document('0 0 1024 1024', SVG.list(samples).svg(), generateSVGBody(message, color, box));
   }
 
   function test(string memory message) external view returns (string[] memory output) {
     output = Text.split(message, 0x0a);
   }
 
-  function generateSVGBody(string memory message, string memory color) internal view returns (bytes memory output) {
+  function generateSVGBody(
+    string memory message,
+    string memory color,
+    Box memory box
+  ) internal view returns (bytes memory output) {
     string[] memory messages = Text.split(message, 0x0a); // \n
     SVG.Element[] memory elements = new SVG.Element[](messages.length);
 
-    uint256 maxWidth = 1024 * 4;
+    uint256 maxWidth = box.w * 4;
     for (uint256 i = 0; i < messages.length; i++) {
       uint256 width = SVG.textWidth(font, messages[i]);
       if (width > maxWidth) {
         maxWidth = width;
       }
-      elements[i] = SVG.text(font, messages[i]).transform(TX.translate(0, int(1024 * i)));
+      elements[i] = SVG.text(font, messages[i]).transform(TX.translate(0, int(font.height() * i)));
     }
+    uint256 scaleW = (box.w * 1000) / maxWidth;
 
-    uint256 maxHeight = 1024 * messages.length;
-    
-    uint256 scale = (1024 * 1000) / Math.max(maxWidth, maxHeight);
+    uint256 maxHeight = font.height() * messages.length;
+    uint256 scaleH = (box.h * 1000) / maxHeight;
+    uint256 scale = Math.min(scaleW, scaleH);
 
     SVG.Element memory tmp = SVG.group(elements).transform(TX.scale1000(scale));
     tmp = tmp.fill(color);

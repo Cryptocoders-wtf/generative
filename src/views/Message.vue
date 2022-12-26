@@ -9,7 +9,7 @@
           rows="8"
           class="w-full resize rounded-md border-2"
           v-model="storeMessage"
-          />
+        />
       </div>
       <div class="flex items-center justify-center space-x-8">
         color:
@@ -95,13 +95,13 @@ export default defineComponent({
     const message = ref("test");
     const color = ref("skyblue");
 
-    // store      contract="0x3818eAb6Ca8Bf427222bfACFA706c514145F4104"
-    // provider      contract="0xa8fcCF4D0e2f2c4451123fF2F9ddFc9be465Fa1d"
-    // token      contract="0xc3b99d27eF3B07C94Ee3cFD670281F0CF98A02f1"
-    
+    // store      contract="0x82BBAA3B0982D88741B275aE1752DB85CAfe3c65"
+    // provider      contract="0x76a999d5F7EFDE0a300e710e6f52Fb0A4b61aD58"
+    // token      contract="0x02e8910B3B89690d4aeC9fcC0Ae2cD16fB6A4828"
+
     const network = "localhost";
-    const tokenAddress = "0xc3b99d27eF3B07C94Ee3cFD670281F0CF98A02f1";
-    const storeAddress = "0x3818eAb6Ca8Bf427222bfACFA706c514145F4104";
+    const tokenAddress = "0x02e8910B3B89690d4aeC9fcC0Ae2cD16fB6A4828";
+    const storeAddress = "0x82BBAA3B0982D88741B275aE1752DB85CAfe3c65";
 
     const chainId = ChainIdMap[network];
 
@@ -127,6 +127,7 @@ export default defineComponent({
         const res = await contract.functions.getSVGMessage(
           storeMessage.value || "",
           color.value,
+          { w: 1024, h: 512 }
         );
 
         // const result = await tx.wait();

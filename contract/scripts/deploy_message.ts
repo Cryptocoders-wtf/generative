@@ -58,7 +58,7 @@ async function main() {
   console.log("---nft1---");
   console.log(nft1);
 */
-  const messageSVG = await store.getSVGMessage("This\n is\n a\n pen", "pink");
+  const messageSVG = await store.getSVGMessage("This\n is\n a\n pen", "pink", {w: 1024, h:1024});
   console.log(messageSVG);
 
   const testMessage = await store.test("This\nis\na\npen");
