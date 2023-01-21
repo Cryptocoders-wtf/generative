@@ -4,12 +4,14 @@ Fully-On-Chain.sol consists of a set of Solidity libraries, which help developer
 to create fully on-chain generative art, dynamically generating images in SVG format,
 typically responding to tokenURI() method of ERC721.
 
-It consists of four libraries.
+It consists of six Solidity libraries.
 
 - SVG.sol - SVG generations
 - Vector.sol - Vector operations
 - Path.sol - Path generations
 - Transform.sol - Transform generations
+- SVGFilter.sol - SVG filters
+- Text.sol - Text generations
 
 ## Basic Concept
 

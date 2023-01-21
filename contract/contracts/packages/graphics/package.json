@@ -1,6 +1,6 @@
 {
   "name": "fully-on-chain.sol",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Graphics library for fully on-chain generative art in Solidity",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
