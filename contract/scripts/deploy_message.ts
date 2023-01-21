@@ -24,7 +24,7 @@ async function main() {
   const res = await store.getSVG(1)
   // console.log(res);
 
-  const factoryMessageProvider = await ethers.getContractFactory("MessageProvider");
+  const factoryMessageProvider = await ethers.getContractFactory("MessageProvider2");
   const provider = await factoryMessageProvider.deploy(store.address);
 
 

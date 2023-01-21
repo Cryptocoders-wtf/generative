@@ -37,7 +37,8 @@ export const ChainIdMap: { [key: string]: string } = {
   goerli: "0x5",
   polygon: "0x89",
   mumbai: "0x13881", // 80001
-  localhost: "0x7a69", // not sure
+  // localhost: "0x7a69", // not sure
+  localhost: "0x539", // not sure
 };
 
 export const initializeEthereum = () => {

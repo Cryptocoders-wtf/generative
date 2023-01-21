@@ -95,13 +95,13 @@ export default defineComponent({
     const message = ref("test");
     const color = ref("skyblue");
 
-    // store      contract="0x82BBAA3B0982D88741B275aE1752DB85CAfe3c65"
-    // provider      contract="0x76a999d5F7EFDE0a300e710e6f52Fb0A4b61aD58"
-    // token      contract="0x02e8910B3B89690d4aeC9fcC0Ae2cD16fB6A4828"
-
+    // store      contract="0x15F2ea83eB97ede71d84Bd04fFF29444f6b7cd52"
+    // provider      contract="0xF357118EBd576f3C812c7875B1A1651a7f140E9C"
+    // token      contract="0x519b05b3655F4b89731B677d64CEcf761f4076f6"
+    
     const network = "localhost";
-    const tokenAddress = "0x02e8910B3B89690d4aeC9fcC0Ae2cD16fB6A4828";
-    const storeAddress = "0x82BBAA3B0982D88741B275aE1752DB85CAfe3c65";
+    const tokenAddress = "0x519b05b3655F4b89731B677d64CEcf761f4076f6";
+    const storeAddress = "0x15F2ea83eB97ede71d84Bd04fFF29444f6b7cd52";
 
     const chainId = ChainIdMap[network];
 
@@ -127,7 +127,8 @@ export default defineComponent({
         const res = await contract.functions.getSVGMessage(
           storeMessage.value || "",
           color.value,
-          { w: 1024, h: 512 }
+          // { w: 1024, h: 512 }
+          { w: 512, h: 1024 }
         );
 
         // const result = await tx.wait();

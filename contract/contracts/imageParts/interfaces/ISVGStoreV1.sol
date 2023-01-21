@@ -8,7 +8,7 @@ interface ISVGStoreV1 {
     string[] fills;
     uint8[] strokes;
   }
-
+          
   function register(Asset memory asset) external returns (uint256);
 
   function getSVGBody(uint256 index) external view returns (bytes memory output);
