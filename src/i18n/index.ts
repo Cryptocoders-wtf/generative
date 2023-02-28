@@ -7,6 +7,7 @@ const messages = {
 };
 
 const config = {
+  legacy: false,
   locale: "en",
   messages,
 };
