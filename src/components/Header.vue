@@ -24,6 +24,9 @@
         Alphabet
       </router-link>
       -->
+      <router-link :to="localizedUrl('/svg')" class="text-md">
+        SVG
+      </router-link>
       <router-link :to="localizedUrl('/nouns')" class="text-md">
         Nouns
       </router-link>

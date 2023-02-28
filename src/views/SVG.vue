@@ -38,6 +38,9 @@
       </div>
       </NetworkGate>
     </div>
+    <div>
+      <a href="https://testnets.opensea.io/ja/collection/svgtokenv1-zmx77dtbul?search[sortAscending]=false&search[sortBy]=CREATED_DATE" class="underline" target="_blank">See NFTs on OpenSea</a>
+    </div>
   </div>
 </template>
 
