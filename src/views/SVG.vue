@@ -101,6 +101,7 @@ export default defineComponent({
       } catch (e) {
         reset();
         console.log(e);
+        alert("Sorry, this svg is not supported.")
       }
     };
     
@@ -205,7 +206,7 @@ export default defineComponent({
         ret.paths.push(
           "0x" + Buffer.from(compressPath(a.path, 1024)).toString("hex")
         );
-        ret.fills.push(a.fill);
+        ret.fills.push(a.fill||'');
         ret.strokes.push(a.strokeW);
       });
       try {
@@ -221,6 +222,7 @@ export default defineComponent({
         
       } catch (e) {
         console.error(e);
+        alert("Sorry, this svg is not supported.")
       }
       isMinting.value = false;
     };
