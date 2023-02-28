@@ -1,5 +1,14 @@
 <template>
+  <h2>SVG2SVG debug</h2>
   <div class="m-8">
+    <div class="flex">
+      <div class="flex-item m-2 w-48">
+        Before
+      </div>
+      <div class="flex-item m-2 w-48">
+        After
+      </div>
+    </div>
     <div v-for="(svg, k) in svgs" :key="k" class="flex">
       <img :src="svg.originalImageData" class="flex-item m-2 w-48 border-2" />
       <img :src="svg.convedImageData" class="flex-item m-2 w-48 border-2" />
@@ -29,6 +38,9 @@ import f1FAE3 from "../svgs/emoji/1FAE3.svg?raw";
 import BurkinaFaso from "../svgs/emoji/BurkinaFaso.svg?raw";
 import E0C5 from "../svgs/emoji/E0C5.svg?raw";
 
+
+import AOMORO from "../svgs/aomori.svg?raw";
+
 import pnounsNFT_font_question from "../svgs/font/pnounsNFT_font_question.svg?raw";
 
 export default defineComponent({
@@ -49,6 +61,7 @@ export default defineComponent({
       ss,
       svg,
       pnounsNFT_font_question,
+      AOMORO,
     ].map((svgText) => {
       const convedPath = convSVG2Path(svgText as string, true);
       const convedSVGText = dumpConvertSVG(convedPath);
