@@ -98,7 +98,7 @@ export default defineComponent({
     // store      contract="0x15F2ea83eB97ede71d84Bd04fFF29444f6b7cd52"
     // provider      contract="0xF357118EBd576f3C812c7875B1A1651a7f140E9C"
     // token      contract="0x519b05b3655F4b89731B677d64CEcf761f4076f6"
-    
+
     const network = "localhost";
     const tokenAddress = "0x519b05b3655F4b89731B677d64CEcf761f4076f6";
     const storeAddress = "0x15F2ea83eB97ede71d84Bd04fFF29444f6b7cd52";

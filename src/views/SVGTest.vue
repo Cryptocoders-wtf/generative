@@ -2,12 +2,8 @@
   <h2>SVG2SVG debug</h2>
   <div class="m-8">
     <div class="flex">
-      <div class="flex-item m-2 w-48">
-        Before
-      </div>
-      <div class="flex-item m-2 w-48">
-        After
-      </div>
+      <div class="flex-item m-2 w-48">Before</div>
+      <div class="flex-item m-2 w-48">After</div>
     </div>
     <div v-for="(svg, k) in svgs" :key="k" class="flex">
       <img :src="svg.originalImageData" class="flex-item m-2 w-48 border-2" />
@@ -37,7 +33,6 @@ import f1F9A5 from "../svgs/emoji/1F9A5.svg?raw";
 import f1FAE3 from "../svgs/emoji/1FAE3.svg?raw";
 import BurkinaFaso from "../svgs/emoji/BurkinaFaso.svg?raw";
 import E0C5 from "../svgs/emoji/E0C5.svg?raw";
-
 
 import AOMORO from "../svgs/aomori.svg?raw";
 
