@@ -28,8 +28,10 @@
     <div class="mt-2">
       <NetworkGate :expectedNetwork="chainId">
         <div class="flex justify-center">
-          <div @click="mint" class="cursor-pointer mb-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
-
+          <div @click="mint"
+               :disabled="!existData"
+               class="cursor-pointer mb-2 inline-block rounded  px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+               :class="existData ? 'bg-green-600 focus:bg-green-700' : 'bg-green-600 focus:bg-green-700 bg-opacity-20'"
                >mint</div>
         </div>
 
@@ -62,7 +64,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { svg2imgSrc } from "@/utils/svgtool";
 
 // mint
@@ -98,12 +100,15 @@ export default defineComponent({
     const svgText = ref("");
     const convedSVGText = ref("");
     
-    const pathData = ref<any>();
-
+    const pathData = ref<any>([]);
+    const existData = computed(() => {
+      return pathData.value.length > 0;
+    });
+    
     const reset = () => {
       svgText.value = "";
       svgData.value = "";
-      pathData.value =  {};
+      pathData.value = [];
       convedSVGText.value = "";
       convedSVGData.value = "";
     };
@@ -259,6 +264,7 @@ export default defineComponent({
       chainId,
 
       tokens,
+      existData,
     };
   },
 });
