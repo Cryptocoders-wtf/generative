@@ -2,15 +2,17 @@
   <div class="home">
     <div class="flex items-center justify-center space-x-8">
       <!-- Drag & Drop -->
-      <div @dragover.prevent @drop.prevent class="mx-4 mt-4 h-24 w-48 border-4">
-        <div @drop="dragFile">
+      <div @dragover.prevent @drop.prevent class="mx-4 mt-4 h-24 w-48 border-4 relative">
+        <div @drop="dragFile" class="absolute h-full w-full text-left">
           <input
             type="file"
             multiple
             @change="uploadFile"
-            class="h-full w-full opacity-0"
-          />
-          Put your SVG image here.
+            class="h-full w-full opacity-0 absolute"
+            />
+          <div class="text-center mt-4">
+            Put your SVG image here.
+          </div>
         </div>
       </div>
     </div>
@@ -252,7 +254,7 @@ export default defineComponent({
     return {
       uploadFile,
       dragFile,
-
+      
       svgData,
       convedSVGData,
 
