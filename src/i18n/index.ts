@@ -8,6 +8,7 @@ const messages = {
 
 const config = {
   legacy: false,
+  globalInjection: true,
   locale: "en",
   messages,
 };
