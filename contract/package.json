@@ -1,7 +1,7 @@
 {
   "name": "hardhat-project",
   "scripts": {
-    "format": "npx prettier --write 'contracts/**/*.sol'"
+    "format": "npx prettier --write '{scripts,contracts,test}/**/{*.sol,*.ts}'"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",

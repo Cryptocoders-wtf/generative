@@ -1,23 +1,22 @@
-import { ethers, network } from "hardhat";
-import { writeFile } from "fs";
+import { ethers, network } from 'hardhat';
+import { writeFile } from 'fs';
 
 import addresses from '@nouns/sdk/dist/contract/addresses.json';
 
-const nounsTokenAddress:string = (network.name == "goerli") ?
-  addresses[5].nounsToken: addresses[1].nounsToken;
-const nounsDescriptorAddressV1:string = (network.name == "goerli") ?
-  addresses[5].nounsDescriptor: addresses[1].nounsDescriptor;
+const nounsTokenAddress: string = network.name == 'goerli' ? addresses[5].nounsToken : addresses[1].nounsToken;
+const nounsDescriptorAddressV1: string =
+  network.name == 'goerli' ? addresses[5].nounsDescriptor : addresses[1].nounsDescriptor;
 
-console.log("nounsToken", nounsTokenAddress);
+console.log('nounsToken', nounsTokenAddress);
 
 async function main() {
-  const factoryNounsToken = await ethers.getContractFactory("NounsToken");
+  const factoryNounsToken = await ethers.getContractFactory('NounsToken');
   const nounsToken = factoryNounsToken.attach(nounsTokenAddress);
 
   const [nounsDescriptorAddressV2] = await nounsToken.functions.descriptor();
-  console.log("nounsDescriptorV2", nounsDescriptorAddressV2);
-  const nounsDescriptorV2 = await ethers.getContractAt("INounsDescriptorV2", nounsDescriptorAddressV2);
-  
+  console.log('nounsDescriptorV2', nounsDescriptorAddressV2);
+  const nounsDescriptorV2 = await ethers.getContractAt('INounsDescriptorV2', nounsDescriptorAddressV2);
+
   const backgroundCountV2 = await nounsDescriptorV2.backgroundCount();
   const bodyCountV2 = await nounsDescriptorV2.bodyCount();
   const accessoryCountV2 = await nounsDescriptorV2.accessoryCount();
@@ -29,7 +28,7 @@ async function main() {
   console.log(headCountV2.toNumber());
   console.log(glassesCountV2.toNumber());
 
-  const nounsDescriptorV1 = await ethers.getContractAt("INounsDescriptor", nounsDescriptorAddressV1);
+  const nounsDescriptorV1 = await ethers.getContractAt('INounsDescriptor', nounsDescriptorAddressV1);
   const backgroundCountV1 = await nounsDescriptorV1.backgroundCount();
   const bodyCountV1 = await nounsDescriptorV1.bodyCount();
   const accessoryCountV1 = await nounsDescriptorV1.accessoryCount();
@@ -44,20 +43,22 @@ async function main() {
   for (var assetId = 0; assetId < 537; assetId++) {
     const seeds = await nounsToken.functions.seeds(assetId);
     // console.log("seeds", seeds);
-    if (seeds.background >= backgroundCountV1
-      || seeds.body >= bodyCountV1
-      || seeds.accessory >= accessoryCountV1
-      || seeds.head >= headCountV1
-      || seeds.glasses >= glassesCountV1) {
-      console.log(`${assetId},`);      
+    if (
+      seeds.background >= backgroundCountV1 ||
+      seeds.body >= bodyCountV1 ||
+      seeds.accessory >= accessoryCountV1 ||
+      seeds.head >= headCountV1 ||
+      seeds.glasses >= glassesCountV1
+    ) {
+      console.log(`${assetId},`);
     }
   }
   // const svg = await nounsDescriptorV2.generateSVGImage(seeds);
 
-  // await writeFile(`./cache/nouns505.svg`, svg, ()=>{});  
+  // await writeFile(`./cache/nouns505.svg`, svg, ()=>{});
 }
 
-main().catch((error) => {
+main().catch(error => {
   console.error(error);
   process.exitCode = 1;
 });

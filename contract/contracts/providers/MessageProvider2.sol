@@ -21,7 +21,7 @@ contract MessageProvider2 is IAssetProvider, IERC165, Ownable {
   IMessageStoreV1 immutable messageStore;
 
   IAssetProvider immutable nounsProvider;
-  
+
   string constant providerKey = 'MessageV2';
   address public receiver;
 
@@ -65,7 +65,6 @@ contract MessageProvider2 is IAssetProvider, IERC165, Ownable {
 
     bytes memory body = abi.encodePacked(bytes(noPart), '<g>\n', path, '</g>\n');
 
-    
     svgPart = string(SVG.group(body).id(tag).svg());
   }
 

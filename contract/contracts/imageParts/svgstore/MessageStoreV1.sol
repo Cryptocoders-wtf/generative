@@ -85,7 +85,7 @@ contract MessageStoreV1 is IMessageStoreV1 {
     uint256 scale = Math.min(scaleW, scaleH);
     */
     uint256 scale = Math.min((box.w * 1000) / maxWidth, (box.h * 1000) / (font.height() * messages.length));
-    
+
     SVG.Element memory tmp = SVG.group(elements).transform(TX.scale1000(scale));
     tmp = tmp.fill(color);
 

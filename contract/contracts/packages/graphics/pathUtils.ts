@@ -13,15 +13,8 @@ const regexFloatG = /[+-]?(\d*\.\d*|\d+)e-\d+/g;
 const regexDivG = /[,\s]+/g;
 
 // T is number or string
-const reduceFun = <T>(
-  width: number,
-  func1: (val: number) => T,
-  func2: (item: string) => T[]
-) => {
-  return (
-    prev: { isArc: boolean; offset: number; numArray: T[] },
-    item: string
-  ) => {
+const reduceFun = <T>(width: number, func1: (val: number) => T, func2: (item: string) => T[]) => {
+  return (prev: { isArc: boolean; offset: number; numArray: T[] }, item: string) => {
     if (regexNum.test(item)) {
       let value = Math.round((parseFloat(item) * 1024) / width);
       if (prev.isArc) {
@@ -35,11 +28,11 @@ const reduceFun = <T>(
       prev.numArray.push(func1(value));
     } else {
       const codes = func2(item);
-      codes.map((code) => {
+      codes.map(code => {
         prev.numArray.push(code);
       });
       const ch = item.substring(-1);
-      prev.isArc = ch == "a" || ch == "A";
+      prev.isArc = ch == 'a' || ch == 'A';
       if (prev.isArc) {
         prev.offset = 0;
       }
@@ -50,7 +43,7 @@ const reduceFun = <T>(
 
 const prepareBody = (body: string) => {
   let ret = body.replace(regexFloatG, (str: string) => {
-    return "0";
+    return '0';
   });
   ret = ret.replace(regexNumG, (str: string) => {
     return ` ${parseFloat(str)} `;
@@ -73,7 +66,7 @@ export const normalizePath = (body: string, width: number) => {
     offset: 0,
     numArray: [],
   });
-  return numArray.join(" ");
+  return numArray.join(' ');
 };
 
 export const compressNormalizedPath = (body: string, width: number) => {
@@ -83,7 +76,7 @@ export const compressNormalizedPath = (body: string, width: number) => {
     return value + 0x100 + 1024;
   };
   const func2 = (item: string) => {
-    return item.split("").map((char) => {
+    return item.split('').map(char => {
       return char.charCodeAt(0);
     });
   };
@@ -112,10 +105,12 @@ export const compressNormalizedPath = (body: string, width: number) => {
 export const compressPath = (path: string, height: number) => {
   const normalized = normalizePath(path, height);
   return compressNormalizedPath(normalized, 1024);
-}
+};
 
 export const solidityString = (array: Uint8Array) => {
-  return Array.from(array).map(value => {
-    return `\\x${value.toString(16).padStart(2, '0')}`;
-  }).join('');
-}
+  return Array.from(array)
+    .map(value => {
+      return `\\x${value.toString(16).padStart(2, '0')}`;
+    })
+    .join('');
+};

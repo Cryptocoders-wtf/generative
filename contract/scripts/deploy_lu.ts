@@ -1,9 +1,9 @@
-import { ethers, network } from "hardhat";
-import { writeFile } from "fs";
+import { ethers, network } from 'hardhat';
+import { writeFile } from 'fs';
 
 const deploy = async (name: string, args: any) => {
   const factory = await ethers.getContractFactory(name);
-  const contract = (args) ? await factory.deploy(args) : await factory.deploy();
+  const contract = args ? await factory.deploy(args) : await factory.deploy();
   await contract.deployed();
   return contract;
   // console.log(`      test="${contract.address}"`);
@@ -17,29 +17,27 @@ const deployNFT = async (name: string, args: any, args2: any) => {
   // console.log(`      test="${contract.address}"`);
 };
 async function main() {
-
-  
   const cons = [
-    "LuPartsBgBlue",
-    "LuPartsBgRainbow",
-    "LuPartsChair",
-    "LuPartsDoor2",
-    "LuPartsDoor7",
-    "LuPartsHeart1",
-    "LuPartsHeart2",
-    "LuPartsHeart3",
-    "LuPartsHeartSP",
-    "LuPartsHouse",
-    "LuPartsLu1",
-    "LuPartsLu2",
-    "LuPartsRoof01",
-    "LuPartsRoof05",
-    "LuPartsTextSweet",
-    "LuPartsWindows1",
-    "LuPartsWindows2",
-    "LuPartsWindows3",
+    'LuPartsBgBlue',
+    'LuPartsBgRainbow',
+    'LuPartsChair',
+    'LuPartsDoor2',
+    'LuPartsDoor7',
+    'LuPartsHeart1',
+    'LuPartsHeart2',
+    'LuPartsHeart3',
+    'LuPartsHeartSP',
+    'LuPartsHouse',
+    'LuPartsLu1',
+    'LuPartsLu2',
+    'LuPartsRoof01',
+    'LuPartsRoof05',
+    'LuPartsTextSweet',
+    'LuPartsWindows1',
+    'LuPartsWindows2',
+    'LuPartsWindows3',
   ];
-  
+
   const partsList = [];
   for await (let con of cons) {
     const partsContract = await deploy(con);
@@ -49,54 +47,51 @@ async function main() {
     partsList.push(partsContract.address);
   }
 
-  
-  const contract = await deploy("LuArt1", partsList);
+  const contract = await deploy('LuArt1', partsList);
   console.log(`      test="${contract.address}"`);
   // const result = await contract.getParts(2);
   // const result2 = await contract.Roof05()
-  const result3 = await contract.getSVG(0)
-  const result4 = await contract.getSVG(1)
-  const result5 = await contract.getSVG(2)
-  
-  await writeFile(`./cache/lu_test.svg`, result3, ()=>{});  
+  const result3 = await contract.getSVG(0);
+  const result4 = await contract.getSVG(1);
+  const result5 = await contract.getSVG(2);
+
+  await writeFile(`./cache/lu_test.svg`, result3, () => {});
   // console.log(result);
   // console.log(result2);
 
-
   console.log(result3);
-  console.log("---------");
+  console.log('---------');
   console.log(result4);
-  console.log("---------");
+  console.log('---------');
   console.log(result5);
-  console.log("---------");
+  console.log('---------');
 
   /////
 
-  const providerContract = await deploy("LuArtProvider", contract.address);
+  const providerContract = await deploy('LuArtProvider', contract.address);
   console.log(`      prodider="${providerContract.address}"`);
   const result6 = await providerContract.generateSVGDocument(0);
-  await writeFile(`./cache/lu_test6.svg`, result6, ()=>{});  
-  
+  await writeFile(`./cache/lu_test6.svg`, result6, () => {});
 
-  const committee = "0x818Fb9d440968dB9fCB06EEF53C7734Ad70f6F0e"; // ai
-  const factoryToken = await ethers.getContractFactory("LuToken");
+  const committee = '0x818Fb9d440968dB9fCB06EEF53C7734Ad70f6F0e'; // ai
+  const factoryToken = await ethers.getContractFactory('LuToken');
   const token = await factoryToken.deploy(providerContract.address, committee);
   console.log(`      contract="${token.address}"`);
 
-//  await token.mint();
-  console.log("mint")
+  //  await token.mint();
+  console.log('mint');
   await token.mint();
-//  await token.mint( { value: ethers.utils.parseEther("0.01") });
-//  await token.mint( { value: ethers.utils.parseEther("0.01") });
-//  await token.mint( { value: ethers.utils.parseEther("1") });
+  //  await token.mint( { value: ethers.utils.parseEther("0.01") });
+  //  await token.mint( { value: ethers.utils.parseEther("0.01") });
+  //  await token.mint( { value: ethers.utils.parseEther("1") });
   // await token.mint();
   // await token.mint();
-  
+
   // const svg = await token.tokenURI(5);
   // console.log(svg);
 
   //////
-/*  
+  /*  
   const factory = await ethers.getContractFactory("LuToken");
   const contract2 = await factory.deploy("Lu", "Lu", contract.address);
   await contract2.deployed();
@@ -128,7 +123,7 @@ async function main() {
   */
 }
 
-main().catch((error) => {
+main().catch(error => {
   console.error(error);
   process.exitCode = 1;
 });
