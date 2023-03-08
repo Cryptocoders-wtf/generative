@@ -9,6 +9,19 @@ before(async () => {
 });
 
 describe('TextSplit', function () {
+  it('Empty Text 2 Array', async function () {
+    const text = '';
+    const result = await token.splitOnNewline(text);
+    expect(result.length).equal(1);
+    expect(result).to.deep.equal(text.split('\n'));
+    console.log(result);
+  });
+  it('Null String 2 Array', async function () {
+    const text = '\0\0\n\0\0';
+    const result = await token.splitOnNewline(text);
+    expect(result).to.deep.equal(text.split('\n'));
+    console.log(result);
+  });
   it('Text 2 Array', async function () {
     const text = 'this is test';
     const result = await token.splitOnNewline(text);
