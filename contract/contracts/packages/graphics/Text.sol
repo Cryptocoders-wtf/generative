@@ -43,6 +43,9 @@ library Text {
 
       index := i
       length := sub(i, _index)
+      if eq(and(shr(shift, word), 0xff), _ch) {
+        length := sub(length, 1)
+      }
       mstore(line, length) //sub(i, _index))
       mstore(0x40, add(add(line, 0x20), length))
     }
