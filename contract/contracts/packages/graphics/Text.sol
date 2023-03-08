@@ -15,7 +15,8 @@ library Text {
     uint _index,
     uint _ch
   ) internal pure returns (string memory line, uint index) {
-    uint length = bytes(_text).length;
+    uint length = bytes(_text).length + 1;
+    
     assembly {
       line := mload(0x40)
       let wbuf := add(line, 0x20)
@@ -42,25 +43,28 @@ library Text {
       }
 
       index := i
-      length := sub(i, _index)
+      let retLength := sub(i, _index)
       if eq(and(shr(shift, word), 0xff), _ch) {
-        length := sub(length, 1)
+        retLength := sub(retLength, 1)
       }
-      mstore(line, length) //sub(i, _index))
-      mstore(0x40, add(add(line, 0x20), length))
+      if eq(index, length) {
+        retLength := sub(retLength, 1)
+      }
+      mstore(line, retLength) //sub(i, _index))
+      mstore(0x40, add(add(line, 0x20), retLength))
     }
   }
 
   function split(string memory _str, uint _ch) internal pure returns (string[] memory strs) {
     uint length = bytes(_str).length;
     uint count;
-    for (uint i = 0; i < length; ) {
+    for (uint i = 0; i <= length; ) {
       (, i) = extractLine(_str, i, _ch);
       count += 1;
     }
     strs = new string[](count);
     count = 0;
-    for (uint i = 0; i < length; ) {
+    for (uint i = 0; i <= length; ) {
       (strs[count], i) = extractLine(_str, i, _ch);
       count += 1;
     }
