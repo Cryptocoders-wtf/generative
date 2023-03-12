@@ -20,37 +20,32 @@ const deployNFT = async (name: string, args: any, args2: any) => {
 async function main() {
   const factorySVGStore = await ethers.getContractFactory('MessageStoreV1');
 
-  // const store = await factorySVGStore.deploy(addresses.londrina_solid.mainnet); // mainnet font.
   console.log("factorySVGStore.deploy");
-  const store = await factorySVGStore.deploy(addresses.londrina_solid.goerli); // goerli font.
+  const store = await factorySVGStore.deploy(addresses.londrina_solid[network.name]); // font.
 
   console.log("wait");
   await store.deployed();
   console.log("ok");
 
   await store.register({ message: 'hello', color: '#000' });
-  console.log("4");
+  console.log("store.getSVG");
   const res = await store.getSVG(0);
   // console.log(res);
 
-  console.log("3");
+  console.log("factoryMessageProvider");
   const factoryMessageProvider = await ethers.getContractFactory('MessageProvider2');
 
-  // const provider = await factoryMessageProvider.deploy(store.address, addresses.alphabet.mainnet);
-  // const provider = await factoryMessageProvider.deploy(store.address, addresses.paperNouns.goerli);
-  const provider = await factoryMessageProvider.deploy(store.address, addresses.pnouns.goerli);
+  // const provider = await factoryMessageProvider.deploy(store.address, addresses.alphabet[network.name]);
+  // const provider = await factoryMessageProvider.deploy(store.address, addresses.paperNouns[network.name]);
+  const provider = await factoryMessageProvider.deploy(store.address, addresses.pnouns[network.name]);
   console.log("wait");
   await provider.deployed();
   console.log("ok");
 
-  // const provider = await factoryMessageProvider.deploy(store.address, addresses.splatter.mainnet);
-  // const provider = await factoryMessageProvider.deploy(store.address, addresses.splatter.goerli);
+  // const provider = await factoryMessageProvider.deploy(store.address, addresses.splatter[network.name]);
+  // const provider = await factoryMessageProvider.deploy(store.address, addresses.snowArt[network.name]);
 
-  // const provider = await factoryMessageProvider.deploy(store.address, addresses.snowArt.goerli); // go
-  console.log("4");
-
-
-  console.log("5");
+  console.log("factoryMessageToken");
   const factoryMessageToken = await ethers.getContractFactory('MessageToken');
   const token = await factoryMessageToken.deploy(provider.address, store.address);
   console.log("wait");
@@ -58,56 +53,15 @@ async function main() {
   console.log("ok");
 
   console.log(`store      contract="${store.address}"`);
-
   console.log(`provider      contract="${provider.address}"`);
   console.log(`token      contract="${token.address}"`);
 
-  console.log("6");
+  console.log("mint");
   // mint 0
   await token.mintWithAsset({ message: 'first nft!', color: 'orange' });
   await token.mintWithAsset({ message: 'first nft!', color: 'orange' });
-  console.log("7");
-
   await token.mintWithAsset({ message: 'first nft!', color: 'orange' });
-  console.log("8");
 
-  // const res = await store.getSVG(1);
-  // console.log(res);
-
-/*
-  const nft0 = await token.tokenURI(0);
-  console.log('---nft0---');
-  console.log(nft0);
-*/
-  
-  /*
-  const nft1 = await token.tokenURI(1);
-  console.log("---nft1---");
-  console.log(nft1);
-*/
-  /*
-  // for hack
-  await store.register(data);
-
-  // mint 1
-  await token.mintWithAsset(data)
-  const nft1 = await token.tokenURI(1);
-  console.log("---nft1---");
-  console.log(nft1);
-*/
-  /*
-  const messageSVG = await store.getSVGMessage('This\n is\n a\n pen', 'pink', { w: 1024, h: 1024 });
-  console.log(messageSVG);
-
-  const testMessage = await store.test('This\nis\na\npen');
-  console.log(testMessage);
-  */
-
-  //console.log(res3);
-
-  //console.log(res.fills);
-  //console.log(res.paths);
-  //console.log(res.strokes);
 }
 
 main().catch(error => {
