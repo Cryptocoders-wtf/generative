@@ -64,7 +64,8 @@ contract MessageProvider2 is IAssetProvider, IERC165, Ownable {
 
     (string memory noPart, string memory noTag) = assetProvider.generateSVGPart(_assetId);
 
-    bytes memory body = abi.encodePacked('<g fill="skyblue">', bytes(noPart), '</g>', '<g>\n', path, '</g>\n');
+    // bytes memory body = abi.encodePacked('<g fill="skyblue">', bytes(noPart), '</g>', '<g>\n', path, '</g>\n');
+    bytes memory body = abi.encodePacked('<g opacity="0.4">', bytes(noPart), '</g>', '<g>\n', path, '</g>\n');
 
     svgPart = string(SVG.group(body).id(tag).svg());
   }
