@@ -18,6 +18,7 @@ import Alphabet from "@/views/Alphabet.vue";
 import Svg from "@/views/SVG.vue";
 import SvgTest from "@/views/SVGTest.vue";
 import Message from "@/views/Message.vue";
+import MessagePNouns from "@/views/MessagePNouns.vue";
 
 const routeChildren: Array<RouteRecordRaw> = [
   {
@@ -67,6 +68,10 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "message",
     component: Message,
+  },
+  {
+    path: "message_pnouns",
+    component: MessagePNouns,
   },
   {
     path: "alphabet",
