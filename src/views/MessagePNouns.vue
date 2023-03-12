@@ -91,11 +91,7 @@ export default defineComponent({
 
     const network = "goerli";
 
-    // store 0x4e9A9414734f9BcfcDa3b9B07d54D288B5C212A7
-    // provider 0x20Ed6e09220aDE749F14E4eC40fD3B85F7547D9f
-    // token 0x29ef4ee08c5bc5e158b96665c49adf6a26392153
     const tokenAddress = "0xF277D0d606E8749CC6bf102871fED902F843Fdb0";
-    // const storeAddress = "0x43cA9bAe8dF108684E5EAaA720C25e1b32B0A075";
 
     const chainId = ChainIdMap[network];
 

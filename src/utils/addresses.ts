@@ -65,6 +65,8 @@ import { addresses as dynamic_mumbai } from "./addresses/dynamic_mumbai";
 import { addresses as dynamic_mainnet } from "./addresses/dynamic_mainnet";
 import { addresses as dynamic_goerli } from "./addresses/dynamic_goerli";
 import { addresses as dynamic_localhost } from "./addresses/dynamic_localhost";
+import { addresses as message_pnouns_goerli } from "./addresses/message_pnouns_goerli";
+import { addresses as message_splatter_goerli } from "./addresses/message_splatter_goerli";
 
 export interface Addresses {
   [key: string]: { [key: string]: string };
@@ -74,6 +76,12 @@ export interface WhiteList {
 }
 
 export const addresses: Addresses = {
+  messagePnouns: {
+    goerli: message_pnouns_goerli.messagePnounsToken,
+  },
+  messageSplatter: {
+    goerli: message_splatter_goerli.messageSplatterToken
+  },
   svgHelper: {
     goerli: splatter_goerli.svgHelperAddress,
     mumbai: color_mumbai.svgHelper,
