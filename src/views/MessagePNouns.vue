@@ -35,7 +35,10 @@
           </button>
         </div>
       </NetworkGate>
-      <div>
+      <div v-if="tokens.length === 0">
+        Loading...
+      </div>
+      <div v-else>
         <div class="mt-4">
           <div v-for="(token, k) in tokens" :key="k">
             <div class="mt-2 font-bold">{{ token.name }}</div>
@@ -97,7 +100,7 @@ export default defineComponent({
 
     const network = "goerli";
 
-    const tokenAddress = "0xF277D0d606E8749CC6bf102871fED902F843Fdb0";
+    const tokenAddress = addresses.messagePnouns.goerli;
 
     const chainId = ChainIdMap[network];
 
