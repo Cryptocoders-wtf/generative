@@ -47,6 +47,14 @@
         </div>
       </div>
     </div>
+    <div>
+      <a
+        href="https://testnets.opensea.io/ja/collection/messagetoken-1?search[sortAscending]=false&search[sortBy]=CREATED_DATE"
+        class="underline"
+        target="_blank"
+        >See NFTs on OpenSea</a
+      >
+    </div>
   </div>
 </template>
 
