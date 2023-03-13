@@ -60,7 +60,6 @@ import {
 import { parse } from "svg-parser";
 import { convSVG2Path, dumpConvertSVG } from "@/utils/svgtool";
 import { compressPath } from "@/utils/pathUtils";
-import { addresses } from "@/utils/addresses";
 
 export default defineComponent({
   components: {
@@ -92,7 +91,7 @@ export default defineComponent({
 
     const network = "goerli";
 
-    const tokenAddress = "0x29ef4ee08c5bc5e158b96665c49adf6a26392153";
+    const tokenAddress = "0xF277D0d606E8749CC6bf102871fED902F843Fdb0";
 
     const chainId = ChainIdMap[network];
 
