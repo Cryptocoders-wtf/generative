@@ -28,7 +28,10 @@
             @click="mint"
             class="mt-4 inline-block w-full rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
           >
-            <span class="text-xl font-bold"> MINT </span>
+            <span class="text-xl font-bold">
+              <span v-if="isMinting">MINTING...</span>
+              <span v-else>MINT</span>
+            </span>
           </button>
         </div>
       </NetworkGate>
@@ -45,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 
 // mint
 import NetworkGate from "@/components/NetworkGate.vue";
@@ -108,6 +111,9 @@ export default defineComponent({
       if (networkContext.value == null) {
         return;
       }
+      if (isMinting.value) {
+        return;
+      }
       const { contract } = networkContext.value;
       isMinting.value = true;
 
@@ -122,9 +128,9 @@ export default defineComponent({
         console.log("mint:gasUsed", result.gasUsed.toNumber());
       } catch (e) {
         alert("We are sorry, but something went wrong.");
+        isMinting.value = false;
         console.error(e);
       }
-      isMinting.value = false;
     };
 
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
@@ -135,6 +141,7 @@ export default defineComponent({
     const fetchTokens = () => {
       tokenContract.totalSupply().then(async (nextId: BigNumber) => {
         const token = nextId.toNumber() - 1;
+        tokens.value = [];
         for (let i = 0; i < 10; i++) {
           if (token - i > 0) {
             const ret = await tokenContract.tokenURI(token - i);
@@ -150,12 +157,12 @@ export default defineComponent({
       tokenContract.on(
         tokenContract.filters.Transfer(),
         async (from, to, tokenId) => {
+          isMinting.value = false;
           console.log("*** event.Transfer calling fetchTokens");
           fetchTokens();
         }
       );
     });
-
 
     return {
       message,
@@ -163,6 +170,7 @@ export default defineComponent({
       colors,
       // mint
       mint,
+      isMinting,
       chainId,
 
       tokens,
