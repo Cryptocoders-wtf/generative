@@ -31,13 +31,15 @@
             <span class="text-xl font-bold"> MINT </span>
           </button>
         </div>
+      </NetworkGate>
+      <div>
         <div class="mt-4">
           <div v-for="(token, k) in tokens" :key="k">
             <div class="mt-2 font-bold">{{ token.name }}</div>
             <img :src="token.image" class="mt-4 w-48 border-2" />
           </div>
         </div>
-      </NetworkGate>
+      </div>
     </div>
   </div>
 </template>
@@ -67,7 +69,7 @@ export default defineComponent({
     NetworkGate,
   },
   setup(props) {
-    const message = ref("test");
+    const message = ref("Fully On-chain\ntest.");
     const color = ref("orange");
 
     const colors = [
@@ -130,16 +132,30 @@ export default defineComponent({
     const tokenContract = getMessageTokenContract(tokenAddress, provider);
     const tokens = ref<any[]>([]);
 
-    tokenContract.totalSupply().then(async (nextId: BigNumber) => {
-      const token = nextId.toNumber() - 1;
-      for (let i = 0; i < 10; i++) {
-        if (token - i > 0) {
-          const ret = await tokenContract.tokenURI(token - i);
-          const data = JSON.parse(atob(ret.split(",")[1]));
-          tokens.value.push(data);
+    const fetchTokens = () => {
+      tokenContract.totalSupply().then(async (nextId: BigNumber) => {
+        const token = nextId.toNumber() - 1;
+        for (let i = 0; i < 10; i++) {
+          if (token - i > 0) {
+            const ret = await tokenContract.tokenURI(token - i);
+            const data = JSON.parse(atob(ret.split(",")[1]));
+            tokens.value.push(data);
+          }
         }
-      }
+      });
+    };
+    fetchTokens();
+
+    provider.once("block", () => {
+      tokenContract.on(
+        tokenContract.filters.Transfer(),
+        async (from, to, tokenId) => {
+          console.log("*** event.Transfer calling fetchTokens");
+          fetchTokens();
+        }
+      );
     });
+
 
     return {
       message,
