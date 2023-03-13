@@ -28,22 +28,38 @@
             @click="mint"
             class="mt-4 inline-block w-full rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
           >
-            <span class="text-xl font-bold"> MINT </span>
+            <span class="text-xl font-bold">
+              <span v-if="isMinting">MINTING...</span>
+              <span v-else>MINT</span>
+            </span>
           </button>
         </div>
+      </NetworkGate>
+      <div v-if="tokens.length === 0">
+        Loading...
+      </div>
+      <div v-else>
         <div class="mt-4">
           <div v-for="(token, k) in tokens" :key="k">
             <div class="mt-2 font-bold">{{ token.name }}</div>
             <img :src="token.image" class="mt-4 w-48 border-2" />
           </div>
         </div>
-      </NetworkGate>
+      </div>
+    </div>
+    <div>
+      <a
+        href="https://testnets.opensea.io/ja/collection/messagetoken-1?search[sortAscending]=false&search[sortBy]=CREATED_DATE"
+        class="underline"
+        target="_blank"
+        >See NFTs on OpenSea</a
+      >
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 
 // mint
 import NetworkGate from "@/components/NetworkGate.vue";
@@ -67,7 +83,7 @@ export default defineComponent({
     NetworkGate,
   },
   setup(props) {
-    const message = ref("test");
+    const message = ref("Fully On-chain\ntest.");
     const color = ref("orange");
 
     const colors = [
@@ -92,7 +108,7 @@ export default defineComponent({
 
     const network = "goerli";
 
-    const tokenAddress = "0x29ef4ee08c5bc5e158b96665c49adf6a26392153";
+    const tokenAddress = addresses.messageSplatter.goerli;
 
     const chainId = ChainIdMap[network];
 
@@ -104,6 +120,9 @@ export default defineComponent({
     const isMinting = ref<boolean>(false);
     const mint = async () => {
       if (networkContext.value == null) {
+        return;
+      }
+      if (isMinting.value) {
         return;
       }
       const { contract } = networkContext.value;
@@ -120,9 +139,9 @@ export default defineComponent({
         console.log("mint:gasUsed", result.gasUsed.toNumber());
       } catch (e) {
         alert("We are sorry, but something went wrong.");
+        isMinting.value = false;
         console.error(e);
       }
-      isMinting.value = false;
     };
 
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
@@ -130,15 +149,30 @@ export default defineComponent({
     const tokenContract = getMessageTokenContract(tokenAddress, provider);
     const tokens = ref<any[]>([]);
 
-    tokenContract.totalSupply().then(async (nextId: BigNumber) => {
-      const token = nextId.toNumber() - 1;
-      for (let i = 0; i < 10; i++) {
-        if (token - i > 0) {
-          const ret = await tokenContract.tokenURI(token - i);
-          const data = JSON.parse(atob(ret.split(",")[1]));
-          tokens.value.push(data);
+    const fetchTokens = () => {
+      tokenContract.totalSupply().then(async (nextId: BigNumber) => {
+        const token = nextId.toNumber() - 1;
+        tokens.value = [];
+        for (let i = 0; i < 10; i++) {
+          if (token - i > 0) {
+            const ret = await tokenContract.tokenURI(token - i);
+            const data = JSON.parse(atob(ret.split(",")[1]));
+            tokens.value.push(data);
+          }
         }
-      }
+      });
+    };
+    fetchTokens();
+
+    provider.once("block", () => {
+      tokenContract.on(
+        tokenContract.filters.Transfer(),
+        async (from, to, tokenId) => {
+          isMinting.value = false;
+          console.log("*** event.Transfer calling fetchTokens");
+          fetchTokens();
+        }
+      );
     });
 
     return {
@@ -147,6 +181,7 @@ export default defineComponent({
       colors,
       // mint
       mint,
+      isMinting,
       chainId,
 
       tokens,
