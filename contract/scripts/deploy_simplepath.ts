@@ -3,8 +3,8 @@ import { writeFile } from 'fs';
 import { addresses } from '../../src/utils/addresses';
 
 async function main() {
-  const factory = await ethers.getContractFactory('SimpleSVGToken');
-  const contract = await factory.deploy("SimpleSVGToken", "SVG");
+  const factory = await ethers.getContractFactory('SimplePathToken');
+  const contract = await factory.deploy("SimplePathToken", "Path");
   await contract.deployed();
   console.log(`      simple="${contract.address}"`);
   
