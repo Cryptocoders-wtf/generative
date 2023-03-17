@@ -1,6 +1,4 @@
-import { ethers, network } from 'hardhat';
-import { writeFile } from 'fs';
-import { addresses } from '../../src/utils/addresses';
+import { ethers } from 'hardhat';
 
 async function main() {
   const factory = await ethers.getContractFactory('SimplePathToken');
