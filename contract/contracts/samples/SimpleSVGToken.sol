@@ -65,8 +65,8 @@ contract SimpleSVGToken is ERC721AP2P {
     '"  xmlns="http://www.w3.org/2000/svg">\n'
     '<g>\n';
 
-  function debugGenerateSVG(uint256 _tokenId) external pure returns (string memory) {
-    string memory svgPart = generateSVGPart(_tokenId);
+  function debugGenerateSVG(uint256 _assetId) external pure returns (string memory) {
+    string memory svgPart = generateSVGPart(_assetId);
     return
       string(
         abi.encodePacked(

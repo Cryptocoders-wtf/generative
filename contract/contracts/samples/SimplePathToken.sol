@@ -43,16 +43,8 @@ contract SimplePathToken is ERC721AP2P {
     
   }
 
-  function setDescription(string memory _description) external onlyOwner {
-    description = _description;
-  }
-
-  function setMintPrice(uint256 _price) external onlyOwner {
-    mintPrice = _price;
-  }
-
   function tokenName(uint256 _tokenId) internal pure returns (string memory) {
-    return string(abi.encodePacked('Message Token V1 ', _tokenId.toString()));
+    return string(abi.encodePacked('Simple Path Token ', _tokenId.toString()));
   }
 
   function mint() public payable virtual returns (uint256 tokenId) {
@@ -62,32 +54,13 @@ contract SimplePathToken is ERC721AP2P {
     return nextTokenId++;
   }
 
-  function mintPriceFor(address) public view virtual returns (uint256) {
-    return mintPrice;
-  }
-
   function totalSupply() public view override returns (uint256) {
     return nextTokenId;
   }
   // for graphics
 
-  string constant SVGHeader =
-    '<svg viewBox="0 0 1024 1024'
-    '"  xmlns="http://www.w3.org/2000/svg">\n'
-    '<g>\n';
-  function debugGenerateSVG(uint256 _assetId) external pure returns (string memory) {
-    string memory svgPart = generateSVGPart(_assetId);
-    return
-      string(
-        abi.encodePacked(
-          SVGHeader,
-          svgPart,
-          '</g>\n'
-          '</svg>\n'
-        )
-      );
-  }
-
+  // Implement Path here
+  // https://github.com/Cryptocoders-wtf/generative/tree/main/contract/contracts/packages/graphics#path
   function generatePath(Props memory _props) public pure returns (bytes memory path) {
     uint count = _props.count;
     int radius = 511; // We want to fill the whole viewbox (1024 x 1024)
@@ -103,8 +76,27 @@ contract SimplePathToken is ERC721AP2P {
     path = points.closedPath();
   }
 
-  function generateSVG(uint256 _assetId) internal pure returns (string memory) {
-    string memory svgPart = generateSVGPart(_assetId);
+  
+  string constant SVGHeader =
+    '<svg viewBox="0 0 1024 1024'
+    '"  xmlns="http://www.w3.org/2000/svg">\n'
+    '<g>\n';
+
+  function debugGenerateSVG(uint256 _tokenId) external pure returns (string memory) {
+    string memory svgPart = generateSVGPart(_tokenId);
+    return
+      string(
+        abi.encodePacked(
+          SVGHeader,
+          svgPart,
+          '</g>\n'
+          '</svg>\n'
+        )
+      );
+  }
+
+  function generateSVG(uint256 _tokenId) internal pure returns (string memory) {
+    string memory svgPart = generateSVGPart(_tokenId);
     return
       string(
         abi.encodePacked(
@@ -140,14 +132,14 @@ contract SimplePathToken is ERC721AP2P {
       );
   }
 
-  function generateProps(uint256 _assetId) public pure returns (Randomizer.Seed memory seed, Props memory props) {
-    seed = Randomizer.Seed(_assetId, 0);
+  function generateProps(uint256 _tokenId) public pure returns (Randomizer.Seed memory seed, Props memory props) {
+    seed = Randomizer.Seed(_tokenId, 0);
     (seed, props.count) = seed.randomize(30, 50); // +/- 50%
     (seed, props.length) = seed.randomize(40, 50); // +/- 50%
   }
- function generateSVGPart(uint256 _assetId) public pure returns (string memory svgPart) {
+ function generateSVGPart(uint256 _tokenId) public pure returns (string memory svgPart) {
     Props memory props;
-    (, props) = generateProps(_assetId);
+    (, props) = generateProps(_tokenId);
     bytes memory path = generatePath(props);
     string memory tag = "1";
     svgPart = string(SVG.path(path).id(tag).svg());
