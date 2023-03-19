@@ -7,6 +7,10 @@
  * Created by Satoshi Nakajima (@snakajima)
  */
 
+import {
+  TransFormData
+} from "./types";
+
 const regexNum = /[+-]?(\d*\.\d*|\d+)/;
 const regexNumG = /[+-]?(\d*\.\d*|\d+)/g;
 const regexFloatG = /[+-]?(\d*\.\d*|\d+)e-\d+/g;
@@ -59,20 +63,20 @@ const prepareBody = (body: string) => {
   return items;
 };
 
-export const transformPath = (body: string, transform: any) => {
-  const items = prepareBody(body);
 
-  if (items[0] === "m" && transform.w && transform.h) {
-    items[1] = String(Number(items[1]) + transform.w);
-    items[2] = String(Number(items[2]) + transform.h);
-  }
+export const transformPath = (body: string, transform: TransFormData) => {
+  const items = prepareBody(body);
   // console.log(items);
+  if (items[0] === "m" && transform.translateX && transform.translateY) {
+    items[1] = String(Number(items[1]) + transform.translateX);
+    items[2] = String(Number(items[2]) + transform.translateY);
+  }
   return items.join(" ");
 };
 
 export const matrixPath = (body: string, matrix: any) => {
   const items = prepareBody(body);
-  console.log(items);
+  // console.log(items);
 
   // TODO matrix
   // if valid matrix

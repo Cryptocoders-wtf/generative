@@ -3,6 +3,14 @@ import { parse, ElementNode } from "svg-parser";
 import { normalizePath, transformPath, matrixPath } from "./pathUtils";
 import css from "css";
 
+import {
+  Properties,
+  PathElement,
+  PathData,
+  DefsObj,
+  TransFormData,
+} from "./types";
+
 // svg to svg
 const circle2path = (element: ElementNode) => {
   const cx = Number(element.properties?.cx);
@@ -61,24 +69,7 @@ const rect2path = (element: ElementNode) => {
 };
 // end of svg to svg
 
-interface Properties {
-  transform: string;
-  id: string;
-}
-interface PathElement {
-  ele: ElementNode;
-  properties: Properties;
-}
-interface PathData {
-  path: string;
-  fill: string;
-  stroke: number;
-  strokeW: number;
-  translate?: any;
-}
-interface DefsObj {
-  [key: string]: ElementNode[];
-}
+
 
 const defObj = {};
 const convDefsArray2Obj = (
@@ -120,6 +111,10 @@ const findPath = (
       properties.id = String(element?.properties?.id);
     }
     // for <defs>
+    if (element?.properties?.transform) {
+      properties.transform = String(element?.properties?.transform);
+    }
+
     if (element?.properties?.href) {
       const id = String(element?.properties?.href).replace("#", "");
       if (defsObj[id]) {
@@ -143,9 +138,6 @@ const findPath = (
       }
     }
     // end of for defs
-    if (element?.properties?.transform) {
-      properties.transform = String(element?.properties?.transform);
-    }
     if (element.children) {
       if (element.tagName === "clipPath") {
         return;
@@ -389,18 +381,26 @@ const findCSS = (children: ElementNode[]) => {
   return {};
 };
 
-const parseTransform = (tag: string) => {
-  const found = tag.match(/translate\(([\d-.]+),([\d-.]+)/);
-  if (found && found.length === 3) {
-    return {
-      w: Number(found[1]),
-      h: Number(found[2]),
-    };
+const parseTransform = (tag: string): TransFormData => {
+  const ret = {};
+  const tl = tag.match(/translate\(([\d-.]+)[,\s]([\d-.]+)\)/);
+  if (tl && tl.length === 3) {
+    Object.assign(ret, {
+      translateX: Number(tl[1]),
+      translateY: Number(tl[2]),
+    });
   }
-  return {};
+  const sc = tag.match(/scale\(([\d-.]+)\)/);
+  if (sc && sc.length === 2) {
+    Object.assign(ret, {
+      scaleX: Number(sc[1]),
+      scaleY: Number(sc[1]),
+    });
+  }
+  return ret;
 };
 
-const parseMatrix = (tag: string) => {
+const parseMatrix = (tag: string): TransFormData => {
   const found = tag.match(
     /matrix\(([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+)/
   );
@@ -435,6 +435,7 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
     const transform = parseTransform(element.properties.transform || "");
     const matrix = parseMatrix(element.properties.transform || "");
     // console.log(matrix);
+    // console.log(transform);
     return elementToData(element?.ele, max, style, transform);
   });
   return path;
