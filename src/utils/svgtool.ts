@@ -61,77 +61,170 @@ const rect2path = (element: ElementNode) => {
 };
 // end of svg to svg
 
-const findPath = (obj: ElementNode[], transform: any, isBFS: boolean) => {
-  const ret: { ele: ElementNode; transform: string }[] = [];
+interface Properties {
+  transform: string;
+  id: string;
+}
+interface PathElement {
+  ele: ElementNode;
+  properties: Properties;
+}
+interface PathData {
+  path: string;
+  fill: string;
+  stroke: number;
+  strokeW: number;
+  translate?: any;
+}
+interface DefsObj {
+  [key: string]: ElementNode[];
+}
 
-  const children: ElementNode[] = [];
+const defObj = {};
+const convDefsArray2Obj = (
+  obj: ElementNode[],
+  defs: { [key: string]: ElementNode[] },
+  id: string | undefined
+) => {
+  obj.map((a) => {
+    const myId = String(a.properties?.id || id);
+    if (myId) {
+      if (!defs[myId]) {
+        defs[myId] = [];
+      }
+      defs[myId].push(a);
+      if (a.children && a.children.length > 0) {
+        convDefsArray2Obj(a.children as ElementNode[], defs, myId);
+      }
+    }
+  });
+  return {};
+};
+
+const findPath = (
+  obj: ElementNode[],
+  _properties: Properties,
+  defsObj: DefsObj,
+  isBFS: boolean,
+) => {
+  const ret: {
+    ele: ElementNode;
+    properties: { transform: string; id: string };
+  }[] = [];
+
+  const childrenArray: { children: ElementNode[]; properties: Properties }[] =
+    [];
   obj.map((element) => {
+    const properties = { ..._properties };
+    if (element?.properties?.id) {
+      properties.id = String(element?.properties?.id);
+    }
+    // for <defs>
+    if (element?.properties?.href) {
+      const id = String(element?.properties?.href).replace("#", "");
+      if (defsObj[id]) {
+        const c = defsObj[id];
+        if (isBFS) {
+          const children: ElementNode[] = [];
+          c.map((chi) => {
+            children.push(chi as ElementNode);
+          });
+          childrenArray.push({ children, properties });
+        } else {
+          findPath(
+            c as ElementNode[],
+            { ...properties },
+            defsObj,
+            isBFS,
+          ).map((childRet) => {
+            ret.push(childRet);
+          });
+        }
+      }
+    }
+    // end of for defs
     if (element?.properties?.transform) {
-      transform = element?.properties?.transform;
+      properties.transform = String(element?.properties?.transform);
     }
     if (element.children) {
       if (element.tagName === "clipPath") {
         return;
       }
       if (element.tagName === "defs") {
+        convDefsArray2Obj(element.children as ElementNode[], defsObj, "");
         return;
       }
       if (isBFS) {
+        const children: ElementNode[] = [];
         element.children.map((c) => {
           children.push(c as ElementNode);
         });
+        childrenArray.push({ children, properties });
       } else {
-        findPath(element.children as ElementNode[], transform, isBFS).map(
-          (childRet) => {
-            ret.push(childRet);
-          }
-        );
+        findPath(
+          element.children as ElementNode[],
+          { ...properties },
+          defsObj,
+          isBFS,
+        ).map((childRet) => {
+          ret.push(childRet);
+        });
       }
     }
     if (element.tagName === "path") {
-      ret.push({ ele: element, transform });
+      ret.push({ ele: element, properties });
     }
     if (element.tagName === "circle") {
       if (element.properties) {
         element.properties.d = circle2path(element);
       }
-      ret.push({ ele: element, transform });
+      ret.push({ ele: element, properties });
     }
     if (element.tagName === "ellipse") {
       if (element.properties) {
         element.properties.d = ellipse2path(element);
       }
-      ret.push({ ele: element, transform });
+      ret.push({ ele: element, properties });
     }
     if (element.tagName === "line") {
       if (element.properties) {
         element.properties.d = line2path(element);
       }
-      ret.push({ ele: element, transform });
+      ret.push({ ele: element, properties });
     }
     if (element.tagName === "rect") {
       if (element.properties) {
         element.properties.d = rect2path(element);
       }
-      ret.push({ ele: element, transform });
+      ret.push({ ele: element, properties });
     }
     if (element.tagName === "polygon") {
       if (element.properties) {
         element.properties.d = polygon2path(element);
       }
-      ret.push({ ele: element, transform });
+      ret.push({ ele: element, properties });
     }
     if (element.tagName === "polyline") {
       if (element.properties) {
         element.properties.d = polyline2path(element);
       }
-      ret.push({ ele: element, transform });
+      ret.push({ ele: element, properties });
     }
   });
+  // for <defs>
   if (isBFS) {
-    if (children.length > 0) {
-      findPath(children as ElementNode[], transform, isBFS).map((childRet) => {
-        ret.push(childRet);
+    if (childrenArray.length > 0) {
+      childrenArray.map((children) => {
+        if (children.children.length > 0) {
+          findPath(
+            children.children as ElementNode[],
+            { ...children.properties },
+            defsObj,
+            isBFS,
+          ).map((childRet) => {
+            ret.push(childRet);
+          });
+        }
       });
     }
   }
@@ -156,7 +249,7 @@ const getSvgSize = (svg: ElementNode) => {
 
 // end of properties
 
-export const dumpConvertSVG = (paths: any[]) => {
+export const dumpConvertSVG = (paths: PathData[]) => {
   const ret =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">\n\t<g>\n` +
     paths
@@ -194,7 +287,7 @@ export const dumpConvertSVG = (paths: any[]) => {
 
 const style2elem = (style: string) => {
   const styles = style.split(";").map((a) => a.split(":"));
-  return styles.reduce((tmp: any, key: string[]) => {
+  return styles.reduce((tmp: {[key: string]: string}, key: string[]) => {
     tmp[key[0]] = key[1];
     return tmp;
   }, {});
@@ -330,19 +423,20 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
 
   const { max } = getSvgSize(svg);
   const css = findCSS(svg.children as ElementNode[]);
-  // console.log(css);
-  const pathElements = findPath(svg.children as ElementNode[], "", isBFS);
-  const path = pathElements.map(
-    (element: { ele: ElementNode; transform: any }) => {
-      const className = element?.ele?.properties?.class || "";
-      const style = css[className] ? css[className] : {};
-      const transform = parseTransform(element.transform || "");
-      const matrix = parseMatrix(element.transform || "");
-      // console.log(matrix);
-      return elementToData(element?.ele, max, style, transform);
-    }
+  const pathElements = findPath(
+    svg.children as ElementNode[],
+    { transform: "", id: "" },
+    {},
+    isBFS,
   );
-  // console.log(path);
+  const path = pathElements.map((element: PathElement) => {
+    const className = element?.ele?.properties?.class || "";
+    const style = css[className] ? css[className] : {};
+    const transform = parseTransform(element.properties.transform || "");
+    const matrix = parseMatrix(element.properties.transform || "");
+    // console.log(matrix);
+    return elementToData(element?.ele, max, style, transform);
+  });
   return path;
 };
 
