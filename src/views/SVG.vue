@@ -237,7 +237,6 @@ export default defineComponent({
         ret.strokes.push(a.strokeW);
         ret.matrixes.push(a.matrix || "");
       });
-      console.log(ret);
 
       try {
         console.log(ret);
