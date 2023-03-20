@@ -1,5 +1,5 @@
 const scaleMatrix = (scaleX: number, scaleY: number) => {
-  return [Number(scaleX), 0, 0, Number(scaleY), 0, 0];
+  return [scaleX, 0, 0, scaleY, 0, 0];
 };
 const translateMatrix = (x: number, y: number) => {
   return [1, 0, 0, 1, x, y];
@@ -38,50 +38,54 @@ const matirixMatrix = (matrix: number[]) => {
 
 const parseTransform = (tags: string): number[][] => {
   const match = tags.match(/([a-zA-Z]+)\(([^)]+)\)/g);
-  const dataSet = (match || []).map((tag) => {
-    const m = tag.match(/([a-zA-Z]+)\(([^)]+)\)/) || [];
-    if (m.length === 3) {
-      const name = m[1];
-      const nums = (m[2] || "").trim().split(/[,\s]+/).map(Number);
-      if (name === "translate") {
-        if (nums.length === 1) {
-          return translateMatrix(nums[0], 0);
+  const dataSet = (match || [])
+    .map((tag) => {
+      const m = tag.match(/([a-zA-Z]+)\(([^)]+)\)/) || [];
+      if (m.length === 3) {
+        const name = m[1];
+        const nums = (m[2] || "")
+          .trim()
+          .split(/[,\s]+/)
+          .map(Number);
+        if (name === "translate") {
+          if (nums.length === 1) {
+            return translateMatrix(nums[0], 0);
+          }
+          if (nums.length === 2) {
+            return translateMatrix(nums[0], nums[1]);
+          }
         }
-        if (nums.length === 2) {
-          return translateMatrix(nums[0], nums[1]);
+        if (name === "scale") {
+          if (nums.length === 1) {
+            return scaleMatrix(nums[0], nums[0]);
+          }
+          if (nums.length === 2) {
+            return scaleMatrix(nums[0], nums[1]);
+          }
         }
+        if (name === "rotate") {
+          if (nums.length === 1) {
+            return rotateMatrix(nums[0]);
+          }
+          if (nums.length === 3) {
+            return rotateMatrix2(nums[0], nums[1], nums[2]);
+          }
+        }
+        if (name === "skewX" && nums.length === 1) {
+          return skewX(nums[0]);
+        }
+        if (name === "skewY" && nums.length === 1) {
+          return skewY(nums[0]);
+        }
+        if (name === "matrix") {
+          if (nums.length === 6) {
+            return matirixMatrix(nums);
+          }
+        }
+        console.log("skip: ", tag);
       }
-      if (name === "scale") {
-        if (nums.length === 1) {
-          return scaleMatrix(nums[0], nums[0]);
-        }
-        if (nums.length === 2) {
-          return scaleMatrix(nums[0], nums[1]);
-        }
-      }
-      if (name === "rotate") {
-        if (nums.length === 1) {
-          return rotateMatrix(nums[0]);
-        }
-        if (nums.length === 3) {
-          return rotateMatrix2(nums[0], nums[1], nums[2]);
-        }
-      }
-      if (name === "skewX" && nums.length === 1) {
-        return skewX(nums[0]);
-      }
-      if (name === "skewY" && nums.length === 1) {
-        return skewY(nums[0]);
-      }
-      if (name === "matrix") {
-        if (nums.length === 6) {
-          return matirixMatrix(nums);
-        }
-      }
-      console.log("skip: ", tag);
-    }
-    return [];
-  })
+      return [];
+    })
     .filter((a) => a.length > 0);
   return dataSet;
 };
