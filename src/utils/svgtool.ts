@@ -1,6 +1,7 @@
 import { parse, ElementNode } from "svg-parser";
-
-import { normalizePath, transformPath, matrixPath } from "./pathUtils";
+import { cloneDeep } from 'lodash';
+import { normalizePath } from "./pathUtils";
+import { transforms2matrix } from "./transformer";
 import css from "css";
 
 import {
@@ -100,19 +101,19 @@ const findPath = (
 ) => {
   const ret: {
     ele: ElementNode;
-    properties: { transform: string; id: string };
+    properties: { transform: string[]; id: string };
   }[] = [];
 
   const childrenArray: { children: ElementNode[]; properties: Properties }[] =
     [];
   obj.map((element) => {
-    const properties = { ..._properties };
+    const properties = cloneDeep(_properties);
     if (element?.properties?.id) {
       properties.id = String(element?.properties?.id);
     }
     // for <defs>
     if (element?.properties?.transform) {
-      properties.transform = String(element?.properties?.transform);
+      properties.transform.push(String(element?.properties?.transform));
     }
 
     if (element?.properties?.href) {
@@ -264,10 +265,10 @@ export const dumpConvertSVG = (paths: PathData[]) => {
         const style = styles.join(";");
 
         const opts: string[] = [];
-        if (pathData["translate"] && pathData["translate"].length == 2) {
-          const x = pathData["translate"][0];
-          const y = pathData["translate"][1];
-          opts.push(`transform="translate(${x},${y})"`);
+        console.log(pathData.transform);
+        if (pathData.transform) {
+          // console.log("BB", pathData.transform);
+          opts.push(`transform="matrix(${pathData.transform.join(",")})"`);
         }
         const options = opts.join(" ");
         return `\t\t<path d="${d}" style="${style}" ${options} />`;
@@ -325,7 +326,7 @@ const elementToData = (
   style: any,
   transform = {},
   matrix = {}
-) => {
+): PathData => {
   const fill = element2fill(element) || style["fill"];
   const stroke = element2stroke(element) || style["stroke"];
   const _strokeWidth = Math.round(
@@ -336,15 +337,13 @@ const elementToData = (
 
   return {
     path: normalizePath(
-      matrixPath(
-        transformPath(String(element.properties?.d) || "", transform),
-        matrix
-      ),
+      String(element.properties?.d) || "",
       Number(max)
     ),
     fill,
     stroke,
     strokeW: strokeWidth,
+    transform,
   };
 };
 
@@ -370,49 +369,12 @@ const findCSS = (children: ElementNode[]) => {
           rule.declarations.map((dec: any) => {
             tmp[name][dec.property] = dec.value;
           });
-          //console.log(rule.declarations)
         }
       });
 
       return tmp;
     }, {});
     return rules;
-  }
-  return {};
-};
-
-const parseTransform = (tag: string): TransFormData => {
-  const ret = {};
-  const tl = tag.match(/translate\(([\d-.]+)[,\s]([\d-.]+)\)/);
-  if (tl && tl.length === 3) {
-    Object.assign(ret, {
-      translateX: Number(tl[1]),
-      translateY: Number(tl[2]),
-    });
-  }
-  const sc = tag.match(/scale\(([\d-.]+)\)/);
-  if (sc && sc.length === 2) {
-    Object.assign(ret, {
-      scaleX: Number(sc[1]),
-      scaleY: Number(sc[1]),
-    });
-  }
-  return ret;
-};
-
-const parseMatrix = (tag: string): TransFormData => {
-  const found = tag.match(
-    /matrix\(([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+),([\d-.]+)/
-  );
-  if (found && found.length === 7) {
-    return {
-      scaleX: Number(found[1]),
-      skewY: Number(found[2]),
-      skewX: Number(found[3]),
-      scaleY: Number(found[4]),
-      translateX: Number(found[5]),
-      translateY: Number(found[6]),
-    };
   }
   return {};
 };
@@ -425,18 +387,15 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
   const css = findCSS(svg.children as ElementNode[]);
   const pathElements = findPath(
     svg.children as ElementNode[],
-    { transform: "", id: "" },
+    { transform: [], id: "" },
     {},
     isBFS,
   );
   const path = pathElements.map((element: PathElement) => {
     const className = element?.ele?.properties?.class || "";
     const style = css[className] ? css[className] : {};
-    const transform = parseTransform(element.properties.transform || "");
-    const matrix = parseMatrix(element.properties.transform || "");
-    // console.log(matrix);
-    // console.log(transform);
-    return elementToData(element?.ele, max, style, transform);
+    const transformMatrix = transforms2matrix(element.properties.transform, max);
+    return elementToData(element?.ele, max, style, transformMatrix);
   });
   return path;
 };

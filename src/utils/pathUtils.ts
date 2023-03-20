@@ -64,28 +64,6 @@ const prepareBody = (body: string) => {
 };
 
 
-export const transformPath = (body: string, transform: TransFormData) => {
-  const items = prepareBody(body);
-  // console.log(items);
-  if (items[0] === "m" && transform.translateX && transform.translateY) {
-    items[1] = String(Number(items[1]) + transform.translateX);
-    items[2] = String(Number(items[2]) + transform.translateY);
-  }
-  return items.join(" ");
-};
-
-export const matrixPath = (body: string, matrix: any) => {
-  const items = prepareBody(body);
-  // console.log(items);
-
-  // TODO matrix
-  // if valid matrix
-  // newX = matrix.scaleX * x + matrix.skewY * y + matrix.translateX;
-  // newY = matrix.skewY * x + matrix.scaleY * y + matrix.translateY;
-
-  return items.join(" ");
-};
-
 export const normalizePath = (body: string, width: number) => {
   const items = prepareBody(body);
   // console.log(items);
