@@ -1,5 +1,5 @@
-const scaleMatrix = (scale: number) => {
-  return [Number(scale), 0, 0, Number(scale), 0, 0];
+const scaleMatrix = (scaleX: number, scaleY: number) => {
+  return [Number(scaleX), 0, 0, Number(scaleY), 0, 0];
 };
 const translateMatrix = (x: number, y: number) => {
   return [1, 0, 0, 1, x, y];
@@ -14,6 +14,24 @@ const rotateMatrix = (theta: number) => {
     0,
   ];
 };
+const rotateMatrix2 = (theta: number, x: number, y: number) => {
+  return [
+    Math.cos(theta),
+    Math.sin(theta),
+    -Math.sin(theta),
+    Math.cos(theta),
+    x - x * Math.cos(theta) + y * Math.sin(theta),
+    y - x * Math.sin(theta) - y * Math.cos(theta),
+  ];
+};
+
+const skewX = (theta: number) => {
+  return [1, 0, Math.tan(theta), 1, 0, 0];
+};
+const skewY = (theta: number) => {
+  return [1, Math.tan(theta), 0, 1, 0, 0];
+};
+
 const matirixMatrix = (matrix: number[]) => {
   return [
     Number(matrix[0]),
@@ -26,38 +44,48 @@ const matirixMatrix = (matrix: number[]) => {
 };
 
 const parseTransform = (tags: string): number[][] => {
-  const match = tags.match(/[a-zA-Z]+\([^)]+\)/g);
-
-  const dataSet = (match || [])
-    .map((tag) => {
-      const ret = {};
-      const translate = tag.match(/translate\(([\d-.e]+)[,\s]([\d-.e]+)\)/);
-      if (translate && translate.length === 3) {
-        return translateMatrix(Number(translate[1]), Number(translate[2]));
+  const match = tags.match(/([a-zA-Z]+)\(([^)]+)\)/g);
+  const dataSet = (match || []).map((tag) => {
+    const m = tag.match(/([a-zA-Z]+)\(([^)]+)\)/) || [];
+    if (m.length === 3) {
+      const name = m[1];
+      const nums = (m[2] || "").trim().split(/[,\s]+/).map(Number);
+      if (name === "translate") {
+        if (nums.length === 2) {
+          return translateMatrix(nums[0], nums[1]);
+        }
       }
-
-      const scale = tag.match(/scale\(([\d-.e]+)\)/);
-      if (scale && scale.length === 2) {
-        return scaleMatrix(Number(scale[1]));
+      if (name === "scale") {
+        if (nums.length === 1) {
+          return scaleMatrix(nums[0], nums[0]);
+        }
+        if (nums.length === 2) {
+          return scaleMatrix(nums[0], nums[1]);
+        }
       }
-
-      const rotate = tag.match(/rotate\(([\d-.e]+)\)/);
-      if (rotate && rotate.length === 2) {
-        const theta = Number(rotate[1]);
-        return rotateMatrix(theta);
+      if (name === "rotate") {
+        if (nums.length === 1) {
+          return rotateMatrix(nums[0]);
+        }
+        if (nums.length === 3) {
+          return rotateMatrix2(nums[0], nums[1], nums[2]);
+        }
       }
-
-      const matrix = tag.match(
-        /matrix\(\s*([\d-.e]+)[,\s]+([\d-.e]+)[,\s]+([\d-.e]+)[,\s]+([\d-.e]+)[,\s]+([\d-.e]+)[,\s]+([\d-.e]+)\s*\)/
-      );
-      if (matrix && matrix.length === 7) {
-        return matirixMatrix(matrix.slice(1, 7).map(Number));
+      if (name === "skewX" && nums.length === 1) {
+        return skewX(nums[0]);
       }
-      if (Object.keys(ret).length === 0) {
-        console.log("skip: ", tag);
+      if (name === "skewY" && nums.length === 1) {
+        return skewY(nums[0]);
       }
-      return [];
-    })
+      if (name === "matrix") {
+        if (nums.length === 6) {
+          return matirixMatrix(nums);
+        }
+      }
+      console.log("skip: ", tag);
+    }
+    return [];
+  })
     .filter((a) => a.length > 0);
   return dataSet;
 };
@@ -69,8 +97,8 @@ export const transforms2matrix = (
   const matrixes = transforms.map(parseTransform).flat();
   const ratio = max / 1024;
   const reverseRatio = 1024 / max;
-  matrixes.unshift(scaleMatrix(reverseRatio));
-  matrixes.push(scaleMatrix(ratio));
+  matrixes.unshift(scaleMatrix(reverseRatio, reverseRatio));
+  matrixes.push(scaleMatrix(ratio, ratio));
 
   // matrix multiplication
   return matrixes.reduce((o, n) => {

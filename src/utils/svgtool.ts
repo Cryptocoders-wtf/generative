@@ -387,7 +387,6 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
       element.properties.transform,
       max
     );
-    console.log(roundMatrix(transformMatrix));
     return elementToData(
       element?.ele,
       max,
