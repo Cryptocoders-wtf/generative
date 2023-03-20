@@ -33,14 +33,7 @@ const skewY = (theta: number) => {
 };
 
 const matirixMatrix = (matrix: number[]) => {
-  return [
-    Number(matrix[0]),
-    Number(matrix[1]),
-    Number(matrix[2]),
-    Number(matrix[3]),
-    Number(matrix[4]),
-    Number(matrix[5]),
-  ];
+  return matrix;
 };
 
 const parseTransform = (tags: string): number[][] => {

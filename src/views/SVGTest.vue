@@ -64,11 +64,9 @@ export default defineComponent({
       const convedPath = convSVG2Path(svgText as string, true);
       const convedSVGText = dumpConvertSVG(convedPath);
       return {
-        // data,
         originalImageData: svg2imgSrc(svgText as string),
         convedImageData: svg2imgSrc(convedSVGText as string),
       };
-      // imgsrc:
     });
 
     return {
