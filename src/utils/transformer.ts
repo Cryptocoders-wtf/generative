@@ -76,3 +76,13 @@ export const transforms2matrix = (transforms: string[], max: number): number[] =
     ];
   }, []);
 }
+export const roundMatrix = (matrix: number[]) => {
+  return [
+    Math.round(matrix[0] * 100) / 100,
+    Math.round(matrix[1] * 100) / 100,
+    Math.round(matrix[2] * 100) / 100,
+    Math.round(matrix[3] * 100) / 100,
+    Math.round(matrix[4]),
+    Math.round(matrix[5]),
+  ];
+};

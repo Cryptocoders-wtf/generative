@@ -1,7 +1,7 @@
 import { parse, ElementNode } from "svg-parser";
 import { cloneDeep } from 'lodash';
 import { normalizePath } from "./pathUtils";
-import { transforms2matrix } from "./transformer";
+import { transforms2matrix, roundMatrix } from "./transformer";
 import css from "css";
 
 import {
@@ -265,7 +265,6 @@ export const dumpConvertSVG = (paths: PathData[]) => {
         const style = styles.join(";");
 
         const opts: string[] = [];
-        console.log(pathData.transform);
         if (pathData.transform) {
           // console.log("BB", pathData.transform);
           opts.push(`transform="matrix(${pathData.transform.join(",")})"`);
@@ -325,7 +324,6 @@ const elementToData = (
   max: number,
   style: any,
   transform = {},
-  matrix = {}
 ): PathData => {
   const fill = element2fill(element) || style["fill"];
   const stroke = element2stroke(element) || style["stroke"];
@@ -395,7 +393,8 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
     const className = element?.ele?.properties?.class || "";
     const style = css[className] ? css[className] : {};
     const transformMatrix = transforms2matrix(element.properties.transform, max);
-    return elementToData(element?.ele, max, style, transformMatrix);
+    console.log(roundMatrix(transformMatrix));
+    return elementToData(element?.ele, max, style, roundMatrix(transformMatrix));
   });
   return path;
 };
