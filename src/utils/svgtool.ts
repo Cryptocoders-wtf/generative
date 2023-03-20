@@ -73,19 +73,18 @@ const rect2path = (element: ElementNode) => {
 const defObj = {};
 const convDefsArray2Obj = (
   obj: ElementNode[],
-  defs: { [key: string]: ElementNode[] },
-  id: string | undefined
+  defs: { [key: string]: ElementNode[] }
 ) => {
   obj.map((a) => {
-    const myId = String(a.properties?.id || id);
+    const myId = String(a.properties?.id || "");
     if (myId) {
       if (!defs[myId]) {
         defs[myId] = [];
       }
       defs[myId].push(a);
-      if (a.children && a.children.length > 0) {
-        convDefsArray2Obj(a.children as ElementNode[], defs, myId);
-      }
+    }
+    if (a.children && a.children.length > 0) {
+      convDefsArray2Obj(a.children as ElementNode[], defs);
     }
   });
   return {};
@@ -95,7 +94,8 @@ const findPath = (
   obj: ElementNode[],
   _properties: Properties,
   defsObj: DefsObj,
-  isBFS: boolean
+  isBFS: boolean,
+  depth: number
 ) => {
   const ret: {
     ele: ElementNode;
@@ -114,7 +114,7 @@ const findPath = (
       properties.transform.push(String(element?.properties?.transform));
     }
 
-    if (element?.properties?.href) {
+    if (element.tagName === "use" && element?.properties?.href) {
       const id = String(element?.properties?.href).replace("#", "");
       if (defsObj[id]) {
         const c = defsObj[id];
@@ -125,11 +125,15 @@ const findPath = (
           });
           childrenArray.push({ children, properties });
         } else {
-          findPath(c as ElementNode[], { ...properties }, defsObj, isBFS).map(
-            (childRet) => {
-              ret.push(childRet);
-            }
-          );
+          findPath(
+            c as ElementNode[],
+            { ...properties },
+            defsObj,
+            isBFS,
+            depth + 1
+          ).map((childRet) => {
+            ret.push(childRet);
+          });
         }
       }
     }
@@ -139,7 +143,7 @@ const findPath = (
         return;
       }
       if (element.tagName === "defs") {
-        convDefsArray2Obj(element.children as ElementNode[], defsObj, "");
+        convDefsArray2Obj(element.children as ElementNode[], defsObj);
         return;
       }
       if (isBFS) {
@@ -153,7 +157,8 @@ const findPath = (
           element.children as ElementNode[],
           { ...properties },
           defsObj,
-          isBFS
+          isBFS,
+          depth + 1
         ).map((childRet) => {
           ret.push(childRet);
         });
@@ -208,7 +213,8 @@ const findPath = (
             children.children as ElementNode[],
             { ...children.properties },
             defsObj,
-            isBFS
+            isBFS,
+            depth + 1
           ).map((childRet) => {
             ret.push(childRet);
           });
@@ -378,8 +384,10 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
     svg.children as ElementNode[],
     { transform: [], id: "" },
     {},
-    isBFS
+    isBFS,
+    0
   );
+
   const path = pathElements.map((element: PathElement) => {
     const className = element?.ele?.properties?.class || "";
     const style = css[className] ? css[className] : {};
