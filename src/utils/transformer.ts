@@ -51,6 +51,9 @@ const parseTransform = (tags: string): number[][] => {
       const name = m[1];
       const nums = (m[2] || "").trim().split(/[,\s]+/).map(Number);
       if (name === "translate") {
+        if (nums.length === 1) {
+          return translateMatrix(nums[0], 0);
+        }
         if (nums.length === 2) {
           return translateMatrix(nums[0], nums[1]);
         }
