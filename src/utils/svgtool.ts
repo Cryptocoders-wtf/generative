@@ -265,9 +265,8 @@ export const dumpConvertSVG = (paths: PathData[]) => {
         const style = styles.join(";");
 
         const opts: string[] = [];
-        if (pathData.transform) {
-          // console.log("BB", pathData.transform);
-          opts.push(`transform="matrix(${pathData.transform.join(",")})"`);
+        if (pathData.matrix) {
+          opts.push(`transform="matrix(${pathData.matrix})"`);
         }
         const options = opts.join(" ");
         return `\t\t<path d="${d}" style="${style}" ${options} />`;
@@ -323,7 +322,7 @@ const elementToData = (
   element: ElementNode,
   max: number,
   style: any,
-  transform = {},
+  matrix?: string,
 ): PathData => {
   const fill = element2fill(element) || style["fill"];
   const stroke = element2stroke(element) || style["stroke"];
@@ -341,7 +340,7 @@ const elementToData = (
     fill,
     stroke,
     strokeW: strokeWidth,
-    transform,
+    matrix,
   };
 };
 
@@ -394,7 +393,7 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
     const style = css[className] ? css[className] : {};
     const transformMatrix = transforms2matrix(element.properties.transform, max);
     console.log(roundMatrix(transformMatrix));
-    return elementToData(element?.ele, max, style, roundMatrix(transformMatrix));
+    return elementToData(element?.ele, max, style, roundMatrix(transformMatrix).join(","));
   });
   return path;
 };

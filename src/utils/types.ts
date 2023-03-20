@@ -13,7 +13,7 @@ export interface PathData {
   fill: string;
   stroke: number;
   strokeW: number;
-  transform?: any;
+  matrix?: any;
 }
 export interface DefsObj {
   [key: string]: ElementNode[];

@@ -198,11 +198,16 @@ export default defineComponent({
     // provider      contract="0xE154babC135C92CafDA05723260Af0c6510265df"
     // token      contract="0xe2E10A4e46202D12B3771999A06f5a67E818b885"
 
-    // const network = "localhost";
-    // const tokenAddress = "0xD1760AA0FCD9e64bA4ea43399Ad789CFd63C7809";
 
-    const network = "goerli";
-    const tokenAddress = "0xe2E10A4e46202D12B3771999A06f5a67E818b885";
+    // store      contract="0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+    // provider      contract="0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"
+    // token      contract="0x5FC8d32690cc91D4c39d9d3abcBD16989F875707"
+
+    const network = "localhost";
+    const tokenAddress = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
+    
+    // const network = "goerli";
+    // const tokenAddress = "0xe2E10A4e46202D12B3771999A06f5a67E818b885";
 
     const chainId = ChainIdMap[network];
 
@@ -254,6 +259,7 @@ export default defineComponent({
         paths: [] as string[],
         fills: [] as string[],
         strokes: [] as string[],
+        matrixes: [] as string[],
       };
       pathData.value.map((a: any) => {
         ret.paths.push(
@@ -261,7 +267,10 @@ export default defineComponent({
         );
         ret.fills.push(a.fill || "");
         ret.strokes.push(a.strokeW);
+        ret.matrixes.push(a.matrix||"");
       });
+      console.log(ret);
+
       try {
         console.log(ret);
         const tx = await contract.functions.mintWithAsset(ret);
