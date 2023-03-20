@@ -7,9 +7,7 @@
  * Created by Satoshi Nakajima (@snakajima)
  */
 
-import {
-  TransFormData
-} from "./types";
+import { TransFormData } from "./types";
 
 const regexNum = /[+-]?(\d*\.\d*|\d+)/;
 const regexNumG = /[+-]?(\d*\.\d*|\d+)/g;
@@ -62,7 +60,6 @@ const prepareBody = (body: string) => {
   const items = ret.split(regexDivG);
   return items;
 };
-
 
 export const normalizePath = (body: string, width: number) => {
   const items = prepareBody(body);

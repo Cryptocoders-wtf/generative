@@ -1,5 +1,5 @@
 import { parse, ElementNode } from "svg-parser";
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from "lodash";
 import { normalizePath } from "./pathUtils";
 import { transforms2matrix, roundMatrix } from "./transformer";
 import css from "css";
@@ -70,8 +70,6 @@ const rect2path = (element: ElementNode) => {
 };
 // end of svg to svg
 
-
-
 const defObj = {};
 const convDefsArray2Obj = (
   obj: ElementNode[],
@@ -97,7 +95,7 @@ const findPath = (
   obj: ElementNode[],
   _properties: Properties,
   defsObj: DefsObj,
-  isBFS: boolean,
+  isBFS: boolean
 ) => {
   const ret: {
     ele: ElementNode;
@@ -127,14 +125,11 @@ const findPath = (
           });
           childrenArray.push({ children, properties });
         } else {
-          findPath(
-            c as ElementNode[],
-            { ...properties },
-            defsObj,
-            isBFS,
-          ).map((childRet) => {
-            ret.push(childRet);
-          });
+          findPath(c as ElementNode[], { ...properties }, defsObj, isBFS).map(
+            (childRet) => {
+              ret.push(childRet);
+            }
+          );
         }
       }
     }
@@ -158,7 +153,7 @@ const findPath = (
           element.children as ElementNode[],
           { ...properties },
           defsObj,
-          isBFS,
+          isBFS
         ).map((childRet) => {
           ret.push(childRet);
         });
@@ -213,7 +208,7 @@ const findPath = (
             children.children as ElementNode[],
             { ...children.properties },
             defsObj,
-            isBFS,
+            isBFS
           ).map((childRet) => {
             ret.push(childRet);
           });
@@ -278,7 +273,7 @@ export const dumpConvertSVG = (paths: PathData[]) => {
 
 const style2elem = (style: string) => {
   const styles = style.split(";").map((a) => a.split(":"));
-  return styles.reduce((tmp: {[key: string]: string}, key: string[]) => {
+  return styles.reduce((tmp: { [key: string]: string }, key: string[]) => {
     tmp[key[0]] = key[1];
     return tmp;
   }, {});
@@ -322,7 +317,7 @@ const elementToData = (
   element: ElementNode,
   max: number,
   style: any,
-  matrix?: string,
+  matrix?: string
 ): PathData => {
   const fill = element2fill(element) || style["fill"];
   const stroke = element2stroke(element) || style["stroke"];
@@ -333,10 +328,7 @@ const elementToData = (
     _strokeWidth > 0 ? _strokeWidth : stroke ? defaultStrokeWidth : 0;
 
   return {
-    path: normalizePath(
-      String(element.properties?.d) || "",
-      Number(max)
-    ),
+    path: normalizePath(String(element.properties?.d) || "", Number(max)),
     fill,
     stroke,
     strokeW: strokeWidth,
@@ -386,14 +378,22 @@ export const convSVG2Path = (svtText: string, isBFS: boolean) => {
     svg.children as ElementNode[],
     { transform: [], id: "" },
     {},
-    isBFS,
+    isBFS
   );
   const path = pathElements.map((element: PathElement) => {
     const className = element?.ele?.properties?.class || "";
     const style = css[className] ? css[className] : {};
-    const transformMatrix = transforms2matrix(element.properties.transform, max);
+    const transformMatrix = transforms2matrix(
+      element.properties.transform,
+      max
+    );
     console.log(roundMatrix(transformMatrix));
-    return elementToData(element?.ele, max, style, roundMatrix(transformMatrix).join(","));
+    return elementToData(
+      element?.ele,
+      max,
+      style,
+      roundMatrix(transformMatrix).join(",")
+    );
   });
   return path;
 };
