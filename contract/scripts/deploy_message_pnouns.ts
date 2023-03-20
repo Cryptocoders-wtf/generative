@@ -21,7 +21,6 @@ async function main() {
   const factorySVGStore = await ethers.getContractFactory('MessageStoreV1');
 
   console.log("factorySVGStore.deploy");
-  console.log(network.name);
   const store = await factorySVGStore.deploy(addresses.londrina_solid[network.name]); // font.
 
   console.log("wait");
@@ -37,11 +36,14 @@ async function main() {
   const factoryMessageProvider = await ethers.getContractFactory('MessageProvider2');
 
   // const provider = await factoryMessageProvider.deploy(store.address, addresses.alphabet[network.name]);
-  // const provider = await factoryMessageProvider.deploy(store.address, addresses.pnouns[network.name]);
-  const provider = await factoryMessageProvider.deploy(store.address, addresses.splatter[network.name]);
+  // const provider = await factoryMessageProvider.deploy(store.address, addresses.paperNouns[network.name]);
+  const provider = await factoryMessageProvider.deploy(store.address, addresses.pnouns[network.name]);
   console.log("wait");
   await provider.deployed();
   console.log("ok");
+
+  // const provider = await factoryMessageProvider.deploy(store.address, addresses.splatter[network.name]);
+  // const provider = await factoryMessageProvider.deploy(store.address, addresses.snowArt[network.name]);
 
   console.log("factoryMessageToken");
   const factoryMessageToken = await ethers.getContractFactory('MessageToken');

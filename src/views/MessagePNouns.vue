@@ -49,7 +49,7 @@
     </div>
     <div>
       <a
-        href="https://testnets.opensea.io/ja/collection/messagetoken-1?search[sortAscending]=false&search[sortBy]=CREATED_DATE"
+        href="https://testnets.opensea.io/ja/collection/messagetoken-8?search[sortAscending]=false&search[sortBy]=CREATED_DATE"
         class="underline"
         target="_blank"
         >See NFTs on OpenSea</a
@@ -83,7 +83,7 @@ export default defineComponent({
     NetworkGate,
   },
   setup(props) {
-    const message = ref("Fully On-chain\ntest.");
+    const message = ref("pNouns message\ntest.");
     const color = ref("orange");
 
     const colors = [
@@ -108,7 +108,7 @@ export default defineComponent({
 
     const network = "goerli";
 
-    const tokenAddress = addresses.messageSplatter.goerli;
+    const tokenAddress = addresses.messagePnouns.goerli;
 
     const chainId = ChainIdMap[network];
 

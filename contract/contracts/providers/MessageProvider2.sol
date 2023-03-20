@@ -20,15 +20,16 @@ contract MessageProvider2 is IAssetProvider, IERC165, Ownable {
 
   IMessageStoreV1 immutable messageStore;
 
-  IAssetProvider immutable nounsProvider;
+  IAssetProvider immutable assetProvider;
 
   string constant providerKey = 'MessageV2';
   address public receiver;
 
-  constructor(IMessageStoreV1 _messageStore) {
+  constructor(IMessageStoreV1 _messageStore, IAssetProvider _assetProvider) {
     messageStore = _messageStore;
     receiver = owner();
-    nounsProvider = IAssetProvider(address(0x2e5C0BD35995ea7e8903C55ba66f28270310498f));
+    assetProvider = _assetProvider;
+        //IAssetProvider(address(0x2e5C0BD35995ea7e8903C55ba66f28270310498f));
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -61,9 +62,10 @@ contract MessageProvider2 is IAssetProvider, IERC165, Ownable {
     bytes memory path = messageStore.getSVGBody(_assetId);
     tag = string(abi.encodePacked(providerKey, _assetId.toString()));
 
-    (string memory noPart, string memory noTag) = nounsProvider.generateSVGPart(_assetId);
+    (string memory noPart, string memory noTag) = assetProvider.generateSVGPart(_assetId);
 
-    bytes memory body = abi.encodePacked(bytes(noPart), '<g>\n', path, '</g>\n');
+    // bytes memory body = abi.encodePacked('<g fill="skyblue">', bytes(noPart), '</g>', '<g>\n', path, '</g>\n');
+    bytes memory body = abi.encodePacked('<g opacity="0.4">', bytes(noPart), '</g>', '<g>\n', path, '</g>\n');
 
     svgPart = string(SVG.group(body).id(tag).svg());
   }
