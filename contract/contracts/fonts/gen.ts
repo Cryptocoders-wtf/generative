@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { readdirSync, readFileSync, writeFileSync, existsSync } from 'fs';
 import { XMLParser } from 'fast-xml-parser';
 import { compressPath, solidityString } from '../packages/graphics/pathUtils';
@@ -66,14 +67,20 @@ const main = async () => {
       );
     })
     .join('\n');
-  console.log(constants);
+  // console.log(constants);
 
   const calls = array
     .map(item => {
-      return `register("${item.char}", ${item.name}, ${item.width});`;
+      return `    register("${item.char}", ${item.name}, ${item.width});`;
     })
     .join('\n');
-  console.log(calls);
+  // console.log(calls);
+
+  const template_data = fs.readFileSync("./template.sol", { encoding: 'utf8' });
+  const ret = template_data.replaceAll("___font_func___", constants)
+    .replaceAll("___register___", calls)
+  fs.writeFileSync("./font.sol", ret, { encoding: 'utf8' });
+
 };
 
 main();
