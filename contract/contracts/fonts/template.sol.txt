@@ -22,6 +22,11 @@ contract LondrinaSolid is IFontProvider, Ownable {
 
 ___font_func___
 
+  function _register(uint _key, function() view returns (bytes memory) _function, uint _width) internal {
+    fonts[_key] = _function;
+    widths[_key - 0x20] = uint16(_width);
+  }
+
   function _registerAll() internal {
     widths[0] = 208; // space
 ___register___
