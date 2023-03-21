@@ -9,6 +9,9 @@ contract SVGStoreV1 is ISVGStoreV1 {
   using SVG for SVG.Element;
 
   uint256 private nextPartIndex = 1;
+  bytes32 immutable emptyString = keccak256(abi.encodePacked(''));
+  bytes32 immutable minusString = keccak256(abi.encodePacked('-'));
+      
   mapping(uint256 => Asset) private partsList;
 
   function register(Asset memory asset) external returns (uint256) {
@@ -23,14 +26,18 @@ contract SVGStoreV1 is ISVGStoreV1 {
     SVG.Element[] memory elements = new SVG.Element[](size);
     for (uint i = 0; i < size; i++) {
       SVG.Element memory tmp = SVG.path(Path.decode(asset.paths[i]));
-      if (keccak256(abi.encodePacked(asset.fills[i])) != keccak256(abi.encodePacked(''))) {
-        tmp = tmp.fill(asset.fills[i]);
+      if (keccak256(abi.encodePacked(asset.fills[i])) != emptyString) {
+        if (keccak256(abi.encodePacked(asset.fills[i])) == minusString) {
+          tmp = tmp.fill("none");
+        } else {
+          tmp = tmp.fill(asset.fills[i]);
+        }
       }
       if (asset.strokes[i] != 0) {
         tmp = tmp.stroke('#000', asset.strokes[i]); // color, width
         tmp = tmp.style('stroke-linecap:round;stroke-linejoin:round;');
       }
-      if (keccak256(abi.encodePacked(asset.matrixes[i])) != keccak256(abi.encodePacked(''))) {
+      if (keccak256(abi.encodePacked(asset.matrixes[i])) != emptyString) {
         tmp = tmp.transform(string(abi.encodePacked('matrix(', asset.matrixes[i], ')')));
       }
       elements[i] = tmp;
