@@ -71,7 +71,7 @@ const main = async () => {
 
   const calls = array
     .map(item => {
-      return `    _register("${item.char}", ${item.name}, ${item.width});`;
+      return `    _register(${item.char}, ${item.name}, ${item.width});`;
     })
     .join('\n');
   // console.log(calls);
