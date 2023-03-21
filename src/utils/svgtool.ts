@@ -338,7 +338,7 @@ const elementToData = (
     fill,
     stroke,
     strokeW: strokeWidth,
-    matrix,
+    matrix: matrix !== "1,0,0,1,0,0" ? matrix : "",
   };
 };
 
