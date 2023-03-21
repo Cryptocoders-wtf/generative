@@ -30,6 +30,9 @@ contract SVGStoreV1 is ISVGStoreV1 {
         tmp = tmp.stroke('#000', asset.strokes[i]); // color, width
         tmp = tmp.style('stroke-linecap:round;stroke-linejoin:round;');
       }
+      if (keccak256(abi.encodePacked(asset.matrixes[i])) != keccak256(abi.encodePacked(''))) {
+        tmp = tmp.transform(string(abi.encodePacked('matrix(', asset.matrixes[i], ')')));
+      }
       elements[i] = tmp;
     }
     output = SVG.list(elements).svg();

@@ -45,19 +45,17 @@ describe('TextSplit', function () {
     expect(result.length).equal(6);
     expect(result).to.deep.equal(text.split('\n'));
   });
-  
+
   it('Long Text 2 Array', async function () {
     const text = [
       '\nThisThisThisThisThisThisThisThisThisThisThisThisThisThis\nis\na\npen\n',
       '\nThisThisThisThisThisThisThisThisThisThisThisThisThisThis\nis\na\npen\n',
       '\nThisThisThisThisThisThisThisThisThisThisThisThisThisThis\nis\na\npen\n',
       '\nThisThisThisThisThisThisThisThisThisThisThisThisThisThis\nis\na\npen',
-    ].join("\n");
+    ].join('\n');
     const result = await token.splitOnNewline(text);
     console.log(result);
     // expect(result.length).equal(6);
     expect(result).to.deep.equal(text.split('\n'));
   });
-
-
 });

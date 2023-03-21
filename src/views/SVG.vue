@@ -66,7 +66,6 @@
           <li>
             g elements are expanded. nested g elements are expanded to flat.
           </li>
-          <li>Transposed or scaled/rotated elements are not supported.</li>
           <li>Fill is retained</li>
           <li>
             stroke and stroke-width are supported.
@@ -79,15 +78,15 @@
           </li>
         </div>
 
-        <div v-for="(token, k) in tokens" :key="k" class="mx-8">
-          {{ token.name }}
-          <img :src="token.image" class="w-36 border-2" />
-        </div>
       </NetworkGate>
+      <div v-for="(token, k) in tokens" :key="k" class="mx-8">
+        {{ token.name }}
+        <img :src="token.image" class="w-36 border-2" />
+      </div>
     </div>
     <div>
       <a
-        href="https://testnets.opensea.io/ja/collection/svgtokenv1-zmx77dtbul?search[sortAscending]=false&search[sortBy]=CREATED_DATE"
+        href="https://testnets.opensea.io/ja/collection/svgtokenv1-3?search[sortAscending]=false&search[sortBy]=CREATED_DATE"
         class="underline"
         target="_blank"
         >See NFTs on OpenSea</a
@@ -172,43 +171,18 @@ export default defineComponent({
       }
     };
 
-    // store      contract="0x2625760C4A8e8101801D3a48eE64B2bEA42f1E96"
-    // provider      contract="0xFE5f411481565fbF70D8D33D992C78196E014b90"
-    // token      contract="0xD6b040736e948621c5b6E0a494473c47a6113eA8"
-    // mint
-
-    // store      contract="0x942ED2fa862887Dc698682cc6a86355324F0f01e"
-    // provider      contract="0x8D81A3DCd17030cD5F23Ac7370e4Efb10D2b3cA4"
-    // token      contract="0xcC4c41415fc68B2fBf70102742A83cDe435e0Ca7"
-
-    // store      contract="0x124dDf9BdD2DdaD012ef1D5bBd77c00F05C610DA"
-    // provider      contract="0xe044814c9eD1e6442Af956a817c161192cBaE98F"
-    // token      contract="0xaB837301d12cDc4b97f1E910FC56C9179894d9cf"
-
-    // store      contract="0xbe18A1B61ceaF59aEB6A9bC81AB4FB87D56Ba167"
-    // provider      contract="0x25C0a2F0A077F537Bd11897F04946794c2f6f1Ef"
-    // token      contract="0x01cf58e264d7578D4C67022c58A24CbC4C4a304E"
-
-    // store      contract="0x15Ff10fCc8A1a50bFbE07847A22664801eA79E0f"
-    // provider      contract="0xAe9Ed85dE2670e3112590a2BB17b7283ddF44d9c"
-    // token      contract="0xD1760AA0FCD9e64bA4ea43399Ad789CFd63C7809"
-
-    // goerli
-    // store      contract="0xBfF6B329982d9CC14F30E9477f79d7721A9668C3"
-    // provider      contract="0xE154babC135C92CafDA05723260Af0c6510265df"
-    // token      contract="0xe2E10A4e46202D12B3771999A06f5a67E818b885"
-
-    // const network = "localhost";
-    // const tokenAddress = "0xD1760AA0FCD9e64bA4ea43399Ad789CFd63C7809";
-
+    // store      contract="0x442622c789E5489A222141d06966608a2980E915"
+    // provider      contract="0x24F08949190D291DaBb9d7a828ad048FE6250E0C"
+    // token      contract="0x07f21753E1DA964fc7131571DD999471C6492e7E"
+    
     const network = "goerli";
-    const tokenAddress = "0xe2E10A4e46202D12B3771999A06f5a67E818b885";
+    const tokenAddress = "0x07f21753E1DA964fc7131571DD999471C6492e7E";
+
 
     const chainId = ChainIdMap[network];
 
     const { networkContext } = useSVGTokenNetworkContext(chainId, tokenAddress);
 
-    //
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider = getProvider(network, alchemyKey);
     const tokenContract = getSVGTokenContract(tokenAddress, provider);
@@ -223,7 +197,6 @@ export default defineComponent({
             const ret = await tokenContract.tokenURI(token - i);
             const data = JSON.parse(atob(ret.split(",")[1]));
             tokens.value.push(data);
-            // console.log(data);
           }
         }
       });
@@ -254,6 +227,7 @@ export default defineComponent({
         paths: [] as string[],
         fills: [] as string[],
         strokes: [] as string[],
+        matrixes: [] as string[],
       };
       pathData.value.map((a: any) => {
         ret.paths.push(
@@ -261,7 +235,9 @@ export default defineComponent({
         );
         ret.fills.push(a.fill || "");
         ret.strokes.push(a.strokeW);
+        ret.matrixes.push(a.matrix || "");
       });
+
       try {
         console.log(ret);
         const tx = await contract.functions.mintWithAsset(ret);
