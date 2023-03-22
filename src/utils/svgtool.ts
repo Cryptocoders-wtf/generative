@@ -256,7 +256,11 @@ export const dumpConvertSVG = (paths: PathData[]) => {
         const stroke = pathData["stroke"];
         const styles = [];
         if (fill) {
-          styles.push(`fill:${fill}`);
+          if (fill === "-") {
+            styles.push(`fill:none`);
+          } else {
+            styles.push(`fill:${fill}`);
+          }
         }
         if (strokeW) {
           styles.push(`stroke-linecap:round;stroke-linejoin:round`);
@@ -335,7 +339,7 @@ const elementToData = (
 
   return {
     path: normalizePath(String(element.properties?.d) || "", Number(max)),
-    fill,
+    fill: fill === "none" ? "-" : fill,
     stroke,
     strokeW: strokeWidth,
     matrix: matrix !== "1,0,0,1,0,0" ? matrix : "",
