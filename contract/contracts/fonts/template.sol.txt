@@ -1,0 +1,68 @@
+// SPDX-License-Identifier: MIT
+
+/*
+ * This is a part of fully-on-chain.sol, a npm package that allows developers
+ * to create fully on-chain generative art.
+ *
+ * Created by Satoshi Nakajima (@snakajima)
+ */
+
+pragma solidity ^0.8.6;
+
+import '../packages/graphics/IFontProvider.sol';
+import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
+
+contract LondrinaSolid is IFontProvider, Ownable {
+  uint constant fixed_height = 1024;
+  uint constant fixed_baseline = 800;
+
+  uint16[0xe0] widths;
+  mapping(uint => function() view returns (bytes memory)) fonts;
+  address public immutable designer;
+
+___font_func___
+
+  function _register(uint _key, function() view returns (bytes memory) _function, uint _width) internal {
+    fonts[_key] = _function;
+    widths[_key - 0x20] = uint16(_width);
+  }
+
+  function _registerAll() internal {
+    widths[0] = 208; // space
+___register___
+
+  }
+
+  constructor(address _designer) {
+    designer = _designer;
+    _registerAll();
+  }
+
+  function height() external pure override returns (uint) {
+    return fixed_height;
+  }
+
+  function baseline() external pure override returns (uint) {
+    return fixed_baseline;
+  }
+
+  function widthOf(string memory _char) external view override returns (uint width) {
+    uint key = uint(uint8(bytes(_char)[0]));
+    if (key >= 0x20 && key < 0x7F) {
+      width = uint(widths[key - 0x20]);
+    }
+  }
+
+  function pathOf(string memory _char) external view override returns (bytes memory path) {
+    uint key = uint(uint8(bytes(_char)[0]));
+    if (key >= 0x21 && key < 0x7F) {
+      path = fonts[key]();
+    }
+  }
+
+  function processPayout() external payable override {
+    address payable payableTo = payable(designer);
+    payableTo.transfer(msg.value);
+    emit Payout('Font', payableTo, msg.value);
+  }
+}

@@ -24,3 +24,5 @@ pnpm-debug.log*
 *.sw?
 
 *~
+
+contract/contracts/fonts/font.sol
