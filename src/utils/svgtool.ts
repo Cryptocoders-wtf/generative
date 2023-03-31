@@ -253,7 +253,6 @@ export const dumpConvertSVG = (paths: PathData[]) => {
         // styles
         const fill = pathData["fill"];
         const strokeW = pathData["strokeW"];
-        const stroke = pathData["stroke"];
         const styles = [];
         if (fill) {
           if (fill === "-") {
@@ -272,6 +271,9 @@ export const dumpConvertSVG = (paths: PathData[]) => {
         const opts: string[] = [];
         if (pathData.matrix) {
           opts.push(`transform="matrix(${pathData.matrix})"`);
+        }
+        if (pathData.opacity) {
+          opts.push(`opacity="${pathData.opacity}"`);
         }
         const options = opts.join(" ");
         return `\t\t<path d="${d}" style="${style}" ${options} />`;
@@ -304,6 +306,9 @@ const element2fill = (element: ElementNode) => {
 const element2stroke = (element: ElementNode) => {
   return getElementProperty(element, "stroke");
 };
+const element2opacity = (element: ElementNode) => {
+  return getElementProperty(element, "opacity");
+};
 
 const normalizePos = (pos: number, max: number) => {
   return (pos * 1024) / max;
@@ -332,17 +337,28 @@ const elementToData = (
   const fill = element2fill(element) || style["fill"];
   const stroke = element2stroke(element) || style["stroke"];
   const _strokeWidth = Math.round(
-    element2strokeWidth(element, max) || style["stroke-width"] || (stroke ? 3 : 0 )
+    element2strokeWidth(element, max) || style["stroke-width"] || 0
   );
-  const strokeWidth =
-    _strokeWidth > 0 ? _strokeWidth : stroke ? defaultStrokeWidth : 0;
-
+  const strokeWidth = (() => {
+    if (stroke && stroke === 'none') {
+      return 0;
+    }
+    if (_strokeWidth > 0) {
+      return _strokeWidth
+    }
+    if (stroke) {
+      return defaultStrokeWidth
+    }
+    return 0
+  })();
+  const opacity = element2opacity(element) || style["opacity"];
+  
   return {
     path: normalizePath(String(element.properties?.d) || "", Number(max)),
     fill: fill === "none" ? "-" : fill,
-    stroke,
     strokeW: strokeWidth,
     matrix: matrix !== "1,0,0,1,0,0" ? matrix : "",
+    opacity,
   };
 };
 
