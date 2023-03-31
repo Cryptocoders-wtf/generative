@@ -11,7 +11,9 @@ import './libs/ProviderTokenA1.sol';
 import './imageParts/interfaces/IMessageStoreV1.sol';
 import './providers/MessageProvider.sol';
 
-contract MessageToken is ProviderTokenA1 {
+import './interfaces/IMessageToken.sol';
+
+contract MessageToken is ProviderTokenA1, IMessageToken {
   using Strings for uint256;
 
   IMessageStoreV1 immutable messageStore;
@@ -67,4 +69,12 @@ contract MessageToken is ProviderTokenA1 {
         )
       );
   }
+
+  function getMessage(uint256 index) external view returns (string memory output) {
+      output = messageStore.getMessage(assetIds[index]);
+  }
+  
+  function getLatestMessage() external view returns (string memory output) {
+      output = messageStore.getMessage(assetIds[nextTokenId - 1]); 
+ }
 }

@@ -94,4 +94,10 @@ contract MessageStoreV1 is IMessageStoreV1 {
 
     output = SVG.list(lists).svg();
   }
+
+  function getMessage(uint256 index) external view override returns (string memory output) {
+      Asset memory asset = partsList[index];
+      output = asset.message;
+  }
+
 }
