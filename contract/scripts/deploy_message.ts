@@ -22,14 +22,23 @@ async function main() {
 
   console.log("factorySVGStore.deploy");
   console.log(network.name);
-  const store = await factorySVGStore.deploy(addresses.londrina_solid[network.name]); // font.
+  // const store = await factorySVGStore.deploy(addresses.londrina_solid[network.name]); // font.
+
+  // for mainnet forking
+  const store = await factorySVGStore.deploy("0x980aAc123617e2B2ea407081Ceb72d5854BAa3D1"); // font.
 
   console.log("wait");
   await store.deployed();
   console.log("ok");
 
-  await store.register({ message: 'hello', color: '#000' });
+  await store.register({ message: 'hello1', color: '#000' });
+  await store.register({ message: 'hello2', color: '#000' });
+  await store.register({ message: 'hello3', color: '#000' });
+  await store.register({ message: 'hello4', color: '#000' });
   console.log("store.getSVG");
+
+  const res3 = await store.getMessage(3);
+  console.log(res3);
   const res = await store.getSVG(0);
   // console.log(res);
 
@@ -57,9 +66,13 @@ async function main() {
   console.log("mint");
   // mint 0
   await token.mintWithAsset({ message: 'first nft!', color: 'orange' });
-  await token.mintWithAsset({ message: 'first nft!', color: 'orange' });
-  await token.mintWithAsset({ message: 'first nft!', color: 'orange' });
+  await token.mintWithAsset({ message: '2nd nft!', color: 'orange' });
+  await token.mintWithAsset({ message: '3rd nft!', color: 'orange' });
 
+  const message = await token.getLatestMessage();
+  console.log(message);
+  const message1 = await token.getMessage(0);
+  console.log(message1);
 }
 
 main().catch(error => {
