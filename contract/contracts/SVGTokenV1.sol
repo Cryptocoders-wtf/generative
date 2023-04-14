@@ -7,11 +7,11 @@
 pragma solidity ^0.8.6;
 
 import '@openzeppelin/contracts/utils/Strings.sol';
-import './libs/ProviderTokenA1.sol';
+import './libs/ProviderToken4.sol';
 import './imageParts/interfaces/ISVGStoreV1.sol';
 import './providers/SVGImage1Provider.sol';
 
-contract SVGTokenV1 is ProviderTokenA1 {
+contract SVGTokenV1 is ProviderToken4 {
   using Strings for uint256;
 
   ISVGStoreV1 public immutable svgStoreV1;
@@ -20,10 +20,10 @@ contract SVGTokenV1 is ProviderTokenA1 {
   constructor(
     IAssetProvider _assetProvider,
     ISVGStoreV1 _svgStore
-  ) ProviderTokenA1(_assetProvider, 'SVGTokenV1', 'SVGTokenV1') {
+  ) ProviderToken4(_assetProvider, 'SVGTokenV1', 'SVGTokenV1') {
     description = 'SVGTokenV1';
     svgStoreV1 = _svgStore;
-    mintLimit = 1e50;
+    setMintLimit(1e50);
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns (string memory) {
