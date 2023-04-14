@@ -21,7 +21,7 @@ contract LuToken is ProviderTokenA1 {
   ) ProviderTokenA1(_assetProvider, 'Laidback Lu', 'Laidback Lu') {
     description = 'Laidback Lu.';
     mintPrice = 1e16;
-    mintLimit = 5000;
+    mintLimit = 440;
     committee = _committee;
   }
 
