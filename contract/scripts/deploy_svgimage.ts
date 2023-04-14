@@ -66,6 +66,14 @@ async function main() {
   console.log(`provider      contract="${provider.address}"`);
   console.log(`token      contract="${token.address}"`);
 
+  const addresses =
+    `export const addresses = {\n` +
+    `  store:"${store.address}",\n` +
+    `  provider:"${provider.address}",\n` +
+    `  token:"${token.address}",\n` +
+    `}\n`;
+  await writeFile(`../src/utils/addresses/svgimage_${network.name}.ts`, addresses, () => {});
+
   //console.log(res3);
 
   //console.log(res.fills);
