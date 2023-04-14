@@ -20,6 +20,8 @@ import SvgTest from "@/views/SVGTest.vue";
 import Message from "@/views/Message.vue";
 import MessagePNouns from "@/views/MessagePNouns.vue";
 
+import P2SeaItem from "@/views/P2SeaItem.vue";
+
 const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "",
@@ -81,6 +83,10 @@ const routeChildren: Array<RouteRecordRaw> = [
     path: "sample",
     component: Sample,
   },
+  {
+    path: "p2sea_item/:token_id",
+    component: P2SeaItem,
+  }
 ];
 
 const routes: Array<RouteRecordRaw> = [
