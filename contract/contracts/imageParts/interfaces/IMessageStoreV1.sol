@@ -23,4 +23,6 @@ interface IMessageStoreV1 {
     string memory color,
     Box memory box
   ) external view returns (string memory output);
+
+  function getMessage(uint256 index) external view returns (string memory output);
 }
