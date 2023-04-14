@@ -16,7 +16,7 @@ library Text {
     uint _ch
   ) internal pure returns (string memory line, uint index) {
     uint length = bytes(_text).length + 1;
-    
+
     assembly {
       line := mload(0x40)
       let wbuf := add(line, 0x20)

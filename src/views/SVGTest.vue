@@ -33,8 +33,9 @@ import f1F9A5 from "../svgs/emoji/1F9A5.svg?raw";
 import f1FAE3 from "../svgs/emoji/1FAE3.svg?raw";
 import BurkinaFaso from "../svgs/emoji/BurkinaFaso.svg?raw";
 import E0C5 from "../svgs/emoji/E0C5.svg?raw";
-
 import AOMORO from "../svgs/aomori.svg?raw";
+import zou from "../svgs/zou.svg?raw";
+import zoo from "../svgs/shinban_kedamonodukusi_a1.svg?raw";
 
 import pnounsNFT_font_question from "../svgs/font/pnounsNFT_font_question.svg?raw";
 
@@ -57,15 +58,15 @@ export default defineComponent({
       svg,
       pnounsNFT_font_question,
       AOMORO,
+      zoo,
+      zou,
     ].map((svgText) => {
       const convedPath = convSVG2Path(svgText as string, true);
       const convedSVGText = dumpConvertSVG(convedPath);
       return {
-        // data,
         originalImageData: svg2imgSrc(svgText as string),
         convedImageData: svg2imgSrc(convedSVGText as string),
       };
-      // imgsrc:
     });
 
     return {

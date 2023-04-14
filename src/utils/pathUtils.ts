@@ -7,6 +7,8 @@
  * Created by Satoshi Nakajima (@snakajima)
  */
 
+import { TransFormData } from "./types";
+
 const regexNum = /[+-]?(\d*\.\d*|\d+)/;
 const regexNumG = /[+-]?(\d*\.\d*|\d+)/g;
 const regexFloatG = /[+-]?(\d*\.\d*|\d+)e-\d+/g;
@@ -57,29 +59,6 @@ const prepareBody = (body: string) => {
   });
   const items = ret.split(regexDivG);
   return items;
-};
-
-export const transformPath = (body: string, transform: any) => {
-  const items = prepareBody(body);
-
-  if (items[0] === "m" && transform.w && transform.h) {
-    items[1] = String(Number(items[1]) + transform.w);
-    items[2] = String(Number(items[2]) + transform.h);
-  }
-  // console.log(items);
-  return items.join(" ");
-};
-
-export const matrixPath = (body: string, matrix: any) => {
-  const items = prepareBody(body);
-  console.log(items);
-
-  // TODO matrix
-  // if valid matrix
-  // newX = matrix.scaleX * x + matrix.skewY * y + matrix.translateX;
-  // newY = matrix.skewY * x + matrix.scaleY * y + matrix.translateY;
-
-  return items.join(" ");
 };
 
 export const normalizePath = (body: string, width: number) => {

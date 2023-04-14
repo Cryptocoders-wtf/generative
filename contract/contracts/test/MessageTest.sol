@@ -19,7 +19,10 @@ contract TextSplitTest {
     output = Text.split(message, 0x0a);
   }
 
-  function extractLineOnNewline(string memory message, uint index) external pure returns (string memory output, uint i) {
+  function extractLineOnNewline(
+    string memory message,
+    uint index
+  ) external pure returns (string memory output, uint i) {
     (output, i) = Text.extractLine(message, index, 0x0a);
   }
 }

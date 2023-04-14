@@ -61,7 +61,7 @@ abstract contract ProviderToken4 is ERC721P2P {
     mintPrice = _price;
   }
 
-  function setMintLimit(uint256 _limit) external onlyOwner {
+  function setMintLimit(uint256 _limit) public onlyOwner {
     _mintLimit = _limit;
   }
 
@@ -99,7 +99,7 @@ abstract contract ProviderToken4 is ERC721P2P {
    * @notice A distinct Uniform Resource Identifier (URI) for a given asset.
    * @dev See {IERC721Metadata-tokenURI}.
    */
-  function tokenURI(uint256 _tokenId) public view override returns (string memory) {
+  function tokenURI(uint256 _tokenId) public view virtual override returns (string memory) {
     require(_exists(_tokenId), 'ProviderToken.tokenURI: nonexistent token');
     bytes memory image = bytes(generateSVG(_tokenId));
 

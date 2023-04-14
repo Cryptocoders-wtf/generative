@@ -7,6 +7,7 @@ interface ISVGStoreV1 {
     bytes[] paths;
     string[] fills;
     uint8[] strokes;
+    string[] matrixes;
   }
 
   function register(Asset memory asset) external returns (uint256);
