@@ -318,7 +318,7 @@ export default defineComponent({
         await contract.setPriceOf(tokenid,price);
       } catch (e) {
         console.error(e);
-        alert("Sorry, this svg is not supported.");
+        alert("Sorry, setPrice failed with:"+e);
       }
     };
     const purchase = async (id: number) => {
@@ -327,12 +327,13 @@ export default defineComponent({
       }
       const { contract } = networkContext.value;
       try {
-        console.log(id);
-        const tokenid = id;
-        await contract.purchase(tokenid, account.value, tokens.value[tokenid].owner);
+        console.log(id,(tokens.value));
+        const price = await tokenContract.getPriceOf(id);
+        const owner = await tokenContract.ownerOf(id);
+        await contract.purchase(id, account.value, owner , { value: price });
       } catch (e) {
         console.error(e);
-        alert("Sorry, this svg is not supported.");
+        alert("Sorry, purchase failed with:"+e);
       }
     };
     return {
