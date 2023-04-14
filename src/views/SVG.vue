@@ -201,8 +201,12 @@ export default defineComponent({
     // const network = "localhost";
     // const tokenAddress = "0xD1760AA0FCD9e64bA4ea43399Ad789CFd63C7809";
 
-    const network = "goerli";
-    const tokenAddress = "0xe2E10A4e46202D12B3771999A06f5a67E818b885";
+    //const network = "goerli";
+    //const tokenAddress = "0xe2E10A4e46202D12B3771999A06f5a67E818b885";
+
+    const network = "mumbai";
+    const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
+    //const tokenAddress = "0xac83F049087F20b912c7454141fe75fEee85ed5f";
 
     const chainId = ChainIdMap[network];
 
