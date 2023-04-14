@@ -23,7 +23,6 @@
       <router-link :to="localizedUrl('/alphabet')" class="text-md">
         Alphabet
       </router-link>
-      -->
       <router-link :to="localizedUrl('/svg')" class="text-md">
         SVG
       </router-link>
@@ -42,6 +41,7 @@
       <router-link :to="localizedUrl('/sample')" class="text-md">
         Sample
       </router-link>
+      -->
     </nav>
     <div class="invisible">
       <Languages />

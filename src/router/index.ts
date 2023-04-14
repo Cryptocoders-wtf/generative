@@ -25,7 +25,7 @@ import P2SeaItem from "@/views/P2SeaItem.vue";
 const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "",
-    component: Home,
+    component: Svg,
   },
   {
     path: "splatter",

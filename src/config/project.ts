@@ -1,9 +1,8 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyBfsK-o2--b2vZsHrCD1Wv4isal1d-cKQQ",
-  authDomain: "fully-onchain.firebaseapp.com",
-  projectId: "fully-onchain",
-  storageBucket: "fully-onchain.appspot.com",
-  messagingSenderId: "492217753866",
-  appId: "1:492217753866:web:6aaa361786650123929af3",
-  measurementId: "G-K5Z5CZVSBG",
+  apiKey: "AIzaSyAwC8ogovIY8bQ15B543b2LDKhSqQPFOaE",
+  authDomain: "ethglobal2023.firebaseapp.com",
+  projectId: "ethglobal2023",
+  storageBucket: "ethglobal2023.appspot.com",
+  messagingSenderId: "1024924612056",
+  appId: "1:1024924612056:web:c471f4b162d1672e5baead",
 };
