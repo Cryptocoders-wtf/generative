@@ -23,7 +23,7 @@ import MessagePNouns from "@/views/MessagePNouns.vue";
 const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "",
-    component: Home,
+    component: Svg,
   },
   {
     path: "splatter",
