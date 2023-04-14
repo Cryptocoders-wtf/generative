@@ -80,8 +80,33 @@
 
       </NetworkGate>
       <div v-for="(token, k) in tokens" :key="k" class="mx-8">
-        {{ token.name }}
-        <img :src="token.image" class="w-36 border-2" />
+        <img :src="token.data.image" class="w-36 border-2" />
+        {{ token.data.name }}
+        {{ token.owner }}
+        <div v-if="token.price > 0">
+          On Sale!  {{ token.price }} eth
+        </div>
+        <div v-else>
+          Not on sale.
+        </div>
+        <div v-if="token.isOwner">
+          <input
+            type="text"
+            v-model="prices[token.id]"
+            maxlength="512"
+            minlength="1"
+            class="text-sm my-2 text-slate-500 rounded-sm border-1 text-sm bg-gray-100 file:text-gray-800 hover:bg-white"
+          />
+
+          <button
+            @click="setPrice(token.id)"
+            class="mb-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+          >
+            set price
+          </button>
+
+        </div>
+
       </div>
     </div>
     <div>
@@ -101,7 +126,7 @@ import { svg2imgSrc } from "@/utils/svgtool";
 
 // mint
 import NetworkGate from "@/components/NetworkGate.vue";
-import { BigNumber } from "ethers";
+import { BigNumber, utils } from "ethers";
 import { ChainIdMap, displayAddress } from "@/utils/MetaMask";
 import {
   useSVGTokenNetworkContext,
@@ -111,6 +136,7 @@ import {
 
 //
 import { parse } from "svg-parser";
+import { useStore } from "vuex";
 import { convSVG2Path, dumpConvertSVG } from "@/utils/svgtool";
 import { compressPath } from "@/utils/pathUtils";
 
@@ -135,6 +161,10 @@ export default defineComponent({
     const existData = computed(() => {
       return pathData.value.length > 0;
     });
+
+    const store = useStore();
+    const account = computed(() => store.state.account);    
+    const prices = ref<any>([]);
 
     const reset = () => {
       svgText.value = "";
@@ -199,9 +229,15 @@ export default defineComponent({
         const token = nextId.toNumber() - 1;
         for (let i = 0; i < 10; i++) {
           if (token - i > -1) {
-            const ret = await tokenContract.tokenURI(token - i);
+            const id = token - i;
+            const owner = await tokenContract.ownerOf(id);
+            const isOwner = utils.getAddress(account.value) == utils.getAddress(owner);
+            const price = await tokenContract.getPriceOf(id);
+            const ret = await tokenContract.tokenURI(id);
             const data = JSON.parse(atob(ret.split(",")[1]));
-            tokens.value.push(data);
+            
+            tokens.value.push({id,owner,data,isOwner,price});
+
           }
         }
       });
@@ -259,7 +295,22 @@ export default defineComponent({
       }
       isMinting.value = false;
     };
-
+    const setPrice = async (id: number) => {
+      if (networkContext.value == null) {
+        return;
+      }
+      const { contract } = networkContext.value;
+      try {
+        console.log(id);
+        const tokenid = id;
+        const price = BigNumber.from(prices.value[id]);
+        console.log(tokenid,price);
+        await contract.setPriceOf(tokenid,price);
+      } catch (e) {
+        console.error(e);
+        alert("Sorry, this svg is not supported.");
+      }
+    };
     return {
       uploadFile,
       dragFile,
@@ -276,6 +327,9 @@ export default defineComponent({
 
       tokens,
       existData,
+
+      prices,
+      setPrice,
     };
   },
 });
