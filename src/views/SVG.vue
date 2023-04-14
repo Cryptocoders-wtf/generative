@@ -106,6 +106,16 @@
           </button>
 
         </div>
+        <div v-else>
+          <div v-if="token.price > 0">
+            <button
+              @click="purchase(token.id)"
+              class="mb-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+            >
+              Purchase!
+            </button>            
+          </div>
+        </div>
 
       </div>
     </div>
@@ -311,6 +321,20 @@ export default defineComponent({
         alert("Sorry, this svg is not supported.");
       }
     };
+    const purchase = async (id: number) => {
+      if (networkContext.value == null) {
+        return;
+      }
+      const { contract } = networkContext.value;
+      try {
+        console.log(id);
+        const tokenid = id;
+        await contract.purchase(tokenid, account.value, tokens.value[tokenid].owner);
+      } catch (e) {
+        console.error(e);
+        alert("Sorry, this svg is not supported.");
+      }
+    };
     return {
       uploadFile,
       dragFile,
@@ -330,6 +354,7 @@ export default defineComponent({
 
       prices,
       setPrice,
+      purchase,
     };
   },
 });
