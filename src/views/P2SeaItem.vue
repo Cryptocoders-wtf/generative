@@ -1,25 +1,22 @@
 <template>
   <div class="home">
-
     <div class="flex justify-center">
-        <div class="mt-2">
-
-        <div class="mx-8">
-            {{ token_obj.data.name }}
-            <img :src="token_obj.data.image" class="w-72 border-2" />
-            {{ token_obj.price }} 
+      <div class="mt-2">
+        <div v-if="executeMode == 0">
+          <img class="h-20 w-20" src="@/assets/preload.gif" />
         </div>
+        <div class="mx-8" v-if="executeMode != 0">
+          {{ token_obj.data.name }}
+          <img :src="token_obj.data.image" class="w-72 border-2" />
+          {{ token_obj.price }} eth
         </div>
+      </div>
     </div>
 
-     <TokenActions :token_obj="token_obj" />
-
+    <TokenActions :token_obj="token_obj" @purchased="purchased" />
   </div>
 
-      <NetworkGate :expectedNetwork="chainId" />
-
-  
-    
+  <NetworkGate :expectedNetwork="chainId" />
 </template>
 
 <script lang="ts">
@@ -36,6 +33,7 @@ import {
   getSVGTokenContract,
 } from "@/utils/const";
 
+import { addresses } from "@/utils/addresses";
 import TokenActions from "@/components/TokenActions.vue";
 
 //
@@ -55,6 +53,16 @@ export default defineComponent({
     NetworkGate,
     TokenActions,
   },
+  //   // props: {
+  //   // token_id: {
+  //   //   type: Number,
+  //   //   required: true,
+  //   //   default: 0,
+  //   //   validator: function (value) {
+  //   //     return Number.isInteger(value)
+  //   //   }
+  //   // }
+  // },
   setup(props) {
     const pathData = ref<any>([]);
     const existData = computed(() => {
@@ -62,16 +70,21 @@ export default defineComponent({
     });
 
     interface item {
-        data: {
-            name: string,
-            image: string
-        },
-        price: any,
-        isOwner: boolean,
-        token_id: number,
+      data: {
+        name: string;
+        image: string;
+      };
+      price: any;
+      isOwner: boolean;
+      token_id: number;
     }
 
-    const token_obj = ref<item>({data:{name:'', image:''}, price:0, isOwner:false, token_id:0})
+    const token_obj = ref<item>({
+      data: { name: "", image: "" },
+      price: 0,
+      isOwner: false,
+      token_id: 0,
+    });
 
     const reset = () => {
       pathData.value = [];
@@ -79,7 +92,7 @@ export default defineComponent({
 
     const store = useStore();
     const route = useRoute();
-    const account = computed(() => store.state.account);    
+    const account = computed(() => store.state.account);
 
     // store      contract="0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
     // provider      contract="0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e"
@@ -87,7 +100,6 @@ export default defineComponent({
     // const network = "localhost";
     // const tokenAddress = "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0";
 
-    
     // store      contract="0x442622c789E5489A222141d06966608a2980E915"
     // provider      contract="0x24F08949190D291DaBb9d7a828ad048FE6250E0C"
     // token      contract="0x07f21753E1DA964fc7131571DD999471C6492e7E"
@@ -95,9 +107,10 @@ export default defineComponent({
     // store      contract="0x05ce81EC1751E2317ddc2E90948EBc6Ca66781a1"
     // provider      contract="0xc65Ffa203d73538557Cff496bE85BD12B28927ca"
     // token      contract="0x5F0f949949c82f660B38FC7601A45498fa2C9fC9"
-    
+
     const network = "mumbai";
-    const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
+    // const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
+    const tokenAddress = addresses.svgtoken[network];
 
     const chainId = ChainIdMap[network];
 
@@ -108,36 +121,51 @@ export default defineComponent({
     const provider = getProvider(network, alchemyKey);
     const tokenContract = getSVGTokenContract(tokenAddress, provider);
 
+    const executeMode = ref(0); // 0:loading, 1:executing, 2:non-execute
+
     const nextToken = ref(0);
 
-    const updateToken = () => {
-      tokenContract.totalSupply().then(async (nextId: BigNumber) => {
-        nextToken.value = nextId.toNumber();
-        const token = nextId.toNumber() - 1;
-        const token_id =  parseInt(route.params.token_id[0], 10) //get from url parameter
+    const updateToken = async () => {
+      // tokenContract.totalSupply().then(async (nextId: BigNumber) => {
+      //   nextToken.value = nextId.toNumber();
+      //   const token = nextId.toNumber() - 1;
+      console.log("route.params.token_id", route.params.token_id);
+      const token_id = route.params.token_id; //get from url parameter
 
-        console.log("load token:" + token + ' ' + token_id);
+      // console.log("load token:" + token + ' ' + token_id);
 
-        if (token > token_id-1) {
-            const owner = await tokenContract.ownerOf(token_id);
-            const ret = await tokenContract.tokenURI(token_id);
-            console.log(ret);
-            const data = JSON.parse(atob(ret.split(",")[1]));
-            const price_big = await tokenContract.getPriceOf(token_id);
-            const price = price_big.toNumber()
+      // if (token > token_id - 1) {
+      const owner = await tokenContract.ownerOf(token_id);
+      const ret = await tokenContract.tokenURI(token_id);
+      console.log(ret);
+      const data = JSON.parse(atob(ret.split(",")[1]));
+      const price_big = await tokenContract.getPriceOf(token_id);
+      // const price = price_big.toNumber();
+      const price = price_big;
 
-            console.log(price)
+      console.log(price);
 
-            const isOwner = utils.getAddress(account.value) == utils.getAddress(owner);
-            
-            token_obj.value = {data:data, price:price, isOwner:isOwner, token_id:token_id}
+      const isOwner =
+        utils.getAddress(account.value) == utils.getAddress(owner);
 
-            console.log(token_obj)
-        }
+      token_obj.value = {
+        data: data,
+        price: price,
+        isOwner: isOwner,
+        token_id: parseInt(String(token_id)),
+      };
 
-      });
+      console.log(token_obj);
+      // }
+      executeMode.value = 2; // non-execute
+      // });
     };
     updateToken();
+
+    const purchased = async () => {
+      console.log("***###*** purchased event was fired");
+      updateToken();
+    };
 
     const polling = async () => {
       let state = true;
@@ -155,6 +183,8 @@ export default defineComponent({
       chainId,
       token_obj,
       existData,
+      executeMode,
+      purchased,
     };
   },
 });
