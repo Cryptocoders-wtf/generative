@@ -101,4 +101,22 @@ describe('SVGImage P2P', function () {
   it('Attempt to buy by user3', async function () {
     await expect(token3.purchase(0, user2.address, zeroAddress, { value: price })).revertedWith('Token is not on sale');
   });
+  it('SetPrice by user2', async function () {
+    await expect(token1.setPriceOf(tokenId0, price)).revertedWith('Only the onwer can set the price');
+    tx = await token2.setPriceOf(tokenId0, price);
+    await tx.wait();
+    result = await token.getPriceOf(tokenId0);
+    expect(result.toNumber()).equal(price);
+  });
+  it('Purchase by user3', async function () {
+    await expect(token3.purchase(tokenId0, user3.address, zeroAddress)).revertedWith('Not enough fund');
+
+    balance1 = await token.etherBalanceOf(user1.address);
+    balanceA = await token.etherBalanceOf(artist.address);
+
+    tx = await token3.purchase(tokenId0, user3.address, zeroAddress, { value: price });
+    await tx.wait();
+    result = await token.ownerOf(tokenId0);
+    expect(result).equal(user3.address);
+  });
 });
