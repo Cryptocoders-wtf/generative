@@ -1,0 +1,206 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white">
+
+    <!-- container - start -->
+<div class="xl:container xl:mx-auto">
+
+<div class="bg-white pb-6 sm:pb-8 lg:pb-12 mx-auto max-w-screen-2xl px-2">
+
+      
+<!-- header - start -->
+    <header class="mb-8 flex items-center justify-between py-4 md:mb-12 md:py-8 xl:mb-16">
+      <!-- logo - start -->
+      <a href="/" class="text-black-800 inline-flex items-center gap-2.5 text-2xl font-bold md:text-3xl" aria-label="logo">
+          <img width="120" src ="assets/p2c.svg" alt="p2c"/>
+  </a>
+      <!-- logo - end -->
+
+      <!-- buttons - start -->
+      <a href="#" class=" rounded-lg bg-gray-200 px-8 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base lg:inline-block">Connect wallet</a>
+      <!-- buttons - end -->
+    </header>   
+<!-- header - end -->
+
+    
+<!-- page title - start -->
+    <div class="flex justify-center items-center font-bold text-lg text-amber-700"> 
+        SALE</div>
+<!-- page title - end -->
+
+<div class="bg-white py-6 sm:py-8 lg:py-12">
+  <div class="mx-auto max-w-screen-lg px-4 md:px-8">
+    <div class="grid gap-8 md:grid-cols-2">
+      <!-- images - start -->
+      <div class="space-y-4">
+        <div class="flex justify-center items-center relative overflow-hidden rounded-lg bg-gray-100 p-10">
+          <svg id="a" data-name="レイヤー 1" xmlns="http://www.w3.org/2000/svg" width="70.7mm" height="92mm" viewBox="0 0 200.4 260.9">
+  <defs>
+    <style>
+      .b {
+        fill: #3381c4;
+      }
+
+      .b, .c, .d {
+        stroke: #231815;
+        stroke-miterlimit: 10;
+        stroke-width: 3px;
+      }
+
+      .c {
+        fill: #efea3a;
+      }
+
+      .d {
+        fill: #e71f19;
+      }
+    </style>
+  </defs>
+  <circle class="d" cx="51.5" cy="51.5" r="50"/>
+  <polygon class="c" points="144.8 62.9 91.8 154.7 197.8 154.7 144.8 62.9"/>
+  <rect class="b" x="108.7" y="187.2" width="72.2" height="72.2"/>
+    </svg>
+
+        </div>
+
+      </div>
+      <!-- images - end -->
+
+      <!-- content - start -->
+      <div class="">
+        <!-- name - start -->
+        <div class="mb-2 md:mb-3">
+          <span class="mb-0.5 inline-block text-gray-500">cookie's NFT</span>
+          <h2 class="text-2xl font-bold text-gray-800 lg:text-3xl">creator name</h2>
+        </div>
+        <!-- name - end -->
+
+
+        <!-- price - start -->
+        <div class="mb-4">
+          <div class="flex items-end gap-2">
+            <span class="text-xl font-bold text-gray-800 md:text-2xl">0.10ETH</span>
+          </div>
+        </div>
+        <!-- price - end -->
+
+        <!-- buttons - start -->
+         <div class="flex gap-2.5">
+          <a href="#" class="inline-block flex-1 rounded-lg bg-orange-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 sm:flex-none md:text-base">BUY</a>
+        </div>
+        <!-- buttons - end -->
+
+        <!-- description - start -->
+        <div class="mt-10">
+          <div class="mb-3 text-lg font-semibold text-gray-800">Description</div>
+
+          <p class="text-gray-500">
+            This is a section of some simple filler text, also known as placeholder text. It shares some characteristics of a real written text but is random or otherwise generated. It may be used to display a sample of fonts or generate text for testing.<br /><br />
+
+            This is a section of some simple filler text, also known as placeholder text. It shares some characteristics of a real written text but is random or otherwise generated.
+          </p>
+        </div>
+        <!-- description - end -->
+      </div>
+      <!-- content - end -->
+    </div>
+  </div>
+</div>
+ 
+</div>
+</div>
+    
+    <!-- footer - start -->
+<div class="bg-black min-h-screen flex flex-col">
+  <footer class="mx-auto">
+    <div class="border-t border-gray-800 py-8 text-center text-sm text-gray-400">© 2023 - Singularity Society All rights reserved.</div>
+  </footer>
+    
+</div>
+<!-- footer - end -->
+    
+    <script>
+  const preview = document.querySelector('#preview');
+  const upload = document.querySelector('#upload');
+  const status = document.querySelector('#status');
+
+  upload.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      preview.src = event.target.result;
+      preview.classList.remove('hidden');
+      status.textContent = `${file.name} uploaded successfully`;
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+  const dropArea = document.querySelector('.border-dashed');
+
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, preventDefaults, false);
+    document.body.addEventListener(eventName, preventDefaults, false);
+  });
+
+  function preventDefaults (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropArea.addEventListener(eventName, highlight, false);
+  });
+
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, unhighlight, false);
+  });
+
+  function highlight(event) {
+    dropArea.classList.add('border-blue-700');
+  }
+
+  function unhighlight(event) {
+    dropArea.classList.remove('border-blue-700');
+  }
+
+  dropArea.addEventListener('drop', handleDrop, false);
+
+  function handleDrop(event) {
+    const dt = event.dataTransfer;
+    const file = dt.files[0];
+
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      preview.src = event.target.result;
+      preview.classList.remove('hidden');
+      status.textContent = `${file.name} uploaded successfully`;
+    };
+
+    reader.readAsDataURL(file);
+  }
+</script>
+<!-- toggleButton start-->    
+    <script>
+  const toggleButton = document.getElementById('toggleButton');
+  const toggleCircle = document.getElementById('toggleCircle');
+
+  toggleButton.addEventListener('click', () => {
+    if (toggleButton.checked) {
+      toggleCircle.classList.remove('translate-x-4');
+    } else {
+      toggleCircle.classList.add('translate-x-4');
+    }
+  });
+</script>
+<!-- toggleButton end-->
+    
+    </body>
+    
+    </html>
