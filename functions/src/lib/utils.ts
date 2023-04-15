@@ -1,5 +1,4 @@
 import * as functions from "firebase-functions";
-import * as Sentry from "@sentry/node";
 
 
 export const idRegex = /^[0-9a-zA-Z-]+$/;
@@ -75,7 +74,6 @@ export const validate_params = (params) => {
 
 export const process_error = (error: any) => {
   console.error(error);
-  Sentry.captureException(error);
   if (error instanceof functions.https.HttpsError) {
     return error;
   }

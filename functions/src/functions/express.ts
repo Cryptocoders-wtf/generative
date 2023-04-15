@@ -3,7 +3,6 @@ import * as admin from "firebase-admin";
 import * as xmlbuilder from "xmlbuilder";
 import * as fs from "fs";
 
-import * as Sentry from "@sentry/node";
 // set up rate limiter: maximum of five requests per minute
 import rateLimit from "express-rate-limit";
 import { tokenSvg } from "../lib/contract";
@@ -55,7 +54,6 @@ export const sitemap_response = async (req, res) => {
     res.send(xml);
   } catch (e) {
     console.error(e);
-    Sentry.captureException(e);
     return res.status(500).end();
   }
 };
@@ -137,7 +135,6 @@ const ogpPage = async (req: any, res: any) => {
     );
   } catch (e) {
     console.log(e);
-    Sentry.captureException(e);
   }
 };
 
