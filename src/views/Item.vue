@@ -275,24 +275,20 @@ export default defineComponent({
       console.log("1. updateToken was called.");
 
       console.log("requewt owner from contrcat");
-
-      
       const strage_key = tokenAddress + "_" + token_id;
       const data_str = localStorage.getItem(strage_key);
-      var data;
-
       
-      if (data_str && data_str != "undefined") {
-        console.log("load data from localstrage");
-        data = JSON.parse(data_str);
-      } else {
-        console.log("no localstrage request data");
-        const ret = await tokenContract.tokenURI(token_id);
-        console.log(ret);
-        data = JSON.parse(atob(ret.split(",")[1]));
-        localStorage.setItem(strage_key, JSON.stringify(data));
-      }
-
+      const data = await (async () => {
+        if (data_str && data_str != "undefined") {
+          console.log("load data from localstrage");
+          return JSON.parse(data_str);
+        } else {
+          console.log("no localstrage request data");
+          const ret = await tokenContract.tokenURI(token_id);
+          localStorage.setItem(strage_key, JSON.stringify(data));
+          return JSON.parse(atob(ret.split(",")[1]));
+        }
+      })()
       token_obj.value.data = data;
       token_obj.value.price = -1;
 
@@ -305,12 +301,8 @@ export default defineComponent({
       const isOwner =
         utils.getAddress(account.value) == utils.getAddress(owner);
 
-      token_obj.value = {
-        data: data,
-        price: price,
-        isOwner: isOwner,
-        token_id: Number(token_id),
-      };
+      token_obj.value.price = price;
+      token_obj.value.isOwner = isOwner;
 
       console.log(token_obj);
       executeMode.value = 2; // non-execute
