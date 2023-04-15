@@ -17,9 +17,9 @@
     <div class="mt-2">
       <NetworkGate :expectedNetwork="chainId">
 
-        <div class="flex justify-center">
-          <div @dragover.prevent
-              @drop.prevent class="m-4 w-full">
+        <div @dragover.prevent
+              @drop.prevent class="flex justify-center">
+          <div @drop="dragFile"  class="m-4 w-full">
               <label
                   class="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
                   
@@ -87,8 +87,7 @@
           </div>
         </div>
 
-
-        <div class="mx-10 text-left">
+        <div class="mx-10 text-left ">
           <li>All data is converted to the d attribute of the path element.</li>
           <li>
             Only circle, ellipses, line, rect, polygon, polyline element are
