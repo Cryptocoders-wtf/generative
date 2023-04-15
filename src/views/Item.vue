@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="grid grid-cols-2">
-      <div class="w-full rounded-md border-2 mx-5 my-10 p-5">
+      <div class="mx-5 my-10 w-full rounded-md border-2 p-5">
         <div v-if="token_obj.data.image == ''" class="text-center align-middle">
           <img
             src="@/assets/preload.gif"
@@ -16,7 +16,7 @@
         <div v-if="token_obj.data.image != ''">
           <TokenActions :token_obj="token_obj" @purchased="purchased" />
         </div>
-        
+
         <div
           class="my-5 flex justify-center space-x-2 text-neutral-700 dark:text-neutral-300"
         >
@@ -219,15 +219,15 @@ export default defineComponent({
       return pathData.value.length > 0;
     });
 
-    interface item {
-      data: {
-        name: string;
-        image: string;
-      };
-      price: any;
-      isOwner: boolean;
-      token_id: string;
-    }
+    // interface item {
+    //   data: {
+    //     name: string;
+    //     image: string;
+    //   };
+    //   price: any;
+    //   isOwner: boolean;
+    //   token_id: string;
+    // }
 
     const token_obj = ref<Token721p2p>({
       data: { name: "", image: "" },
@@ -278,14 +278,37 @@ export default defineComponent({
 
         console.log("load token:" + " " + token_id);
 
+          console.log('requewt owner from contrcat')
+            const strage_key = tokenAddress + '_' + token_id;
+            var data;
+            const data_str = localStorage.getItem(strage_key);
+
+            console.log(strage_key);
+            console.log(data_str);
+            console.log(data);
+
+            if(data_str && data_str != "undefined") {
+              console.log('load data from localstrage')
+              data = JSON.parse(data_str);
+            } else {
+              console.log('no localstrage request data')
+              const ret = await tokenContract.tokenURI(token_id);
+              console.log(ret);
+              data = JSON.parse(atob(ret.split(",")[1]));
+              localStorage.setItem(strage_key, JSON.stringify(data))
+            }
+
+            token_obj.value = {
+              data: data,
+              price: -1,
+              isOwner: false,
+              token_id: Number(token_id)
+            };
+
             const owner = await tokenContract.ownerOf(token_id);
-            const ret = await tokenContract.tokenURI(token_id);
-            console.log(ret);
-            const data = JSON.parse(atob(ret.split(",")[1]));
+
             const price_big = await tokenContract.getPriceOf(token_id);
             const price = utils.formatEther(price_big);
-
-          console.log(price);
 
           const isOwner =
             utils.getAddress(account.value) == utils.getAddress(owner);
@@ -300,6 +323,7 @@ export default defineComponent({
           console.log(token_obj);
           executeMode.value = 2; // non-execute
     };
+
     updateToken();
 
     const purchased = async () => {

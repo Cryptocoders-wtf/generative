@@ -35,14 +35,12 @@ if (!admin.apps.length) {
   admin.initializeApp();
 }
 
-
 export const logger = async (req, res, next) => {
   next();
 };
 export const hello_response = async (req, res) => {
   res.json({ message: "hello" });
 };
-
 
 export const sitemap_response = async (req, res) => {
   try {
