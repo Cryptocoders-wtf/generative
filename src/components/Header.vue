@@ -34,7 +34,7 @@ import { ChainIdMap } from "@/utils/MetaMask";
 
 export default defineComponent({
   components: {
-    Languages,    
+    Languages,
     NetworkGate,
   },
 
@@ -43,8 +43,8 @@ export default defineComponent({
     const chainId = ChainIdMap[network];
 
     return {
-      chainId
-    }
-  }
+      chainId,
+    };
+  },
 });
 </script>

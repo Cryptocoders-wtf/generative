@@ -1,7 +1,13 @@
 <template>
   <div class="home">
-
     <div class="flex justify-center">
+<<<<<<< HEAD
+      <div class="mt-2">
+        <div class="mx-8">
+          {{ token_obj.data.name }}
+          <img :src="token_obj.data.image" class="w-72 border-2" />
+          {{ token_obj.price }}
+=======
         <div class="mt-2">
           <div v-if="token_obj.data.name" class="mx-8" >
               {{ token_obj.data.name }}
@@ -11,17 +17,15 @@
           <div v-else class="mx-8 my-8" >
             Loading...
           </div>
+>>>>>>> origin/feat/ETHGlobal2023
         </div>
+      </div>
     </div>
 
-     <TokenActions :token_obj="token_obj" />
-
+    <TokenActions :token_obj="token_obj" />
   </div>
 
-      <NetworkGate :expectedNetwork="chainId" />
-
-  
-    
+  <NetworkGate :expectedNetwork="chainId" />
 </template>
 
 <script lang="ts">
@@ -64,8 +68,27 @@ export default defineComponent({
       return pathData.value.length > 0;
     });
 
+<<<<<<< HEAD
+    interface item {
+      data: {
+        name: string;
+        image: string;
+      };
+      price: any;
+      isOwner: boolean;
+      token_id: number;
+    }
+
+    const token_obj = ref<item>({
+      data: { name: "", image: "" },
+      price: 0,
+      isOwner: false,
+      token_id: 0,
+    });
+=======
 
     const token_obj = ref<Token721p2p>({data:{name:'', image:''}, price:0, isOwner:false, token_id:0})
+>>>>>>> origin/feat/ETHGlobal2023
 
     const reset = () => {
       pathData.value = [];
@@ -73,7 +96,7 @@ export default defineComponent({
 
     const store = useStore();
     const route = useRoute();
-    const account = computed(() => store.state.account);    
+    const account = computed(() => store.state.account);
 
     // store      contract="0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
     // provider      contract="0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e"
@@ -81,7 +104,6 @@ export default defineComponent({
     // const network = "localhost";
     // const tokenAddress = "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0";
 
-    
     // store      contract="0x442622c789E5489A222141d06966608a2980E915"
     // provider      contract="0x24F08949190D291DaBb9d7a828ad048FE6250E0C"
     // token      contract="0x07f21753E1DA964fc7131571DD999471C6492e7E"
@@ -89,7 +111,7 @@ export default defineComponent({
     // store      contract="0x05ce81EC1751E2317ddc2E90948EBc6Ca66781a1"
     // provider      contract="0xc65Ffa203d73538557Cff496bE85BD12B28927ca"
     // token      contract="0x5F0f949949c82f660B38FC7601A45498fa2C9fC9"
-    
+
     const network = "mumbai";
     const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
 
@@ -108,9 +130,9 @@ export default defineComponent({
       tokenContract.totalSupply().then(async (nextId: BigNumber) => {
         nextToken.value = nextId.toNumber();
         const token = nextId.toNumber() - 1;
-        const token_id =  parseInt(route.params.token_id[0], 10) //get from url parameter
+        const token_id = parseInt(route.params.token_id[0], 10); //get from url parameter
 
-        console.log("load token:" + token + ' ' + token_id);
+        console.log("load token:" + token + " " + token_id);
 
         if (token > token_id-1) {
             const owner = await tokenContract.ownerOf(token_id);
@@ -120,15 +142,20 @@ export default defineComponent({
             const price_big = await tokenContract.getPriceOf(token_id);
             const price = utils.formatEther(price_big);
 
-            console.log(price)
+          console.log(price);
 
-            const isOwner = utils.getAddress(account.value) == utils.getAddress(owner);
-            
-            token_obj.value = {data:data, price:price, isOwner:isOwner, token_id:token_id}
+          const isOwner =
+            utils.getAddress(account.value) == utils.getAddress(owner);
 
-            console.log(token_obj)
+          token_obj.value = {
+            data: data,
+            price: price,
+            isOwner: isOwner,
+            token_id: token_id,
+          };
+
+          console.log(token_obj);
         }
-
       });
     };
     updateToken();

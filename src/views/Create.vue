@@ -1,59 +1,88 @@
 <template>
   <div class="home">
-
     <section class="bg-white dark:bg-gray-900">
-    <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
+      <div
+        class="mx-auto grid max-w-screen-xl px-4 py-8 lg:grid-cols-12 lg:gap-8 lg:py-16 xl:gap-0"
+      >
         <div class="mr-auto place-self-center lg:col-span-7">
-            <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">Convert SVG with simple structure to full on-chain NFT</h1>
-            <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">All data is converted to the d attribute of the path element. <br/>
-            Only circle, ellipses, line, rect, polygon, polyline element are converted to the d attribute of the path element. All other elements are ignored.</p>
+          <h1
+            class="mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight dark:text-white md:text-5xl xl:text-6xl"
+          >
+            Convert SVG with simple structure to full on-chain NFT
+          </h1>
+          <p
+            class="mb-6 max-w-2xl font-light text-gray-500 dark:text-gray-400 md:text-lg lg:mb-8 lg:text-xl"
+          >
+            All data is converted to the d attribute of the path element. <br />
+            Only circle, ellipses, line, rect, polygon, polyline element are
+            converted to the d attribute of the path element. All other elements
+            are ignored.
+          </p>
         </div>
-        <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-            <img class="rounded-2xl" src="@/assets/heroimg.png" alt="mockup">
-        </div>                
-    </div>
-</section>
+        <div class="hidden lg:col-span-5 lg:mt-0 lg:flex">
+          <img class="rounded-2xl" src="@/assets/heroimg.png" alt="mockup" />
+        </div>
+      </div>
+    </section>
 
     <div class="mt-2">
       <NetworkGate :expectedNetwork="chainId">
-
-        <div @dragover.prevent
-              @drop.prevent class="flex justify-center">
-          <div @drop="dragFile"  class="m-4 w-full">
-              <label
-                  class="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
-                  
-                  <span class="flex items-center space-x-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24"
-                          stroke="currentColor" stroke-width="2">
-                          <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                      </svg>
-                      <span class="font-medium text-gray-600">
-                          Drop your SVG file, or
-                          <span class="text-blue-600 underline">browse</span>
-                      </span>
-                  </span>
-                  <input
-                    type="file"
-                    @change="uploadFile"
-                    class="hidden"
+        <div @dragover.prevent @drop.prevent class="flex justify-center">
+          <div @drop="dragFile" class="m-4 w-full">
+            <label
+              class="flex h-32 w-full cursor-pointer appearance-none justify-center rounded-md border-2 border-dashed border-gray-300 bg-white px-4 transition hover:border-gray-400 focus:outline-none"
+            >
+              <span class="flex items-center space-x-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-gray-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                   />
-              </label>
+                </svg>
+                <span class="font-medium text-gray-600">
+                  Drop your SVG file, or
+                  <span class="text-blue-600 underline">browse</span>
+                </span>
+              </span>
+              <input type="file" @change="uploadFile" class="hidden" />
+            </label>
           </div>
         </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <div v-if="svgData">          
-          <img :src="svgData" class="h-48 w-48 mx-auto my-auto " />
-          <h2>Original SVG</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div v-if="svgData">
+            <img :src="svgData" class="mx-auto my-auto h-48 w-48" />
+            <h2>Original SVG</h2>
+          </div>
+          <div v-if="convedSVGData">
+            <img :src="convedSVGData" class="mx-auto my-auto h-48 w-48" />
+            <h2>NFT Image</h2>
+          </div>
         </div>
-        <div v-if="convedSVGData">
-          <img :src="convedSVGData" class="h-48 w-48 mx-auto my-auto" />
-          <h2>NFT Image</h2>
-        </div>
-      </div>
 
+        <div class="mx-auto mb-6 w-64">
+          <label
+            for="price"
+            class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+            >Price</label
+          >
+          <input
+            v-model="set_price"
+            type="text"
+            id="price"
+            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+            placeholder="Input Price (ETH)"
+            required
+          />
+        </div>
 <!-- price - start -->
 <div class="flex justify-center items-center mb-5">    
 <label class="relative block w-1/2">
@@ -65,20 +94,18 @@
     
 
         <div class="flex justify-center">
-
           <div
             @click="mint"
             :disabled="!existData"
             v-if="isExecuting == 0"
-            class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-20 py-5 text-center mr-2 mb-2"
+            class="mr-2 mb-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-20 py-5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
             :class="
               existData
                 ? 'bg-green-600 focus:bg-green-700'
                 : 'bg-green-600 bg-opacity-20 focus:bg-green-700'
             "
           >
-          MINT!
-
+            MINT!
           </div>
           <div v-if="isExecuting == 1">
             <img class="h-20 w-20" src="@/assets/preload.gif" />
@@ -90,9 +117,31 @@
             </div>
           </div>
         </div>
+
+        <div class="mx-10 text-left">
+          <li>All data is converted to the d attribute of the path element.</li>
+          <li>
+            Only circle, ellipses, line, rect, polygon, polyline element are
+            converted to the d attribute of the path element. All other elements
+            are ignored.
+          </li>
+          <li>
+            g elements are expanded. nested g elements are expanded to flat.
+          </li>
+          <li>Fill is retained</li>
+          <li>
+            stroke and stroke-width are supported.
+            stroke-linecap:round;stroke-linejoin:round can be specified to add
+            stroke.
+          </li>
+          <li>
+            Size of image is normalized to 1024*1024 based on viewBox or SVG
+            properties width, height.
+          </li>
+        </div>
       </NetworkGate>
-      </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -250,7 +299,7 @@ export default defineComponent({
         console.log(ret);
         const price = utils.parseEther(set_price.value);
         console.log(price);
-        const tx = await contract.mintToSell(ret,price);
+        const tx = await contract.mintToSell(ret, price);
         console.log("mint:tx");
         const result = await tx.wait();
         const tokenId = await polling(tx);
@@ -263,7 +312,6 @@ export default defineComponent({
           name: "item",
           params: { token_id: tokenId },
         });
-
       } catch (e) {
         // ウォレットで拒否した場合
         if (String(e).indexOf("ACTION_REJECTED") == -1) {
