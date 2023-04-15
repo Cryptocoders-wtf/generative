@@ -52,6 +52,11 @@ contract SVGTokenV1 is ProviderToken4 {
     minters[tokenId] = msg.sender;
   }
 
+  function mintToSell(ISVGStoreV1.Asset memory asset, uint price) public returns (uint256 tokenId) {
+    tokenId = mintWithAsset(asset);
+    setPriceOf(tokenId, price);
+  }
+
   function tokenURI(uint256 _tokenId) public view override returns (string memory) {
     uint256 assetId = assetIds[_tokenId];
     require(_exists(_tokenId), 'SVGToken.tokenURI: nonexistent token');
