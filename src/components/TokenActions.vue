@@ -51,19 +51,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
-import { BigNumber, utils } from "ethers";
+import { defineComponent, ref, computed, PropType, toRefs, watch } from "vue";
+import { utils } from "ethers";
 import { useStore } from "vuex";
 import { Token721p2p } from "@/models/token";
 
 export default defineComponent({
   props: {
-    token_obj:Object
+    token_obj: {
+      type: Object as PropType<Token721p2p>,
+    },
   },
   setup(props) {
     const store = useStore();
     const set_price = ref<string>("0");
-    const account = computed(() => store.state.account); 
+    const { token_obj } = toRefs(props);
+    watch(token_obj, () => {
+      set_price.value = token_obj.value?.price;
+    });
+    const account = computed(() => store.state.account);
 
     const setPrice = async (id: number) => {
       if (store.state.networkContext == null) {
@@ -73,9 +79,9 @@ export default defineComponent({
       try {
         console.log(id);
         const tokenid = id;
-        console.log("set_price : ", set_price.value, "tokenid : ", tokenid)
+        console.log("set_price : ", set_price.value, "tokenid : ", tokenid);
         const price = utils.parseEther(set_price.value);
-        console.log(tokenid,set_price);
+        console.log(tokenid, set_price);
 
         console.log("price : ", price);
 

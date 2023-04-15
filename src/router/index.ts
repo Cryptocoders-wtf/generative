@@ -6,10 +6,10 @@ import NotFound from "@/components/NotFound.vue";
 import Home from "@/views/Home.vue";
 
 import Create from "@/views/Create.vue";
+import Item from "@/views/Item.vue";
+
 import Items from "@/views/Items.vue";
 import SvgTest from "@/views/SVGTest.vue";
-
-import P2SeaItem from "@/views/Item.vue";
 
 const routeChildren: Array<RouteRecordRaw> = [
   {
@@ -23,7 +23,7 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "item/:token_id",
     name: "item",
-    component: P2SeaItem,
+    component: Item,
   },
   // for debug
   {
