@@ -9,9 +9,6 @@
             </a>
             <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
                 <li>
-                    <a href="https://www.singularitysociety.org/privacy" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
-                </li>
-                <li>
                     <a href="https://www.singularitysociety.org/join" class="hover:underline">Contact</a>
                 </li>
             </ul>
