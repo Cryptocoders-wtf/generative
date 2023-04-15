@@ -53,16 +53,6 @@ export default defineComponent({
     NetworkGate,
     TokenActions,
   },
-  //   // props: {
-  //   // token_id: {
-  //   //   type: Number,
-  //   //   required: true,
-  //   //   default: 0,
-  //   //   validator: function (value) {
-  //   //     return Number.isInteger(value)
-  //   //   }
-  //   // }
-  // },
   setup(props) {
     const pathData = ref<any>([]);
     const existData = computed(() => {
