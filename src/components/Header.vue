@@ -4,9 +4,9 @@
     class="mx-auto flex max-w-3xl items-center justify-between py-1.5"
   >
     <div class="flex items-center justify-start ">
-      <a href="/">
+      <router-link to="/">
       <img src="@/assets/logo.svg" width="250" height="auto"  title="Open Galaxy"/>
-      </a>
+      </router-link>
     </div>
     <!--
     <nav id="nav" class="flex flex-wrap items-center justify-start">
