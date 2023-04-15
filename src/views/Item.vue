@@ -279,6 +279,12 @@ export default defineComponent({
       console.log("transfer update done");
     });
     console.log(onid);
+    const onid2 = tokenContract.on("SetPrice", async (arg) => {
+      console.log(arg);
+      await updateToken();
+      console.log("price update done");
+    });
+    console.log(onid2);
     const executeMode = ref(0); // 0:loading, 1:executing, 2:non-execute
 
     const nextToken = ref(0);
