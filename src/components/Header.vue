@@ -4,8 +4,8 @@
     class="mx-auto flex max-w-3xl items-center justify-between py-1.5"
   >
     <div class="flex items-center justify-start ">
-      <router-link to="/">
-      <img src="@/assets/logo.svg" width="250" height="auto"  title="Open Galaxy"/>
+      <router-link :to="localizedUrl('/')">
+        <img src="@/assets/logo.svg" width="250" class="h-auto"  title="Open Galaxy"/>
       </router-link>
     </div>
     <!--
