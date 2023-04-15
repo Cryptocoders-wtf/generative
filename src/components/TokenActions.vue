@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div v-if="token_obj.isOwner">
+    <div v-if="token_obj.isOwner && token_obj.price > -1">
       <input
         v-model="newPrice"
         type="text"
