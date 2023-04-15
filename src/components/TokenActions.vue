@@ -27,8 +27,10 @@
         v-model="set_price"
         type="text"
         id="price"
-        class="my-5 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+        class="my-5 block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
         placeholder="Input Price (ETH)"
+        :disabled="isExecuting == 1"
+        :class="isExecuting == 1 ? 'bg-gray-500 bg-opacity-80' : 'bg-gray-100'"
         required
       />
 
