@@ -11,3 +11,4 @@ import exportIfNeeded from "./common/exportifneeded";
 // });
 
 exportIfNeeded("test", "tests/test", exports);
+exportIfNeeded("api", "api", exports);
