@@ -306,8 +306,8 @@ export default defineComponent({
       const price_big = await tokenContract.getPriceOf(token_id);
       const price = utils.formatEther(price_big);
 
-      const isOwner =
-        utils.getAddress(account.value) == utils.getAddress(owner);
+      const isOwner = account.value ? 
+        utils.getAddress(account.value) == utils.getAddress(owner) : false; 
 
       token_obj.value = {
         data: data,
