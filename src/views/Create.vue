@@ -76,7 +76,9 @@
           MINT!
 
           </div>
-          <div v-if="isExecuting == 1">waiting ...</div>
+          <div v-if="isExecuting == 1">
+            <img class="h-20 w-20" src="@/assets/preload.gif" />
+          </div>
           <div v-if="isExecuting == 2">
             Complete !!
             <div @click="isExecuting = 0">
@@ -132,6 +134,7 @@ import { parse } from "svg-parser";
 import { useStore } from "vuex";
 import { convSVG2Path, dumpConvertSVG } from "@/utils/svgtool";
 import { compressPath } from "@/utils/pathUtils";
+import router from "@/router";
 
 const sleep = async (seconds: number) => {
   return await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
@@ -226,7 +229,12 @@ export default defineComponent({
       const receipt = await tx.wait();
       if (receipt.status == 1) {
         // success transaction
-        return;
+        const events = receipt.events.filter(
+          (event: any) => event.event === "Transfer"
+        );
+
+        const returnValue = events[0].args[2].toNumber(); // 返り値 Transfer(from, to, tokenId)
+        return returnValue;
       } else {
         console.log("receipt", receipt);
         alert("Sorry, transaction failed.");
@@ -264,12 +272,16 @@ export default defineComponent({
         const tx = await contract.mintToSell(ret,price);
         console.log("mint:tx");
         const result = await tx.wait();
+        const tokenId = await polling(tx);
+        console.log("mint:tokenId", tokenId);
         console.log("mint:gasUsed", result.gasUsed.toNumber());
 
-        await polling(tx);
-
         reset();
-        isExecuting.value = 2;
+        isExecuting.value = 0;
+        router.push({
+          name: "item",
+          params: { token_id: tokenId },
+        });
 
       } catch (e) {
         // ウォレットで拒否した場合
