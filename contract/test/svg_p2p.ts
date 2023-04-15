@@ -122,7 +122,7 @@ describe('SVGImage P2P', function () {
   it('Balance Check', async function () {
     balance = await token.etherBalanceOf(user2.address);
     expect(balance.sub(balance2)).equal(price.div(20).mul(19)); // 95%
-    // balance = await token.balanceOf(artist.address);
-    // expect(balance.sub(balanceA)).equal(price.div(20).mul(1)); // 5%
+    balance = await token.etherBalanceOf(artist.address);
+    expect(balance.sub(balanceA)).equal(price.div(20).mul(1)); // 5%
   });
 });
