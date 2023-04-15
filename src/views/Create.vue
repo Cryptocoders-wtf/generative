@@ -257,9 +257,9 @@ export default defineComponent({
 
       try {
         console.log(ret);
-        // TBD add price on Mint
-        console.log(set_price.value);
-        const tx = await contract.functions.mintWithAsset(ret);
+        const price = BigNumber.from(set_price.value);
+        console.log(price);
+        const tx = await contract.mintToSell(ret,price);
         console.log("mint:tx");
         const result = await tx.wait();
         console.log("mint:gasUsed", result.gasUsed.toNumber());
