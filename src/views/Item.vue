@@ -1,6 +1,13 @@
 <template>
   <div class="home">
-    <div class="grid grid-cols-2">
+    <div v-if="notFound">
+      <span class="text-4xl font-extrabold">
+        Not Found NFT.
+      </span>
+      <img class="rounded-2xl" src="@/assets/heroimg.png" alt="mockup" />
+    </div>
+    <div class="grid grid-cols-2" v-else>
+      
       <div class="mx-5 my-10 w-full rounded-md border-2 p-5">
         <div v-if="token_obj.data.image == ''" class="text-center align-middle">
           <img
@@ -222,6 +229,7 @@ export default defineComponent({
     const route = useRoute();
     const account = computed(() => store.state.account);
 
+    const notFound = ref(false);
     const pathData = ref<any>([]);
     const existData = computed(() => {
       return pathData.value.length > 0;
@@ -329,6 +337,8 @@ export default defineComponent({
       token_obj,
       existData,
       callUpdateToken,
+
+      notFound,
     };
   },
 });
