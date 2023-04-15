@@ -34,10 +34,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, PropType, toRefs, watch } from "vue";
-import { BigNumber, utils } from "ethers";
+import { utils } from "ethers";
 import { useStore } from "vuex";
 import { Token721p2p } from "@/models/token";
-import { token_addresses } from "@/utils/addresses/addresses_flag_mainnet";
 
 export default defineComponent({
   props: {
