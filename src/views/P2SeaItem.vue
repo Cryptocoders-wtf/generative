@@ -116,15 +116,11 @@ export default defineComponent({
     const nextToken = ref(0);
 
     const updateToken = async () => {
-      // tokenContract.totalSupply().then(async (nextId: BigNumber) => {
-      //   nextToken.value = nextId.toNumber();
-      //   const token = nextId.toNumber() - 1;
       console.log("route.params.token_id", route.params.token_id);
       const token_id = route.params.token_id; //get from url parameter
 
       // console.log("load token:" + token + ' ' + token_id);
 
-      // if (token > token_id - 1) {
       const owner = await tokenContract.ownerOf(token_id);
       const ret = await tokenContract.tokenURI(token_id);
       console.log(ret);
@@ -146,9 +142,7 @@ export default defineComponent({
       };
 
       console.log(token_obj);
-      // }
       executeMode.value = 2; // non-execute
-      // });
     };
     updateToken();
 
