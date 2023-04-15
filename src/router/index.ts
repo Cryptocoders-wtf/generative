@@ -21,13 +21,14 @@ const routeChildren: Array<RouteRecordRaw> = [
     component: Create,
   },
   {
-    path: "svgtest",
-    component: SvgTest,
-  },
-  {
     path: "item/:token_id",
     name: "item",
     component: P2SeaItem,
+  },
+  // for debug
+  {
+    path: "svgtest",
+    component: SvgTest,
   },
   {
     path: "items",
