@@ -2,9 +2,18 @@
   <div class="home">
     <div class="flex items-center justify-center space-x-8">
       <!-- Drag & Drop -->
-      <div @dragover.prevent @drop.prevent class="relative mx-4 mt-4 h-24 w-48 border-4">
+      <div
+        @dragover.prevent
+        @drop.prevent
+        class="relative mx-4 mt-4 h-24 w-48 border-4"
+      >
         <div @drop="dragFile" class="absolute h-full w-full text-left">
-          <input type="file" multiple @change="uploadFile" class="absolute h-full w-full opacity-0" />
+          <input
+            type="file"
+            multiple
+            @change="uploadFile"
+            class="absolute h-full w-full opacity-0"
+          />
           <div class="mt-4 text-center">Put your SVG image here.</div>
         </div>
       </div>
@@ -23,27 +32,32 @@
     <div class="mt-2">
       <NetworkGate :expectedNetwork="chainId">
         <div class="flex justify-center">
-          <div @click="mint" :disabled="!existData" v-if="isExecuting == 0"
+          <div
+            @click="mint"
+            :disabled="!existData"
+            v-if="isExecuting == 0"
             class="mb-2 inline-block cursor-pointer rounded px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
             :class="
               existData
                 ? 'bg-green-600 focus:bg-green-700'
                 : 'bg-green-600 bg-opacity-20 focus:bg-green-700'
-            ">
+            "
+          >
             mint
           </div>
-          <div v-if="isExecuting == 1">
-            waiting ...
-          </div>
+          <div v-if="isExecuting == 1">waiting ...</div>
           <div v-if="isExecuting == 2">
             Complete !!
             <div @click="isExecuting = 0">
-            <b>OK!</b></div>
+              <b>OK!</b>
+            </div>
           </div>
         </div>
 
         <div>
-          <a href="https://goerlifaucet.com" class="underline" target="_blank">Get Free Goerli ETH</a>
+          <a href="https://goerlifaucet.com" class="underline" target="_blank"
+            >Get Free Goerli ETH</a
+          >
         </div>
 
         <div class="mx-10 text-left">
@@ -71,42 +85,48 @@
             properties width, height.
           </li>
         </div>
-
       </NetworkGate>
       <div v-for="(token, k) in tokens" :key="k" class="mx-8">
         <img :src="token.data.image" class="w-36 border-2" />
         {{ token.data.name }}
         {{ token.owner }}
-        <div v-if="token.price > 0">
-          On Sale! {{ token.price }} eth
-        </div>
-        <div v-else>
-          Not on sale.
-        </div>
+        <div v-if="token.price > 0">On Sale! {{ token.price }} eth</div>
+        <div v-else>Not on sale.</div>
         <div v-if="token.isOwner">
-          <input type="text" v-model="prices[token.id]" maxlength="512" minlength="1"
-            class="text-sm my-2 text-slate-500 rounded-sm border-1 text-sm bg-gray-100 file:text-gray-800 hover:bg-white" />
+          <input
+            type="text"
+            v-model="prices[token.id]"
+            maxlength="512"
+            minlength="1"
+            class="border-1 my-2 rounded-sm bg-gray-100 text-sm text-sm text-slate-500 file:text-gray-800 hover:bg-white"
+          />
 
-          <button @click="setPrice(token.id)"
-            class="mb-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg">
+          <button
+            @click="setPrice(token.id)"
+            class="mb-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+          >
             set price
           </button>
-
         </div>
         <div v-else>
           <div v-if="token.price > 0">
-            <button @click="purchase(token.id)"
-              class="mb-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg">
+            <button
+              @click="purchase(token.id)"
+              class="mb-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+            >
               Purchase!
             </button>
           </div>
         </div>
-
       </div>
     </div>
     <div>
-      <a href="https://testnets.opensea.io/ja/collection/svgtokenv1-4?search[sortAscending]=false&search[sortBy]=CREATED_DATE"
-        class="underline" target="_blank">See NFTs on OpenSea</a>
+      <a
+        href="https://testnets.opensea.io/ja/collection/svgtokenv1-4?search[sortAscending]=false&search[sortBy]=CREATED_DATE"
+        class="underline"
+        target="_blank"
+        >See NFTs on OpenSea</a
+      >
     </div>
   </div>
 </template>
@@ -154,7 +174,7 @@ export default defineComponent({
       return pathData.value.length > 0;
     });
 
-    const isExecuting = ref(0); // 0:non-execute, 1:executing, 2:complete 
+    const isExecuting = ref(0); // 0:non-execute, 1:executing, 2:complete
 
     const store = useStore();
     const account = computed(() => store.state.account);
@@ -226,13 +246,13 @@ export default defineComponent({
           if (token - i > -1) {
             const id = token - i;
             const owner = await tokenContract.ownerOf(id);
-            const isOwner = utils.getAddress(account.value) == utils.getAddress(owner);
+            const isOwner =
+              utils.getAddress(account.value) == utils.getAddress(owner);
             const price = await tokenContract.getPriceOf(id);
             const ret = await tokenContract.tokenURI(id);
             const data = JSON.parse(atob(ret.split(",")[1]));
 
             tokens.value.push({ id, owner, data, isOwner, price });
-
           }
         }
       });
@@ -252,13 +272,13 @@ export default defineComponent({
     // };
     const polling = async (tx: any) => {
       const receipt = await tx.wait();
-      if (receipt.status == 1) { // success transaction
+      if (receipt.status == 1) {
+        // success transaction
         return;
       } else {
         console.log("receipt", receipt);
         alert("Sorry, transaction failed.");
       }
-
     };
 
     const isMinting = ref<boolean>(false);
@@ -299,7 +319,6 @@ export default defineComponent({
         isExecuting.value = 2;
         updateTokens();
       } catch (e) {
-
         // ウォレットで拒否した場合
         if (String(e).indexOf("ACTION_REJECTED") == -1) {
           console.error(e);
@@ -307,7 +326,6 @@ export default defineComponent({
         }
         isExecuting.value = 0;
       }
-
     };
     const setPrice = async (id: number) => {
       if (networkContext.value == null) {
@@ -331,7 +349,7 @@ export default defineComponent({
       }
       const { contract } = networkContext.value;
       try {
-        console.log(id, (tokens.value));
+        console.log(id, tokens.value);
         const price = await tokenContract.getPriceOf(id);
         const owner = await tokenContract.ownerOf(id);
         await contract.purchase(id, account.value, owner, { value: price });
