@@ -259,14 +259,14 @@ export default defineComponent({
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider = getProvider(network, alchemyKey);
     const tokenContract = getSVGTokenContract(tokenAddress, provider);
-    const onid = tokenContract.on("Transfer", async (arg) => {
-      console.log(arg);
+    const onid = tokenContract.on("Transfer", async (from, to, value, event) => {
+      console.log(from,to,value,event);
       await updateToken();
       console.log("transfer update done");
     });
     console.log(onid);
-    const onid2 = tokenContract.on("SetPrice", async (arg) => {
-      console.log(arg);
+    const onid2 = tokenContract.on("SetPrice", async (tokenid, price, event) => {
+      console.log(tokenid, price ,event);
       await updateToken();
       console.log("price update done");
     });
