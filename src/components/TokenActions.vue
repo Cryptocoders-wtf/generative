@@ -24,7 +24,7 @@
 
     <div v-if="token_obj.isOwner">
       <input
-        v-model="set_price"
+        v-model="newPrice"
         type="text"
         id="price"
         class="my-5 block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
@@ -89,11 +89,11 @@ export default defineComponent({
   setup(props, context) {
     const isExecuting = ref(0); // 0:non-execute, 1:executing, 2:complete
     const store = useStore();
-    const set_price = ref<string>("0");
+    const newPrice = ref<string>("0");
     const { token_obj } = toRefs(props);
     watch(token_obj, () => {
       console.log("TokenActions: detected token_obj change.");
-      set_price.value = token_obj.value?.price;
+      newPrice.value = token_obj.value?.price;
     });
     const account = computed(() => store.state.account);
 
@@ -116,9 +116,9 @@ export default defineComponent({
       try {
         console.log(id);
         const tokenid = id;
-        console.log("set_price : ", set_price.value, "tokenid : ", tokenid);
-        const price = utils.parseEther(set_price.value);
-        console.log(tokenid, set_price);
+        console.log("newPrice : ", newPrice.value, "tokenid : ", tokenid);
+        const price = utils.parseEther(newPrice.value);
+        console.log(tokenid, newPrice);
 
         console.log("price : ", price);
 
@@ -135,7 +135,7 @@ export default defineComponent({
       }
     };
     const isChangePrice = computed(() => {
-      return token_obj.value.price !== set_price.value
+      return token_obj.value.price !== newPrice.value
     });
     
     const purchase = async (id: number) => {
@@ -166,7 +166,7 @@ export default defineComponent({
     return {
       setPrice,
       purchase,
-      set_price,
+      newPrice,
       isExecuting,
       isChangePrice,
     };
