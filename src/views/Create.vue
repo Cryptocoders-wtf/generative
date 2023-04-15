@@ -14,57 +14,67 @@
     </div>
 </section>
 
-    <div class="flex items-center justify-center space-x-8">
-      <!-- Drag & Drop -->
-      <div
-        @dragover.prevent
-        @drop.prevent
-        class="relative mx-4 mt-4 h-24 w-48 border-4"
-      >
-        <div @drop="dragFile" class="absolute h-full w-full text-left">
-          <input
-            type="file"
-            multiple
-            @change="uploadFile"
-            class="absolute h-full w-full opacity-0"
-          />
-          <div class="mt-4 text-center">Put your SVG image here.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex justify-center">
-      <div class="flex-item" v-if="svgData">
-        Original SVG<br />
-        <img :src="svgData" class="mx-4 mt-4 h-48 w-48" />
-      </div>
-      <div class="flex-item" v-if="convedSVGData">
-        NFT Image<br />
-        <img :src="convedSVGData" class="mx-4 mt-4 h-48 w-48" />
-      </div>
-    </div>
     <div class="mt-2">
       <NetworkGate :expectedNetwork="chainId">
+
         <div class="flex justify-center">
-          <input
-            type="text"
-            v-model="set_price"
-            maxlength="512"
-            minlength="1"
-            class="text-sm my-2 text-slate-500 rounded-sm border-1 text-sm bg-gray-100 file:text-gray-800 hover:bg-white"
-          />
+          <div @dragover.prevent
+              @drop.prevent class="m-4 w-full">
+              <label
+                  class="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
+                  
+                  <span class="flex items-center space-x-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24"
+                          stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                      </svg>
+                      <span class="font-medium text-gray-600">
+                          Drop your SVG file, or
+                          <span class="text-blue-600 underline">browse</span>
+                      </span>
+                  </span>
+                  <input
+                    type="file"
+                    @change="uploadFile"
+                    class="hidden"
+                  />
+              </label>
+          </div>
+        </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div v-if="svgData">          
+          <img :src="svgData" class="h-48 w-48 mx-auto my-auto " />
+          <h2>Original SVG</h2>
+        </div>
+        <div v-if="convedSVGData">
+          <img :src="convedSVGData" class="h-48 w-48 mx-auto my-auto" />
+          <h2>NFT Image</h2>
+        </div>
+      </div>
+
+        <div class="mb-6 w-64 mx-auto">
+          <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+        <input v-model="set_price" type="text" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Input Price (ETH)" required>
+      </div>
+    
+
+        <div class="flex justify-center">
+
           <div
             @click="mint"
             :disabled="!existData"
             v-if="isExecuting == 0"
-            class="mb-2 inline-block cursor-pointer rounded px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+            class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-20 py-5 text-center mr-2 mb-2"
             :class="
               existData
                 ? 'bg-green-600 focus:bg-green-700'
                 : 'bg-green-600 bg-opacity-20 focus:bg-green-700'
             "
           >
-            mint
+          MINT!
+
           </div>
           <div v-if="isExecuting == 1">waiting ...</div>
           <div v-if="isExecuting == 2">
