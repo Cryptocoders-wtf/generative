@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { ethers, SignerWithAddress, Contract } from 'hardhat';
 
 let owner: SignerWithAddress,
-  artist: SignerWithAddress,
+  minter: SignerWithAddress,
   user1: SignerWithAddress,
   user2: SignerWithAddress,
   user3: SignerWithAddress;
@@ -10,10 +10,11 @@ let token: Contract, token1: Contract, token2: Contract, token3: Contract;
 let balanceO, balanceA, balance1, balance2, balance3;
 
 before(async () => {
-  [owner, artist, user1, user2, user3] = await ethers.getSigners();
+  [owner, user1, user2, user3] = await ethers.getSigners();
+  minter = user1;
 
   // const factory = await ethers.getContractFactory('SampleP2PToken');
-  // token = await factory.deploy(artist.address);
+  // token = await factory.deploy(minter.address);
   const factorySVGStore = await ethers.getContractFactory('SVGStoreV1');
   const store = await factorySVGStore.deploy();
   console.log('1');
@@ -82,23 +83,43 @@ describe('SVGImage P2P', function () {
   it('Purchase by user2', async function () {
     await expect(token2.purchase(tokenId0, user2.address, zeroAddress)).revertedWith('Not enough fund');
 
-    balance1 = await token.balanceOf(user1.address);
-    balanceA = await token.balanceOf(artist.address);
+    balance1 = await token.etherBalanceOf(user1.address);
+    balanceA = await token.etherBalanceOf(minter.address);
 
     tx = await token2.purchase(tokenId0, user2.address, zeroAddress, { value: price });
     await tx.wait();
     result = await token.ownerOf(tokenId0);
     expect(result).equal(user2.address);
   });
-  /*
   it('Balance Check', async function () {
-    balance = await token.balanceOf(user1.address);
-    expect(balance.sub(balance1)).equal(price.div(20).mul(19)); // 95%
-    balance = await token.balanceOf(artist.address);
-    expect(balance.sub(balanceA)).equal(price.div(20).mul(1)); // 5%
+    balance = await token.etherBalanceOf(user1.address);
+    expect(balance.sub(balance1)).equal(price); // 100%
   });
-  */
   it('Attempt to buy by user3', async function () {
     await expect(token3.purchase(0, user2.address, zeroAddress, { value: price })).revertedWith('Token is not on sale');
+  });
+  it('SetPrice by user2', async function () {
+    await expect(token1.setPriceOf(tokenId0, price)).revertedWith('Only the onwer can set the price');
+    tx = await token2.setPriceOf(tokenId0, price);
+    await tx.wait();
+    result = await token.getPriceOf(tokenId0);
+    expect(result.toNumber()).equal(price);
+  });
+  it('Purchase by user3', async function () {
+    await expect(token3.purchase(tokenId0, user3.address, zeroAddress)).revertedWith('Not enough fund');
+
+    balance2 = await token.etherBalanceOf(user2.address);
+    balanceA = await token.etherBalanceOf(minter.address);
+
+    tx = await token3.purchase(tokenId0, user3.address, zeroAddress, { value: price });
+    await tx.wait();
+    result = await token.ownerOf(tokenId0);
+    expect(result).equal(user3.address);
+  });
+  it('Balance Check', async function () {
+    balance = await token.etherBalanceOf(user2.address);
+    expect(balance.sub(balance2)).equal(price.div(20).mul(19)); // 95%
+    balance = await token.etherBalanceOf(minter.address);
+    expect(balance.sub(balanceA)).equal(price.div(20).mul(1)); // 5%
   });
 });
