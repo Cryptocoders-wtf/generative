@@ -83,21 +83,7 @@
             required
           />
         </div>
-        <!-- price - start -->
-        <div class="mb-5 flex items-center justify-center">
-          <label class="relative block w-1/2">
-            <label for="input1">Price</label>
-            <input
-              v-model="set_price"
-              type="text"
-              id="price"
-              class="block w-full rounded-md border border-slate-300 bg-white py-2 pl-9 pr-3 shadow-sm placeholder:italic placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
-              placeholder="Input Price (ETH)"
-              required
-            />
-          </label>
-        </div>
-        <!-- price - end -->
+    
 
         <div class="flex justify-center">
           <button
@@ -124,27 +110,6 @@
           </div>
         </div>
 
-        <div class="mx-10 text-left">
-          <li>All data is converted to the d attribute of the path element.</li>
-          <li>
-            Only circle, ellipses, line, rect, polygon, polyline element are
-            converted to the d attribute of the path element. All other elements
-            are ignored.
-          </li>
-          <li>
-            g elements are expanded. nested g elements are expanded to flat.
-          </li>
-          <li>Fill is retained</li>
-          <li>
-            stroke and stroke-width are supported.
-            stroke-linecap:round;stroke-linejoin:round can be specified to add
-            stroke.
-          </li>
-          <li>
-            Size of image is normalized to 1024*1024 based on viewBox or SVG
-            properties width, height.
-          </li>
-        </div>
       </NetworkGate>
     </div>
   </div>
@@ -199,7 +164,7 @@ export default defineComponent({
     const store = useStore();
     const account = computed(() => store.state.account);
     const prices = ref<any>([]);
-    const set_price = ref<string>("0");
+    const set_price = ref<string>("");
 
     const reset = () => {
       svgText.value = "";
