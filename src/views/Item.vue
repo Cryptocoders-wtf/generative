@@ -278,7 +278,7 @@ export default defineComponent({
       console.log("requewt owner from contrcat");
       const strage_key = tokenAddress + "_" + token_id;
       const data_str = localStorage.getItem(strage_key);
-
+      var data;
       console.log(strage_key);
       console.log(data_str);
       console.log(data);
