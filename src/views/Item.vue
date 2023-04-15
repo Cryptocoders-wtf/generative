@@ -218,25 +218,27 @@ export default defineComponent({
     TokenActions,
   },
   setup(props) {
+    const store = useStore();
+    const route = useRoute();
+    const account = computed(() => store.state.account);
+
     const pathData = ref<any>([]);
     const existData = computed(() => {
       return pathData.value.length > 0;
     });
 
+    const token_id = route.params.token_id; //get from url parameter
     const token_obj = ref<Token721p2p>({
       data: { name: "", image: "" },
       price: 0,
       isOwner: false,
-      token_id: 0,
+      token_id,
     });
 
     const reset = () => {
       pathData.value = [];
     };
 
-    const store = useStore();
-    const route = useRoute();
-    const account = computed(() => store.state.account);
 
     const network = "mumbai";
     const tokenAddress = addresses.svgtoken[network];
@@ -271,18 +273,15 @@ export default defineComponent({
     
     const updateToken = async () => {
       console.log("1. updateToken was called.");
-      const token_id = route.params.token_id; //get from url parameter
-
-      console.log("load token:" + " " + token_id);
 
       console.log("requewt owner from contrcat");
+
+      
       const strage_key = tokenAddress + "_" + token_id;
       const data_str = localStorage.getItem(strage_key);
       var data;
-      console.log(strage_key);
-      console.log(data_str);
-      console.log(data);
 
+      
       if (data_str && data_str != "undefined") {
         console.log("load data from localstrage");
         data = JSON.parse(data_str);
@@ -294,16 +293,13 @@ export default defineComponent({
         localStorage.setItem(strage_key, JSON.stringify(data));
       }
 
-      token_obj.value = {
-        data: data,
-        price: -1,
-        isOwner: false,
-        token_id: Number(token_id),
-      };
+      token_obj.value.data = data;
+      token_obj.value.price = -1;
 
-      const owner = await tokenContract.ownerOf(token_id);
-
-      const price_big = await tokenContract.getPriceOf(token_id);
+      const [owner, price_big] = await Promise.all([
+        tokenContract.ownerOf(token_id),
+        tokenContract.getPriceOf(token_id),
+      ]);
       const price = utils.formatEther(price_big);
 
       const isOwner =
