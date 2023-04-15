@@ -62,7 +62,7 @@ abstract contract ERC721P2P is IERC721P2P, ERC721WithOperatorFilter, Ownable {
   function setPriceOf(uint256 _tokenId, uint256 _price) public override {
     require(ownerOf(_tokenId) == msg.sender, 'Only the onwer can set the price');
     prices[_tokenId] = _price;
-    emit UpdatePrice(_tokenId, _price);
+    emit SetPrice(_tokenId, _price);
   }
 
   function getPriceOf(uint256 _tokenId) external view override returns (uint256) {
