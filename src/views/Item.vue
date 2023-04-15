@@ -1,6 +1,13 @@
 <template>
   <div class="home">
-    <div class="grid grid-cols-2">
+    <div v-if="notFound">
+      <span class="text-4xl font-extrabold">
+        Not Found NFT.
+      </span>
+      <img class="rounded-2xl" src="@/assets/heroimg.png" alt="mockup" />
+    </div>
+    <div class="grid grid-cols-2" v-else>
+      
       <div class="mx-5 my-10 w-full rounded-md border-2 p-5">
         <div v-if="token_obj.data.image == ''" class="text-center align-middle">
           <img
@@ -218,6 +225,7 @@ export default defineComponent({
     TokenActions,
   },
   setup(props) {
+    const notFound = ref(false);
     const pathData = ref<any>([]);
     const existData = computed(() => {
       return pathData.value.length > 0;
@@ -288,10 +296,17 @@ export default defineComponent({
         data = JSON.parse(data_str);
       } else {
         console.log("no localstrage request data");
-        const ret = await tokenContract.tokenURI(token_id);
-        console.log(ret);
-        data = JSON.parse(atob(ret.split(",")[1]));
-        localStorage.setItem(strage_key, JSON.stringify(data));
+        try {
+          const ret = await tokenContract.tokenURI(token_id);
+          console.log(ret);
+          data = JSON.parse(atob(ret.split(",")[1]));
+          localStorage.setItem(strage_key, JSON.stringify(data));
+        } catch (e) {
+          notFound.value = true;
+          console.log(e);
+          console.log("FFF");
+          return;
+        }
       }
 
       token_obj.value = {
@@ -344,6 +359,8 @@ export default defineComponent({
       token_obj,
       existData,
       callUpdateToken,
+
+      notFound,
     };
   },
 });
