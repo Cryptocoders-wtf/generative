@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="grid grid-cols-2">
-      <div class="w-full rounded-md border-2">
+      <div class="w-full rounded-md border-2 mx-5 my-10 p-5">
         <div v-if="token_obj.data.image == ''" class="text-center align-middle">
           <img
             src="@/assets/preload.gif"
@@ -16,9 +16,7 @@
         <div v-if="token_obj.data.image != ''">
           <TokenActions :token_obj="token_obj" />
         </div>
-
-        <h2>{{ token_obj.data.name }}</h2>
-
+        
         <div
           class="my-5 flex justify-center space-x-2 text-neutral-700 dark:text-neutral-300"
         >
