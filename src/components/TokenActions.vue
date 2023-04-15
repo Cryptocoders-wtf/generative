@@ -87,7 +87,7 @@ export default defineComponent({
     const set_price = ref<string>("0");
     const { token_obj } = toRefs(props);
     watch(token_obj, () => {
-      console.log("TokenActions: detected token_obj change.")
+      console.log("TokenActions: detected token_obj change.");
       set_price.value = token_obj.value?.price;
     });
     const account = computed(() => store.state.account);
