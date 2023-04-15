@@ -2,18 +2,21 @@
   <div class="layout">
     <Header />
     <router-view />
+    <Footer />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, onUnmounted } from "vue";
 import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
 import { useStore } from "vuex";
 
 export default defineComponent({
   name: "AppLayout",
   components: {
     Header,
+    Footer,
   },
   setup() {
     const store = useStore();
