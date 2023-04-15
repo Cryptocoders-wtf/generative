@@ -270,23 +270,40 @@ export default defineComponent({
 
     const nextToken = ref(0);
 
-    const updateToken = () => {
-      tokenContract.totalSupply().then(async (nextId: BigNumber) => {
-        nextToken.value = nextId.toNumber();
-        const token = nextId.toNumber() - 1;
+    const updateToken = async () => {
         const token_id = parseInt(route.params.token_id[0], 10); //get from url parameter
 
-        console.log("load token:" + token + " " + token_id);
+          console.log('requewt owner from contrcat')
+            const strage_key = tokenAddress + '_' + token_id;
+            var data;
+            const data_str = localStorage.getItem(strage_key);
 
-        if (token > token_id-1) {
+            console.log(strage_key);
+            console.log(data_str);
+            console.log(data);
+
+            if(data_str && data_str != "undefined") {
+              console.log('load data from localstrage')
+              data = JSON.parse(data_str);
+            } else {        
+              console.log('no localstrage request data')
+              const ret = await tokenContract.tokenURI(token_id);
+              console.log(ret);      
+              data = JSON.parse(atob(ret.split(",")[1]));
+              localStorage.setItem(strage_key, JSON.stringify(data))
+            }
+
+            token_obj.value = {
+              data: data,
+              price: -1,
+              isOwner: false,
+              token_id: token_id
+            };
+
             const owner = await tokenContract.ownerOf(token_id);
-            const ret = await tokenContract.tokenURI(token_id);
-            console.log(ret);
-            const data = JSON.parse(atob(ret.split(",")[1]));
+
             const price_big = await tokenContract.getPriceOf(token_id);
             const price = utils.formatEther(price_big);
-
-          console.log(price);
 
           const isOwner =
             utils.getAddress(account.value) == utils.getAddress(owner);
@@ -299,9 +316,8 @@ export default defineComponent({
           };
 
           console.log(token_obj);
-        }
-      });
     };
+
     updateToken();
 
     const polling = async () => {

@@ -11,6 +11,12 @@
               {{ token_obj.price }} ETH
             </p>
           </div>
+          <div v-else-if="token_obj.price < 0">
+            <img
+            src="@/assets/preload.gif"
+            class="mx-auto h-10 w-10 align-middle"
+          />
+          </div>
           <div v-else>
             <p class="text-gray-2990 font-bold  text-2xl text-left">Not on Sale! </p>
           </div>
