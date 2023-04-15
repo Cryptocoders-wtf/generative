@@ -344,17 +344,6 @@ export default defineComponent({
       updateToken();
     };
 
-    const polling = async () => {
-      let state = true;
-      while (state) {
-        await sleep(2);
-        const nextId = await tokenContract.totalSupply();
-        if (nextToken.value != nextId.toNumber()) {
-          nextToken.value = nextId.toNumber();
-          state = false;
-        }
-      }
-    };
     const pageUrl = location.href;
     
     return {
