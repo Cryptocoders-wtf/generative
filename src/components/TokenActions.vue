@@ -151,6 +151,7 @@ export default defineComponent({
       } catch (e) {
         console.error(e);
         alert("Sorry, purchase failed with:" + e);
+        isExecuting.value = 0; // non-execute
       }
     };
 
