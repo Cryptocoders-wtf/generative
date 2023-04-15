@@ -80,7 +80,7 @@ export default defineComponent({
       type: Object as PropType<Token721p2p>,
     },
   },
-  emits: ["purchased"],
+  emits: ["purchased","setprice"],
   setup(props, context) {
     const isExecuting = ref(0); // 0:non-execute, 1:executing, 2:complete
     const store = useStore();
@@ -121,6 +121,7 @@ export default defineComponent({
         const result = await tx.wait();
         await polling(tx);
         isExecuting.value = 0; // non-execute
+        context.emit("setprice");
       } catch (e) {
         console.error(e);
         alert("Sorry, setPrice failed with:" + e);

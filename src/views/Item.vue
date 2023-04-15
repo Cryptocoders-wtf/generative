@@ -14,7 +14,7 @@
       </div>
       <div>
         <div v-if="token_obj.data.image != ''">
-          <TokenActions :token_obj="token_obj" @purchased="purchased" />
+          <TokenActions :token_obj="token_obj" @purchased="purchased" @setprice="updateToken" />
         </div>
 
         <div
@@ -354,6 +354,7 @@ export default defineComponent({
       token_obj,
       existData,
       purchased,
+      updateToken,
     };
   },
 });
