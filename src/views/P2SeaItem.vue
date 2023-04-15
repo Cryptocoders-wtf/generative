@@ -47,6 +47,7 @@ import { compressPath } from "@/utils/pathUtils";
 
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import { Token721p2p } from "@/models/token";
 
 const sleep = async (seconds: number) => {
   return await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
@@ -63,17 +64,8 @@ export default defineComponent({
       return pathData.value.length > 0;
     });
 
-    interface item {
-        data: {
-            name: string,
-            image: string
-        },
-        price: any,
-        isOwner: boolean,
-        token_id: number,
-    }
 
-    const token_obj = ref<item>({data:{name:'', image:''}, price:0, isOwner:false, token_id:0})
+    const token_obj = ref<Token721p2p>({data:{name:'', image:''}, price:0, isOwner:false, token_id:0})
 
     const reset = () => {
       pathData.value = [];
@@ -126,7 +118,7 @@ export default defineComponent({
             console.log(ret);
             const data = JSON.parse(atob(ret.split(",")[1]));
             const price_big = await tokenContract.getPriceOf(token_id);
-            const price = price_big.toNumber()
+            const price = utils.formatEther(price_big);
 
             console.log(price)
 

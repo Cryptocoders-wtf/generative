@@ -40,17 +40,15 @@
 import { defineComponent, ref, computed } from "vue";
 import { BigNumber, utils } from "ethers";
 import { useStore } from "vuex";
+import { Token721p2p } from "@/models/token";
 
 export default defineComponent({
   props: {
-    token_obj: {
-      type: Object,
-    },
+    token_obj:Object
   },
-
   setup(props) {
     const store = useStore();
-    const set_price = ref<number>(0);
+    const set_price = ref<string>("0");
     const account = computed(() => store.state.account); 
 
      const setPrice = async (id: number) => {
@@ -62,7 +60,7 @@ export default defineComponent({
         console.log(id);
         const tokenid = id;
         console.log("set_price : ", set_price.value, "tokenid : ", tokenid)
-        const price = BigNumber.from(set_price.value);
+        const price = utils.parseEther(set_price.value);
         console.log(tokenid,set_price);
 
         console.log("price : ", price)

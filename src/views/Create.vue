@@ -140,7 +140,7 @@ export default defineComponent({
     const store = useStore();
     const account = computed(() => store.state.account);
     const prices = ref<any>([]);
-    const set_price = ref<number>(0);
+    const set_price = ref<string>("0");
 
     const reset = () => {
       svgText.value = "";
@@ -244,7 +244,7 @@ export default defineComponent({
 
       try {
         console.log(ret);
-        const price = BigNumber.from(set_price.value);
+        const price = utils.parseEther(set_price.value);
         console.log(price);
         const tx = await contract.mintToSell(ret,price);
         console.log("mint:tx");
