@@ -21,7 +21,7 @@ import SvgTest from "@/views/SVGTest.vue";
 import Message from "@/views/Message.vue";
 import MessagePNouns from "@/views/MessagePNouns.vue";
 
-import P2SeaItem from "@/views/P2SeaItem.vue";
+import P2SeaItem from "@/views/Item.vue";
 
 const routeChildren: Array<RouteRecordRaw> = [
   {
