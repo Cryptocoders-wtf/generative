@@ -32,6 +32,13 @@
     <div class="mt-2">
       <NetworkGate :expectedNetwork="chainId">
         <div class="flex justify-center">
+          <input
+            type="text"
+            v-model="set_price"
+            maxlength="512"
+            minlength="1"
+            class="text-sm my-2 text-slate-500 rounded-sm border-1 text-sm bg-gray-100 file:text-gray-800 hover:bg-white"
+          />
           <div
             @click="mint"
             :disabled="!existData"
@@ -146,6 +153,7 @@ export default defineComponent({
     const store = useStore();
     const account = computed(() => store.state.account);
     const prices = ref<any>([]);
+    const set_price = ref<number>(0);
 
     const reset = () => {
       svgText.value = "";
@@ -244,6 +252,8 @@ export default defineComponent({
 
       try {
         console.log(ret);
+        // TBD add price on Mint
+        console.log(set_price.value);
         const tx = await contract.functions.mintWithAsset(ret);
         console.log("mint:tx");
         const result = await tx.wait();
@@ -281,6 +291,7 @@ export default defineComponent({
       isExecuting,
 
       prices,
+      set_price,
     };
   },
 });
