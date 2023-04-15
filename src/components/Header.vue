@@ -3,7 +3,7 @@
     id="header"
     class="mx-auto flex max-w-3xl items-center justify-between py-1.5"
   >
-    <div class="flex items-center justify-start gap-1">
+    <div class="flex items-center justify-start ">
       <img src="@/assets/logo.svg" width="250" height="auto"  title="Open Galaxy"/>
 
     </div>
