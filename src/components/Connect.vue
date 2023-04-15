@@ -8,10 +8,6 @@
           class="inline-block rounded px-6 py-2.5 leading-tight text-gray-500 shadow-md"
           disabled
         >
-          <!-- <img
-            class="absolute h-3 w-8 animate-spin"
-            src="@/assets/red160px.png"
-          /> -->
         <img
           class="absolute h-5 w-5"
           src="@/assets/preload.gif"
@@ -33,10 +29,6 @@
           class="inline-block rounded px-6 py-2.5 leading-tight text-gray-500 shadow-md"
           disabled
         >
-          <!-- <img
-            class="absolute h-3 w-8 animate-spin"
-            src="@/assets/red160px.png"
-          /> -->
         <img
           class="absolute h-5 w-5"
           src="@/assets/preload.gif"
