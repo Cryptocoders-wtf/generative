@@ -269,6 +269,12 @@ export default defineComponent({
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider = getProvider(network, alchemyKey);
     const tokenContract = getSVGTokenContract(tokenAddress, provider);
+    const onid = tokenContract.on("Transfer",async (arg)=>{
+      console.log(arg)
+      await updateToken();
+      console.log("transfer update done");      
+    });
+    console.log(onid);
     const executeMode = ref(0); // 0:loading, 1:executing, 2:non-execute
 
     const nextToken = ref(0);
