@@ -3,12 +3,14 @@
 
     <div class="flex justify-center">
         <div class="mt-2">
-
-        <div class="mx-8">
-            {{ token_obj.data.name }}
-            <img :src="token_obj.data.image" class="w-72 border-2" />
-            {{ token_obj.price }} 
-        </div>
+          <div v-if="token_obj.data.name" class="mx-8" >
+              {{ token_obj.data.name }}
+              <img :src="token_obj.data.image" class="w-72 h-72 border-2" />
+              {{ token_obj.price }} 
+          </div>
+          <div v-else class="mx-8 my-8" >
+            Loading...
+          </div>
         </div>
     </div>
 
