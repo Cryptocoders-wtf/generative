@@ -6,6 +6,9 @@ import * as fs from "fs";
 import * as Sentry from "@sentry/node";
 // set up rate limiter: maximum of five requests per minute
 import rateLimit from "express-rate-limit";
+import { tokenSvg } from "../lib/contract";
+import { svgToPNG } from "../lib/image";
+
 
 export const app = express();
 export const router = express.Router();
@@ -144,10 +147,13 @@ const image = async (req: any, res: any) => {
   if (!/^[0-9a-zA-Z]+$/.test(token_id)) {
     return res.status(404).send("not found");
   }
-  console.log(image);
+  const svg = await tokenSvg(contract,token_id);
+  const img = await svgToPNG(svg,320);
+  console.log(img);
+  res.set("Cache-Control", "public, max-age=300, s-maxage=600");
   res.setHeader("Content-Type", "image/jpeg");
   res.type("jpg");
-  res.send(image);
+  res.send(img);
 };
 
 // eslint-disable-next-line
