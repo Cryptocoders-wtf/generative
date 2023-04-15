@@ -44,7 +44,9 @@ describe('SVGImage P2P', function () {
   let result, tx, err, balance;
   const zeroAddress = '0x0000000000000000000000000000000000000000';
   const price = ethers.BigNumber.from('1000000000000000');
+  const price2 = ethers.BigNumber.from('2000000000000000');
   const tokenId0 = 0;
+  const tokenId1 = 1;
   console.log(ethers.utils.formatEther(price));
 
   it('Initial TotalSupply', async function () {
@@ -121,5 +123,15 @@ describe('SVGImage P2P', function () {
     expect(balance.sub(balance2)).equal(price.div(20).mul(19)); // 95%
     balance = await token.etherBalanceOf(minter.address);
     expect(balance.sub(balanceA)).equal(price.div(20).mul(1)); // 5%
+  });
+  it('MintToSell by user1', async function () {
+    tx = await token1.mintToSell(svgdata, price2);
+
+    await tx.wait();
+    result = await token.totalSupply();
+    expect(result.toNumber()).equal(2);
+
+    result = await token.getPriceOf(tokenId1);
+    expect(result.toNumber()).equal(price2);
   });
 });
