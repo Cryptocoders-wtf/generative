@@ -27,7 +27,6 @@ import { useStore } from "vuex";
 import { switchNetwork } from "@/utils/MetaMask";
 import Connect from "@/components/Connect.vue";
 
-
 export default defineComponent({
   props: {
     expectedNetwork: {

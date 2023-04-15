@@ -1,53 +1,75 @@
 <template>
-  <div>
-    <div v-if="token_obj.price > 0">On Sale! {{ token_obj.price }} eth</div>
-    <div v-else>Not on sale.</div>
+  <div class="rounded-md border-1 border m-10 p-5 border-gray-300 bg-white">
+    <div class="m-10">
+      <h2 class="font-bold text-3xl">{{ token_obj.data.name }}</h2>
+    </div>
 
+    <div v-if="token_obj.data.name">
+      <div v-if="token_obj.price > 0">
+            <p class="text-orange-600 font-bold  text-2xl text-left">Sale! </p>
+            <p class=" font-bold font-sans text-3xl text-left">
+              {{ token_obj.price }} ETH
+            </p>
+          </div>
+          <div v-else>
+            <p class="text-gray-2990 font-bold  text-2xl text-left">Not on Sale! </p>
+          </div>
+      </div>
+
+    
     <div v-if="token_obj.isOwner">
       <input
-        type="text"
-        v-model="set_price"
-        maxlength="512"
-        minlength="1"
-        class="border-1 my-2 rounded-sm bg-gray-100 text-sm text-sm text-slate-500 file:text-gray-800 hover:bg-white"
+            v-model="set_price"
+            type="text"
+            id="price"
+            class="my-5 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+            placeholder="Input Price (ETH)"
+            required
       />
 
       <button
         @click="setPrice(token_obj.token_id)"
-        class="mb-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+        class="my-5 mr-2 mb-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-20 py-5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
       >
         Set price
       </button>
+
     </div>
     <div v-else>
       <div v-if="token_obj.price > 0">
-        <button
-          @click="purchase(token_obj.token_id)"
-          class="mb-2 inline-block rounded bg-green-600 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
-        >
-          Purchase!
-        </button>
+
+
+      <button
+        @click="purchase(token_obj.token_id)"
+        class="my-5 mr-2 mb-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-20 py-5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
+      >
+         BUY!
+      </button>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
-import { BigNumber, utils } from "ethers";
+import { defineComponent, ref, computed, PropType, toRefs, watch } from "vue";
+import { utils } from "ethers";
 import { useStore } from "vuex";
+import { Token721p2p } from "@/models/token";
 
 export default defineComponent({
   props: {
     token_obj: {
-      type: Object,
-    },
+      type: Object as PropType<Token721p2p>,
+    },emits: ["purchased"],
   },
-  emits: ["purchased"],
-
   setup(props, context) {
+    
     const store = useStore();
-    const set_price = ref<number>(0);
+    const set_price = ref<string>("0");
+    const { token_obj } = toRefs(props);
+    watch(token_obj, () => {
+      set_price.value = token_obj.value?.price;
+    });
     const account = computed(() => store.state.account);
 
     const setPrice = async (id: number) => {
@@ -59,7 +81,7 @@ export default defineComponent({
         console.log(id);
         const tokenid = id;
         console.log("set_price : ", set_price.value, "tokenid : ", tokenid);
-        const price = BigNumber.from(set_price.value);
+        const price = utils.parseEther(set_price.value);
         console.log(tokenid, set_price);
 
         console.log("price : ", price);

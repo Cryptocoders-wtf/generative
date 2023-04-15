@@ -81,7 +81,7 @@ export const addresses: Addresses = {
     goerli: message_pnouns_goerli.messagePnounsToken,
   },
   messageSplatter: {
-    goerli: message_splatter_goerli.messageSplatterToken
+    goerli: message_splatter_goerli.messageSplatterToken,
   },
   svgHelper: {
     goerli: splatter_goerli.svgHelperAddress,
@@ -262,6 +262,6 @@ export const addresses: Addresses = {
     goerli: dynamic_goerli.tokenGate,
   },
   svgtoken: {
-    mumbai: svgimage_mumbai.token
-  }
+    mumbai: svgimage_mumbai.token,
+  },
 };

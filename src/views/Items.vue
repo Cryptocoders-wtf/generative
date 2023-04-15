@@ -37,7 +37,7 @@
             v-model="set_price"
             maxlength="512"
             minlength="1"
-            class="text-sm my-2 text-slate-500 rounded-sm border-1 text-sm bg-gray-100 file:text-gray-800 hover:bg-white"
+            class="border-1 my-2 rounded-sm bg-gray-100 text-sm text-sm text-slate-500 file:text-gray-800 hover:bg-white"
           />
           <div
             @click="mint"
@@ -163,7 +163,7 @@ export default defineComponent({
     const account = computed(() => store.state.account);
     const prices = ref<any>([]);
 
-    const set_price = ref<number>(0);
+    const set_price = ref<string>("0");
 
     const reset = () => {
       svgText.value = "";
@@ -234,13 +234,18 @@ export default defineComponent({
             const owner = await tokenContract.ownerOf(id);
             const isOwner =
               utils.getAddress(account.value) == utils.getAddress(owner);
-            const price = await tokenContract.getPriceOf(id);
+            const price_big = await tokenContract.getPriceOf(id);
+            const price = utils.formatEther(price_big);
+
             const ret = await tokenContract.tokenURI(id);
             const data = JSON.parse(atob(ret.split(",")[1]));
-            
-            tokens.value.push({data:data, price:price, isOwner:isOwner, token_id:id}
-);
-            
+
+            tokens.value.push({
+              data: data,
+              price: price,
+              isOwner: isOwner,
+              token_id: id,
+            });
 
             tokens.value.push({ id, owner, data, isOwner, price });
           }
@@ -297,9 +302,9 @@ export default defineComponent({
 
       try {
         console.log(ret);
-        const price = BigNumber.from(set_price.value);
+        const price = utils.parseEther(set_price.value);
         console.log(price);
-        const tx = await contract.mintToSell(ret,price);
+        const tx = await contract.mintToSell(ret, price);
         console.log("mint:tx");
         const result = await tx.wait();
         console.log("mint:gasUsed", result.gasUsed.toNumber());

@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <div class="flex justify-center">
+<<<<<<< HEAD
       <div class="mt-2">
         <div v-if="executeMode == 0">
           <img class="h-20 w-20" src="@/assets/preload.gif" />
@@ -9,11 +10,34 @@
           {{ token_obj.data.name }}
           <img :src="token_obj.data.image" class="w-72 border-2" />
           {{ token_obj.price }} eth
+=======
+<<<<<<< HEAD
+      <div class="mt-2">
+        <div class="mx-8">
+          {{ token_obj.data.name }}
+          <img :src="token_obj.data.image" class="w-72 border-2" />
+          {{ token_obj.price }}
+=======
+        <div class="mt-2">
+          <div v-if="token_obj.data.name" class="mx-8" >
+              {{ token_obj.data.name }}
+              <img :src="token_obj.data.image" class="w-72 h-72 border-2" />
+              {{ token_obj.price }} 
+          </div>
+          <div v-else class="mx-8 my-8" >
+            Loading...
+          </div>
+>>>>>>> origin/feat/ETHGlobal2023
+>>>>>>> origin/feat/ETHGlobal2023
         </div>
       </div>
     </div>
 
+<<<<<<< HEAD
     <TokenActions :token_obj="token_obj" @purchased="purchased" />
+=======
+    <TokenActions :token_obj="token_obj" />
+>>>>>>> origin/feat/ETHGlobal2023
   </div>
 
   <NetworkGate :expectedNetwork="chainId" />
@@ -43,6 +67,7 @@ import { compressPath } from "@/utils/pathUtils";
 
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import { Token721p2p } from "@/models/token";
 
 const sleep = async (seconds: number) => {
   return await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
@@ -59,6 +84,7 @@ export default defineComponent({
       return pathData.value.length > 0;
     });
 
+<<<<<<< HEAD
     interface item {
       data: {
         name: string;
@@ -75,6 +101,13 @@ export default defineComponent({
       isOwner: false,
       token_id: 0,
     });
+<<<<<<< HEAD
+=======
+=======
+
+    const token_obj = ref<Token721p2p>({data:{name:'', image:''}, price:0, isOwner:false, token_id:0})
+>>>>>>> origin/feat/ETHGlobal2023
+>>>>>>> origin/feat/ETHGlobal2023
 
     const reset = () => {
       pathData.value = [];
@@ -115,6 +148,7 @@ export default defineComponent({
 
     const nextToken = ref(0);
 
+<<<<<<< HEAD
     const updateToken = async () => {
       console.log("route.params.token_id", route.params.token_id);
       const token_id = route.params.token_id; //get from url parameter
@@ -143,6 +177,39 @@ export default defineComponent({
 
       console.log(token_obj);
       executeMode.value = 2; // non-execute
+=======
+    const updateToken = () => {
+      tokenContract.totalSupply().then(async (nextId: BigNumber) => {
+        nextToken.value = nextId.toNumber();
+        const token = nextId.toNumber() - 1;
+        const token_id = parseInt(route.params.token_id[0], 10); //get from url parameter
+
+        console.log("load token:" + token + " " + token_id);
+
+        if (token > token_id-1) {
+            const owner = await tokenContract.ownerOf(token_id);
+            const ret = await tokenContract.tokenURI(token_id);
+            console.log(ret);
+            const data = JSON.parse(atob(ret.split(",")[1]));
+            const price_big = await tokenContract.getPriceOf(token_id);
+            const price = utils.formatEther(price_big);
+
+          console.log(price);
+
+          const isOwner =
+            utils.getAddress(account.value) == utils.getAddress(owner);
+
+          token_obj.value = {
+            data: data,
+            price: price,
+            isOwner: isOwner,
+            token_id: token_id,
+          };
+
+          console.log(token_obj);
+        }
+      });
+>>>>>>> origin/feat/ETHGlobal2023
     };
     updateToken();
 
