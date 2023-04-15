@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="grid grid-cols-2">
-      <div class="w-full rounded-md border-2 mx-5 my-10 p-5">
+      <div class="mx-5 my-10 w-full rounded-md border-2 p-5">
         <div v-if="token_obj.data.image == ''" class="text-center align-middle">
           <img
             src="@/assets/preload.gif"
@@ -14,9 +14,9 @@
       </div>
       <div>
         <div v-if="token_obj.data.image != ''">
-          <TokenActions :token_obj="token_obj" />
+          <TokenActions :token_obj="token_obj" @purchased="purchased" />
         </div>
-        
+
         <div
           class="my-5 flex justify-center space-x-2 text-neutral-700 dark:text-neutral-300"
         >
@@ -192,6 +192,7 @@ import {
   getSVGTokenContract,
 } from "@/utils/const";
 
+import { addresses } from "@/utils/addresses";
 import TokenActions from "@/components/TokenActions.vue";
 
 //
@@ -201,6 +202,7 @@ import { compressPath } from "@/utils/pathUtils";
 
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import { Token721p2p } from "@/models/token";
 
 const sleep = async (seconds: number) => {
   return await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
@@ -217,17 +219,17 @@ export default defineComponent({
       return pathData.value.length > 0;
     });
 
-    interface item {
-      data: {
-        name: string;
-        image: string;
-      };
-      price: any;
-      isOwner: boolean;
-      token_id: number;
-    }
+    // interface item {
+    //   data: {
+    //     name: string;
+    //     image: string;
+    //   };
+    //   price: any;
+    //   isOwner: boolean;
+    //   token_id: string;
+    // }
 
-    const token_obj = ref<item>({
+    const token_obj = ref<Token721p2p>({
       data: { name: "", image: "" },
       price: 0,
       isOwner: false,
@@ -257,7 +259,7 @@ export default defineComponent({
     // token      contract="0x5F0f949949c82f660B38FC7601A45498fa2C9fC9"
 
     const network = "mumbai";
-    const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
+    const tokenAddress = addresses.svgtoken[network];
 
     const chainId = ChainIdMap[network];
 
@@ -267,11 +269,14 @@ export default defineComponent({
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider = getProvider(network, alchemyKey);
     const tokenContract = getSVGTokenContract(tokenAddress, provider);
+    const executeMode = ref(0); // 0:loading, 1:executing, 2:non-execute
 
     const nextToken = ref(0);
 
     const updateToken = async () => {
-        const token_id = parseInt(route.params.token_id[0], 10); //get from url parameter
+      const token_id = route.params.token_id; //get from url parameter
+
+        console.log("load token:" + " " + token_id);
 
           console.log('requewt owner from contrcat')
             const strage_key = tokenAddress + '_' + token_id;
@@ -285,10 +290,10 @@ export default defineComponent({
             if(data_str && data_str != "undefined") {
               console.log('load data from localstrage')
               data = JSON.parse(data_str);
-            } else {        
+            } else {
               console.log('no localstrage request data')
               const ret = await tokenContract.tokenURI(token_id);
-              console.log(ret);      
+              console.log(ret);
               data = JSON.parse(atob(ret.split(",")[1]));
               localStorage.setItem(strage_key, JSON.stringify(data))
             }
@@ -297,7 +302,7 @@ export default defineComponent({
               data: data,
               price: -1,
               isOwner: false,
-              token_id: token_id
+              token_id: Number(token_id)
             };
 
             const owner = await tokenContract.ownerOf(token_id);
@@ -312,13 +317,19 @@ export default defineComponent({
             data: data,
             price: price,
             isOwner: isOwner,
-            token_id: token_id,
+            token_id: Number(token_id),
           };
 
           console.log(token_obj);
+          executeMode.value = 2; // non-execute
     };
 
     updateToken();
+
+    const purchased = async () => {
+      console.log("***###*** purchased event was fired");
+      updateToken();
+    };
 
     const polling = async () => {
       let state = true;
@@ -336,6 +347,7 @@ export default defineComponent({
       chainId,
       token_obj,
       existData,
+      purchased,
     };
   },
 });

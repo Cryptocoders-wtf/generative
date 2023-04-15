@@ -143,8 +143,6 @@ export const getSVGTokenContract = (
     ProviderSVGTokenEx.wabi.abi,
     provider
   );
-  localStorage.setItem("tokenContract", JSON.stringify(tokenContract));
-  
   return tokenContract;
 };
 
