@@ -86,28 +86,6 @@
             </div>
           </div>
         </div>
-
-        <div class="mx-10 text-left ">
-          <li>All data is converted to the d attribute of the path element.</li>
-          <li>
-            Only circle, ellipses, line, rect, polygon, polyline element are
-            converted to the d attribute of the path element. All other elements
-            are ignored.
-          </li>
-          <li>
-            g elements are expanded. nested g elements are expanded to flat.
-          </li>
-          <li>Fill is retained</li>
-          <li>
-            stroke and stroke-width are supported.
-            stroke-linecap:round;stroke-linejoin:round can be specified to add
-            stroke.
-          </li>
-          <li>
-            Size of image is normalized to 1024*1024 based on viewBox or SVG
-            properties width, height.
-          </li>
-        </div>
       </NetworkGate>
       </div>
     </div>
