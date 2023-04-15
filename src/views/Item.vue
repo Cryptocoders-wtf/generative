@@ -14,7 +14,7 @@
       </div>
       <div>
         <div v-if="token_obj.data.image != ''">
-          <TokenActions :token_obj="token_obj" />
+          <TokenActions :token_obj="token_obj" @purchased="purchased" />
         </div>
         
         <div
@@ -192,6 +192,7 @@ import {
   getSVGTokenContract,
 } from "@/utils/const";
 
+import { addresses } from "@/utils/addresses";
 import TokenActions from "@/components/TokenActions.vue";
 
 //
@@ -201,6 +202,7 @@ import { compressPath } from "@/utils/pathUtils";
 
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import { Token721p2p } from "@/models/token";
 
 const sleep = async (seconds: number) => {
   return await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
@@ -224,10 +226,10 @@ export default defineComponent({
       };
       price: any;
       isOwner: boolean;
-      token_id: number;
+      token_id: string;
     }
 
-    const token_obj = ref<item>({
+    const token_obj = ref<Token721p2p>({
       data: { name: "", image: "" },
       price: 0,
       isOwner: false,
@@ -257,7 +259,7 @@ export default defineComponent({
     // token      contract="0x5F0f949949c82f660B38FC7601A45498fa2C9fC9"
 
     const network = "mumbai";
-    const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
+    const tokenAddress = addresses.svgtoken[network];
 
     const chainId = ChainIdMap[network];
 
@@ -267,18 +269,15 @@ export default defineComponent({
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider = getProvider(network, alchemyKey);
     const tokenContract = getSVGTokenContract(tokenAddress, provider);
+    const executeMode = ref(0); // 0:loading, 1:executing, 2:non-execute
 
     const nextToken = ref(0);
 
-    const updateToken = () => {
-      tokenContract.totalSupply().then(async (nextId: BigNumber) => {
-        nextToken.value = nextId.toNumber();
-        const token = nextId.toNumber() - 1;
-        const token_id = parseInt(route.params.token_id[0], 10); //get from url parameter
+    const updateToken = async () => {
+      const token_id = route.params.token_id; //get from url parameter
 
-        console.log("load token:" + token + " " + token_id);
+        console.log("load token:" + " " + token_id);
 
-        if (token > token_id-1) {
             const owner = await tokenContract.ownerOf(token_id);
             const ret = await tokenContract.tokenURI(token_id);
             console.log(ret);
@@ -295,14 +294,18 @@ export default defineComponent({
             data: data,
             price: price,
             isOwner: isOwner,
-            token_id: token_id,
+            token_id: Number(token_id),
           };
 
           console.log(token_obj);
-        }
-      });
+          executeMode.value = 2; // non-execute
     };
     updateToken();
+
+    const purchased = async () => {
+      console.log("***###*** purchased event was fired");
+      updateToken();
+    };
 
     const polling = async () => {
       let state = true;
@@ -320,6 +323,7 @@ export default defineComponent({
       chainId,
       token_obj,
       existData,
+      purchased,
     };
   },
 });
