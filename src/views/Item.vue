@@ -182,8 +182,13 @@
         </div>
       </div>
 
-      <div></div>
     </div>
+  </div>
+  <div>
+    <vue-qrcode
+      :value="pageUrl"
+      class="w-120 m-auto"
+      ></vue-qrcode>
   </div>
 
   <NetworkGate :expectedNetwork="chainId" />
@@ -343,13 +348,15 @@ export default defineComponent({
         }
       }
     };
-
+    const pageUrl = location.href;
+    
     return {
       chainId,
       token_obj,
       existData,
       callUpdateToken,
 
+      pageUrl,
       notFound,
     };
   },
