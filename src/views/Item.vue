@@ -263,7 +263,6 @@ export default defineComponent({
       console.log("price update done");
     });
     console.log(onid2);
-    const executeMode = ref(0); // 0:loading, 1:executing, 2:non-execute
 
     const nextToken = ref(0);
 
@@ -297,7 +296,6 @@ export default defineComponent({
         tokenContract.getPriceOf(token_id),
       ]);
       const price = utils.formatEther(price_big);
-
       const isOwner = account.value ? 
         utils.getAddress(account.value) == utils.getAddress(owner) : false; 
 
@@ -305,7 +303,6 @@ export default defineComponent({
       token_obj.value.isOwner = isOwner;
 
       console.log(token_obj);
-      executeMode.value = 2; // non-execute
     };
 
     updateToken();
