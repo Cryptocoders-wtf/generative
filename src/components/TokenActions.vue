@@ -1,7 +1,11 @@
 <template>
-  <div>
-    <div v-if="token_obj.price > 0">On Sale! {{ token_obj.price }} eth</div>
-    <div v-else>Not on sale.</div>
+  <div v-if="token_obj.data.name">
+    <div v-if="token_obj.price > 0">
+          On Sale!  {{ token_obj.price }} eth
+        </div>
+        <div v-else>
+          Not on sale.
+    </div>
 
     <div v-if="token_obj.isOwner">
       <input
@@ -36,18 +40,16 @@
 import { defineComponent, ref, computed } from "vue";
 import { BigNumber, utils } from "ethers";
 import { useStore } from "vuex";
+import { Token721p2p } from "@/models/token";
 
 export default defineComponent({
   props: {
-    token_obj: {
-      type: Object,
-    },
+    token_obj:Object
   },
-
   setup(props) {
     const store = useStore();
-    const set_price = ref<number>(0);
-    const account = computed(() => store.state.account);
+    const set_price = ref<string>("0");
+    const account = computed(() => store.state.account); 
 
     const setPrice = async (id: number) => {
       if (store.state.networkContext == null) {
@@ -57,9 +59,9 @@ export default defineComponent({
       try {
         console.log(id);
         const tokenid = id;
-        console.log("set_price : ", set_price.value, "tokenid : ", tokenid);
-        const price = BigNumber.from(set_price.value);
-        console.log(tokenid, set_price);
+        console.log("set_price : ", set_price.value, "tokenid : ", tokenid)
+        const price = utils.parseEther(set_price.value);
+        console.log(tokenid,set_price);
 
         console.log("price : ", price);
 

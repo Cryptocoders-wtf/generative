@@ -280,13 +280,13 @@ export default defineComponent({
 
         console.log("load token:" + token + " " + token_id);
 
-        if (token > token_id - 1) {
-          const owner = await tokenContract.ownerOf(token_id);
-          const ret = await tokenContract.tokenURI(token_id);
-          console.log(ret);
-          const data = JSON.parse(atob(ret.split(",")[1]));
-          const price_big = await tokenContract.getPriceOf(token_id);
-          const price = price_big.toNumber();
+        if (token > token_id-1) {
+            const owner = await tokenContract.ownerOf(token_id);
+            const ret = await tokenContract.tokenURI(token_id);
+            console.log(ret);
+            const data = JSON.parse(atob(ret.split(",")[1]));
+            const price_big = await tokenContract.getPriceOf(token_id);
+            const price = utils.formatEther(price_big);
 
           console.log(price);
 
