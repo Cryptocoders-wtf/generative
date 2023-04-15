@@ -19,32 +19,24 @@
         >
         </div>
     </div>
-    <NetworkGate :expectedNetwork="chainId">
-        <div class="flex justify-center">
-          <div
-            @click="mint"
-            :disabled="!existData"
-            class="mb-2 inline-block cursor-pointer rounded px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
-            :class="
-              existData
-                ? 'bg-green-600 focus:bg-green-700'
-                : 'bg-green-600 bg-opacity-20 focus:bg-green-700'
-            "
-          >
-            (buy)
-          </div>
-        </div>
-    </NetworkGate>
+
+     <TokenActions :token_obj="token_obj" />
+
   </div>
+
+      <NetworkGate :expectedNetwork="chainId" />
+
+  
+    
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { svg2imgSrc } from "@/utils/svgtool";
+import { BigNumber, utils } from "ethers";
 
 // mint
 import NetworkGate from "@/components/NetworkGate.vue";
-import { BigNumber } from "ethers";
 import { ChainIdMap, displayAddress } from "@/utils/MetaMask";
 import {
   useSVGTokenNetworkContext,
@@ -52,12 +44,15 @@ import {
   getSVGTokenContract,
 } from "@/utils/const";
 
+import TokenActions from "@/components/TokenActions.vue";
+
 //
 import { parse } from "svg-parser";
 import { convSVG2Path, dumpConvertSVG } from "@/utils/svgtool";
 import { compressPath } from "@/utils/pathUtils";
 
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 
 const sleep = async (seconds: number) => {
   return await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
@@ -66,6 +61,7 @@ const sleep = async (seconds: number) => {
 export default defineComponent({
   components: {
     NetworkGate,
+    TokenActions,
   },
   setup(props) {
     const pathData = ref<any>([]);
@@ -78,17 +74,20 @@ export default defineComponent({
             name: string,
             image: string
         },
-        price: string
+        price: any,
+        isOwner: boolean,
+        token_id: number,
     }
 
-    const token_obj = ref<item>({data:{name:'', image:''}, price:''})
+    const token_obj = ref<item>({data:{name:'', image:''}, price:0, isOwner:false, token_id:0})
 
     const reset = () => {
       pathData.value = [];
     };
 
+    const store = useStore();
     const route = useRoute();
-
+    const account = computed(() => store.state.account);    
 
     // store      contract="0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
     // provider      contract="0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e"
@@ -111,6 +110,7 @@ export default defineComponent({
     const chainId = ChainIdMap[network];
 
     const { networkContext } = useSVGTokenNetworkContext(chainId, tokenAddress);
+    store.state.networkContext = networkContext;
 
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider = getProvider(network, alchemyKey);
@@ -127,12 +127,18 @@ export default defineComponent({
         console.log("load token:" + token + ' ' + token_id);
 
         if (token > token_id-1) {
+            const owner = await tokenContract.ownerOf(token_id);
             const ret = await tokenContract.tokenURI(token_id);
             console.log(ret);
             const data = JSON.parse(atob(ret.split(",")[1]));
-            const price = await tokenContract.getPriceOf(token_id);
+            const price_big = await tokenContract.getPriceOf(token_id);
+            const price = price_big.toNumber()
 
-            token_obj.value = {data:data, price:price}
+            console.log(price)
+
+            const isOwner = utils.getAddress(account.value) == utils.getAddress(owner);
+            
+            token_obj.value = {data:data, price:price, isOwner:isOwner, token_id:token_id}
 
             console.log(token_obj)
         }
