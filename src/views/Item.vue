@@ -298,8 +298,8 @@ export default defineComponent({
       ]);
       const price = utils.formatEther(price_big);
 
-      const isOwner =
-        utils.getAddress(account.value) == utils.getAddress(owner);
+      const isOwner = account.value ? 
+        utils.getAddress(account.value) == utils.getAddress(owner) : false; 
 
       token_obj.value.price = price;
       token_obj.value.isOwner = isOwner;
