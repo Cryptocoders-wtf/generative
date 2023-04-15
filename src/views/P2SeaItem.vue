@@ -56,8 +56,12 @@ export default defineComponent({
       return pathData.value.length > 0;
     });
 
-
-    const token_obj = ref<Token721p2p>({data:{name:'', image:''}, price:0, isOwner:false, token_id:0})
+    const token_obj = ref<Token721p2p>({
+      data: { name: "", image: "" },
+      price: 0,
+      isOwner: false,
+      token_id: 0,
+    });
 
     const reset = () => {
       pathData.value = [];
@@ -103,13 +107,13 @@ export default defineComponent({
 
         console.log("load token:" + token + " " + token_id);
 
-        if (token > token_id-1) {
-            const owner = await tokenContract.ownerOf(token_id);
-            const ret = await tokenContract.tokenURI(token_id);
-            console.log(ret);
-            const data = JSON.parse(atob(ret.split(",")[1]));
-            const price_big = await tokenContract.getPriceOf(token_id);
-            const price = utils.formatEther(price_big);
+        if (token > token_id - 1) {
+          const owner = await tokenContract.ownerOf(token_id);
+          const ret = await tokenContract.tokenURI(token_id);
+          console.log(ret);
+          const data = JSON.parse(atob(ret.split(",")[1]));
+          const price_big = await tokenContract.getPriceOf(token_id);
+          const price = utils.formatEther(price_big);
 
           console.log(price);
 
