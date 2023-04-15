@@ -226,13 +226,11 @@ export default defineComponent({
       }
     };
 
-    const isMinting = ref<boolean>(false);
     const mint = async () => {
       if (networkContext.value == null) {
         return;
       }
       const { contract } = networkContext.value;
-      isMinting.value = true;
       isExecuting.value = 1;
 
       const ret = {
