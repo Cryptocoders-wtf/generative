@@ -75,17 +75,8 @@
           </div>
         </div>
 
-        <div>
-          <a href="https://goerlifaucet.com" class="underline" target="_blank"
-            >Get Free Goerli ETH</a
-          >
-        </div>
 
         <div class="mx-10 text-left">
-          <h2 class="font-xl font-bold">
-            Convert SVG with simple structure to full on-chain NFT
-          </h2>
-
           <li>All data is converted to the d attribute of the path element.</li>
           <li>
             Only circle, ellipses, line, rect, polygon, polyline element are
