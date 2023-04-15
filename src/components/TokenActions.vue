@@ -6,7 +6,7 @@
 
     <div v-if="token_obj.data.name">
       <div v-if="token_obj.price > 0">
-        <p class="text-left text-2xl font-bold text-orange-600">Sale!</p>
+        <p class="text-left text-2xl font-bold text-orange-600">On Sale!</p>
         <p class="text-left font-sans text-3xl font-bold">
           {{ token_obj.price }} ETH
         </p>
@@ -18,7 +18,7 @@
         />
       </div>
       <div v-else>
-        <p class="text-gray-2990 text-left text-2xl font-bold">Not on Sale!</p>
+        <p class="text-gray-2990 text-left text-2xl font-bold">Not on Sale.</p>
       </div>
     </div>
 
@@ -35,7 +35,7 @@
       <div v-if="isExecuting == 0">
         <button
           @click="setPrice(token_obj.token_id)"
-          class="my-5 mr-2 mb-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-20 py-5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
+          class="my-5 mr-2 mb-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-10 py-5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
         >
           Set price
         </button>
@@ -52,7 +52,7 @@
         <div v-if="isExecuting == 0">
           <button
             @click="purchase(token_obj.token_id)"
-            class="my-5 mr-2 mb-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-20 py-5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
+            class="my-5 mr-2 mb-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-10 py-5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
           >
             BUY!
           </button>
@@ -80,13 +80,14 @@ export default defineComponent({
       type: Object as PropType<Token721p2p>,
     },
   },
-  emits: ["purchased"],
+  emits: ["purchased", "priceUpdated"],
   setup(props, context) {
     const isExecuting = ref(0); // 0:non-execute, 1:executing, 2:complete
     const store = useStore();
     const set_price = ref<string>("0");
     const { token_obj } = toRefs(props);
     watch(token_obj, () => {
+      console.log("TokenActions: detected token_obj change.")
       set_price.value = token_obj.value?.price;
     });
     const account = computed(() => store.state.account);
@@ -121,6 +122,7 @@ export default defineComponent({
         const result = await tx.wait();
         await polling(tx);
         isExecuting.value = 0; // non-execute
+        context.emit("priceUpdated");
       } catch (e) {
         console.error(e);
         alert("Sorry, setPrice failed with:" + e);

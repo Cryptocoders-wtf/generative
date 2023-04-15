@@ -14,7 +14,7 @@
       </div>
       <div>
         <div v-if="token_obj.data.image != ''">
-          <TokenActions :token_obj="token_obj" @purchased="purchased" />
+          <TokenActions :token_obj="token_obj" @purchased="callUpdateToken" @priceUpdated="callUpdateToken"/>
         </div>
 
         <div
@@ -280,6 +280,7 @@ export default defineComponent({
     const nextToken = ref(0);
 
     const updateToken = async () => {
+      console.log("1. updateToken was called.");
       const token_id = route.params.token_id; //get from url parameter
 
       console.log("load token:" + " " + token_id);
@@ -332,8 +333,8 @@ export default defineComponent({
 
     updateToken();
 
-    const purchased = async () => {
-      console.log("***###*** purchased event was fired");
+    const callUpdateToken = async () => {
+      console.log("***###*** purchased or priceUpdated event was fired");
       updateToken();
     };
 
@@ -353,7 +354,7 @@ export default defineComponent({
       chainId,
       token_obj,
       existData,
-      purchased,
+      callUpdateToken,
     };
   },
 });
