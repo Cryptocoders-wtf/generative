@@ -8,10 +8,14 @@
           class="inline-block rounded px-6 py-2.5 leading-tight text-gray-500 shadow-md"
           disabled
         >
-          <img
+          <!-- <img
             class="absolute h-3 w-8 animate-spin"
             src="@/assets/red160px.png"
-          />
+          /> -->
+        <img
+          class="absolute h-5 w-5"
+          src="@/assets/preload.gif"
+        />
           <span class="ml-10">{{ $t("message.processing") }}</span>
         </button>
         <button
@@ -29,17 +33,20 @@
           class="inline-block rounded px-6 py-2.5 leading-tight text-gray-500 shadow-md"
           disabled
         >
-          <img
+          <!-- <img
             class="absolute h-3 w-8 animate-spin"
             src="@/assets/red160px.png"
-          />
+          /> -->
+        <img
+          class="absolute h-5 w-5"
+          src="@/assets/preload.gif"
+        />
           <span class="ml-10">{{ $t("message.processing") }}</span>
         </button>
         <button
           v-else
           @click="connect"
-          class="inline-block rounded bg-green-500 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
-        >
+          class="inline-block rounded bg-blue-500 px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg"        >
           {{ $t("menu.connect") }}
         </button>
       </span>
