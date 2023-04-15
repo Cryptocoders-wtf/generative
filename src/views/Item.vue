@@ -223,16 +223,6 @@ export default defineComponent({
       return pathData.value.length > 0;
     });
 
-    // interface item {
-    //   data: {
-    //     name: string;
-    //     image: string;
-    //   };
-    //   price: any;
-    //   isOwner: boolean;
-    //   token_id: string;
-    // }
-
     const token_obj = ref<Token721p2p>({
       data: { name: "", image: "" },
       price: 0,
@@ -247,20 +237,6 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const account = computed(() => store.state.account);
-
-    // store      contract="0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
-    // provider      contract="0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e"
-    // token      contract="0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0"
-    // const network = "localhost";
-    // const tokenAddress = "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0";
-
-    // store      contract="0x442622c789E5489A222141d06966608a2980E915"
-    // provider      contract="0x24F08949190D291DaBb9d7a828ad048FE6250E0C"
-    // token      contract="0x07f21753E1DA964fc7131571DD999471C6492e7E"
-
-    // store      contract="0x05ce81EC1751E2317ddc2E90948EBc6Ca66781a1"
-    // provider      contract="0xc65Ffa203d73538557Cff496bE85BD12B28927ca"
-    // token      contract="0x5F0f949949c82f660B38FC7601A45498fa2C9fC9"
 
     const network = "mumbai";
     const tokenAddress = addresses.svgtoken[network];
@@ -301,7 +277,6 @@ export default defineComponent({
 
       console.log("requewt owner from contrcat");
       const strage_key = tokenAddress + "_" + token_id;
-      var data;
       const data_str = localStorage.getItem(strage_key);
 
       console.log(strage_key);

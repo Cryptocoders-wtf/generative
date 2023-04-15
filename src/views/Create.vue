@@ -196,19 +196,8 @@ export default defineComponent({
       }
     };
 
-    // store      contract="0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
-    // provider      contract="0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e"
-    // token      contract="0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0"
-    // const network = "localhost";
-    // const tokenAddress = "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0";
-
-    //const network = "goerli";
-    //const tokenAddress = "0xe2E10A4e46202D12B3771999A06f5a67E818b885";
-
     const network = "mumbai";
     const tokenAddress = addresses.svgtoken[network];
-    // const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
-    //const tokenAddress = "0xac83F049087F20b912c7454141fe75fEee85ed5f";
 
     const chainId = ChainIdMap[network];
 
