@@ -183,7 +183,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 import { svg2imgSrc } from "@/utils/svgtool";
 import { BigNumber, utils } from "ethers";
 
@@ -283,6 +283,10 @@ export default defineComponent({
 
     const nextToken = ref(0);
 
+    watch(() => store.state.account, () => {
+      updateToken();
+    });
+    
     const updateToken = async () => {
       console.log("1. updateToken was called.");
       const token_id = route.params.token_id; //get from url parameter
