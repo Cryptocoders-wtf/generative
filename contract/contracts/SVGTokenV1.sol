@@ -26,6 +26,16 @@ contract SVGTokenV1 is ProviderToken4 {
     setMintLimit(1e50);
   }
 
+  function _processRoyalty(uint _salesPrice, uint) internal override returns (uint256 royalty) {
+    royalty = (_salesPrice * 50) / 1000; // 5.0%
+    payable(owner()).transfer(royalty);
+  }
+
+  // Helper method for test script
+  function etherBalanceOf(address _wallet) public view returns (uint256) {
+    return _wallet.balance;
+  }
+
   function tokenName(uint256 _tokenId) internal pure override returns (string memory) {
     return string(abi.encodePacked('SVG Token V1 ', _tokenId.toString()));
   }
