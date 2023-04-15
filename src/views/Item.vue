@@ -296,8 +296,11 @@ export default defineComponent({
           return JSON.parse(atob(ret.split(",")[1]));
         }
       })()
-      token_obj.value.data = data;
-      token_obj.value.price = -1;
+      token_obj.value = {
+        ...token_obj.value,
+        price: -1,
+        data,
+      }
 
       const [owner, price_big] = await Promise.all([
         tokenContract.ownerOf(token_id),
@@ -307,10 +310,11 @@ export default defineComponent({
       const isOwner = account.value ? 
         utils.getAddress(account.value) == utils.getAddress(owner) : false; 
 
-      token_obj.value.price = price;
-      token_obj.value.isOwner = isOwner;
-
-      console.log(token_obj);
+      token_obj.value = {
+        ...token_obj.value,
+        price,
+        isOwner,
+      }
     };
 
     updateToken();
