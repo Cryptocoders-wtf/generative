@@ -114,6 +114,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { svg2imgSrc } from "@/utils/svgtool";
+import { addresses } from "@/utils/addresses";
 
 // mint
 import NetworkGate from "@/components/NetworkGate.vue";
@@ -204,7 +205,8 @@ export default defineComponent({
     //const tokenAddress = "0xe2E10A4e46202D12B3771999A06f5a67E818b885";
 
     const network = "mumbai";
-    const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
+    const tokenAddress = addresses.svgtoken[network];
+    // const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
     //const tokenAddress = "0xac83F049087F20b912c7454141fe75fEee85ed5f";
 
     const chainId = ChainIdMap[network];

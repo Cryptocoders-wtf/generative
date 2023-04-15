@@ -1,16 +1,41 @@
 {
   "compilerOptions": {
+    "lib": [
+      "es6",
+      "es2018"
+    ],
     "module": "commonjs",
     "noImplicitReturns": true,
+    "noImplicitAny": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "noUnusedLocals": true,
     "outDir": "lib",
-    "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2018",
+    "forceConsistentCasingInFileNames": false,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "moduleResolution": "node",  
+    "allowSyntheticDefaultImports": true,      
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",    
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
   },
   "compileOnSave": true,
   "include": [
-    "src"
+    "src/**/*.ts",
+    "src/**/*.json",
+  ],
+  "exclude": [
+    "node_modules",
   ]
 }

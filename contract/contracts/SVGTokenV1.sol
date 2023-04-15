@@ -16,6 +16,7 @@ contract SVGTokenV1 is ProviderToken4 {
 
   ISVGStoreV1 public immutable svgStoreV1;
   mapping(uint256 => uint256) assetIds; // tokenId => assetId
+  mapping(uint256 => address) private minters;
 
   constructor(
     IAssetProvider _assetProvider,
@@ -24,6 +25,16 @@ contract SVGTokenV1 is ProviderToken4 {
     description = 'SVGTokenV1';
     svgStoreV1 = _svgStore;
     setMintLimit(1e50);
+  }
+
+  function _processRoyalty(uint _salesPrice, uint _tokenId) internal override returns (uint256 royalty) {
+    royalty = (_salesPrice * 50) / 1000; // 5.0%
+    payable(minters[_tokenId]).transfer(royalty);
+  }
+
+  // Helper method for test script
+  function etherBalanceOf(address _wallet) public view returns (uint256) {
+    return _wallet.balance;
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns (string memory) {
@@ -38,6 +49,7 @@ contract SVGTokenV1 is ProviderToken4 {
     uint256 assetId = svgStoreV1.register(asset);
     tokenId = super.mint();
     assetIds[tokenId] = assetId;
+    minters[tokenId] = msg.sender;
   }
 
   function tokenURI(uint256 _tokenId) public view override returns (string memory) {
