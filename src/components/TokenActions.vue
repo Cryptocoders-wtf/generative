@@ -150,6 +150,7 @@ export default defineComponent({
         context.emit("purchased");
       } catch (e) {
         console.error(e);
+        isExecuting.value = 0; // non-execute
         alert("Sorry, purchase failed with:" + e);
       }
     };
