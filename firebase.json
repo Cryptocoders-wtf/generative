@@ -26,8 +26,16 @@
         { "key" : "X-Permitted-Cross-Domain-Policies", "value" : "none" },
         { "key" : "Referrer-Policy", "value": "no-referrer" }
       ]
-  }],
-  "rewrites": [
+    }],
+    "rewrites": [
+      {
+        "source": "/token/image/*",
+        "function": "api"
+      },
+      {
+        "source": "/token/ogp/*",
+        "function": "api"
+      },
       {
         "source": "**",
         "destination": "/index.html"

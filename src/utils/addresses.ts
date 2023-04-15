@@ -67,6 +67,7 @@ import { addresses as dynamic_goerli } from "./addresses/dynamic_goerli";
 import { addresses as dynamic_localhost } from "./addresses/dynamic_localhost";
 import { addresses as message_pnouns_goerli } from "./addresses/message_pnouns_goerli";
 import { addresses as message_splatter_goerli } from "./addresses/message_splatter_goerli";
+import { addresses as svgimage_mumbai } from "./addresses/svgimage_mumbai";
 
 export interface Addresses {
   [key: string]: { [key: string]: string };
@@ -260,4 +261,7 @@ export const addresses: Addresses = {
     mainnet: dynamic_mainnet.tokenGate,
     goerli: dynamic_goerli.tokenGate,
   },
+  svgtoken: {
+    mumbai: svgimage_mumbai.token
+  }
 };

@@ -35,6 +35,7 @@
           <div
             @click="mint"
             :disabled="!existData"
+            v-if="isExecuting == 0"
             class="mb-2 inline-block cursor-pointer rounded px-6 py-2.5 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
             :class="
               existData
@@ -43,6 +44,13 @@
             "
           >
             mint
+          </div>
+          <div v-if="isExecuting == 1">waiting ...</div>
+          <div v-if="isExecuting == 2">
+            Complete !!
+            <div @click="isExecuting = 0">
+              <b>OK!</b>
+            </div>
           </div>
         </div>
 
@@ -77,7 +85,6 @@
             properties width, height.
           </li>
         </div>
-
       </NetworkGate>
       <div v-for="(token, k) in tokens" :key="k" class="mx-8">
         <img :src="token.data.image" class="w-36 border-2" />
@@ -100,10 +107,11 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { svg2imgSrc } from "@/utils/svgtool";
+import { addresses } from "@/utils/addresses";
 
 // mint
 import NetworkGate from "@/components/NetworkGate.vue";
-import { BigNumber, utils } from "ethers";
+import { BigNumber, Transaction, utils } from "ethers";
 import { ChainIdMap, displayAddress } from "@/utils/MetaMask";
 import {
   useSVGTokenNetworkContext,
@@ -142,8 +150,10 @@ export default defineComponent({
       return pathData.value.length > 0;
     });
 
+    const isExecuting = ref(0); // 0:non-execute, 1:executing, 2:complete
+
     const store = useStore();
-    const account = computed(() => store.state.account);    
+    const account = computed(() => store.state.account);
     const prices = ref<any>([]);
 
     const reset = () => {
@@ -191,7 +201,8 @@ export default defineComponent({
     //const tokenAddress = "0xe2E10A4e46202D12B3771999A06f5a67E818b885";
 
     const network = "mumbai";
-    const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
+    const tokenAddress = addresses.svgtoken[network];
+    // const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
     //const tokenAddress = "0xac83F049087F20b912c7454141fe75fEee85ed5f";
 
     const chainId = ChainIdMap[network];
@@ -212,7 +223,8 @@ export default defineComponent({
           if (token - i > -1) {
             const id = token - i;
             const owner = await tokenContract.ownerOf(id);
-            const isOwner = utils.getAddress(account.value) == utils.getAddress(owner);
+            const isOwner =
+              utils.getAddress(account.value) == utils.getAddress(owner);
             const price = await tokenContract.getPriceOf(id);
             const ret = await tokenContract.tokenURI(id);
             const data = JSON.parse(atob(ret.split(",")[1]));
@@ -221,21 +233,32 @@ export default defineComponent({
 );
             
 
+            tokens.value.push({ id, owner, data, isOwner, price });
           }
         }
       });
     };
     updateTokens();
 
-    const polling = async () => {
-      let state = true;
-      while (state) {
-        await sleep(2);
-        const nextId = await tokenContract.totalSupply();
-        if (nextToken.value != nextId.toNumber()) {
-          nextToken.value = nextId.toNumber();
-          state = false;
-        }
+    // const polling = async () => {
+    //   let state = true;
+    //   while (state) {
+    //     await sleep(2);
+    //     const nextId = await tokenContract.totalSupply();
+    //     if (nextToken.value != nextId.toNumber()) {
+    //       nextToken.value = nextId.toNumber();
+    //       state = false;
+    //     }
+    //   }
+    // };
+    const polling = async (tx: any) => {
+      const receipt = await tx.wait();
+      if (receipt.status == 1) {
+        // success transaction
+        return;
+      } else {
+        console.log("receipt", receipt);
+        alert("Sorry, transaction failed.");
       }
     };
 
@@ -246,6 +269,7 @@ export default defineComponent({
       }
       const { contract } = networkContext.value;
       isMinting.value = true;
+      isExecuting.value = 1;
 
       const ret = {
         paths: [] as string[],
@@ -269,14 +293,20 @@ export default defineComponent({
         const result = await tx.wait();
         console.log("mint:gasUsed", result.gasUsed.toNumber());
 
-        await polling();
+        await polling(tx);
         tokens.value = [];
+
+        reset();
+        isExecuting.value = 2;
         updateTokens();
       } catch (e) {
-        console.error(e);
-        alert("Sorry, this svg is not supported.");
+        // ウォレットで拒否した場合
+        if (String(e).indexOf("ACTION_REJECTED") == -1) {
+          console.error(e);
+          alert("Sorry, transaction is failured.");
+        }
+        isExecuting.value = 0;
       }
-      isMinting.value = false;
     };
     return {
       uploadFile,
@@ -294,6 +324,7 @@ export default defineComponent({
 
       tokens,
       existData,
+      isExecuting,
 
       prices,
     };

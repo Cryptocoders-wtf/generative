@@ -1,0 +1,160 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white">
+
+    <!-- container - start -->
+<div class="xl:container xl:mx-auto">
+
+<div class="bg-white pb-6 sm:pb-8 lg:pb-12 mx-auto max-w-screen-2xl px-2">
+
+      
+<!-- header - start -->
+    <header class="mb-8 flex items-center justify-between py-4 md:mb-12 md:py-8 xl:mb-16">
+      <!-- logo - start -->
+      <a href="/" class="text-black-800 inline-flex items-center gap-2.5 text-2xl font-bold md:text-3xl" aria-label="logo">
+          <img width="120" src ="assets/p2c.svg" alt="p2c"/>
+  </a>
+      <!-- logo - end -->
+
+      <!-- buttons - start -->
+      <a href="#" class=" rounded-lg bg-gray-200 px-8 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base lg:inline-block">Connect wallet</a>
+      <!-- buttons - end -->
+    </header>   
+<!-- header - end -->
+
+    
+<!-- page title - start -->
+    <div class="flex justify-center items-center font-bold text-lg m-20"> 
+        preview</div>
+<!-- page title - end -->
+    
+    
+<!-- preview - start -->   
+<div class="flex justify-center items-center m-10">
+
+<svg id="a" data-name="レイヤー 1" xmlns="http://www.w3.org/2000/svg" width="70.7mm" height="92mm" viewBox="0 0 200.4 260.9">
+  <defs>
+    <style>
+      .b {
+        fill: #3381c4;
+      }
+
+      .b, .c, .d {
+        stroke: #231815;
+        stroke-miterlimit: 10;
+        stroke-width: 3px;
+      }
+
+      .c {
+        fill: #efea3a;
+      }
+
+      .d {
+        fill: #e71f19;
+      }
+    </style>
+  </defs>
+  <circle class="d" cx="51.5" cy="51.5" r="50"/>
+  <polygon class="c" points="144.8 62.9 91.8 154.7 197.8 154.7 144.8 62.9"/>
+  <rect class="b" x="108.7" y="187.2" width="72.2" height="72.2"/>
+    </svg>
+    
+</div>    
+<!-- preview - end -->
+
+<!-- price - start -->
+<div class="flex justify-center items-center">    
+<label class="relative block w-1/2">
+<label for="input1">Price</label>
+  <input class="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm" placeholder="0.01ETH" type="number" name="price"/>
+</label>
+</div>
+<!-- price - end -->
+    
+   <div class="flex justify-center items-center"> <button class="bg-green-800 hover:bg-green-600 text-white font-bold py-10 px-8 rounded-full m-10">
+  MINT
+    </button></div>
+ 
+</div>
+</div>
+    
+    <!-- footer - start -->
+<div class="bg-black min-h-screen flex flex-col">
+  <footer class="mx-auto">
+    <div class="border-t border-gray-800 py-8 text-center text-sm text-gray-400">© 2023 - Singularity Society All rights reserved.</div>
+  </footer>
+    
+</div>
+<!-- footer - end -->
+    
+    <script>
+  const preview = document.querySelector('#preview');
+  const upload = document.querySelector('#upload');
+  const status = document.querySelector('#status');
+
+  upload.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      preview.src = event.target.result;
+      preview.classList.remove('hidden');
+      status.textContent = `${file.name} uploaded successfully`;
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+  const dropArea = document.querySelector('.border-dashed');
+
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, preventDefaults, false);
+    document.body.addEventListener(eventName, preventDefaults, false);
+  });
+
+  function preventDefaults (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropArea.addEventListener(eventName, highlight, false);
+  });
+
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, unhighlight, false);
+  });
+
+  function highlight(event) {
+    dropArea.classList.add('border-blue-700');
+  }
+
+  function unhighlight(event) {
+    dropArea.classList.remove('border-blue-700');
+  }
+
+  dropArea.addEventListener('drop', handleDrop, false);
+
+  function handleDrop(event) {
+    const dt = event.dataTransfer;
+    const file = dt.files[0];
+
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      preview.src = event.target.result;
+      preview.classList.remove('hidden');
+      status.textContent = `${file.name} uploaded successfully`;
+    };
+
+    reader.readAsDataURL(file);
+  }
+</script>
+    
+    </body>
+    
+    </html>
