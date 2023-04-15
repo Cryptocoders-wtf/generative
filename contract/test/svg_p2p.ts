@@ -111,12 +111,18 @@ describe('SVGImage P2P', function () {
   it('Purchase by user3', async function () {
     await expect(token3.purchase(tokenId0, user3.address, zeroAddress)).revertedWith('Not enough fund');
 
-    balance1 = await token.etherBalanceOf(user1.address);
+    balance2 = await token.etherBalanceOf(user2.address);
     balanceA = await token.etherBalanceOf(artist.address);
 
     tx = await token3.purchase(tokenId0, user3.address, zeroAddress, { value: price });
     await tx.wait();
     result = await token.ownerOf(tokenId0);
     expect(result).equal(user3.address);
+  });
+  it('Balance Check', async function () {
+    balance = await token.etherBalanceOf(user2.address);
+    expect(balance.sub(balance2)).equal(price.div(20).mul(19)); // 95%
+    // balance = await token.balanceOf(artist.address);
+    // expect(balance.sub(balanceA)).equal(price.div(20).mul(1)); // 5%
   });
 });
