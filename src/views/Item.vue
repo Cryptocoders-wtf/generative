@@ -270,9 +270,16 @@ export default defineComponent({
       console.log("transfer update done");
     });
     console.log(onid);
-    const onid2 = tokenContract.on("SetPrice", async (tokenid, price, event) => {
-      console.log(tokenid, price ,event);
-      await updateToken();
+    const onid2 = tokenContract.on("SetPrice", async (_tokenId: BigNumber, _price: BigNumber) => {
+      const id = _tokenId.toNumber();
+      const price = Number(utils.formatEther(_price));
+      
+      if (token_id === id) {
+        token_obj.value = {
+          ...token_obj.value,
+          price,
+        }
+      }
       console.log("price update done");
     });
     console.log(onid2);
