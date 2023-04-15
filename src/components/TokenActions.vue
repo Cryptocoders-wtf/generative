@@ -1,11 +1,7 @@
 <template>
   <div>
-    <div v-if="token_obj.price > 0">
-          On Sale!  {{ token_obj.price }} eth
-        </div>
-        <div v-else>
-          Not on sale.
-    </div>
+    <div v-if="token_obj.price > 0">On Sale! {{ token_obj.price }} eth</div>
+    <div v-else>Not on sale.</div>
 
     <div v-if="token_obj.isOwner">
       <input
@@ -13,7 +9,7 @@
         v-model="set_price"
         maxlength="512"
         minlength="1"
-        class="text-sm my-2 text-slate-500 rounded-sm border-1 text-sm bg-gray-100 file:text-gray-800 hover:bg-white"
+        class="border-1 my-2 rounded-sm bg-gray-100 text-sm text-sm text-slate-500 file:text-gray-800 hover:bg-white"
       />
 
       <button
@@ -51,9 +47,9 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const set_price = ref<number>(0);
-    const account = computed(() => store.state.account); 
+    const account = computed(() => store.state.account);
 
-     const setPrice = async (id: number) => {
+    const setPrice = async (id: number) => {
       if (store.state.networkContext == null) {
         return;
       }
@@ -61,17 +57,17 @@ export default defineComponent({
       try {
         console.log(id);
         const tokenid = id;
-        console.log("set_price : ", set_price.value, "tokenid : ", tokenid)
+        console.log("set_price : ", set_price.value, "tokenid : ", tokenid);
         const price = BigNumber.from(set_price.value);
-        console.log(tokenid,set_price);
+        console.log(tokenid, set_price);
 
-        console.log("price : ", price)
+        console.log("price : ", price);
 
         const { contract } = store.state.networkContext;
-        await contract.setPriceOf(tokenid,price);
+        await contract.setPriceOf(tokenid, price);
       } catch (e) {
         console.error(e);
-        alert("Sorry, setPrice failed with:"+e);
+        alert("Sorry, setPrice failed with:" + e);
       }
     };
     const purchase = async (id: number) => {
@@ -80,21 +76,21 @@ export default defineComponent({
       }
       const { contract } = store.state.networkContext;
       try {
-//        console.log(id,(token_.value));
+        //        console.log(id,(token_.value));
         const price = await contract.getPriceOf(id);
         const owner = await contract.ownerOf(id);
-        await contract.purchase(id, account.value, owner , { value: price });
+        await contract.purchase(id, account.value, owner, { value: price });
       } catch (e) {
         console.error(e);
-        alert("Sorry, purchase failed with:"+e);
+        alert("Sorry, purchase failed with:" + e);
       }
     };
 
     return {
-        setPrice,
-        purchase, 
-        set_price,
-    }
-  }
+      setPrice,
+      purchase,
+      set_price,
+    };
+  },
 });
 </script>

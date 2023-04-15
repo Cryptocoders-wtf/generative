@@ -35,9 +35,7 @@
           </button>
         </div>
       </NetworkGate>
-      <div v-if="tokens.length === 0">
-        Loading...
-      </div>
+      <div v-if="tokens.length === 0">Loading...</div>
       <div v-else>
         <div class="mt-4">
           <div v-for="(token, k) in tokens" :key="k">

@@ -3,9 +3,14 @@
     id="header"
     class="mx-auto flex max-w-3xl items-center justify-between py-1.5"
   >
-    <div class="flex items-center justify-start ">
+    <div class="flex items-center justify-start">
       <a href="/">
-      <img src="@/assets/logo.svg" width="250" height="auto"  title="Open Galaxy"/>
+        <img
+          src="@/assets/logo.svg"
+          width="250"
+          height="auto"
+          title="Open Galaxy"
+        />
       </a>
     </div>
     <!--
@@ -34,7 +39,7 @@ import { ChainIdMap } from "@/utils/MetaMask";
 
 export default defineComponent({
   components: {
-    Languages,    
+    Languages,
     NetworkGate,
   },
 
@@ -43,8 +48,8 @@ export default defineComponent({
     const chainId = ChainIdMap[network];
 
     return {
-      chainId
-    }
-  }
+      chainId,
+    };
+  },
 });
 </script>

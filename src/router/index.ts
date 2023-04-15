@@ -92,7 +92,7 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "items",
     component: Items,
-  }
+  },
 ];
 
 const routes: Array<RouteRecordRaw> = [

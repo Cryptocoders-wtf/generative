@@ -37,7 +37,7 @@
             v-model="set_price"
             maxlength="512"
             minlength="1"
-            class="text-sm my-2 text-slate-500 rounded-sm border-1 text-sm bg-gray-100 file:text-gray-800 hover:bg-white"
+            class="border-1 my-2 rounded-sm bg-gray-100 text-sm text-sm text-slate-500 file:text-gray-800 hover:bg-white"
           />
           <div
             @click="mint"
@@ -237,10 +237,13 @@ export default defineComponent({
             const price = await tokenContract.getPriceOf(id);
             const ret = await tokenContract.tokenURI(id);
             const data = JSON.parse(atob(ret.split(",")[1]));
-            
-            tokens.value.push({data:data, price:price, isOwner:isOwner, token_id:id}
-);
-            
+
+            tokens.value.push({
+              data: data,
+              price: price,
+              isOwner: isOwner,
+              token_id: id,
+            });
 
             tokens.value.push({ id, owner, data, isOwner, price });
           }
@@ -299,7 +302,7 @@ export default defineComponent({
         console.log(ret);
         const price = BigNumber.from(set_price.value);
         console.log(price);
-        const tx = await contract.mintToSell(ret,price);
+        const tx = await contract.mintToSell(ret, price);
         console.log("mint:tx");
         const result = await tx.wait();
         console.log("mint:gasUsed", result.gasUsed.toNumber());

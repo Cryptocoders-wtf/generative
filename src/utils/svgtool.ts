@@ -332,7 +332,9 @@ const elementToData = (
   const fill = element2fill(element) || style["fill"];
   const stroke = element2stroke(element) || style["stroke"];
   const _strokeWidth = Math.round(
-    element2strokeWidth(element, max) || style["stroke-width"] || (stroke ? 3 : 0 )
+    element2strokeWidth(element, max) ||
+      style["stroke-width"] ||
+      (stroke ? 3 : 0)
   );
   const strokeWidth =
     _strokeWidth > 0 ? _strokeWidth : stroke ? defaultStrokeWidth : 0;
