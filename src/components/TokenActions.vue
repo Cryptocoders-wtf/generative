@@ -6,7 +6,7 @@
 
     <div v-if="token_obj.data.name">
       <div v-if="token_obj.price > 0">
-        <p class="text-left text-2xl font-bold text-orange-600">Sale!</p>
+        <p class="text-left text-2xl font-bold text-orange-600">On Sale!</p>
         <p class="text-left font-sans text-3xl font-bold">
           {{ token_obj.price }} ETH
         </p>
@@ -18,7 +18,7 @@
         />
       </div>
       <div v-else>
-        <p class="text-gray-2990 text-left text-2xl font-bold">Not on Sale!</p>
+        <p class="text-gray-2990 text-left text-2xl font-bold">Not on Sale.</p>
       </div>
     </div>
 
