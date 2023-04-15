@@ -44,6 +44,12 @@ contract SVGTokenV1 is ProviderToken4 {
   function mint() public payable override returns (uint256 tokenId) {
     require(false, 'must not call');
   }
+  function mintWithTokenId(uint256 _tokenId) public payable returns (uint256 tokenId) {
+      require(msg.sender == minters[_tokenId]);
+      tokenId = super.mint();
+      assetIds[tokenId] = assetIds[_tokenId];
+      minters[tokenId] = msg.sender;
+  }
 
   function mintWithAsset(ISVGStoreV1.Asset memory asset) public returns (uint256 tokenId) {
     uint256 assetId = svgStoreV1.register(asset);
