@@ -85,7 +85,7 @@
         </div>
 
         <div class="flex justify-center">
-          <div
+          <button
             @click="mint"
             :disabled="!existData"
             v-if="isExecuting == 0"
@@ -97,7 +97,7 @@
             "
           >
             MINT!
-          </div>
+          </button>
           <div v-if="isExecuting == 1">
             <img class="h-20 w-20" src="@/assets/preload.gif" />
           </div>
