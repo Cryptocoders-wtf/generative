@@ -43,6 +43,9 @@
       </router-link>
       -->
     </nav>
+
+    <NetworkGate />
+
     <div class="invisible">
       <Languages />
     </div>
@@ -52,10 +55,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Languages from "@/components/Languages.vue";
+import NetworkGate from "@/components/NetworkGate.vue";
 
 export default defineComponent({
   components: {
     Languages,
+    
   },
 });
 </script>

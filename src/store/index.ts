@@ -7,6 +7,7 @@ interface State {
   chainId: string | null;
   account: undefined | null | string;
   windowWidth: number;
+  networkContext: any | null;
 }
 
 export default createStore<State>({
@@ -15,7 +16,14 @@ export default createStore<State>({
     chainId: null,
     account: undefined,
     windowWidth: 500,
+    networkContext: null,
   },
+  // setNetworkContext(networkContext:any): {
+  //   networkContext = networkContext;
+  // },
+  // getNetwrokContext: {
+  //   return networkContext;
+  // },
   mutations: {
     setEthereum(state: State, ethereum: any | null) {
       state.ethereum = ethereum;
