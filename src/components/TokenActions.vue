@@ -33,29 +33,35 @@
       />
 
       <div v-if="isExecuting == 0">
-      <button
-        @click="setPrice(token_obj.token_id)"
-        class="my-5 mr-2 mb-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-20 py-5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
-      >
-        Set price
-      </button>
+        <button
+          @click="setPrice(token_obj.token_id)"
+          class="my-5 mr-2 mb-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-20 py-5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
+        >
+          Set price
+        </button>
       </div>
       <div v-if="isExecuting == 1">
-        <img class="mx-auto h-10 w-10 align-middle" src="@/assets/preload.gif" />
+        <img
+          class="mx-auto h-10 w-10 align-middle"
+          src="@/assets/preload.gif"
+        />
       </div>
     </div>
     <div v-else>
       <div v-if="token_obj.price > 0">
-      <div v-if="isExecuting == 0">
-        <button
-          @click="purchase(token_obj.token_id)"
-          class="my-5 mr-2 mb-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-20 py-5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
-        >
-          BUY!
-        </button>
+        <div v-if="isExecuting == 0">
+          <button
+            @click="purchase(token_obj.token_id)"
+            class="my-5 mr-2 mb-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-20 py-5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
+          >
+            BUY!
+          </button>
         </div>
         <div v-if="isExecuting == 1">
-          <img class="mx-auto h-10 w-10 align-middle" src="@/assets/preload.gif" />
+          <img
+            class="mx-auto h-10 w-10 align-middle"
+            src="@/assets/preload.gif"
+          />
         </div>
       </div>
     </div>
@@ -99,7 +105,7 @@ export default defineComponent({
       if (store.state.networkContext == null) {
         return;
       }
-      isExecuting.value = 1;  // execute
+      isExecuting.value = 1; // execute
 
       try {
         console.log(id);
@@ -114,7 +120,7 @@ export default defineComponent({
         const tx = await contract.setPriceOf(tokenid, price);
         const result = await tx.wait();
         await polling(tx);
-        isExecuting.value = 0;  // non-execute
+        isExecuting.value = 0; // non-execute
       } catch (e) {
         console.error(e);
         alert("Sorry, setPrice failed with:" + e);
@@ -124,16 +130,18 @@ export default defineComponent({
       if (store.state.networkContext == null) {
         return;
       }
-      isExecuting.value = 1;  // execute
+      isExecuting.value = 1; // execute
       const { contract } = store.state.networkContext;
       try {
         //        console.log(id,(token_.value));
         const price = await contract.getPriceOf(id);
         const owner = await contract.ownerOf(id);
-        const tx = await contract.purchase(id, account.value, owner, { value: price });
+        const tx = await contract.purchase(id, account.value, owner, {
+          value: price,
+        });
         const result = await tx.wait();
         await polling(tx);
-        isExecuting.value = 0;  // non-execute
+        isExecuting.value = 0; // non-execute
         context.emit("purchased");
       } catch (e) {
         console.error(e);
