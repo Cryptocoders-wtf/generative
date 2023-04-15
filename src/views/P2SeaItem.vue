@@ -10,14 +10,6 @@
             {{ token_obj.price }} 
         </div>
         </div>
-        <div>
-        <a
-            href="https://testnets.opensea.io/ja/collection/svgtokenv1-4?search[sortAscending]=false&search[sortBy]=CREATED_DATE"
-            class="underline"
-            target="_blank"
-            >See NFTs on OpenSea</a
-        >
-        </div>
     </div>
 
      <TokenActions :token_obj="token_obj" />
