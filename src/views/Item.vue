@@ -274,10 +274,8 @@ export default defineComponent({
           isOwner,
           price: 0,
         }
+        console.log("transfer update done");
       }
-
-      await updateToken();
-      console.log("transfer update done");
     });
     console.log(onid);
     const onid2 = tokenContract.on("SetPrice", async (_tokenId: BigNumber, _price: BigNumber) => {
