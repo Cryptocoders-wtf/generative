@@ -83,7 +83,6 @@
             required
           />
         </div>
-    
 
         <div class="flex justify-center">
           <button
@@ -109,7 +108,6 @@
             </div>
           </div>
         </div>
-
       </NetworkGate>
     </div>
   </div>

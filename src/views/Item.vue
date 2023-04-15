@@ -282,52 +282,52 @@ export default defineComponent({
     const updateToken = async () => {
       const token_id = route.params.token_id; //get from url parameter
 
-        console.log("load token:" + " " + token_id);
+      console.log("load token:" + " " + token_id);
 
-          console.log('requewt owner from contrcat')
-            const strage_key = tokenAddress + '_' + token_id;
-            var data;
-            const data_str = localStorage.getItem(strage_key);
+      console.log("requewt owner from contrcat");
+      const strage_key = tokenAddress + "_" + token_id;
+      var data;
+      const data_str = localStorage.getItem(strage_key);
 
-            console.log(strage_key);
-            console.log(data_str);
-            console.log(data);
+      console.log(strage_key);
+      console.log(data_str);
+      console.log(data);
 
-            if(data_str && data_str != "undefined") {
-              console.log('load data from localstrage')
-              data = JSON.parse(data_str);
-            } else {
-              console.log('no localstrage request data')
-              const ret = await tokenContract.tokenURI(token_id);
-              console.log(ret);
-              data = JSON.parse(atob(ret.split(",")[1]));
-              localStorage.setItem(strage_key, JSON.stringify(data))
-            }
+      if (data_str && data_str != "undefined") {
+        console.log("load data from localstrage");
+        data = JSON.parse(data_str);
+      } else {
+        console.log("no localstrage request data");
+        const ret = await tokenContract.tokenURI(token_id);
+        console.log(ret);
+        data = JSON.parse(atob(ret.split(",")[1]));
+        localStorage.setItem(strage_key, JSON.stringify(data));
+      }
 
-            token_obj.value = {
-              data: data,
-              price: -1,
-              isOwner: false,
-              token_id: Number(token_id)
-            };
+      token_obj.value = {
+        data: data,
+        price: -1,
+        isOwner: false,
+        token_id: Number(token_id),
+      };
 
-            const owner = await tokenContract.ownerOf(token_id);
+      const owner = await tokenContract.ownerOf(token_id);
 
-            const price_big = await tokenContract.getPriceOf(token_id);
-            const price = utils.formatEther(price_big);
+      const price_big = await tokenContract.getPriceOf(token_id);
+      const price = utils.formatEther(price_big);
 
-          const isOwner =
-            utils.getAddress(account.value) == utils.getAddress(owner);
+      const isOwner =
+        utils.getAddress(account.value) == utils.getAddress(owner);
 
-          token_obj.value = {
-            data: data,
-            price: price,
-            isOwner: isOwner,
-            token_id: Number(token_id),
-          };
+      token_obj.value = {
+        data: data,
+        price: price,
+        isOwner: isOwner,
+        token_id: Number(token_id),
+      };
 
-          console.log(token_obj);
-          executeMode.value = 2; // non-execute
+      console.log(token_obj);
+      executeMode.value = 2; // non-execute
     };
 
     updateToken();
