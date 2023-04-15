@@ -152,6 +152,7 @@ export default defineComponent({
         console.error(e);
         isExecuting.value = 0; // non-execute
         alert("Sorry, purchase failed with:" + e);
+        isExecuting.value = 0; // non-execute
       }
     };
 
