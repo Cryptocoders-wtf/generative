@@ -291,12 +291,19 @@ export default defineComponent({
           return JSON.parse(data_str);
         } else {
           console.log("no localstrage request data");
-          const ret = await tokenContract.tokenURI(token_id);
-          const tmp = JSON.parse(atob(ret.split(",")[1]));
-          localStorage.setItem(strage_key, JSON.stringify(tmp));
-          return tmp;
+          try {
+            const ret = await tokenContract.tokenURI(token_id);
+            const tmp = JSON.parse(atob(ret.split(",")[1]));
+            localStorage.setItem(strage_key, JSON.stringify(tmp));
+            return tmp;
+          } catch (e) {
+            notFound.value = true;
+          }
         }
       })();
+      if (notFound.value) {
+        return;
+      }
       token_obj.value = {
         ...token_obj.value,
         price: -1,
