@@ -37,18 +37,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, PropType, toRefs, watch } from "vue";
 import { BigNumber, utils } from "ethers";
 import { useStore } from "vuex";
 import { Token721p2p } from "@/models/token";
+import { token_addresses } from "@/utils/addresses/addresses_flag_mainnet";
 
 export default defineComponent({
   props: {
-    token_obj:Object
+    token_obj:{
+      type: Object as PropType<Token721p2p>
+    }
   },
   setup(props) {
     const store = useStore();
     const set_price = ref<string>("0");
+    const {token_obj} = toRefs(props);
+    watch(token_obj, ()=>{
+      set_price.value = token_obj.value?.price;
+    })
     const account = computed(() => store.state.account); 
 
      const setPrice = async (id: number) => {

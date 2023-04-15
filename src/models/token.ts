@@ -1,9 +1,9 @@
-export interface Token721p2p {
+export type Token721p2p = {
   data: {
-    name: string,
-    image: string
+    name: string;
+    image: string;
   },
-  price: any,
-  isOwner: boolean,
-  token_id: number,
+  price: any;
+  isOwner: boolean;
+  token_id: number;
 }
