@@ -124,6 +124,7 @@ export default defineComponent({
       } catch (e) {
         console.error(e);
         alert("Sorry, setPrice failed with:" + e);
+        isExecuting.value = 0; // non-execute
       }
     };
     const purchase = async (id: number) => {
