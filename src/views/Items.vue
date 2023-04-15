@@ -163,7 +163,7 @@ export default defineComponent({
     const account = computed(() => store.state.account);
     const prices = ref<any>([]);
 
-    const set_price = ref<number>(0);
+    const set_price = ref<string>("0");
 
     const reset = () => {
       svgText.value = "";
@@ -234,7 +234,9 @@ export default defineComponent({
             const owner = await tokenContract.ownerOf(id);
             const isOwner =
               utils.getAddress(account.value) == utils.getAddress(owner);
-            const price = await tokenContract.getPriceOf(id);
+            const price_big = await tokenContract.getPriceOf(id);
+            const price = utils.formatEther(price_big);
+
             const ret = await tokenContract.tokenURI(id);
             const data = JSON.parse(atob(ret.split(",")[1]));
             
@@ -297,7 +299,7 @@ export default defineComponent({
 
       try {
         console.log(ret);
-        const price = BigNumber.from(set_price.value);
+        const price = utils.parseEther(set_price.value);
         console.log(price);
         const tx = await contract.mintToSell(ret,price);
         console.log("mint:tx");
