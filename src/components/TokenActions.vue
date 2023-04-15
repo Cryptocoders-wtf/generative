@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="token_obj.data.name">
     <div v-if="token_obj.price > 0">
           On Sale!  {{ token_obj.price }} eth
         </div>
