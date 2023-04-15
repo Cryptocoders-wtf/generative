@@ -62,7 +62,8 @@ export default defineComponent({
       type: Object as PropType<Token721p2p>,
     },
   },
-  setup(props) {
+  emits: ["purchased"],
+  setup(props,context) {
     const store = useStore();
     const set_price = ref<string>("0");
     const { token_obj } = toRefs(props);
@@ -102,6 +103,7 @@ export default defineComponent({
         const price = await contract.getPriceOf(id);
         const owner = await contract.ownerOf(id);
         await contract.purchase(id, account.value, owner, { value: price });
+        context.emit("purchased");
       } catch (e) {
         console.error(e);
         alert("Sorry, purchase failed with:" + e);

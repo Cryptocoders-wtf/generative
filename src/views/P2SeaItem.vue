@@ -1,23 +1,11 @@
 <template>
   <div class="home">
     <div class="flex justify-center">
-<<<<<<< HEAD
       <div class="mt-2">
         <div class="mx-8">
           {{ token_obj.data.name }}
           <img :src="token_obj.data.image" class="w-72 border-2" />
           {{ token_obj.price }}
-=======
-        <div class="mt-2">
-          <div v-if="token_obj.data.name" class="mx-8" >
-              {{ token_obj.data.name }}
-              <img :src="token_obj.data.image" class="w-72 h-72 border-2" />
-              {{ token_obj.price }} 
-          </div>
-          <div v-else class="mx-8 my-8" >
-            Loading...
-          </div>
->>>>>>> origin/feat/ETHGlobal2023
         </div>
       </div>
     </div>
@@ -68,27 +56,8 @@ export default defineComponent({
       return pathData.value.length > 0;
     });
 
-<<<<<<< HEAD
-    interface item {
-      data: {
-        name: string;
-        image: string;
-      };
-      price: any;
-      isOwner: boolean;
-      token_id: number;
-    }
-
-    const token_obj = ref<item>({
-      data: { name: "", image: "" },
-      price: 0,
-      isOwner: false,
-      token_id: 0,
-    });
-=======
 
     const token_obj = ref<Token721p2p>({data:{name:'', image:''}, price:0, isOwner:false, token_id:0})
->>>>>>> origin/feat/ETHGlobal2023
 
     const reset = () => {
       pathData.value = [];
