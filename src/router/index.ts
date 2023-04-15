@@ -15,7 +15,8 @@ import Experiment from "@/views/Experiment.vue";
 import Star from "@/views/Star.vue";
 import Alphabet from "@/views/Alphabet.vue";
 
-import Svg from "@/views/SVG.vue";
+import Create from "@/views/Create.vue";
+import Items from "@/views/Items.vue";
 import SvgTest from "@/views/SVGTest.vue";
 import Message from "@/views/Message.vue";
 import MessagePNouns from "@/views/MessagePNouns.vue";
@@ -25,7 +26,7 @@ import P2SeaItem from "@/views/P2SeaItem.vue";
 const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "",
-    component: Svg,
+    component: Create,
   },
   {
     path: "splatter",
@@ -61,7 +62,7 @@ const routeChildren: Array<RouteRecordRaw> = [
   },
   {
     path: "svg",
-    component: Svg,
+    component: Create,
   },
   {
     path: "svgtest",
@@ -84,8 +85,12 @@ const routeChildren: Array<RouteRecordRaw> = [
     component: Sample,
   },
   {
-    path: "p2sea_item/:token_id",
+    path: "item/:token_id",
     component: P2SeaItem,
+  },
+  {
+    path: "items",
+    component: Items,
   }
 ];
 
