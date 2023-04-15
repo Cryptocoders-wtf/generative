@@ -94,9 +94,6 @@ describe('SVGImage P2P', function () {
   it('Balance Check', async function () {
     balance = await token.etherBalanceOf(user1.address);
     expect(balance.sub(balance1)).equal(price); // 100%
-    // expect(balance.sub(balance1)).equal(price.div(20).mul(19)); // 95%
-    // balance = await token.balanceOf(minter.address);
-    // expect(balance.sub(balanceA)).equal(price.div(20).mul(1)); // 5%
   });
   it('Attempt to buy by user3', async function () {
     await expect(token3.purchase(0, user2.address, zeroAddress, { value: price })).revertedWith('Token is not on sale');
