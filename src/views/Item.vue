@@ -235,7 +235,7 @@ export default defineComponent({
       return pathData.value.length > 0;
     });
 
-    const token_id = route.params.token_id; //get from url parameter
+    const token_id = Number(route.params.token_id); //get from url parameter
     const token_obj = ref<Token721p2p>({
       data: { name: "", image: "" },
       price: 0,
@@ -292,10 +292,11 @@ export default defineComponent({
         } else {
           console.log("no localstrage request data");
           const ret = await tokenContract.tokenURI(token_id);
-          localStorage.setItem(strage_key, JSON.stringify(data));
-          return JSON.parse(atob(ret.split(",")[1]));
+          const tmp = JSON.parse(atob(ret.split(",")[1]));
+          localStorage.setItem(strage_key, JSON.stringify(tmp));
+          return tmp;
         }
-      })()
+      })();
       token_obj.value = {
         ...token_obj.value,
         price: -1,
