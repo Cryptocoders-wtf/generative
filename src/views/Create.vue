@@ -17,9 +17,9 @@
     <div class="mt-2">
       <NetworkGate :expectedNetwork="chainId">
 
-        <div class="flex justify-center">
-          <div @dragover.prevent
-              @drop.prevent class="m-4 w-full">
+        <div @dragover.prevent
+              @drop.prevent class="flex justify-center">
+          <div @drop="dragFile"  class="m-4 w-full">
               <label
                   class="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
                   
@@ -76,7 +76,9 @@
           MINT!
 
           </div>
-          <div v-if="isExecuting == 1">waiting ...</div>
+          <div v-if="isExecuting == 1">
+            <img class="h-20 w-20" src="@/assets/preload.gif" />
+          </div>
           <div v-if="isExecuting == 2">
             Complete !!
             <div @click="isExecuting = 0">
@@ -85,8 +87,7 @@
           </div>
         </div>
 
-
-        <div class="mx-10 text-left">
+        <div class="mx-10 text-left ">
           <li>All data is converted to the d attribute of the path element.</li>
           <li>
             Only circle, ellipses, line, rect, polygon, polyline element are
@@ -110,14 +111,6 @@
       </NetworkGate>
       </div>
     </div>
-    <div>
-      <a
-        href="https://testnets.opensea.io/ja/collection/svgtokenv1-4?search[sortAscending]=false&search[sortBy]=CREATED_DATE"
-        class="underline"
-        target="_blank"
-        >See NFTs on OpenSea</a
-      >
-    </div>
 </template>
 
 <script lang="ts">
@@ -140,6 +133,7 @@ import { parse } from "svg-parser";
 import { useStore } from "vuex";
 import { convSVG2Path, dumpConvertSVG } from "@/utils/svgtool";
 import { compressPath } from "@/utils/pathUtils";
+import router from "@/router";
 
 const sleep = async (seconds: number) => {
   return await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
@@ -234,7 +228,12 @@ export default defineComponent({
       const receipt = await tx.wait();
       if (receipt.status == 1) {
         // success transaction
-        return;
+        const events = receipt.events.filter(
+          (event: any) => event.event === "Transfer"
+        );
+
+        const returnValue = events[0].args[2].toNumber(); // 返り値 Transfer(from, to, tokenId)
+        return returnValue;
       } else {
         console.log("receipt", receipt);
         alert("Sorry, transaction failed.");
@@ -267,17 +266,21 @@ export default defineComponent({
 
       try {
         console.log(ret);
-        // TBD add price on Mint
-        console.log(set_price.value);
-        const tx = await contract.functions.mintWithAsset(ret);
+        const price = BigNumber.from(set_price.value);
+        console.log(price);
+        const tx = await contract.mintToSell(ret,price);
         console.log("mint:tx");
         const result = await tx.wait();
+        const tokenId = await polling(tx);
+        console.log("mint:tokenId", tokenId);
         console.log("mint:gasUsed", result.gasUsed.toNumber());
 
-        await polling(tx);
-
         reset();
-        isExecuting.value = 2;
+        isExecuting.value = 0;
+        router.push({
+          name: "item",
+          params: { token_id: tokenId },
+        });
 
       } catch (e) {
         // ウォレットで拒否した場合

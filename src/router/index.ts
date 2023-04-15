@@ -86,6 +86,7 @@ const routeChildren: Array<RouteRecordRaw> = [
   },
   {
     path: "item/:token_id",
+    name: "item",
     component: P2SeaItem,
   },
   {
