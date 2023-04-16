@@ -40,6 +40,9 @@ interface IERC721P2PCore {
 
   // It sets the price and calls the acceptOffer method of _dealer (onlyTokenOwner)
   function acceptOffer(uint256 _tokenId, IERC721Marketplace _dealer, uint256 _price) external;
+
+  // Fires when the owner sets the price
+  event SetPrice(uint256 indexed tokenId, uint256 price);
 }
 
 // deprecated
