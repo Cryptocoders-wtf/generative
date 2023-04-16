@@ -8,9 +8,9 @@ While NFT is playing a very important role to bring more people into the Web3 ec
 
 Because royalties are not part of ERC721, it is up to the marketplaces, such as OpenSea, to pay royalties.
 
-As the result, many royalty-free were born, and [the "Race to the Bottom" has started](https://nextnftdrop.com/news/one-more-nft-marketplace-goes-royalty-free-in-the-race-to-the-bottom/).
+As the result, many royalty-free marketplaces were born, and [the "Race to the Bottom" has started](https://nextnftdrop.com/news/one-more-nft-marketplace-goes-royalty-free-in-the-race-to-the-bottom/).
 
-A lot of NFTs are stolen by scam sites, which ask the user to connect his/her wallet, let him/her call ApprovalForAll (without understanding what it means), and steal NFTs.
+A lot of NFTs are stolen by scam sites, which ask the user to connect his/her wallet, let him/her call setApprovalForAll (without understanding what it means), and steal NFTs.
 
 The fundamental flaw of ERC721 is in this "approve & transfer" model, which gives too much power to the marketplace, far from the beauty of Web3's "decentralized and trustless" model.
 
