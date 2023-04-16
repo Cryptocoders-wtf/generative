@@ -264,10 +264,18 @@ export default defineComponent({
     const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
     const provider = getProvider(network, alchemyKey);
     const tokenContract = getSVGTokenContract(tokenAddress, provider);
-    const onid = tokenContract.on("Transfer", async (arg) => {
-      console.log(arg);
-      await updateToken();
-      console.log("transfer update done");
+    const onid = tokenContract.on("Transfer", async (_, _to: BigNumber, _tokenId: BigNumber) => {
+      const id = _tokenId.toNumber();
+      if (token_id === id) {
+        const isOwner = account.value ? 
+        utils.getAddress(account.value) == utils.getAddress(_to.toString()) : false; 
+        token_obj.value = {
+          ...token_obj.value,
+          isOwner,
+          price: 0,
+        }
+        console.log("transfer update done");
+      }
     });
     console.log(onid);
     const onid2 = tokenContract.on("SetPrice", async (_tokenId: BigNumber, _price: BigNumber) => {
