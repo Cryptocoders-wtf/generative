@@ -81,7 +81,8 @@ abstract contract ERC721AP2P is IERC721P2PCore, ERC721WithOperatorFilter, Ownabl
     payableTo.transfer(msg.value - comission - royalty);
     prices[_tokenId] = 0; // not on sale any more
 
-    transferFrom(tokenOwner, _buyer, _tokenId);
+    _transfer(tokenOwner, _buyer, _tokenId);
+    // transferFrom(tokenOwner, _buyer, _tokenId);
   }
 
   // 2.5% to the facilitator (marketplace)
