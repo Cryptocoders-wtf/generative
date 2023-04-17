@@ -9,7 +9,7 @@ pragma solidity ^0.8.6;
 
 import './IERC721P2P.sol';
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
-import 'erc721a/contracts/extensions/ERC721AQueryable.sol';
+import './erc721a/extensions/ERC721AQueryable.sol';
 import './opensea/DefaultOperatorFilterer.sol';
 
 // From https://github.com/ProjectOpenSea/operator-filter-registry/blob/main/src/example/ExampleERC721.sol
@@ -110,14 +110,4 @@ abstract contract ERC721AP2P is IERC721P2PCore, ERC721WithOperatorFilter, Ownabl
     _dealer.acceptOffer(this, _tokenId, _price);
   }
 
-  /**
-  * If you want to completely disable all the transfers via marketplaces, 
-  * override _isApprovedOrOwner like this.
-  *
-  function _isApprovedOrOwner(address spender, uint256 tokenId) internal view override returns (bool) {
-    require(_exists(tokenId), "ERC721: operator query for nonexistent token");
-    address owner = ERC721.ownerOf(tokenId);
-    return (spender == owner); // only owner can transfer it
-  }
-  */
 }
