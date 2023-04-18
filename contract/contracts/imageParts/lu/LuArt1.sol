@@ -208,10 +208,28 @@ contract LuArt1 is ISVGArt {
   function getSVGBody(uint16 index) external view override returns (bytes memory output) {
     output = generateSVGBody(index);
   }
-
   function getSVG(uint16 index) external view override returns (string memory output) {
     SVG.Element[] memory samples = new SVG.Element[](0);
 
     output = SVG.document('0 0 1024 1024', SVG.list(samples).svg(), generateSVGBody(index));
+  }
+  function traits(string type, string value) private pure returns (bytes memory trait) {
+      abi.encodePacked('{"trait_type": "',  type + '"}, { "value": "', value, '"}');
+  }
+  function bgTraits(uint256 _assetId) private pure returns (bytes memory trait) {
+      string[2] memory bgs = ["a", "b"];
+      return traits("aa", bgs[1]);
+  }
+
+   function generateTraits(uint256 _assetId) external view returns (string memory traits) {
+       traits = string(abi.encodePacked('[',
+                                bgTraits(_assetId),
+                                // door(_assetId),
+                                // roof(_assetId),
+                                // heart(_assetId),
+                                //window(_assetId),
+                                // lu(_assetId),
+                                        ']'));
+
   }
 }
