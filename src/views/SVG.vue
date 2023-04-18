@@ -186,8 +186,8 @@ export default defineComponent({
     // provider      contract="0xc65Ffa203d73538557Cff496bE85BD12B28927ca"
     // token      contract="0x5F0f949949c82f660B38FC7601A45498fa2C9fC9"
     
-    const network = "goerli";
-    const tokenAddress = "0x5F0f949949c82f660B38FC7601A45498fa2C9fC9";
+    const network = "mumbai";
+    const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
 
     const chainId = ChainIdMap[network];
 
