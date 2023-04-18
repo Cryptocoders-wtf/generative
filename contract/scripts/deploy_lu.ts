@@ -59,7 +59,8 @@ async function main() {
 
   for (let i = 0; i < 500; i++) {
     const resultData = await contract.getSVG(i);
-    console.log(i);
+    const ret = await contract.generateTraits(i)
+    console.log(i, ret);
     await writeFile(`./cache/lu_test${i}.svg`, resultData, () => {});
   }
 /*

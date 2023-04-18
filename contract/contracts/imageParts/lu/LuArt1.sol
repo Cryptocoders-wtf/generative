@@ -159,31 +159,6 @@ contract LuArt1 is ISVGArt {
     return getParts(20, 0);
   }
 
-  // 0, 1, 2
-  function windows(uint16 index) internal view returns (SVG.Element memory output) {
-    return getResizedParts((index % 3) + 15, 0);
-  }
-
-  // 0, 1
-  function door(uint16 index) internal view returns (SVG.Element memory output) {
-    return getResizedParts((index % 2) + 3, 0);
-  }
-
-  // 0, 1
-  function roof(uint16 index) internal view returns (SVG.Element memory output) {
-    return getResizedParts((index % 2) + 12, 0);
-  }
-
-  // 0, 1, 2, 3
-  function heart(uint16 index) internal view returns (SVG.Element memory output) {
-    return getResizedParts((index % 4) + 5, 0);
-  }
-
-  // 0, 1
-  function lu(uint16 index) internal view returns (SVG.Element memory output) {
-    return getResizedParts((index % 2) + 10, 0);
-  }
-
   function getBG(uint16 index) internal view returns (SVG.Element memory output) {
       if (index < 2) {
           // 0, 1
@@ -250,7 +225,7 @@ contract LuArt1 is ISVGArt {
                             ]);
       }
   }
-          
+
   function generateSVGBody(uint16 index) internal view returns (bytes memory output) {
     SVG.Element[] memory samples = new SVG.Element[](6);
 
@@ -269,11 +244,6 @@ contract LuArt1 is ISVGArt {
     // Lu
     samples[5] = SVG.group(getLu((index / 60) % 6 ));
 
-    
-    // chair
-    // samples[2] = getHeart((index / 60) % 3);
-    // house
-
     output = SVG.list(samples).svg();
   }
 
@@ -285,22 +255,83 @@ contract LuArt1 is ISVGArt {
 
     output = SVG.document('0 0 1024 1024', SVG.list(samples).svg(), generateSVGBody(index));
   }
-  function traits(string type, string value) private pure returns (bytes memory trait) {
-      abi.encodePacked('{"trait_type": "',  type + '"}, { "value": "', value, '"}');
+  function traits(string memory _type, string memory _value) private pure returns (bytes memory trait) {
+      trait = abi.encodePacked('{"trait_type": "',  _type, '", "value": "', _value, '"}');
   }
-  function bgTraits(uint256 _assetId) private pure returns (bytes memory trait) {
-      string[2] memory bgs = ["a", "b"];
-      return traits("aa", bgs[1]);
+  function bgTraits(uint256 index) private pure returns (bytes memory trait) {
+      string memory tmp = "";
+
+      string[] memory bgColors = new string[](6);
+      bgColors[0] = "#66c5c8";
+      bgColors[1] = "#a3df87";
+      bgColors[2] = "#ffc764";
+      bgColors[3] = "#f57596";
+      bgColors[4] = "#df92d3";
+      bgColors[5] = "#7d869a";
+
+      string memory color = "";
+      if (index < 2) {
+          tmp = "Clouds";
+          color = bgColors[index];
+      } else if (index < 8) {
+          tmp = "CloudRainbow";
+          color	= bgColors[index - 2];
+      } else if (index < 11) {
+          tmp = "Heartcloud";
+          color = bgColors[index - 6];
+      } else {
+          tmp = "Rainbow";
+          color = bgColors[5];
+      }
+      trait = abi.encodePacked(traits("BackGround", tmp), ",", traits("BackGroundColor", color) );
   }
 
+   // 0 - 4
+   function homeTraits(uint256 index) private pure returns (bytes memory trait) {
+       string memory door = "";
+       string memory roof = "";
+       if (index < 4) {
+           door = (index % 2) == 0 ? "DoorsetA" : "DoorsetB";  // 0 or 1
+           roof = ((index / 2) % 2) == 0 ? "RoofA" : "RoofB"; // 0or 1
+       } else {
+           door = "DoorsetC";
+           roof = "RoofC";
+       }
+       trait = abi.encodePacked(traits("Door", door), ",", traits("Roof", roof) );
+  }
+  function heartTraits(uint256 index) private pure returns (bytes memory trait) {
+      uint256 i = (index / 2) % 3;
+      string memory v = "";
+      if (i == 0) {
+          v = "HeartA";
+      }
+      if (i == 1) {
+          v = "HeartB";
+      }
+      if (i == 2) {
+          v = "HeartC";
+      }
+      trait = abi.encodePacked(traits("Heart", v));
+  }
+  function luTraits(uint256 index) private pure returns (bytes memory trait) {
+      string memory v = "";
+      if ((index % 2) == 0) {
+          v = "Lu1";
+      } else if ((index / 3) == 0) {
+          v = "Lu2";
+      } else {
+          v = "Lu3";
+      }
+      trait = abi.encodePacked(traits("Lu", v));
+  }
+
+          
    function generateTraits(uint256 _assetId) external view returns (string memory traits) {
        traits = string(abi.encodePacked('[',
-                                bgTraits(_assetId),
-                                // door(_assetId),
-                                // roof(_assetId),
-                                // heart(_assetId),
-                                //window(_assetId),
-                                // lu(_assetId),
+                                        bgTraits(_assetId % 12), ",",
+                                        homeTraits((_assetId/12) % 5), ",",
+                                        heartTraits((_assetId / 60) % 6), ",",
+                                        luTraits((_assetId/ 60) % 6),
                                         ']'));
 
   }
