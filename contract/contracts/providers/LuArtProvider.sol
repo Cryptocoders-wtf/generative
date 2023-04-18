@@ -65,8 +65,8 @@ contract LuArtProvider is IAssetProvider, IERC165, Ownable {
     svgPart = string(SVG.group(path).id(tag).svg());
   }
 
-  function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
-    // nothing to return
+  function generateTraits(uint256 _assetId) external view override returns (string memory traits) {
+    return svgArt.generateTraits(_assetId);
   }
 
   // For debugging
@@ -76,4 +76,6 @@ contract LuArtProvider is IAssetProvider, IERC165, Ownable {
     (svgPart, tag) = generateSVGPart(_assetId);
     svgDocument = string(SVG.document('0 0 1024 1024', bytes(svgPart), SVG.use(tag).svg()));
   }
+
+
 }
