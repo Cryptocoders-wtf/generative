@@ -14,7 +14,7 @@ async function main() {
   */
 
   const addresses = `export const addresses = {\n` + `  font:"${font.address}",\n` + `}\n`;
-  await writeFile(`../src/utils/addresses/note_sans_${network.name}.ts`, addresses, () => {});
+  await writeFile(`../src/utils/addresses/noto_sans_${network.name}.ts`, addresses, () => {});
 }
 
 main().catch(error => {
