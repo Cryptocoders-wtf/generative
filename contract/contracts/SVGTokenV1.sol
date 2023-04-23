@@ -9,7 +9,7 @@ pragma solidity ^0.8.6;
 import '@openzeppelin/contracts/utils/Strings.sol';
 import './libs/ProviderToken4.sol';
 import './imageParts/interfaces/ISVGStoreV1.sol';
-import './providers/SVGImage1Provider.sol';
+// import './providers/SVGImage1Provider.sol';
 import './ISVGTokenV1.sol';
 
 contract SVGTokenV1 is ProviderToken4, ISVGTokenV1 {
