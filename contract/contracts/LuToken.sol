@@ -33,8 +33,8 @@ contract LuToken is ProviderTokenA1 {
     if ((nextTokenId % 96) == 0) {
       // super mint
       require(msg.sender == owner(), 'must call onwer');
-      _safeMint(msg.sender, 10);
-      nextTokenId = nextTokenId + 10;
+      _safeMint(msg.sender, 1000);
+      nextTokenId = nextTokenId + 1000;
       return nextTokenId;
     } else {
       if (msg.sender != owner()) {

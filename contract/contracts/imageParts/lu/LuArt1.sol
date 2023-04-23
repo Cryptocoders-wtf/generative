@@ -327,12 +327,10 @@ contract LuArt1 is ISVGArt {
 
           
    function generateTraits(uint256 _assetId) external view returns (string memory traits) {
-       traits = string(abi.encodePacked('[',
-                                        bgTraits(_assetId % 12), ",",
+       traits = string(abi.encodePacked(bgTraits(_assetId % 12), ",",
                                         homeTraits((_assetId/12) % 5), ",",
                                         heartTraits((_assetId / 60) % 6), ",",
-                                        luTraits((_assetId/ 60) % 6),
-                                        ']'));
+                                        luTraits((_assetId/ 60) % 6)));
 
   }
 }

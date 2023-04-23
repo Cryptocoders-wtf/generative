@@ -50,19 +50,21 @@ async function main() {
     // await contract.register(con, partsContract.address);
     partsList.push(partsContract.address);
   }
-
+  console.log({partsList});
+  
   const contract = await deploy('LuArt1', partsList);
   await contract.deployed();
-  console.log(`      test="${contract.address}"`);
+  console.log(`      asset="${contract.address}"`);
   // const result = await contract.getParts(2);
   // const result2 = await contract.Roof05()
-
+/*
   for (let i = 0; i < 500; i++) {
     const resultData = await contract.getSVG(i);
     const ret = await contract.generateTraits(i)
     console.log(i, ret);
     await writeFile(`./cache/lu_test${i}.svg`, resultData, () => {});
-  }
+    }
+    */
 /*
   for (let i = 0; i < 5; i++) {
     const j = i * 12 + 5;
@@ -101,7 +103,7 @@ async function main() {
   const providerContract = await deploy('LuArtProvider', contract.address);
   await providerContract.deployed();
 
-  //console.log(`      prodider="${providerContract.address}"`);
+  console.log(`      prodider="${providerContract.address}"`);
 //  const result6 = await providerContract.generateSVGDocument(0);
   // await writeFile(`./cache/lu_test6.svg`, result6, () => {});
 
@@ -109,7 +111,7 @@ async function main() {
   const factoryToken = await ethers.getContractFactory('LuToken');
   const token = await factoryToken.deploy(providerContract.address, committee);
   await token.deployed();
-  console.log(`      contract="${token.address}"`);
+  console.log(`      tokenContract="${token.address}"`);
 
   //  await token.mint();
   console.log('mint');
