@@ -10,8 +10,9 @@ import '@openzeppelin/contracts/utils/Strings.sol';
 import './libs/ProviderToken4.sol';
 import './imageParts/interfaces/ISVGStoreV1.sol';
 import './providers/SVGImage1Provider.sol';
+import './ISVGTokenV1.sol';
 
-contract SVGTokenV1 is ProviderToken4 {
+contract SVGTokenV1 is ProviderToken4, ISVGTokenV1 {
   using Strings for uint256;
 
   ISVGStoreV1 public immutable svgStoreV1;
@@ -40,6 +41,15 @@ contract SVGTokenV1 is ProviderToken4 {
     assetIds[tokenId] = assetId;
   }
 
+  function getContractInfo(uint256 _tokenId) external view returns (ISVGTokenV1.ContractInfo memory) {
+      ISVGTokenV1.ContractInfo memory ret = ISVGTokenV1.ContractInfo({
+          assetProvider: assetProvider,
+          svgStore: svgStoreV1,
+          assetId: assetIds[_tokenId],
+          owner: ownerOf(_tokenId)
+          });
+      return ret;
+  }
   function tokenURI(uint256 _tokenId) public view override returns (string memory) {
     uint256 assetId = assetIds[_tokenId];
     require(_exists(_tokenId), 'SVGToken.tokenURI: nonexistent token');
