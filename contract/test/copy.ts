@@ -28,11 +28,11 @@ before(async () => {
 
   const tx = await token.mintWithAsset(data);
   await tx.wait();
-
+/*
   const factoryCopy = await ethers.getContractFactory('TokenFactory');
   tokenFactory = await factoryCopy.deploy(token.address);
   await tokenFactory.deployed();
-
+*/
   const factoryCopy2 = await ethers.getContractFactory('TokenFactory2');
   tokenFactory2 = await factoryCopy2.deploy(token.address);
   await tokenFactory2.deployed();
@@ -41,6 +41,8 @@ before(async () => {
 
 describe('Copy', function () {
   it('TokenFactory', async function () {
+    // just copy SVGTokenV1
+    /*
     const tx = await tokenFactory.forkContract(0);
     const ret = await tx.wait();
     await tx2.wait();
@@ -48,12 +50,26 @@ describe('Copy', function () {
     console.log(hoge);
     console.log(hoge.assetProvider);
     console.log(hoge.assetId);
+    */
   });
 
   it('TokenFactory2', async function () {
-    const tx = await tokenFactory.forkContract(0);
+    // copy new simple token
+    const tx = await tokenFactory2.forkContract(0);
     const ret = await tx.wait();
     console.log(ret.events);
+    const addr = await tokenFactory2.getTokenAddress(0);
+    console.log(addr);
+
+
+    const simpletoken_abi = require("../artifacts/contracts/SimpleToken.sol/SimpleToken.json");
+
+    const [owner] = await ethers.getSigners();
+    const simpletoken = new ethers.Contract(addr, simpletoken_abi.abi, owner);
+    
+    await simpletoken.mint();
+    const token = await simpletoken.tokenURI(0);
+    console.log(token);
     // console.log(hoge.assetProvider);
     // console.log(hoge.assetId);
   });
