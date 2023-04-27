@@ -33,20 +33,8 @@ before(async () => {
   
   
   const factorySVGStore = await ethers.getContractFactory('SushiNounsProvider');
-  /*
-  INounsDescriptor _descriptor,
-        INounsDescriptor _sushidescriptor,
-        INounsSeeder _seeder,
-        address _developer,
-        address _committee,
-        PriceSeed memory _priceSeed,
-        IProxyRegistry _proxyRegistry
-  */
   token1 = await factorySVGStore.deploy(descriptor, sushiNounsDescriptor.address, seeder, sushiseeder.address);
 
-  // insert backgrounds to sushiNounsDescriptor
-  // insert head to sushiNounsDescriptor
-  
 });
 
 describe('Sushi', function () {
@@ -68,7 +56,7 @@ describe('Sushi', function () {
     }
     for (const chunk of backgroundChunk) {
       await sushiNounsDescriptor.addManyBackgrounds(chunk.map(({ data }) => data));
-      console.log("b");
+      console.log("b2");
     }
 
     const headChunk = chunkArray(data.images.heads, 10);
@@ -90,7 +78,6 @@ describe('Sushi', function () {
       
       fs.writeFileSync(`./svg/${i}.svg`, svg, { encoding: 'utf8' });
     }
-    console.log(svg);
     console.log("hjello");
   })
 });
