@@ -21,7 +21,7 @@ import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { Strings } from '@openzeppelin/contracts/utils/Strings.sol';
 import { INounsDescriptor } from './interfaces/INounsDescriptor.sol';
 import { INounsSeeder } from './interfaces/INounsSeeder.sol';
-import { MultiPartRLEToSVG2 } from './libs/MultiPartRLEToSVG2.sol';
+import { MultiPartRLEToSVG } from './libs/MultiPartRLEToSVG.sol';
 import { NFTDescriptor2 } from './libs/NFTDescriptor2.sol';
 
 contract SushiNounsDescriptor is INounsDescriptor, Ownable {
@@ -287,7 +287,7 @@ contract SushiNounsDescriptor is INounsDescriptor, Ownable {
             name: name,
             description: description,
             parts: _getPartsForSeed(seed),
-            background: backgrounds[seed.background]
+            background: descriptor.backgrounds(seed.background)
         });
         return NFTDescriptor2.constructTokenURI(params, palettes);
     }
@@ -296,9 +296,9 @@ contract SushiNounsDescriptor is INounsDescriptor, Ownable {
      * @notice Given a seed, construct a base64 encoded SVG image.
      */
     function generateSVGImage(INounsSeeder.Seed memory seed) external view override returns (string memory) {
-        MultiPartRLEToSVG2.SVGParams memory params = MultiPartRLEToSVG2.SVGParams({
+        MultiPartRLEToSVG.SVGParams memory params = MultiPartRLEToSVG.SVGParams({
             parts: _getPartsForSeed(seed),
-            background: backgrounds[seed.background]
+            background: descriptor.backgrounds(seed.background)
         });
         return NFTDescriptor2.generateSVGImage(params, palettes);
     }
@@ -352,7 +352,6 @@ contract SushiNounsDescriptor is INounsDescriptor, Ownable {
      */
     function _getPartsForSeed(INounsSeeder.Seed memory seed) internal view returns (bytes[] memory) {
         bytes[] memory _parts = new bytes[](4);
-        // _parts[0] = bodies[seed.background];
         _parts[0] = descriptor.bodies(seed.body);
         _parts[1] = accessories[seed.accessory];
         _parts[2] = heads[seed.head];

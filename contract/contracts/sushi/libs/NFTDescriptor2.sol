@@ -18,7 +18,7 @@
 pragma solidity ^0.8.6;
 
 import { Base64 } from 'base64-sol/base64.sol';
-import { MultiPartRLEToSVG2 } from './MultiPartRLEToSVG2.sol';
+import { MultiPartRLEToSVG } from './MultiPartRLEToSVG.sol';
 
 library NFTDescriptor2 {
     struct TokenURIParams {
@@ -37,7 +37,7 @@ library NFTDescriptor2 {
         returns (string memory)
     {
         string memory image = generateSVGImage(
-            MultiPartRLEToSVG2.SVGParams({ parts: params.parts, background: params.background }),
+            MultiPartRLEToSVG.SVGParams({ parts: params.parts, background: params.background }),
             palettes
         );
 
@@ -57,11 +57,11 @@ library NFTDescriptor2 {
     /**
      * @notice Generate an SVG image for use in the ERC721 token URI.
      */
-    function generateSVGImage(MultiPartRLEToSVG2.SVGParams memory params, mapping(uint8 => string[]) storage palettes)
+    function generateSVGImage(MultiPartRLEToSVG.SVGParams memory params, mapping(uint8 => string[]) storage palettes)
         public
         view
         returns (string memory svg)
     {
-        return Base64.encode(bytes(MultiPartRLEToSVG2.generateSVG(params, palettes)));
+        return Base64.encode(bytes(MultiPartRLEToSVG.generateSVG(params, palettes)));
     }
 }

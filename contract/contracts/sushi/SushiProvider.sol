@@ -72,7 +72,7 @@ contract SushiNounsProvider is IAssetProvider, IERC165, Ownable {
       INounsSeeder.Seed memory seed2 = sushiseeder.generateSeed(_assetId, sushidescriptor);
 
       INounsSeeder.Seed memory mixedSeed = INounsSeeder.Seed({
-          background: seed2.background,
+          background: seed1.background,
           body: seed1.body,
           accessory: seed2.accessory,
           head: seed2.head,
@@ -80,27 +80,6 @@ contract SushiNounsProvider is IAssetProvider, IERC165, Ownable {
       });
 
       svgPart = sushidescriptor.genericDataURI("", "", mixedSeed);
-
-      /*
-      bytes[] memory _parts = new bytes[](4);
-      _parts[0] = descriptor.bodies(seed1.body);
-      _parts[1] = sushidescriptor.accessories(seed2.accessory);
-      _parts[2] = sushidescriptor.heads(seed2.head);
-      _parts[3] = descriptor.glasses(seed1.glasses);
-      // background: sushidescriptor.backgrounds(seed2.background)
-
-      NFTDescriptor2.TokenURIParams memory params = NFTDescriptor2.TokenURIParams({
-          name: "test",
-          description: "test",
-          parts: _parts,
-          background: sushidescriptor.backgrounds(seed2.background)
-          });
-      */
-      // NFTDescriptor2.constructTokenURI(params, sushidescriptor.palettes);
-      
-      //bytes memory path = svgArt.getSVGBody(uint16(_assetId));
-
-      //tag = string(abi.encodePacked(providerKey, _assetId.toString()));
 
       // generateSVGImage
       tag = string("");
@@ -111,51 +90,4 @@ contract SushiNounsProvider is IAssetProvider, IERC165, Ownable {
     // nothing to return
   }
 
-  /**
-   * @notice Similar to `tokenURI`, but always serves a base64 encoded data URI
-   * with the JSON contents directly inlined.
-   */
-  /*
-    function dataURI(uint256 tokenId) public view returns (string memory) {
-        // require(_exists(tokenId), 'NounsToken: URI query for nonexistent token');
-        
-        string memory nounId = tokenId.toString();
-        string memory name = string(abi.encodePacked('Noun lover ', nounId));
-        string memory description = string(abi.encodePacked('Noun lover ', nounId, ' is a fun of the Nouns DAO and Nouns Art Festival'));
-        
-        return genericDataURI(name, description, seeder[tokenId]);
-        // return descriptor.dataURI(tokenId, seeds[tokenId]);
-    }
-  */
-  /*
-    function genericDataURI(
-        string memory name,
-        string memory description,
-        INounsSeeder.Seed memory seed
-    ) public view returns (string memory) {
-        return "";
-        NFTDescriptor.TokenURIParams memory params = NFTDescriptor.TokenURIParams({
-            name: name,
-            description: description,
-            parts: _getPartsForSeed(seed),
-            background: descriptor.backgrounds(seed.background)
-        });
-        return NFTDescriptor.constructTokenURI(params, getPalettes());
-    }
-        */
-
-  
-  /**
-   * @notice Get all Noun parts for the passed `seed`.
-   */
-  /*
-  function _getPartsForSeed(INounsSeeder.Seed memory seed) internal view returns (bytes[] memory) {
-      bytes[] memory _parts = new bytes[](4);
-      _parts[0] = descriptor.bodies(seed.body);
-      _parts[1] = descriptor.accessories(seed.accessory);
-      // _parts[2] = sushidescriptor.heads(seed.head);
-      _parts[3] = descriptor.glasses(seed.glasses);
-      return _parts;
-  }
-  */
-  }
+}
