@@ -18,7 +18,6 @@ import { NFTDescriptor2 } from './libs/NFTDescriptor2.sol';
 contract SushiNounsProvider is IAssetProvider, IERC165, Ownable {
   using Strings for uint256;
 
-
   string constant providerKey = 'SushiNouns';
   address public receiver;
 

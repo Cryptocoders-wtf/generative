@@ -6,6 +6,8 @@ import { data } from "./image-sushi-data";
 
 import * as fs from 'fs';
 
+// sushi need mainnet forking.
+// you need run all test on mainnet forking
 
 let token: Contract, sushiNounsDescriptor: Contract, token1: Contract, token2: Contract, token3: Contract;
 
@@ -49,6 +51,7 @@ describe('Sushi', function () {
     }
 
     // hack, sushi use body as backgrounds because of background is string but we
+    /*
     const backgroundChunk = chunkArray(data.images.backgrounds, 10);
     for (const chunk of backgroundChunk) {
       await sushiNounsDescriptor.addManyBodies(chunk.map(({ data }) => data));
@@ -58,6 +61,7 @@ describe('Sushi', function () {
       await sushiNounsDescriptor.addManyBackgrounds(chunk.map(({ data }) => data));
       console.log("b2");
     }
+    */
 
     const headChunk = chunkArray(data.images.heads, 10);
     for (const chunk of headChunk) {
@@ -65,7 +69,6 @@ describe('Sushi', function () {
       console.log("h");
     }
     console.log("ok");
-    // console.log(await sushiNounsDescriptor.backgroundCount())
     
     for (let i = 1; i<50; i ++) {
       const ret = await token1.generateSVGPart(i);
