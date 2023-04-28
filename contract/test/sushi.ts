@@ -20,16 +20,10 @@ before(async () => {
   const developper = "0x4e357ffB3ea723aCC30530eddde89c6Dbb2Db74e"; // ai
 
 
-  const factorySeeder = await ethers.getContractFactory('NounsSushiSeeder');
+  const factorySeeder = await ethers.getContractFactory('SushiNounsSeeder');
   const sushiseeder = await factorySeeder.deploy();
   await sushiseeder.deployed();
 
-  /*
-  const factoryNFTDescriptor = await ethers.getContractFactory('NFTDescriptor');
-  const nftDescriptor = await factoryNFTDescriptor.deploy();
-  await nftDescriptor.deployed();
-  */
-  
   const factorySushiNounsDescriptor = await ethers.getContractFactory('SushiNounsDescriptor', {
     libraries: {
       NFTDescriptor: nftDescriptorAddress,
@@ -43,10 +37,11 @@ before(async () => {
   
   const factorySVGStore = await ethers.getContractFactory('SushiNounsProvider');
   provider = await factorySVGStore.deploy(descriptor, sushiNounsDescriptor.address, seeder, sushiseeder.address);
-
+  await provider.deployed();
+  
   const factoryToken = await ethers.getContractFactory('SushiNounsToken');
   token = await factoryToken.deploy(provider.address, committee, developper, developper);
-
+  await token.deployed();
   
 });
 

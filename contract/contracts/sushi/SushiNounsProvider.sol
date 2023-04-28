@@ -13,7 +13,7 @@ import '@openzeppelin/contracts/interfaces/IERC165.sol';
 
 import { INounsDescriptor } from './interfaces/INounsDescriptor.sol';
 import { INounsSeeder } from './interfaces/INounsSeeder.sol';
-import { NFTDescriptor2 } from './libs/NFTDescriptor2.sol';
+import { NFTDescriptor } from '../external/nouns/libs/NFTDescriptor.sol';
 
 contract SushiNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   using Strings for uint256;
