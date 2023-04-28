@@ -95,8 +95,9 @@ contract SushiNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     // nothing to return
   }
 
-  function mint(uint256 _assetId) external {
+  function mint(uint256 _assetId) external returns (uint256) {
      seeds[_assetId] = generateSeed(_assetId);
+     return _assetId;
   }
 
   

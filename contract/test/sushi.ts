@@ -78,15 +78,22 @@ describe('Sushi', function () {
     console.log("ok");
     
     const ret1 = await provider.generateSVGPart(100);
-    for (let i = 1; i<50; i ++) {
-      await token.mint({value: 1});
-      // await provider.mint(i);
-      const ret = await provider.generateSVGPart(i);
-      //console.log(ret);
-      console.log(await token.totalSupply());
-      const base64 = ret.svgPart;
-      const svg = Buffer.from(base64, 'base64').toString();
+    for (let i = 0; i<50; i ++) {
       
+      await token.mint({ value: ethers.utils.parseEther("0.1") });
+      // await provider.mint(i);
+
+      // const seed = await provider.seeds(i);
+      // console.log(seed);
+
+      const ret = await token.tokenURI(i);
+      // console.log(ret);
+      console.log(await token.totalSupply());
+      // const base64 = ret.svgPart;
+      const json = Buffer.from(ret.split(",")[1], 'base64').toString();
+      // console.log(svg)
+      const svgB = Buffer.from(JSON.parse(json)["image"].split(",")[1], 'base64').toString();
+      const svg = Buffer.from(svgB, 'base64').toString();
       fs.writeFileSync(`./svg/${i}.svg`, svg, { encoding: 'utf8' });
     }
     console.log("hjello");
