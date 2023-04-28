@@ -7,7 +7,7 @@
 pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
-import 'assetprovider.sol/IAssetProvider.sol';
+import '../packages/assetProvider/IAssetProvider.sol';
 import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/interfaces/IERC165.sol';
 
@@ -15,7 +15,7 @@ import { INounsDescriptor } from './interfaces/INounsDescriptor.sol';
 import { INounsSeeder } from './interfaces/INounsSeeder.sol';
 import { NFTDescriptor2 } from './libs/NFTDescriptor2.sol';
 
-contract SushiNounsProvider is IAssetProvider, IERC165, Ownable {
+contract SushiNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   using Strings for uint256;
 
   string constant providerKey = 'SushiNouns';
@@ -26,6 +26,8 @@ contract SushiNounsProvider is IAssetProvider, IERC165, Ownable {
   INounsSeeder public immutable seeder;
   INounsSeeder public immutable sushiseeder;
   
+  mapping(uint256 => INounsSeeder.Seed) public seeds;
+
   constructor(
               INounsDescriptor _descriptor,
               INounsDescriptor _sushidescriptor,
@@ -66,11 +68,11 @@ contract SushiNounsProvider is IAssetProvider, IERC165, Ownable {
     receiver = _receiver;
   }
 
-  function generateSVGPart(uint256 _assetId) public view override returns (string memory svgPart, string memory tag) {
+  function generateSeed(uint256 _assetId) internal view returns (INounsSeeder.Seed memory mixedSeed) {
       INounsSeeder.Seed memory seed1 = seeder.generateSeed(_assetId, descriptor);
       INounsSeeder.Seed memory seed2 = sushiseeder.generateSeed(_assetId, sushidescriptor);
 
-      INounsSeeder.Seed memory mixedSeed = INounsSeeder.Seed({
+      mixedSeed = INounsSeeder.Seed({
           background: seed1.background,
           body: seed1.body,
           accessory: seed2.accessory,
@@ -78,7 +80,11 @@ contract SushiNounsProvider is IAssetProvider, IERC165, Ownable {
           glasses: seed1.glasses
       });
 
-      svgPart = sushidescriptor.genericDataURI("", "", mixedSeed);
+  }
+  function generateSVGPart(uint256 _assetId) public view override returns (string memory svgPart, string memory tag) {
+      // INounsSeeder.Seed memory seed = generateSeed(_assetId);
+      INounsSeeder.Seed memory seed = seeds[_assetId];
+      svgPart = sushidescriptor.generateSVGImage(seed);
 
       // generateSVGImage
       tag = string("");
@@ -88,5 +94,11 @@ contract SushiNounsProvider is IAssetProvider, IERC165, Ownable {
   function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
     // nothing to return
   }
+
+  function mint(uint256 _assetId) external {
+     seeds[_assetId] = generateSeed(_assetId);
+  }
+
+  
 
 }

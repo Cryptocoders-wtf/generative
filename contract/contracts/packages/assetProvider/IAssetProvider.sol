@@ -65,3 +65,7 @@ interface IAssetProvider {
 interface IAssetProviderEx is IAssetProvider {
   function generateSVGDocument(uint256 _assetId) external view returns (string memory document);
 }
+
+interface IAssetProviderExMint is IAssetProvider {
+    function mint(uint256 _assetId) external;
+}

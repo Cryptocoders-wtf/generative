@@ -35,9 +35,7 @@ contract NounsSushiSeeder is INounsSeeder {
 
         return Seed({
             background: 0,
-            body: uint48(
-                uint48(pseudorandomness >> 48) % bodyCount
-            ),
+            body: 0,
             accessory: uint48(
                 uint48(pseudorandomness >> 96) % accessoryCount
             ),

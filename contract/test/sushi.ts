@@ -71,13 +71,11 @@ describe('Sushi', function () {
     console.log("ok");
     
     for (let i = 1; i<50; i ++) {
+      await token1.mint(i);
       const ret = await token1.generateSVGPart(i);
       console.log(ret);
-      const base64 = ret.svgPart.split(";")[1].split(",")[1]
-      const json = JSON.parse(Buffer.from(base64, 'base64').toString());
-      const image = json.image;
-      const svgBase64 = image.split(";")[1].split(",")[1];
-      const svg = Buffer.from(svgBase64, 'base64').toString();
+      const base64 = ret.svgPart;
+      const svg = Buffer.from(base64, 'base64').toString();
       
       fs.writeFileSync(`./svg/${i}.svg`, svg, { encoding: 'utf8' });
     }
