@@ -21,6 +21,8 @@ contract SushiNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   string constant providerKey = 'SushiNouns';
   address public receiver;
 
+  uint256 public nextTokenId;
+  
   INounsDescriptor public immutable descriptor;
   INounsDescriptor public immutable sushidescriptor;
   INounsSeeder public immutable seeder;
@@ -96,7 +98,11 @@ contract SushiNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   }
 
   function mint(uint256 _assetId) external returns (uint256) {
-     seeds[_assetId] = generateSeed(_assetId);
+      if (nextTokenId == _assetId) {
+         seeds[_assetId] = generateSeed(_assetId);
+         nextTokenId ++;
+      }
+      
      return _assetId;
   }
 
