@@ -21,8 +21,8 @@ import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { Strings } from '@openzeppelin/contracts/utils/Strings.sol';
 import { INounsDescriptor } from './interfaces/INounsDescriptor.sol';
 import { INounsSeeder } from './interfaces/INounsSeeder.sol';
-import { MultiPartRLEToSVG } from './libs/MultiPartRLEToSVG.sol';
-import { NFTDescriptor2 } from './libs/NFTDescriptor2.sol';
+import { MultiPartRLEToSVG } from '../external/nouns/libs/MultiPartRLEToSVG.sol';
+import { NFTDescriptor } from '../external/nouns/libs/NFTDescriptor.sol';
 
 contract SushiNounsDescriptor is INounsDescriptor, Ownable {
     using Strings for uint256;
@@ -283,13 +283,13 @@ contract SushiNounsDescriptor is INounsDescriptor, Ownable {
         string memory description,
         INounsSeeder.Seed memory seed
     ) public view override returns (string memory) {
-        NFTDescriptor2.TokenURIParams memory params = NFTDescriptor2.TokenURIParams({
+        NFTDescriptor.TokenURIParams memory params = NFTDescriptor.TokenURIParams({
             name: name,
             description: description,
             parts: _getPartsForSeed(seed),
             background: descriptor.backgrounds(seed.background)
         });
-        return NFTDescriptor2.constructTokenURI(params, palettes);
+        return NFTDescriptor.constructTokenURI(params, palettes);
     }
 
     /**
@@ -300,7 +300,7 @@ contract SushiNounsDescriptor is INounsDescriptor, Ownable {
             parts: _getPartsForSeed(seed),
             background: descriptor.backgrounds(seed.background)
         });
-        return NFTDescriptor2.generateSVGImage(params, palettes);
+        return NFTDescriptor.generateSVGImage(params, palettes);
     }
 
     /**

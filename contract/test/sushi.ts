@@ -14,21 +14,25 @@ let token: Contract, sushiNounsDescriptor: Contract, token1: Contract, provider:
 before(async () => {
   const descriptor = "0x0cfdb3ba1694c2bb2cfacb0339ad7b1ae5932b63";
   const seeder = "0xcc8a0fb5ab3c7132c1b2a0109142fb112c4ce515";
+  const nftDescriptorAddress = "0x0bbad8c947210ab6284699605ce2a61780958264";
 
   const committee = "0x4E4cD175f812f1Ba784a69C1f8AC8dAa52AD7e2B";
   const developper = "0x4e357ffB3ea723aCC30530eddde89c6Dbb2Db74e"; // ai
-  
+
+
   const factorySeeder = await ethers.getContractFactory('NounsSushiSeeder');
   const sushiseeder = await factorySeeder.deploy();
   await sushiseeder.deployed();
 
-  const factoryNFTDescriptor2 = await ethers.getContractFactory('NFTDescriptor2');
-  const nftDescriptor = await factoryNFTDescriptor2.deploy();
+  /*
+  const factoryNFTDescriptor = await ethers.getContractFactory('NFTDescriptor');
+  const nftDescriptor = await factoryNFTDescriptor.deploy();
   await nftDescriptor.deployed();
+  */
   
   const factorySushiNounsDescriptor = await ethers.getContractFactory('SushiNounsDescriptor', {
     libraries: {
-      NFTDescriptor2: nftDescriptor.address,
+      NFTDescriptor: nftDescriptorAddress,
     }
   });
   sushiNounsDescriptor = await factorySushiNounsDescriptor.deploy(
