@@ -76,24 +76,34 @@ describe('Sushi', function () {
     }
     console.log("ok");
     
-    const ret1 = await provider.generateSVGPart(100);
-    for (let i = 0; i<50; i ++) {
-      
-      await token.mint({ value: ethers.utils.parseEther("0.1") });
-      // await provider.mint(i);
-
-      // const seed = await provider.seeds(i);
-      // console.log(seed);
-
-      const ret = await token.tokenURI(i);
-      // console.log(ret);
-      console.log(await token.totalSupply());
+    const hoge = async (index: number) => {
+      console.log(index);
+      console.log(await token.ownerOf(index));
+      //console.log(num.toNumber());
       // const base64 = ret.svgPart;
+
+      // write file
+      const ret = await token.tokenURI(index);
       const json = Buffer.from(ret.split(",")[1], 'base64').toString();
-      // console.log(svg)
       const svgB = Buffer.from(JSON.parse(json)["image"].split(",")[1], 'base64').toString();
       const svg = Buffer.from(svgB, 'base64').toString();
-      fs.writeFileSync(`./svg/${i}.svg`, svg, { encoding: 'utf8' });
+      fs.writeFileSync(`./svg/${index}.svg`, svg, { encoding: 'utf8' });
+      
+    };
+    
+    for (let i = 0; i < 1000; i ++) {
+
+      const num = await token.totalSupply();
+      const index = num.toNumber();
+      
+      await token.mint({ value: ethers.utils.parseEther("0.1") });
+
+      await hoge(index);
+      if (index  % 10 === 8) {
+        await hoge(index + 1);
+        await hoge(index + 2);
+      }
+      
     }
     console.log("hjello");
   })
