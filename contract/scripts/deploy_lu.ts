@@ -107,7 +107,7 @@ async function main() {
 //  const result6 = await providerContract.generateSVGDocument(0);
   // await writeFile(`./cache/lu_test6.svg`, result6, () => {});
 
-  const committee = '0x818Fb9d440968dB9fCB06EEF53C7734Ad70f6F0e'; // ai
+  const committee = '0x56BB106d2Cc0a1209De6962a49634321AD0d9082'; // ai
   const factoryToken = await ethers.getContractFactory('LuToken');
   const token = await factoryToken.deploy(providerContract.address, committee);
   await token.deployed();
