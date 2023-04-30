@@ -81,4 +81,7 @@ contract LogoArt1 is ISVGArt {
 
     output = SVG.document('0 0 1024 1024', SVG.list(samples).svg(), generateSVGBody(index));
   }
+   function generateTraits(uint256 _assetId) external view returns (string memory traits) {
+       traits = "";
+   }
 }
