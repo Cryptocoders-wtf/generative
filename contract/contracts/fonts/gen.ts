@@ -15,15 +15,15 @@ const parser = new XMLParser(options);
 const main = async () => {
   const fileObj: {[key: string]: { file: string, key: string }} = {};
   [
-    "./font_lower_case_letters",
-    "./font_upper_case_letters",
-    "./font_numbers",
-    "./font_symbols",
+    "./font_NotoSans/font_lower_case_letters",
+    "./font_NotoSans/font_upper_case_letters",
+    "./font_NotoSans/font_numbers",
+    "./font_NotoSans/font_symbols",
   ].map(folder => {
     readdirSync(folder).map((file) => {
       const key = file.split(".")[0];
       const hit = fontsMap[key];
-      if (!!hit) {
+      if (hit) {
         fileObj[key] = {
           file: [folder, file].join("/"),
           key,
