@@ -25,7 +25,7 @@ contract LuToken is ProviderTokenA1 {
     committee = _committee;
 
     _safeMint("0x1A474Bd77F8109078CCdEf5896f499642830f3CA", 20);
-    _safeMint("", 20);
+    _safeMint("0x4E4cD175f812f1Ba784a69C1f8AC8dAa52AD7e2B", 20);
     _safeMint("0x818Fb9d440968dB9fCB06EEF53C7734Ad70f6F0e", 20);
     _safeMint("0x56BB106d2Cc0a1209De6962a49634321AD0d9082", 10);
     _safeMint("0x49b7045B25d3F8B27F9b75E60484668327D96897", 5);
