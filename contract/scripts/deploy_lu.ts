@@ -115,9 +115,9 @@ async function main() {
 
   //  await token.mint();
   console.log('mint');
-  await token.mint();
-  //  await token.mint( { value: ethers.utils.parseEther("0.01") });
-  //  await token.mint( { value: ethers.utils.parseEther("0.01") });
+  // await token.mint();
+  await token.mint( { value: ethers.utils.parseEther("0.01") });
+  await token.mint( { value: ethers.utils.parseEther("0.01") });
   //  await token.mint( { value: ethers.utils.parseEther("1") });
   // await token.mint();
   // await token.mint();
