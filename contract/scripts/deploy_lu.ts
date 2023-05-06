@@ -18,65 +18,100 @@ const deployNFT = async (name: string, args: any, args2: any) => {
 };
 async function main() {
   const cons = [
-    'LuPartsBgBlue',
-    'LuPartsBgRainbow',
-    'LuPartsChair',
-    'LuPartsDoor2',
-    'LuPartsDoor7',
-    'LuPartsHeart1',
-    'LuPartsHeart2',
-    'LuPartsHeart3',
-    'LuPartsHeartSP',
-    'LuPartsHouse',
-    'LuPartsLu1',
-    'LuPartsLu2',
-    'LuPartsRoof01',
-    'LuPartsRoof05',
-    'LuPartsTextSweet',
-    'LuPartsWindows1',
-    'LuPartsWindows2',
-    'LuPartsWindows3',
+    "LuPartsBg",
+    "LuPartsChair",
+    "LuPartsCloudRainbow",
+    "LuPartsClouds",
+    "LuPartsDoorsetA",
+    "LuPartsDoorsetB",
+    "LuPartsDoorsetC",
+    "LuPartsHeartA",
+    "LuPartsHeartB",
+    "LuPartsHeartC",
+    "LuPartsHeartcloud",
+    "LuPartsHouseBase",
+    "LuPartsLu01",
+    "LuPartsLu02body2",
+    "LuPartsLu02head1",
+    "LuPartsLu02head2",
+    "LuPartsPlane",
+    "LuPartsRainbowA",
+    "LuPartsRoofA",
+    "LuPartsRoofB",
+    "LuPartsRoofC",
   ];
 
   const partsList = [];
   for await (let con of cons) {
     const partsContract = await deploy(con);
+    await partsContract.deployed();
     // console.log(con);
     console.log(`      parts="${partsContract.address}"`);
     // await contract.register(con, partsContract.address);
     partsList.push(partsContract.address);
   }
-
+  console.log({partsList});
+  
   const contract = await deploy('LuArt1', partsList);
-  console.log(`      test="${contract.address}"`);
+  await contract.deployed();
+  console.log(`      asset="${contract.address}"`);
   // const result = await contract.getParts(2);
   // const result2 = await contract.Roof05()
-  const result3 = await contract.getSVG(0);
-  const result4 = await contract.getSVG(1);
-  const result5 = await contract.getSVG(2);
+/*
+  for (let i = 0; i < 500; i++) {
+    const resultData = await contract.getSVG(i);
+    const ret = await contract.generateTraits(i)
+    console.log(i, ret);
+    await writeFile(`./cache/lu_test${i}.svg`, resultData, () => {});
+    }
+    */
+/*
+  for (let i = 0; i < 5; i++) {
+    const j = i * 12 + 5;
+    const resultData = await contract.getSVG(j);
+    console.log(j);
+    await writeFile(`./cache/lu_test${j}.svg`, resultData, () => {});
+  }
 
-  await writeFile(`./cache/lu_test.svg`, result3, () => {});
+  for (let i = 0; i < 3; i++) {
+    const j = i * 60 + 4;
+    const resultData = await contract.getSVG(j);
+    console.log(j);
+    await writeFile(`./cache/lu_test${j}.svg`, resultData, () => {});
+  }
+*/
+  
+  //const result3 = await contract.getSVG(0);
+  //const result4 = await contract.getSVG(1);
+  //const result5 = await contract.getSVG(2);
+
+  // await writeFile(`./cache/lu_test.svg`, result3, () => {});
+  //  await writeFile(`./cache/lu_test1.svg`, result4, () => {});
+  // await writeFile(`./cache/lu_test2.svg`, result5, () => {});
   // console.log(result);
   // console.log(result2);
-
+/*
   console.log(result3);
   console.log('---------');
   console.log(result4);
   console.log('---------');
   console.log(result5);
   console.log('---------');
-
+*/
   /////
 
   const providerContract = await deploy('LuArtProvider', contract.address);
-  console.log(`      prodider="${providerContract.address}"`);
-  const result6 = await providerContract.generateSVGDocument(0);
-  await writeFile(`./cache/lu_test6.svg`, result6, () => {});
+  await providerContract.deployed();
 
-  const committee = '0x818Fb9d440968dB9fCB06EEF53C7734Ad70f6F0e'; // ai
+  console.log(`      prodider="${providerContract.address}"`);
+//  const result6 = await providerContract.generateSVGDocument(0);
+  // await writeFile(`./cache/lu_test6.svg`, result6, () => {});
+
+  const committee = '0x56BB106d2Cc0a1209De6962a49634321AD0d9082'; // ai
   const factoryToken = await ethers.getContractFactory('LuToken');
   const token = await factoryToken.deploy(providerContract.address, committee);
-  console.log(`      contract="${token.address}"`);
+  await token.deployed();
+  console.log(`      tokenContract="${token.address}"`);
 
   //  await token.mint();
   console.log('mint');

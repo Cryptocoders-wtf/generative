@@ -51,8 +51,11 @@ const main = async (folder: string, prefix: string) => {
     return fileName.endsWith(".svg");
   });
 
-  const oFolderNname = folder.split("/")[2];
+  const folders = folder.replace(/\/$/, "").split("/");
+  const oFolderNname = folders[folders.length - 1];
+
   const outdir = "./outputs/" + oFolderNname;
+  console.log(outdir);
   mkdirSync(outdir, { recursive: true });
   mkdirSync(outdir + "/svgs/", { recursive: true });
   mkdirSync(outdir + "/data/", { recursive: true });

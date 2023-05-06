@@ -21,8 +21,18 @@ contract LuToken is ProviderTokenA1 {
   ) ProviderTokenA1(_assetProvider, 'Laidback Lu', 'Laidback Lu') {
     description = 'Laidback Lu.';
     mintPrice = 1e16;
-    mintLimit = 5000;
+    mintLimit = 440;
     committee = _committee;
+
+    _safeMint("0x1A474Bd77F8109078CCdEf5896f499642830f3CA", 20);
+    _safeMint("0x4E4cD175f812f1Ba784a69C1f8AC8dAa52AD7e2B", 20);
+    _safeMint("0x818Fb9d440968dB9fCB06EEF53C7734Ad70f6F0e", 20);
+    _safeMint("0x56BB106d2Cc0a1209De6962a49634321AD0d9082", 10);
+    _safeMint("0x49b7045B25d3F8B27F9b75E60484668327D96897", 5);
+    _safeMint("0xedFEF30eaBef62C9Bf55121B407cA1B3Fde7F529", 5);
+    
+    nextTokenId = nextTokenId + 80;
+
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns (string memory) {
@@ -30,19 +40,11 @@ contract LuToken is ProviderTokenA1 {
   }
 
   function mint() public payable virtual override returns (uint256 tokenId) {
-    if ((nextTokenId % 96) == 0) {
-      // super mint
-      require(msg.sender == owner(), 'must call onwer');
-      _safeMint(msg.sender, 10);
-      nextTokenId = nextTokenId + 10;
-      return nextTokenId;
-    } else {
-      if (msg.sender != owner()) {
-        require(balanceOf(msg.sender) < ((nextTokenId / 96) + 1) * 4 + 1, 'Too many tokens');
-      }
       require(msg.value >= mintPrice, 'Must send the mint price');
+      require(nextTokenId < mintLimit, 'Sold out');
+      
       _safeMint(msg.sender, 1);
-
+      
       address payable payableTo = payable(committee);
       payableTo.transfer(address(this).balance);
 
