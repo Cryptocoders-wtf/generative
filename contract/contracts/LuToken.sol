@@ -31,7 +31,6 @@ contract LuToken is ProviderTokenA1 {
     _safeMint(address(0x49b7045B25d3F8B27F9b75E60484668327D96897), 5);
     _safeMint(address(0xedFEF30eaBef62C9Bf55121B407cA1B3Fde7F529), 5);
     
-    nextTokenId = nextTokenId + 80;
 
   }
 
@@ -41,14 +40,11 @@ contract LuToken is ProviderTokenA1 {
 
   function mint() public payable virtual override returns (uint256 tokenId) {
       require(msg.value >= mintPrice, 'Must send the mint price');
-      require(nextTokenId < mintLimit, 'Sold out');
-      
-      _safeMint(msg.sender, 1);
       
       address payable payableTo = payable(committee);
       payableTo.transfer(address(this).balance);
 
-      return nextTokenId++;
+      return super.mint();
   }
 }
 

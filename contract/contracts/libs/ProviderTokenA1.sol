@@ -31,8 +31,6 @@ abstract contract ProviderTokenA1 is ERC721AP2P {
   using Strings for uint256;
   using Strings for uint16;
 
-  uint public nextTokenId;
-
   // To be specified by the concrete contract
   string public description;
   uint public mintPrice;
@@ -132,10 +130,10 @@ abstract contract ProviderTokenA1 is ERC721AP2P {
    * 3. Call the processPayout method of the asset provider with appropriate value
    */
   function mint() public payable virtual returns (uint256 tokenId) {
-    require(nextTokenId < mintLimit, 'Sold out');
+    require(_nextTokenId() < mintLimit, 'Sold out');
     _safeMint(msg.sender, 1);
 
-    return nextTokenId++;
+    return _nextTokenId() - 1;
   }
 
   /**
@@ -147,7 +145,7 @@ abstract contract ProviderTokenA1 is ERC721AP2P {
   }
 
   function totalSupply() public view override returns (uint256) {
-    return nextTokenId;
+    return _nextTokenId();
   }
 
   function generateTraits(uint256 _tokenId) internal view returns (bytes memory traits) {
