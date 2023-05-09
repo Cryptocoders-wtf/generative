@@ -75,6 +75,6 @@ contract MessageToken is ProviderTokenA1, IMessageToken {
   }
   
   function getLatestMessage() external view returns (string memory output) {
-      output = messageStore.getMessage(assetIds[nextTokenId - 1]); 
+      output = messageStore.getMessage(assetIds[_nextTokenId() - 1]); 
  }
 }
