@@ -107,7 +107,7 @@ async function main() {
 //  const result6 = await providerContract.generateSVGDocument(0);
   // await writeFile(`./cache/lu_test6.svg`, result6, () => {});
 
-  const committee = '0x56BB106d2Cc0a1209De6962a49634321AD0d9082'; // ai
+  const committee = '0x56BB106d2Cc0a1209De6962a49634321AD0d9082'; // kyoto
   const factoryToken = await ethers.getContractFactory('LuToken');
   const token = await factoryToken.deploy(providerContract.address, committee);
   await token.deployed();
@@ -116,8 +116,8 @@ async function main() {
   //  await token.mint();
   console.log('mint');
   // await token.mint();
-  await token.mint( { value: ethers.utils.parseEther("0.01") });
-  await token.mint( { value: ethers.utils.parseEther("0.01") });
+  // await token.mint( { value: ethers.utils.parseEther("0.01") });
+  // await token.mint( { value: ethers.utils.parseEther("0.01") });
   //  await token.mint( { value: ethers.utils.parseEther("1") });
   // await token.mint();
   // await token.mint();
