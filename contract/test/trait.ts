@@ -6,7 +6,7 @@ let asset: Contract, token: Contract, provider: Contract;
 const committee = '0x818Fb9d440968dB9fCB06EEF53C7734Ad70f6F0e'; // ai
 
 before(async () => {
-  const factory1 = await ethers.getContractFactory('LuPartsLu1');
+  const factory1 = await ethers.getContractFactory('LuPartsLu01');
   const parts1 = await factory1.deploy();
   await parts1.deployed();
 
