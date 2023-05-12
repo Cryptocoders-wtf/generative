@@ -15,7 +15,7 @@ import { INounsDescriptor } from './interfaces/INounsDescriptor.sol';
 import { INounsSeeder } from './interfaces/INounsSeeder.sol';
 import { NFTDescriptor } from '../external/nouns/libs/NFTDescriptor.sol';
 
-contract SushiNounsProvider is IAssetProviderExMint, IERC165, Ownable {
+contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   using Strings for uint256;
 
   string constant providerKey = 'SushiNouns';
