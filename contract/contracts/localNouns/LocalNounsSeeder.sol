@@ -20,7 +20,7 @@ pragma solidity ^0.8.6;
 import { INounsSeeder } from './interfaces/INounsSeeder.sol';
 import { INounsDescriptorMinimal } from './interfaces/INounsDescriptorMinimal.sol';
 
-contract SushiNounsSeeder is INounsSeeder {
+contract LocalNounsSeeder is INounsSeeder {
     /**
      * @notice Generate a pseudo-random Noun seed using the previous blockhash and noun ID.
      */

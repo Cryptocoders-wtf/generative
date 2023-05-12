@@ -11,7 +11,7 @@ import './libs/ProviderTokenA1.sol';
 import { INounsSeeder } from './sushi/interfaces/INounsSeeder.sol';
 import './sushi/interfaces/IAssetProviderExMint.sol';
 
-contract SushiNounsToken is ProviderTokenA1 {
+contract LocalNounsToken is ProviderTokenA1 {
   using Strings for uint256;
 
   // fes committee

@@ -24,7 +24,7 @@ import { INounsSeeder } from './interfaces/INounsSeeder.sol';
 import { MultiPartRLEToSVG } from '../external/nouns/libs/MultiPartRLEToSVG.sol';
 import { NFTDescriptor } from '../external/nouns/libs/NFTDescriptor.sol';
 
-contract SushiNounsDescriptor is INounsDescriptor, Ownable {
+contract LocalNounsDescriptor is INounsDescriptor, Ownable {
     using Strings for uint256;
 
     // original
