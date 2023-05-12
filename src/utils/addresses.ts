@@ -49,6 +49,10 @@ import { addresses as londrina_solid_localhost } from "./addresses/londrina_soli
 import { addresses as londrina_solid_mumbai } from "./addresses/londrina_solid_mumbai";
 import { addresses as londrina_solid_goerli } from "./addresses/londrina_solid_goerli";
 import { addresses as londrina_solid_mainnet } from "./addresses/londrina_solid_mainnet";
+import { addresses as noto_sans_localhost } from "./addresses/noto_sans_localhost";
+import { addresses as noto_sans_goerli } from "./addresses/noto_sans_goerli";
+import { addresses as noto_sans_mumbai } from "./addresses/noto_sans_mumbai";
+import { addresses as noto_sans_mainnet } from "./addresses/noto_sans_mainnet";
 import { addresses as matrix_mumbai } from "./addresses/matrix_mumbai";
 import { addresses as matrix_goerli } from "./addresses/matrix_goerli";
 import { addresses as matrix_localhost } from "./addresses/matrix_localhost";
@@ -236,6 +240,13 @@ export const addresses: Addresses = {
     goerli: londrina_solid_goerli.font,
     mainnet: londrina_solid_mainnet.font,
   },
+  noto_sans: {
+    localhost: noto_sans_localhost.font,
+    goerli: noto_sans_goerli.font,
+    mumbai: noto_sans_mumbai.font,
+    mainnet: noto_sans_mainnet.font,
+  },
+
   matrix: {
     localhost: matrix_localhost.matrix,
     mumbai: matrix_mumbai.matrix,
