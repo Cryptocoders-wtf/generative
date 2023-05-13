@@ -125,3 +125,35 @@ export const solidityString = (array: Uint8Array) => {
     })
     .join("");
 };
+
+
+export const decodeCompressData = (bin: string) => {
+  const bytes = [];
+  for(let i = 0; i < bin.split("").length / 2; i++) {
+    bytes.push(parseInt(bin[i * 2] + bin[i*2+1], 16));
+  }
+  
+  const len = bytes.length / 3;
+  const numArray = [];
+  for(let i = 0; i < len; i++) {
+    numArray[i * 2] = bytes[i * 3] + (bytes[i * 3 + 1] & 0x0f) * 256;
+    if (bytes[i * 3 + 2] !== undefined) {
+      numArray[i * 2 + 1] = bytes[i * 3 + 2] + (bytes[i * 3 + 1] & 0xf0) * 16;
+    }
+  }
+  const pathData = numArray.map(a => {
+    // number case;
+    if (a > 0x100 ) {
+      const c = a - 0x100 - 1024
+      return c;
+    } else {
+      // string case
+      return String.fromCharCode(a);
+    }
+  })
+  return pathData.join(" ")
+};
+
+export const path2SVG = (path: string) => {
+  return `<?xml version="1.0" encoding="UTF-8"?><svg viewBox="0 0 1024 1024"  xmlns="http://www.w3.org/2000/svg"><path d="${path}" /></svg>`
+}
