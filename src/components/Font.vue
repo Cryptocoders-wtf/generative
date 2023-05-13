@@ -21,8 +21,14 @@ import {  decodeCompressData, path2SVG } from "@/utils/pathUtils";
 
 export default defineComponent({
   props: {
-    network: String,
-    address: String,
+    network: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
   },
   setup(props) {
     console.log("*** chainId", props.network, props.address);
@@ -40,7 +46,7 @@ export default defineComponent({
     for(let i = 48; i < 127; i++) {
       strings.push(String.fromCharCode(i))
     }
-    const ret = ref({});
+    const ret = ref<{[key: string]: string}>({});
     strings.map(async (char) => {
       const rawPathData = await fontProvider.functions.pathOf(char);
       const path = decodeCompressData(rawPathData[0].slice(2));
