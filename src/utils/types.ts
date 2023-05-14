@@ -11,9 +11,9 @@ export interface PathElement {
 export interface PathData {
   path: string;
   fill: string;
-  stroke: number;
   strokeW: number;
   matrix?: any;
+  opacity?: number;
 }
 export interface DefsObj {
   [key: string]: ElementNode[];
