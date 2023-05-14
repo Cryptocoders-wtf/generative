@@ -2,7 +2,7 @@
   <div class="mx-auto max-w-3xl p-2 text-left">
     <span v-for="(char, k) in strings" :key="k">
       <template v-if="ret[char]">
-        <img :src="ret[char]" class="w-6 inline">
+        <img :src="ret[char]" class="inline w-6" />
       </template>
     </span>
   </div>
@@ -16,8 +16,7 @@ import { Addresses } from "@/utils/addresses";
 
 import { getProvider, IFontProvider } from "@/utils/const";
 import { ethers } from "ethers";
-import {  decodeCompressData, path2SVG } from "@/utils/pathUtils";
-
+import { decodeCompressData, path2SVG } from "@/utils/pathUtils";
 
 export default defineComponent({
   props: {
@@ -42,24 +41,23 @@ export default defineComponent({
     );
 
     // 48 ~ 126
-    const strings = [ ];
-    for(let i = 48; i < 127; i++) {
-      strings.push(String.fromCharCode(i))
+    const strings = [];
+    for (let i = 48; i < 127; i++) {
+      strings.push(String.fromCharCode(i));
     }
-    const ret = ref<{[key: string]: string}>({});
+    const ret = ref<{ [key: string]: string }>({});
     strings.map(async (char) => {
       const rawPathData = await fontProvider.functions.pathOf(char);
       const path = decodeCompressData(rawPathData[0].slice(2));
       const pathSVG = path2SVG(path);
-      const encoded = Buffer.from(pathSVG).toString('base64');
+      const encoded = Buffer.from(pathSVG).toString("base64");
       ret.value[char] = `data:image/svg+xml;base64,${encoded}`;
     });
-    
+
     return {
       ret,
       strings,
     };
-    
   },
 });
 </script>
