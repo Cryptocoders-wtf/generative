@@ -29,7 +29,8 @@
         </select>
         <br />
       </div>
-      <div style="margin-top: 20px; margin-bottom: 20px; border: 1px solid black;">
+      <div class="font-bold text-left text-2xl mt-4">Preview</div>
+      <div class="w-72 border-2" style="margin-bottom: 20px; border: 1px solid rgb(180, 180, 180); ">
         <div v-html="messageSVG"></div>
       </div>
       <NetworkGate :expectedNetwork="chainId">
