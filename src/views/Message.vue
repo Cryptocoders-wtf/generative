@@ -10,17 +10,27 @@
             rows="8"
             class="w-full resize rounded-md border-2"
             v-model="message"
+            @input="updateSVGMessage"
           />
         </div>
       </div>
       <div class="mt-4 text-left">
         <span :style="{ color: color }" class="font-bold">Color:</span>
-        <select v-model="color" class="resize rounded-md border-2">
+        <select v-model="color" class="resize rounded-md border-2" @change="updateSVGMessage">
           <option v-for="(option, k) in colors" :value="option.value" :key="k">
             {{ option.text }}
           </option>
         </select>
+        <span class="font-bold ml-4">Font:</span>
+        <select v-model="font" class="resize rounded-md border-2" @change="updateSVGMessage">
+          <option v-for="(option, k) in fonts" :value="option.value" :key="k">
+            {{ option.text }}
+          </option>
+        </select>
         <br />
+      </div>
+      <div style="margin-top: 20px; margin-bottom: 20px; border: 1px solid black;">
+        <div v-html="messageSVG"></div>
       </div>
       <NetworkGate :expectedNetwork="chainId">
         <div class="flex items-center justify-center">
@@ -66,6 +76,7 @@ import { ChainIdMap, displayAddress } from "@/utils/MetaMask";
 import {
   useMessageTokenNetworkContext,
   useMessageStoreNetworkContext,
+  getMessageStoreContract,
   getProvider,
   getMessageTokenContract,
 } from "@/utils/const";
@@ -83,6 +94,7 @@ export default defineComponent({
   setup(props) {
     const message = ref("Fully On-chain\ntest.");
     const color = ref("orange");
+    const font = ref("londrina_solid");
 
     const colors = [
       "pink",
@@ -104,11 +116,26 @@ export default defineComponent({
       text: c,
     }));
 
+    const fonts = [
+      "londrina_solid",
+      "noto_sans",
+    ].map((c) => ({
+      value: c,
+      text: c,
+    }));
+
     const network = "goerli";
 
     const tokenAddress = addresses.messageSplatter.goerli;
 
     const chainId = ChainIdMap[network];
+
+    const box = {
+      w: 1024,
+      h: 1024,
+    };
+
+    const messageSVG = ref(null);
 
     const { networkContext } = useMessageTokenNetworkContext(
       chainId,
@@ -162,6 +189,21 @@ export default defineComponent({
     };
     fetchTokens();
 
+
+    const messageStore_addresses: { [key: string]: string } = {
+      "londrina_solid": "0x7c56D603Eb7976ee6592F7DDa8118576a9FDfeA3",
+      "noto_sans": "0x9bF2831b806CEbD0B09d490c90C88bcb47515C62"
+    };
+    
+    const loadSVGMessage = async () => {
+      const fontStore = getMessageStoreContract(messageStore_addresses[font.value], provider);
+      messageSVG.value = await fontStore.getSVGMessage(message.value, color.value, box);
+    };
+    const updateSVGMessage = () => {
+      loadSVGMessage();
+    };
+    loadSVGMessage();
+
     provider.once("block", () => {
       tokenContract.on(
         tokenContract.filters.Transfer(),
@@ -177,6 +219,10 @@ export default defineComponent({
       message,
       color,
       colors,
+      font,
+      fonts,
+      messageSVG,
+      updateSVGMessage,
       // mint
       mint,
       isMinting,
