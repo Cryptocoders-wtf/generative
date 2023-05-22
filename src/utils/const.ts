@@ -84,10 +84,13 @@ const ProviderSVGTokenEx = {
   wabi: require("@/abis/SVGTokenV1.json"), // wrapped abi
 };
 const ProviderMessageTokenEx = {
-  wabi: require("@/abis/MessageToken.json"), // wrapped abi
+  wabi: require("@/abis/MessageTokenV2.json"), // wrapped abi
+};
+const ProviderMessageProviderEx = {
+  wabi: require("@/abis/MessageProvider3.json"), // wrapped abi
 };
 const ProviderMessageStoreEx = {
-  wabi: require("@/abis/MessageStoreV1.json"), // wrapped abi
+  wabi: require("@/abis/MessageStoreV2.json"), // wrapped abi
 };
 const IAssetProvider = {
   wabi: require("@/abis/IAssetProvider.json"), // wrapped abi
@@ -156,6 +159,18 @@ export const getMessageTokenContract = (
   const tokenContract = new ethers.Contract(
     address,
     ProviderMessageTokenEx.wabi.abi,
+    provider
+  );
+  return tokenContract;
+};
+
+export const getMessageProviderContract = (
+  address: string,
+  provider: ProviderOrSigner
+): ethers.Contract => {
+  const tokenContract = new ethers.Contract(
+    address,
+    ProviderMessageProviderEx.wabi.abi,
     provider
   );
   return tokenContract;
