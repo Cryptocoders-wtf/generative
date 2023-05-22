@@ -71,6 +71,15 @@ import { addresses as dynamic_goerli } from "./addresses/dynamic_goerli";
 import { addresses as dynamic_localhost } from "./addresses/dynamic_localhost";
 import { addresses as message_pnouns_goerli } from "./addresses/message_pnouns_goerli";
 import { addresses as message_splatter_goerli } from "./addresses/message_splatter_goerli";
+import { addresses as messagestore2_goerli } from "./addresses/messagestore2_goerli";
+import { addresses as messagestore2_localhost } from "./addresses/messagestore2_localhost";
+import { addresses as messagestore2_mumbai } from "./addresses/messagestore2_mumbai";
+import { addresses as messageprovider_goerli } from "./addresses/messageprovider_goerli";
+import { addresses as messageprovider_localhost } from "./addresses/messageprovider_localhost";
+import { addresses as messageprovider_mumbai } from "./addresses/messageprovider_mumbai";
+import { addresses as messagetoken_goerli } from "./addresses/messagetoken_goerli";
+import { addresses as messagetoken_localhost } from "./addresses/messagetoken_localhost";
+import { addresses as messagetoken_mumbai } from "./addresses/messagetoken_mumbai";
 
 export interface Addresses {
   [key: string]: { [key: string]: string };
@@ -85,6 +94,21 @@ export const addresses: Addresses = {
   },
   messageSplatter: {
     goerli: message_splatter_goerli.messageSplatterToken,
+  },
+  messageStore: {
+    localhost: messagestore2_localhost.messageStore,
+    goerli: messagestore2_goerli.messageStore,
+    mumbai: messagestore2_mumbai.messageStore,
+  },
+  messageProvider: {
+    localhost: messageprovider_localhost.messageProvider,
+    goerli: messageprovider_goerli.messageProvider,
+    mumbai: messageprovider_mumbai.messageProvider,
+  },
+  messageToken: {
+    localhost: messagetoken_localhost.messageToken,
+    goerli: messagetoken_goerli.messageToken,
+    mumbai: messagetoken_mumbai.messageToken,
   },
   svgHelper: {
     goerli: splatter_goerli.svgHelperAddress,
