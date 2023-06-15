@@ -21,14 +21,11 @@ import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { Strings } from '@openzeppelin/contracts/utils/Strings.sol';
 import { INounsDescriptor } from './interfaces/INounsDescriptor.sol';
 import { INounsSeeder } from './interfaces/INounsSeeder.sol';
-import { MultiPartRLEToSVG } from '../external/nouns/libs/MultiPartRLEToSVG.sol';
-import { NFTDescriptor } from '../external/nouns/libs/NFTDescriptor.sol';
+import { NFTDescriptor } from './libs/NFTDescriptor.sol';
+import { MultiPartRLEToSVG } from './libs/MultiPartRLEToSVG.sol';
 
-contract LocalNounsDescriptor is INounsDescriptor, Ownable {
+contract NounsDescriptor is INounsDescriptor, Ownable {
     using Strings for uint256;
-
-    // original
-    INounsDescriptor public immutable descriptor;
 
     // prettier-ignore
     // https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
@@ -60,16 +57,7 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
 
     // Noun Glasses (Custom RLE)
     bytes[] public override glasses;
-    
-    // prefectureId => parts index of heads
-    mapping(uint256 => uint256[]) public prefectureHeads;
 
-    // prefectureId => parts index of accessories
-    mapping(uint256 => uint256[]) public prefectureAccessories;
-
-    constructor(INounsDescriptor _descriptor) {
-        descriptor = _descriptor;
-    }
     /**
      * @notice Require that the parts have not been locked.
      */
@@ -89,8 +77,7 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
      * @notice Get the number of available Noun `bodies`.
      */
     function bodyCount() external view override returns (uint256) {
-        return descriptor.bodyCount();
-        // return bodies.length;
+        return bodies.length;
     }
 
     /**
@@ -101,20 +88,6 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
     }
 
     /**
-    * @notice Get the number of available Noun `accessories` in the prefecture.
-    */
-    function accessoryCountInPrefecture(uint256 prefectureId) external view override returns (uint256) {
-        return prefectureAccessories[prefectureId].length;
-    }
-
-    /**
-    * @notice Get the number of available Noun `accessories` in the prefecture.
-    */
-    function accessoryInPrefecture(uint256 prefectureId, uint256 seqNo) external view override returns (uint256) {
-        return prefectureAccessories[prefectureId][seqNo];
-    }
-
-    /**
      * @notice Get the number of available Noun `heads`.
      */
     function headCount() external view override returns (uint256) {
@@ -122,25 +95,10 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
     }
 
     /**
-    * @notice Get the number of available Noun `heads` in the prefecture.
-    */
-    function headCountInPrefecture(uint256 prefectureId) external view override returns (uint256) {
-        return prefectureHeads[prefectureId].length;
-    }
-
-    /**
-    * @notice Get the number of available Noun `heads` in the prefecture.
-    */
-    function headInPrefecture(uint256 prefectureId, uint256 seqNo) external view override returns (uint256) {
-        return prefectureHeads[prefectureId][seqNo];
-    }
-
-    /**
      * @notice Get the number of available Noun `glasses`.
      */
     function glassesCount() external view override returns (uint256) {
-        return descriptor.glassesCount();
-        // return glasses.length;
+        return glasses.length;
     }
 
     /**
@@ -173,14 +131,14 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
             _addBody(_bodies[i]);
         }
     }
-    
+
     /**
      * @notice Batch add Noun accessories.
      * @dev This function can only be called by the owner when not locked.
      */
-    function addManyAccessories(uint256 prefectureId, bytes[] calldata _accessories) external override onlyOwner whenPartsNotLocked {
+    function addManyAccessories(bytes[] calldata _accessories) external override onlyOwner whenPartsNotLocked {
         for (uint256 i = 0; i < _accessories.length; i++) {
-            _addAccessory(prefectureId, _accessories[i]);
+            _addAccessory(_accessories[i]);
         }
     }
 
@@ -188,9 +146,9 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
      * @notice Batch add Noun heads.
      * @dev This function can only be called by the owner when not locked.
      */
-    function addManyHeads(uint256 prefectureId, bytes[] calldata _heads) external override onlyOwner whenPartsNotLocked {
+    function addManyHeads(bytes[] calldata _heads) external override onlyOwner whenPartsNotLocked {
         for (uint256 i = 0; i < _heads.length; i++) {
-            _addHead(prefectureId, _heads[i]);
+            _addHead(_heads[i]);
         }
     }
 
@@ -203,7 +161,7 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
             _addGlasses(_glasses[i]);
         }
     }
-    
+
     /**
      * @notice Add a single color to a color palette.
      * @dev This function can only be called by the owner.
@@ -233,16 +191,16 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
      * @notice Add a Noun accessory.
      * @dev This function can only be called by the owner when not locked.
      */
-    function addAccessory(uint256 prefectureId, bytes calldata _accessory) external override onlyOwner whenPartsNotLocked {
-        _addAccessory(prefectureId, _accessory);
+    function addAccessory(bytes calldata _accessory) external override onlyOwner whenPartsNotLocked {
+        _addAccessory(_accessory);
     }
 
     /**
      * @notice Add a Noun head.
      * @dev This function can only be called by the owner when not locked.
      */
-    function addHead(uint256 prefectureId, bytes calldata _head) external override onlyOwner whenPartsNotLocked {
-        _addHead(prefectureId, _head);
+    function addHead(bytes calldata _head) external override onlyOwner whenPartsNotLocked {
+        _addHead(_head);
     }
 
     /**
@@ -252,7 +210,7 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
     function addGlasses(bytes calldata _glasses) external override onlyOwner whenPartsNotLocked {
         _addGlasses(_glasses);
     }
-    
+
     /**
      * @notice Lock all Noun parts.
      * @dev This cannot be reversed and can only be called by the owner when not locked.
@@ -321,7 +279,7 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
             name: name,
             description: description,
             parts: _getPartsForSeed(seed),
-            background: descriptor.backgrounds(seed.background)
+            background: backgrounds[seed.background]
         });
         return NFTDescriptor.constructTokenURI(params, palettes);
     }
@@ -332,7 +290,7 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
     function generateSVGImage(INounsSeeder.Seed memory seed) external view override returns (string memory) {
         MultiPartRLEToSVG.SVGParams memory params = MultiPartRLEToSVG.SVGParams({
             parts: _getPartsForSeed(seed),
-            background: descriptor.backgrounds(seed.background)
+            background: backgrounds[seed.background]
         });
         return NFTDescriptor.generateSVGImage(params, palettes);
     }
@@ -354,25 +312,21 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
     /**
      * @notice Add a Noun body.
      */
-
     function _addBody(bytes calldata _body) internal {
-        // nothing
-        // bodies.push(_body);
+        bodies.push(_body);
     }
-    
+
     /**
-    * @notice Add a Noun accessory.
-    */
-    function _addAccessory(uint256 prefectureId, bytes calldata _accessory) internal {
-        prefectureAccessories[prefectureId].push(accessories.length);
+     * @notice Add a Noun accessory.
+     */
+    function _addAccessory(bytes calldata _accessory) internal {
         accessories.push(_accessory);
     }
-    
+
     /**
-    * @notice Add a Noun head.
-    */
-    function _addHead(uint256 prefectureId, bytes calldata _head) internal {
-        prefectureHeads[prefectureId].push(heads.length);
+     * @notice Add a Noun head.
+     */
+    function _addHead(bytes calldata _head) internal {
         heads.push(_head);
     }
 
@@ -380,18 +334,18 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
      * @notice Add Noun glasses.
      */
     function _addGlasses(bytes calldata _glasses) internal {
-        // glasses.push(_glasses);
+        glasses.push(_glasses);
     }
-    
+
     /**
      * @notice Get all Noun parts for the passed `seed`.
      */
     function _getPartsForSeed(INounsSeeder.Seed memory seed) internal view returns (bytes[] memory) {
         bytes[] memory _parts = new bytes[](4);
-        _parts[0] = descriptor.bodies(seed.body);
+        _parts[0] = bodies[seed.body];
         _parts[1] = accessories[seed.accessory];
         _parts[2] = heads[seed.head];
-        _parts[3] = descriptor.glasses(seed.glasses);
+        _parts[3] = glasses[seed.glasses];
         return _parts;
     }
 }

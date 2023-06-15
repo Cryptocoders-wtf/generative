@@ -4,19 +4,17 @@
 
 - bodyとglassはNounsTokenのデータを参照してそのまま使う
 - headとaccessoryはstorageへ書き込む
+-- headとaccessoryは、都道府県ごとのパーツを組み合わせる
 
 ## Contractの構成
-- SushiNounsToken -> SushiNounsProvider -> SushiNounsDescriptor(NounsDescriptorを中で参照)
-- MixedSeeder(NounsSeeder, SushiNounsSeederをmixしたseeder)
-
-- データ等を重複しない構成をしている
-  - paletteが型問題で参照できないのでSushiNounsDescriptorにデータとして入れる
-- backgroundsの画像化は試したがデータ量が多いのでgas代問題でng
-  - SushiNounsDescriptorのpartsを5個にし、NFTDescriptorを改良すればできる
-- mint時にseedはproviderで管理する
-  - seederの受け渡しに問題でtokenで管理していない
+- LocalNounsToken -> LocalNounsProvider -> LocalNounsDescriptor(NounsDescriptorを中で参照)
+- NounsのパーツはNounsSeeder, LocalNounsのパーツはLocalNounsSeederで採番する
 
 ## deploy & test
- - test/sushi.ts　にテストがある
-   - これを参照すればdeployもつくれる。
+ - scripts/deploy_localNouns.ts　→ デプロイ
+ - scripts/populate_localNouns.ts　→ パーツ画像の登録、テストミント
+
  - nouns daoのcontracのデータを参照するので、mainnet forkingで動かす必要がある
+ -- パーツはNounsDescriptorV1で作成されたものを使用している
+ -- scripts/deploy_nounsDescriptorV1.ts　→ デプロイ
+ -- scripts/populate_nounsV1.ts　→ パーツ画像の登録
