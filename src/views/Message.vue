@@ -10,17 +10,34 @@
             rows="8"
             class="w-full resize rounded-md border-2"
             v-model="message"
+            @input="updateSVGMessage"
           />
         </div>
       </div>
       <div class="mt-4 text-left">
         <span :style="{ color: color }" class="font-bold">Color:</span>
-        <select v-model="color" class="resize rounded-md border-2">
+        <select v-model="color" class="resize rounded-md border-2" @change="updateSVGMessage">
           <option v-for="(option, k) in colors" :value="option.value" :key="k">
             {{ option.text }}
           </option>
         </select>
+        <span class="font-bold ml-4">Font:</span>
+        <select v-model="font" class="resize rounded-md border-2" @change="updateSVGMessage">
+          <option v-for="(option, k) in fonts" :value="option.value" :key="k">
+            {{ option.text }}
+          </option>
+        </select>
+        <span class="font-bold ml-4">Asset:</span>
+        <select v-model="asset" class="resize rounded-md border-2" @change="updateSVGMessage">
+          <option v-for="(option, k) in assets" :value="option.value" :key="k">
+            {{ option.text }}
+          </option>
+        </select>
         <br />
+      </div>
+      <div class="font-bold text-left text-2xl mt-4">Preview</div>
+      <div class="w-72 border-2" style="margin-bottom: 20px; border: 1px solid rgb(180, 180, 180); ">
+        <div v-html="messageSVG"></div>
       </div>
       <NetworkGate :expectedNetwork="chainId">
         <div class="flex items-center justify-center">
@@ -47,7 +64,7 @@
     </div>
     <div>
       <a
-        href="https://testnets.opensea.io/ja/collection/messagetoken-1?search[sortAscending]=false&search[sortBy]=CREATED_DATE"
+        href="https://testnets.opensea.io/collection/messagetokenv2"
         class="underline"
         target="_blank"
         >See NFTs on OpenSea</a
@@ -66,8 +83,10 @@ import { ChainIdMap, displayAddress } from "@/utils/MetaMask";
 import {
   useMessageTokenNetworkContext,
   useMessageStoreNetworkContext,
+  getMessageStoreContract,
   getProvider,
   getMessageTokenContract,
+  getMessageProviderContract,
 } from "@/utils/const";
 
 //
@@ -83,6 +102,8 @@ export default defineComponent({
   setup(props) {
     const message = ref("Fully On-chain\ntest.");
     const color = ref("orange");
+    const font = ref("Londrina_Solid");
+    const asset = ref("Splatter");
 
     const colors = [
       "pink",
@@ -104,11 +125,59 @@ export default defineComponent({
       text: c,
     }));
 
-    const network = "goerli";
+    const fonts = [
+      "Londrina_Solid",
+      "Noto_Sans",
+    ].map((c) => ({
+      value: c,
+      text: c,
+    }));
 
-    const tokenAddress = addresses.messageSplatter.goerli;
+    const assets = [
+      "Splatter",
+      "Snow",
+    ].map((c) => ({
+      value: c,
+      text: c,
+    }));
+
+    const network = "mumbai";
+
+    const tokenAddress = addresses.messageToken.mumbai;
+    const providerAddress = addresses.messageProvider.mumbai;
+    console.log("tokenAddress:", tokenAddress);
+    console.log("providerAddress:", providerAddress);
 
     const chainId = ChainIdMap[network];
+
+    const box = {
+      w: 1024,
+      h: 1024,
+    };
+
+    const messageSVG = ref(null);
+
+    const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
+    const provider = getProvider(network, alchemyKey);
+    const tokens = ref<any[]>([]);
+
+    const tokenContract = getMessageTokenContract(tokenAddress, provider);
+
+    const providerContract = getMessageProviderContract(providerAddress, provider);
+
+    const loadSVGMessage = async () => {
+      messageSVG.value = await providerContract.generateSVGMessage(
+        message.value, 
+        color.value, 
+        font.value, 
+        asset.value, 
+        box
+      );
+    };
+    const updateSVGMessage = () => {
+      loadSVGMessage();
+    };
+    loadSVGMessage();
 
     const { networkContext } = useMessageTokenNetworkContext(
       chainId,
@@ -126,14 +195,16 @@ export default defineComponent({
       const { contract } = networkContext.value;
       isMinting.value = true;
 
-      const ret = {
-        message: message.value,
-        color: color.value,
-      };
       try {
+        const ret = {
+          message: message.value,
+          color: color.value,
+          fontName: font.value,
+          assetName: asset.value,
+        };
         const tx = await contract.functions.mintWithAsset(ret);
-        console.log("mint:tx");
         const result = await tx.wait();
+        console.log("mint:tx");
         console.log("mint:gasUsed", result.gasUsed.toNumber());
       } catch (e) {
         alert("We are sorry, but something went wrong.");
@@ -142,17 +213,13 @@ export default defineComponent({
       }
     };
 
-    const alchemyKey = process.env.VUE_APP_ALCHEMY_API_KEY;
-    const provider = getProvider(network, alchemyKey);
-    const tokenContract = getMessageTokenContract(tokenAddress, provider);
-    const tokens = ref<any[]>([]);
-
     const fetchTokens = () => {
       tokenContract.totalSupply().then(async (nextId: BigNumber) => {
         const token = nextId.toNumber() - 1;
+        console.log("fetchTokens:token", token);
         tokens.value = [];
         for (let i = 0; i < 10; i++) {
-          if (token - i > 0) {
+          if (token - i >= 0) {
             const ret = await tokenContract.tokenURI(token - i);
             const data = JSON.parse(atob(ret.split(",")[1]));
             tokens.value.push(data);
@@ -177,6 +244,12 @@ export default defineComponent({
       message,
       color,
       colors,
+      font,
+      fonts,
+      asset,
+      assets,
+      messageSVG,
+      updateSVGMessage,
       // mint
       mint,
       isMinting,
