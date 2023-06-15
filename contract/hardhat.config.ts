@@ -16,7 +16,8 @@ const config: HardhatUserConfig = {
   defaultNetwork: "localhost",
   networks: {
     mumbai: {
-      url: "https://rpc-mumbai.maticvigil.com",
+      // url: "https://rpc-mumbai.maticvigil.com",
+      url: "https://polygon-mumbai.g.alchemy.com/v2/" + process.env.ALCHEMY_API_KEY,
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
@@ -42,16 +43,16 @@ const config: HardhatUserConfig = {
   // https://stackoverflow.com/questions/73618935/hardhat-verification-for-polygon-mumbai-fails
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
-    customChains: [
-      {
-        network: "mumbai",
-        chainId: 80001,
-        urls: {
-          apiURL: "https://api-testnet.polygonscan.com",
-          browserURL: "https://mumbai.polygonscan.com"
-        }
-      }
-    ]
+    // customChains: [
+    //   {
+    //     network: "mumbai",
+    //     chainId: 80001,
+    //     urls: {
+    //       apiURL: "https://api-testnet.polygonscan.com",
+    //       browserURL: "https://mumbai.polygonscan.com"
+    //     }
+    //   }
+    // ]
   },
 };
 

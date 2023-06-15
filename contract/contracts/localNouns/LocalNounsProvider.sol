@@ -13,35 +13,36 @@ import '@openzeppelin/contracts/interfaces/IERC165.sol';
 
 import { INounsDescriptor } from './interfaces/INounsDescriptor.sol';
 import { INounsSeeder } from './interfaces/INounsSeeder.sol';
+import { ILocalNounsSeeder } from './interfaces/ILocalNounsSeeder.sol';
 import { NFTDescriptor } from '../external/nouns/libs/NFTDescriptor.sol';
 
 contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   using Strings for uint256;
 
-  string constant providerKey = 'SushiNouns';
+  string constant providerKey = 'LocalNouns';
   address public receiver;
 
   uint256 public nextTokenId;
   
   INounsDescriptor public immutable descriptor;
-  INounsDescriptor public immutable sushidescriptor;
+  INounsDescriptor public immutable localDescriptor;
   INounsSeeder public immutable seeder;
-  INounsSeeder public immutable sushiseeder;
+  ILocalNounsSeeder public immutable localSeader;
   
   mapping(uint256 => INounsSeeder.Seed) public seeds;
 
   constructor(
               INounsDescriptor _descriptor,
-              INounsDescriptor _sushidescriptor,
+              INounsDescriptor _localDescriptor,
               INounsSeeder _seeder,
-              INounsSeeder _sushiseeder
+              ILocalNounsSeeder _localSeader
               ) {
       receiver = owner();
 
       descriptor = _descriptor;
-      sushidescriptor = _sushidescriptor;
+      localDescriptor = _localDescriptor;
       seeder = _seeder;
-      sushiseeder = _sushiseeder;
+      localSeader = _localSeader;
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -70,9 +71,9 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     receiver = _receiver;
   }
 
-  function generateSeed(uint256 _assetId) internal view returns (INounsSeeder.Seed memory mixedSeed) {
+  function generateSeed(uint256 prefectureId, uint256 _assetId) internal view returns (INounsSeeder.Seed memory mixedSeed) {
       INounsSeeder.Seed memory seed1 = seeder.generateSeed(_assetId, descriptor);
-      INounsSeeder.Seed memory seed2 = sushiseeder.generateSeed(_assetId, sushidescriptor);
+      ILocalNounsSeeder.Seed memory seed2 = localSeader.generateSeed(prefectureId, _assetId, localDescriptor);
 
       mixedSeed = INounsSeeder.Seed({
           background: seed1.background,
@@ -86,7 +87,7 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   function generateSVGPart(uint256 _assetId) public view override returns (string memory svgPart, string memory tag) {
       // INounsSeeder.Seed memory seed = generateSeed(_assetId);
       INounsSeeder.Seed memory seed = seeds[_assetId];
-      svgPart = sushidescriptor.generateSVGImage(seed);
+      svgPart = localDescriptor.generateSVGImage(seed);
 
       // generateSVGImage
       tag = string("");
@@ -97,9 +98,9 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     // nothing to return
   }
 
-  function mint(uint256 _assetId) external returns (uint256) {
+  function mint(uint256 prefectureId, uint256 _assetId) external returns (uint256) {
       if (nextTokenId == _assetId) {
-         seeds[_assetId] = generateSeed(_assetId);
+         seeds[_assetId] = generateSeed(prefectureId, _assetId);
          nextTokenId ++;
       }
       
