@@ -20,6 +20,8 @@ import SvgTest from "@/views/SVGTest.vue";
 import Message from "@/views/Message.vue";
 import MessagePNouns from "@/views/MessagePNouns.vue";
 
+import Font from "@/views/Font.vue";
+
 const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "",
@@ -80,6 +82,10 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "sample",
     component: Sample,
+  },
+  {
+    path: "font",
+    component: Font,
   },
 ];
 

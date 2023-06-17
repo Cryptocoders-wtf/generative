@@ -77,7 +77,6 @@
             properties width, height.
           </li>
         </div>
-
       </NetworkGate>
       <div v-for="(token, k) in tokens" :key="k" class="mx-8">
         {{ token.name }}
@@ -177,7 +176,6 @@ export default defineComponent({
     // const network = "localhost";
     // const tokenAddress = "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0";
 
-    
     // store      contract="0x442622c789E5489A222141d06966608a2980E915"
     // provider      contract="0x24F08949190D291DaBb9d7a828ad048FE6250E0C"
     // token      contract="0x07f21753E1DA964fc7131571DD999471C6492e7E"
@@ -185,7 +183,7 @@ export default defineComponent({
     // store      contract="0x05ce81EC1751E2317ddc2E90948EBc6Ca66781a1"
     // provider      contract="0xc65Ffa203d73538557Cff496bE85BD12B28927ca"
     // token      contract="0x5F0f949949c82f660B38FC7601A45498fa2C9fC9"
-    
+
     const network = "mumbai";
     const tokenAddress = "0x67b8571A13410a2687b8ceA1C416b88d75165Fc6";
 

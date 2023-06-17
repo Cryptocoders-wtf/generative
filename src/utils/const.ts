@@ -92,6 +92,9 @@ const ProviderMessageStoreEx = {
 const IAssetProvider = {
   wabi: require("@/abis/IAssetProvider.json"), // wrapped abi
 };
+export const IFontProvider = {
+  wabi: require("@/abis/IFontProvider.json"), // wrapped abi
+};
 
 export const getSvgHelper = (network: string, provider: ProviderOrSigner) => {
   const svgHelperAddress = addresses["svgHelper"][network];

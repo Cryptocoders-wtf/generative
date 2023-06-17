@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/Cryptocoders-wtf/generative/tree/main/contract/contracts/packages/graphics#readme",
   "dependencies": {
-    "@openzeppelin/contracts": "^4.7.3",
+    "@openzeppelin/contracts": "^4.8.3",
     "bytes-array.sol": "^1.0.2",
     "trigonometry.sol": "^1.0.1"
   }
