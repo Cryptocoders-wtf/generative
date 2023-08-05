@@ -1,10 +1,6 @@
 import { ethers, network } from 'hardhat';
 import { exec } from 'child_process';
-import addresses from '@nouns/sdk/dist/contract/addresses.json';
-
-// const nounsDescriptor: string = network.name == 'goerli' ? addresses[5].nounsDescriptor : addresses[1].nounsDescriptor;
-// const nounsSeeder: string = network.name == 'goerli' ? addresses[5].nounsSeeder : addresses[1].nounsSeeder;
-// const nftDescriptor: string = network.name == 'goerli' ? addresses[5].nftDescriptor : addresses[1].nftDescriptor;
+import { writeFile } from 'fs';
 
 const nounsDescriptor: string = '0xA6f003aa2E8b8EbAe9e3b7792719A08Ea8683107'; // mumbai
 const nounsSeeder: string = '0x5f5C984E0BAf150D5a74ae21f4777Fd1947DE8c9'; // mumbai
@@ -25,6 +21,10 @@ async function main() {
   console.log(`##localseeder="${localseeder.address}"`);
   await runCommand(`npx hardhat verify ${localseeder.address} --network ${network.name} &`);
 
+  const addresses = `export const addresses = {\n` + `  localseeder:"${localseeder.address}",\n` + `}\n`;
+  await writeFile(`../src/utils/addresses/localseeder_${network.name}.ts`, addresses, () => {});
+
+
   const factoryLocalNounsDescriptor = await ethers.getContractFactory('LocalNounsDescriptor', {
     libraries: {
       NFTDescriptor: nftDescriptor,
@@ -37,17 +37,28 @@ async function main() {
   console.log(`##localNounsDescriptor="${localNounsDescriptor.address}"`);
   await runCommand(`npx hardhat verify ${localNounsDescriptor.address} ${nounsDescriptor} --network ${network.name} &`);
 
+  const addresses2 = `export const addresses = {\n` + `  localNounsDescriptor:"${localNounsDescriptor.address}",\n` + `}\n`;
+  await writeFile(`../src/utils/addresses/localNounsDescriptor_${network.name}.ts`, addresses2, () => {});
+
+
   const factorySVGStore = await ethers.getContractFactory('LocalNounsProvider');
   const provider = await factorySVGStore.deploy(nounsDescriptor, localNounsDescriptor.address, nounsSeeder, localseeder.address);
   await provider.deployed();
   console.log(`##LocalNounsProvider="${provider.address}"`);
   await runCommand(`npx hardhat verify ${provider.address} ${nounsDescriptor} ${localNounsDescriptor.address} ${nounsSeeder} ${localseeder.address} --network ${network.name} &`);
 
+  const addresses3 = `export const addresses = {\n` + `  localNounsProvider:"${provider.address}",\n` + `}\n`;
+  await writeFile(`../src/utils/addresses/localNounsProvider_${network.name}.ts`, addresses3, () => {});
+  
+
   const factoryToken = await ethers.getContractFactory('LocalNounsToken');
   const token = await factoryToken.deploy(provider.address, committee, committee, committee);
   await token.deployed();
   console.log(`##LocalNounsToken="${token.address}"`);
   await runCommand(`npx hardhat verify ${token.address} ${provider.address} ${committee} ${committee} ${committee} --network ${network.name} &`);
+
+  const addresses4 = `export const addresses = {\n` + `  localNounsToken:"${token.address}",\n` + `}\n`;
+  await writeFile(`../src/utils/addresses/localNounsToken${network.name}.ts`, addresses4, () => {});
 
 }
 
