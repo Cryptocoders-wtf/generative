@@ -9,12 +9,17 @@ import addresses from '@nouns/sdk/dist/contract/addresses.json';
 
 async function main() {
 
+  const factoryNounsSeeder = await ethers.getContractFactory('NounsSeeder');
+  const nounsSeeder = await factoryNounsSeeder.deploy();
+  await nounsSeeder.deployed();
+  console.log(`##nounsSeeder="${nounsSeeder.address}"`);
+  await runCommand(`npx hardhat verify ${nounsSeeder.address} --network ${network.name} &`);
+
   const factoryNFTDescriptor = await ethers.getContractFactory('NFTDescriptor');
   const nftDescriptor = await factoryNFTDescriptor.deploy();
   await nftDescriptor.deployed();
   console.log(`##nftDescriptor="${nftDescriptor.address}"`);
   await runCommand(`npx hardhat verify ${nftDescriptor.address} --network ${network.name} &`);
-
 
   const factoryNounsDescriptor = await ethers.getContractFactory('NounsDescriptor', {
     libraries: {

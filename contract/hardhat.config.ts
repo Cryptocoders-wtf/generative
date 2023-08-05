@@ -15,6 +15,13 @@ const config: HardhatUserConfig = {
   solidity: "0.8.17",
   defaultNetwork: "localhost",
   networks: {
+    polygon: {
+      url: "https://polygon-mainnet.g.alchemy.com/v2/" + process.env.ALCHEMY_API_KEY,
+      // gasMultiplier: 1.7,
+      gasPrice: 110_000_000_000, // 100 Gwei in wei
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
     mumbai: {
       // url: "https://rpc-mumbai.maticvigil.com",
       url: "https://polygon-mumbai.g.alchemy.com/v2/" + process.env.ALCHEMY_API_KEY,
