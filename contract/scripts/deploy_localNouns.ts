@@ -55,7 +55,7 @@ async function main() {
   await runCommand(`npx hardhat verify ${token.address} ${provider.address} ${committee} ${committee} ${committee} --network ${network.name} &`);
 
   const addresses4 = `export const addresses = {\n` + `  localNounsToken:"${token.address}",\n` + `}\n`;
-  await writeFile(`../src/utils/addresses/localNounsToken${network.name}.ts`, addresses4, () => {});
+  await writeFile(`../src/utils/addresses/localNounsToken_${network.name}.ts`, addresses4, () => {});
 
 }
 
