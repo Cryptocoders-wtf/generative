@@ -80,6 +80,9 @@ import { addresses as messageprovider_mumbai } from "./addresses/messageprovider
 import { addresses as messagetoken_goerli } from "./addresses/messagetoken_goerli";
 import { addresses as messagetoken_localhost } from "./addresses/messagetoken_localhost";
 import { addresses as messagetoken_mumbai } from "./addresses/messagetoken_mumbai";
+import { addresses as nounsDescriptor_mumbai } from "./addresses/nounsDescriptor_mumbai";
+import { addresses as nounsSeeder_mumbai } from "./addresses/nounsSeeder_mumbai";
+import { addresses as nftDescriptor_mumbai } from "./addresses/nftDescriptor_mumbai";
 
 export interface Addresses {
   [key: string]: { [key: string]: string };
@@ -294,5 +297,14 @@ export const addresses: Addresses = {
     localhost: dynamic_mainnet.tokenGate, // already deployed on mainnet!
     mainnet: dynamic_mainnet.tokenGate,
     goerli: dynamic_goerli.tokenGate,
+  },
+  nounsDescriptor: {
+    mumbai: nounsDescriptor_mumbai.nounsDescriptor,
+  },
+  nounsSeeder: {
+    mumbai: nounsSeeder_mumbai.nounsSeeder,
+  },
+  nftDescriptor: {
+    mumbai: nftDescriptor_mumbai.nftDescriptor,
   },
 };
