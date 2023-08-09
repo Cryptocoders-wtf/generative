@@ -1,14 +1,11 @@
 import { ethers, network } from 'hardhat';
 import { exec } from 'child_process';
 import { writeFile } from 'fs';
+import { addresses } from '../../src/utils/addresses';
 
-const nounsDescriptor: string = '0xA6f003aa2E8b8EbAe9e3b7792719A08Ea8683107'; // mumbai
-const nounsSeeder: string = '0x5f5C984E0BAf150D5a74ae21f4777Fd1947DE8c9'; // mumbai
-const nftDescriptor: string = '0xC93218fF7C44cbEB57c7661DCa886deCBc0E07C0'; // mumbai
-
-// const nounsDescriptor: string = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'; // localhost
-// const nounsSeeder: string = '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'; // localhost
-// const nftDescriptor: string = '0x5FbDB2315678afecb367f032d93F642f64180aa3'; // localhost
+const nounsDescriptor = addresses.nounsDescriptor[network.name];
+const nounsSeeder = addresses.nounsSeeder[network.name];
+const nftDescriptor = addresses.nftDescriptor[network.name];
 
 const committee = "0x52A76a606AC925f7113B4CC8605Fe6bCad431EbB";
 // const committee = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // localhost
