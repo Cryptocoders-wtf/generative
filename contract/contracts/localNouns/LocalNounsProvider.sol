@@ -23,26 +23,26 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   address public receiver;
 
   uint256 public nextTokenId;
-  
+
   INounsDescriptor public immutable descriptor;
   INounsDescriptor public immutable localDescriptor;
   INounsSeeder public immutable seeder;
   ILocalNounsSeeder public immutable localSeader;
-  
+
   mapping(uint256 => INounsSeeder.Seed) public seeds;
 
   constructor(
-              INounsDescriptor _descriptor,
-              INounsDescriptor _localDescriptor,
-              INounsSeeder _seeder,
-              ILocalNounsSeeder _localSeader
-              ) {
-      receiver = owner();
+    INounsDescriptor _descriptor,
+    INounsDescriptor _localDescriptor,
+    INounsSeeder _seeder,
+    ILocalNounsSeeder _localSeader
+  ) {
+    receiver = owner();
 
-      descriptor = _descriptor;
-      localDescriptor = _localDescriptor;
-      seeder = _seeder;
-      localSeader = _localSeader;
+    descriptor = _descriptor;
+    localDescriptor = _localDescriptor;
+    seeder = _seeder;
+    localSeader = _localSeader;
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -71,27 +71,30 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     receiver = _receiver;
   }
 
-  function generateSeed(uint256 prefectureId, uint256 _assetId) internal view returns (INounsSeeder.Seed memory mixedSeed) {
-      INounsSeeder.Seed memory seed1 = seeder.generateSeed(_assetId, descriptor);
-      ILocalNounsSeeder.Seed memory seed2 = localSeader.generateSeed(prefectureId, _assetId, localDescriptor);
+  function generateSeed(
+    uint256 prefectureId,
+    uint256 _assetId
+  ) internal view returns (INounsSeeder.Seed memory mixedSeed) {
+    INounsSeeder.Seed memory seed1 = seeder.generateSeed(_assetId, descriptor);
+    ILocalNounsSeeder.Seed memory seed2 = localSeader.generateSeed(prefectureId, _assetId, localDescriptor);
 
-      mixedSeed = INounsSeeder.Seed({
-          background: seed1.background,
-          body: seed1.body,
-          accessory: seed2.accessory,
-          head: seed2.head,
-          glasses: seed1.glasses
-      });
-
+    mixedSeed = INounsSeeder.Seed({
+      background: seed1.background,
+      body: seed1.body,
+      accessory: seed2.accessory,
+      head: seed2.head,
+      glasses: seed1.glasses
+    });
   }
-  function generateSVGPart(uint256 _assetId) public view override returns (string memory svgPart, string memory tag) {
-      // INounsSeeder.Seed memory seed = generateSeed(_assetId);
-      INounsSeeder.Seed memory seed = seeds[_assetId];
-      svgPart = localDescriptor.generateSVGImage(seed);
 
-      // generateSVGImage
-      tag = string("");
-      // svgPart = string("");
+  function generateSVGPart(uint256 _assetId) public view override returns (string memory svgPart, string memory tag) {
+    // INounsSeeder.Seed memory seed = generateSeed(_assetId);
+    INounsSeeder.Seed memory seed = seeds[_assetId];
+    svgPart = localDescriptor.generateSVGImage(seed);
+
+    // generateSVGImage
+    tag = string('');
+    // svgPart = string("");
   }
 
   function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
@@ -99,14 +102,11 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   }
 
   function mint(uint256 prefectureId, uint256 _assetId) external returns (uint256) {
-      if (nextTokenId == _assetId) {
-         seeds[_assetId] = generateSeed(prefectureId, _assetId);
-         nextTokenId ++;
-      }
-      
-     return _assetId;
+    if (nextTokenId == _assetId) {
+      seeds[_assetId] = generateSeed(prefectureId, _assetId);
+      nextTokenId++;
+    }
+
+    return _assetId;
   }
-
-  
-
 }
