@@ -27,7 +27,7 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   INounsDescriptor public immutable descriptor;
   INounsDescriptor public immutable localDescriptor;
   INounsSeeder public immutable seeder;
-  ILocalNounsSeeder public immutable localSeader;
+  ILocalNounsSeeder public immutable localSeeder;
 
   mapping(uint256 => INounsSeeder.Seed) public seeds;
   mapping(uint256 => uint256) public tokenIdToPrefectureId;
@@ -37,14 +37,14 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     INounsDescriptor _descriptor,
     INounsDescriptor _localDescriptor,
     INounsSeeder _seeder,
-    ILocalNounsSeeder _localSeader
+    ILocalNounsSeeder _localSeeder
   ) {
     receiver = owner();
 
     descriptor = _descriptor;
     localDescriptor = _localDescriptor;
     seeder = _seeder;
-    localSeader = _localSeader;
+    localSeeder = _localSeeder;
 
     prefectureName[1] = 'Hokkaido';
     prefectureName[2] = 'Aomori';
@@ -126,7 +126,7 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     uint256 _assetId
   ) internal view returns (INounsSeeder.Seed memory mixedSeed) {
     INounsSeeder.Seed memory seed1 = seeder.generateSeed(_assetId, descriptor);
-    ILocalNounsSeeder.Seed memory seed2 = localSeader.generateSeed(prefectureId, _assetId, localDescriptor);
+    ILocalNounsSeeder.Seed memory seed2 = localSeeder.generateSeed(prefectureId, _assetId, localDescriptor);
 
     mixedSeed = INounsSeeder.Seed({
       background: seed1.background,
