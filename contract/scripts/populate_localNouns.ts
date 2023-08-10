@@ -1,6 +1,8 @@
 import * as dotenv from "dotenv";
 import { ethers, network } from 'hardhat';
-import * as fs from 'fs';
+import { addresses } from '../../src/utils/addresses';
+
+const nounsDescriptor = addresses.nounsDescriptor[network.name];
 
 import { images, palette } from "../test/image-local-data";
 import { abi as localSeederABI } from "../artifacts/contracts/localNouns/LocalNounsSeeder.sol/LocalNounsSeeder";
@@ -10,12 +12,14 @@ import { abi as localTokenABI } from "../artifacts/contracts/LocalNounsToken.sol
 
 dotenv.config();
 
-const localSeederAddress: string = '0xD00fa9C531CEE42ba319B5Bda19c60e54BEddA41';
-const localNounsDescriptorAddress: string = '0xA4D4793f2fFafb1E7278C80565FA7252Ef146623';
-const localProviderAddress: string = '0xDC00D91b1FE2bc91C241Ae1E03b30F867789E83e';
-const localTokenAddress: string = '0x4958bb35e1aEA77133E46f042d0b5d373141E759';
+
+const localSeederAddress = addresses.localSeeder[network.name];
+const localNounsDescriptorAddress = addresses.localNounsDescriptor[network.name];
+const localProviderAddress = addresses.localProvider[network.name];
+const localTokenAddress = addresses.localNounsToken[network.name];
 
 async function main() {
+  
   const privateKey = process.env.PRIVATE_KEY !== undefined ? process.env.PRIVATE_KEY : '';
   const wallet = new ethers.Wallet(privateKey, ethers.provider);
   // const [wallet] = await ethers.getSigners(); // localhost
