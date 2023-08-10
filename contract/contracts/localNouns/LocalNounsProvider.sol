@@ -30,6 +30,8 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   ILocalNounsSeeder public immutable localSeader;
 
   mapping(uint256 => INounsSeeder.Seed) public seeds;
+  mapping(uint256 => uint256) public tokenIdToPrefectureId;
+  mapping(uint256 => string) public prefectureName;
 
   constructor(
     INounsDescriptor _descriptor,
@@ -43,6 +45,54 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     localDescriptor = _localDescriptor;
     seeder = _seeder;
     localSeader = _localSeader;
+
+    prefectureName[1] = 'Hokkaido';
+    prefectureName[2] = 'Aomori';
+    prefectureName[3] = 'Iwate';
+    prefectureName[4] = 'Miyagi';
+    prefectureName[5] = 'Akita';
+    prefectureName[6] = 'Yamagata';
+    prefectureName[7] = 'Fukushima';
+    prefectureName[8] = 'Ibaraki';
+    prefectureName[9] = 'Tochigi';
+    prefectureName[10] = 'Gunma';
+    prefectureName[11] = 'Saitama';
+    prefectureName[12] = 'Chiba';
+    prefectureName[13] = 'Tokyo';
+    prefectureName[14] = 'Kanagawa';
+    prefectureName[15] = 'Niigata';
+    prefectureName[16] = 'Toyama';
+    prefectureName[17] = 'Ishikawa';
+    prefectureName[18] = 'Fukui';
+    prefectureName[19] = 'Yamanashi';
+    prefectureName[20] = 'Nagano';
+    prefectureName[21] = 'Gifu';
+    prefectureName[22] = 'Shizuoka';
+    prefectureName[23] = 'Aichi';
+    prefectureName[24] = 'Mie';
+    prefectureName[25] = 'Shiga';
+    prefectureName[26] = 'Kyoto';
+    prefectureName[27] = 'Osaka';
+    prefectureName[28] = 'Hyogo';
+    prefectureName[29] = 'Nara';
+    prefectureName[30] = 'Wakayama';
+    prefectureName[31] = 'Tottori';
+    prefectureName[32] = 'Shimane';
+    prefectureName[33] = 'Okayama';
+    prefectureName[34] = 'Hiroshima';
+    prefectureName[35] = 'Yamaguchi';
+    prefectureName[36] = 'Tokushima';
+    prefectureName[37] = 'Kagawa';
+    prefectureName[38] = 'Ehime';
+    prefectureName[39] = 'Kochi';
+    prefectureName[40] = 'Fukuoka';
+    prefectureName[41] = 'Saga';
+    prefectureName[42] = 'Nagasaki';
+    prefectureName[43] = 'Kumamoto';
+    prefectureName[44] = 'Oita';
+    prefectureName[45] = 'Miyazaki';
+    prefectureName[46] = 'Kagoshima';
+    prefectureName[47] = 'Okinawa';
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -97,13 +147,16 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     // svgPart = string("");
   }
 
-  function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
-    // nothing to return
+  function generateTraits(uint256 _assetId) external view override returns (string memory traits) {
+    traits = string(
+      abi.encodePacked('{"trait_type": "prefecture" , "value":"', prefectureName[tokenIdToPrefectureId[_assetId]], '"}')
+    );
   }
 
   function mint(uint256 prefectureId, uint256 _assetId) external returns (uint256) {
     if (nextTokenId == _assetId) {
       seeds[_assetId] = generateSeed(prefectureId, _assetId);
+      tokenIdToPrefectureId[_assetId] = prefectureId;
       nextTokenId++;
     }
 

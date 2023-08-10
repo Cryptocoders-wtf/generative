@@ -83,6 +83,10 @@ import { addresses as messagetoken_mumbai } from "./addresses/messagetoken_mumba
 import { addresses as nounsDescriptor_mumbai } from "./addresses/nounsDescriptor_mumbai";
 import { addresses as nounsSeeder_mumbai } from "./addresses/nounsSeeder_mumbai";
 import { addresses as nftDescriptor_mumbai } from "./addresses/nftDescriptor_mumbai";
+import { addresses as localSeeder_mumbai } from "./addresses/localseeder_mumbai";
+import { addresses as localNounsDescriptor_mumbai } from "./addresses/localNounsDescriptor_mumbai";
+import { addresses as localProvider_mumbai } from "./addresses/localNounsProvider_mumbai";
+import { addresses as localNounsToken_mumbai } from "./addresses/localNounsToken_mumbai";
 
 export interface Addresses {
   [key: string]: { [key: string]: string };
@@ -306,5 +310,18 @@ export const addresses: Addresses = {
   },
   nftDescriptor: {
     mumbai: nftDescriptor_mumbai.nftDescriptor,
+  },
+
+  localSeeder: {
+    mumbai: localSeeder_mumbai.localseeder,
+  },
+  localNounsDescriptor: {
+    mumbai: localNounsDescriptor_mumbai.localNounsDescriptor,
+  },
+  localProvider: {
+    mumbai: localProvider_mumbai.localNounsProvider,
+  },
+  localNounsToken: {
+    mumbai: localNounsToken_mumbai.localNounsToken,
   },
 };
