@@ -7,7 +7,7 @@
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@nomiclabs/hardhat-etherscan": "^3.1.7",
     "@nouns/sdk": "^0.3.2",
-    "@openzeppelin/contracts": "^4.9.2",
+    "@openzeppelin/contracts": "^4.9.3",
     "assetprovider.sol": "^1.2.0",
     "assetstore.sol": "^1.0.1",
     "bytes-array.sol": "^1.0.0",
