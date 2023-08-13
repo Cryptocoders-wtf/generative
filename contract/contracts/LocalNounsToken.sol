@@ -14,38 +14,29 @@ import './localNouns/interfaces/IAssetProviderExMint.sol';
 contract LocalNounsToken is ProviderTokenA1 {
   using Strings for uint256;
 
-  // fes committee
-  address public committee;
-  address public designer;
-  address public developper;
-
   IAssetProviderExMint public assetProvider2;
+  address public minter;
 
-  constructor(
-    IAssetProviderExMint _assetProvider,
-    address _committee,
-    address _designer,
-    address _developper
-  ) ProviderTokenA1(_assetProvider, 'Local Nouns', 'Local Nouns') {
+  constructor(IAssetProviderExMint _assetProvider, address _minter) ProviderTokenA1(_assetProvider, 'Local Nouns', 'Local Nouns') {
     description = 'Local Nouns Token.';
     assetProvider2 = _assetProvider;
-    mintPrice = 1e13; // 0.001 
+    // mintPrice = 1e13; // 0.001
+    mintPrice = 0; 
     mintLimit = 5000;
-    committee = _committee;
-    designer = _designer;
-    developper = _developper;
+    minter = _minter;
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns (string memory) {
     return string(abi.encodePacked('Local Nouns ', _tokenId.toString()));
   }
-  function tokenURI(uint256 _tokenId) public view override returns (string memory) {
-      require(_tokenId < _nextTokenId(), 'LocalNounsToken.tokenURI: nonexistent token');
 
-      (string memory svgPart, string memory tag) = assetProvider2.generateSVGPart(_tokenId);
-      bytes memory image = bytes(svgPart);
-          
-          return
+  function tokenURI(uint256 _tokenId) public view override returns (string memory) {
+    require(_tokenId < _nextTokenId(), 'LocalNounsToken.tokenURI: nonexistent token');
+
+    (string memory svgPart, string memory tag) = assetProvider2.generateSVGPart(_tokenId);
+    bytes memory image = bytes(svgPart);
+
+    return
       string(
         abi.encodePacked(
           'data:application/json;base64,',
@@ -67,19 +58,13 @@ contract LocalNounsToken is ProviderTokenA1 {
         )
       );
   }
+
   function mint(uint256 prefectureId) public payable virtual returns (uint256 tokenId) {
-      require(msg.value >= mintPrice, 'Must send the mint price');
-      assetProvider2.mint(prefectureId, _nextTokenId());
-      super.mint();
-      address payable payableTo = payable(committee);
-      payableTo.transfer(address(this).balance);
-      
-      // if ((_nextTokenId() % 10) == 8) {
-      //     assetProvider2.mint(_nextTokenId());
-      //     _safeMint(designer, 1);
-      //     assetProvider2.mint(_nextTokenId());
-      //     _safeMint(developper, 1);
-      // }
-      return _nextTokenId() - 1;
+    require(msg.value >= mintPrice, 'Must send the mint price');
+    require(msg.sender != minter, 'sender is not the minter');
+    assetProvider2.mint(prefectureId, _nextTokenId());
+    super.mint();
+
+    return _nextTokenId() - 1;
   }
 }

@@ -60,9 +60,9 @@ async function main() {
 
   for (var i: number = 1; i <= 47; i++) {
     try {
-      await localToken.functions['mint(uint256)'](ethers.BigNumber.from(String(i)), { value: ethers.utils.parseEther('0.001') });
-      await localToken.functions['mint(uint256)'](ethers.BigNumber.from(String(i)), { value: ethers.utils.parseEther('0.001') });
-      await localToken.functions['mint(uint256)'](ethers.BigNumber.from(String(i)), { value: ethers.utils.parseEther('0.001') });
+      await localToken.functions['mint(uint256)'](ethers.BigNumber.from(String(i)));
+      await localToken.functions['mint(uint256)'](ethers.BigNumber.from(String(i)));
+
       console.log(`mint [`, i, `]`);
     } catch (error) {
       console.error(error);
