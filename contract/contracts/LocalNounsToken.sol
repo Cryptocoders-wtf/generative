@@ -15,12 +15,15 @@ contract LocalNounsToken is ProviderTokenA1 {
   using Strings for uint256;
 
   IAssetProviderExMint public assetProvider2;
+  address public minter;
 
-  constructor(IAssetProviderExMint _assetProvider) ProviderTokenA1(_assetProvider, 'Local Nouns', 'Local Nouns') {
+  constructor(IAssetProviderExMint _assetProvider, address _minter) ProviderTokenA1(_assetProvider, 'Local Nouns', 'Local Nouns') {
     description = 'Local Nouns Token.';
     assetProvider2 = _assetProvider;
-    mintPrice = 1e13; // 0.001
+    // mintPrice = 1e13; // 0.001
+    mintPrice = 0; 
     mintLimit = 5000;
+    minter = _minter;
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns (string memory) {
@@ -58,6 +61,7 @@ contract LocalNounsToken is ProviderTokenA1 {
 
   function mint(uint256 prefectureId) public payable virtual returns (uint256 tokenId) {
     require(msg.value >= mintPrice, 'Must send the mint price');
+    require(msg.sender != minter, 'sender is not the minter');
     assetProvider2.mint(prefectureId, _nextTokenId());
     super.mint();
 

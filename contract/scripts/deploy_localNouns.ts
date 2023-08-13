@@ -7,10 +7,10 @@ const nounsDescriptor = addresses.nounsDescriptor[network.name];
 const nounsSeeder = addresses.nounsSeeder[network.name];
 const nftDescriptor = addresses.nftDescriptor[network.name];
 
-const committee = "0x52A76a606AC925f7113B4CC8605Fe6bCad431EbB";
-// const committee = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"; // localhost
-
 async function main() {
+
+  const [minter] = await ethers.getSigners();
+  console.log(`##minter="${minter}"`);
 
   const factorySeeder = await ethers.getContractFactory('LocalNounsSeeder');
   const localseeder = await factorySeeder.deploy();
@@ -49,10 +49,10 @@ async function main() {
   
 
   const factoryToken = await ethers.getContractFactory('LocalNounsToken');
-  const token = await factoryToken.deploy(provider.address, committee, committee, committee);
+  const token = await factoryToken.deploy(provider.address, minter.address);
   await token.deployed();
   console.log(`##LocalNounsToken="${token.address}"`);
-  await runCommand(`npx hardhat verify ${token.address} ${provider.address} ${committee} ${committee} ${committee} --network ${network.name} &`);
+  await runCommand(`npx hardhat verify ${token.address} ${provider.address} ${minter} --network ${network.name} &`);
 
   const addresses4 = `export const addresses = {\n` + `  localNounsToken:"${token.address}",\n` + `}\n`;
   await writeFile(`../src/utils/addresses/localNounsToken_${network.name}.ts`, addresses4, () => {});
