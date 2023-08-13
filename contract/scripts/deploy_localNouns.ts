@@ -52,7 +52,7 @@ async function main() {
   const token = await factoryToken.deploy(provider.address, minter.address);
   await token.deployed();
   console.log(`##LocalNounsToken="${token.address}"`);
-  await runCommand(`npx hardhat verify ${token.address} ${provider.address} ${minter} --network ${network.name} &`);
+  await runCommand(`npx hardhat verify ${token.address} ${provider.address} ${minter.address} --network ${network.name} &`);
 
   const addresses4 = `export const addresses = {\n` + `  localNounsToken:"${token.address}",\n` + `}\n`;
   await writeFile(`../src/utils/addresses/localNounsToken_${network.name}.ts`, addresses4, () => {});
