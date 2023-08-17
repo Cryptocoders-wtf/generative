@@ -10,8 +10,9 @@ import '@openzeppelin/contracts/utils/Strings.sol';
 import './libs/ProviderTokenA1.sol';
 import { INounsSeeder } from './localNouns/interfaces/INounsSeeder.sol';
 import './localNouns/interfaces/IAssetProviderExMint.sol';
+import './localNouns/interfaces/ILocalNounsToken.sol';
 
-contract LocalNounsToken is ProviderTokenA1 {
+contract LocalNounsToken is ProviderTokenA1, ILocalNounsToken {
   using Strings for uint256;
 
   IAssetProviderExMint public assetProvider2;
@@ -59,12 +60,19 @@ contract LocalNounsToken is ProviderTokenA1 {
       );
   }
 
-  function mint(uint256 prefectureId) public payable virtual returns (uint256 tokenId) {
-    require(msg.value >= mintPrice, 'Must send the mint price');
-    require(msg.sender != minter, 'sender is not the minter');
+  function mintSelectedPrefecture(uint256 prefectureId) public virtual returns (uint256 tokenId) {
+    require(msg.sender == minter, 'Sender is not the minter');
     assetProvider2.mint(prefectureId, _nextTokenId());
     super.mint();
 
     return _nextTokenId() - 1;
+  }
+
+  function mint() public payable override returns (uint256 tokenId) {
+    revert('Cannot use this function');
+  }
+
+  function setMinter(address _minter) public onlyOwner {
+    minter = _minter;
   }
 }

@@ -10,7 +10,7 @@ const nftDescriptor = addresses.nftDescriptor[network.name];
 async function main() {
 
   const [minter] = await ethers.getSigners();
-  console.log(`##minter="${minter}"`);
+  console.log(`##minter="${minter.address}"`);
 
   const factorySeeder = await ethers.getContractFactory('LocalNounsSeeder');
   const localseeder = await factorySeeder.deploy();
@@ -19,7 +19,7 @@ async function main() {
   await runCommand(`npx hardhat verify ${localseeder.address} --network ${network.name} &`);
 
   const addresses = `export const addresses = {\n` + `  localseeder:"${localseeder.address}",\n` + `}\n`;
-  await writeFile(`../src/utils/addresses/localseeder_${network.name}.ts`, addresses, () => {});
+  await writeFile(`../src/utils/addresses/localseeder_${network.name}.ts`, addresses, () => { });
 
 
   const factoryLocalNounsDescriptor = await ethers.getContractFactory('LocalNounsDescriptor', {
@@ -35,7 +35,7 @@ async function main() {
   await runCommand(`npx hardhat verify ${localNounsDescriptor.address} ${nounsDescriptor} --network ${network.name} &`);
 
   const addresses2 = `export const addresses = {\n` + `  localNounsDescriptor:"${localNounsDescriptor.address}",\n` + `}\n`;
-  await writeFile(`../src/utils/addresses/localNounsDescriptor_${network.name}.ts`, addresses2, () => {});
+  await writeFile(`../src/utils/addresses/localNounsDescriptor_${network.name}.ts`, addresses2, () => { });
 
 
   const factorySVGStore = await ethers.getContractFactory('LocalNounsProvider');
@@ -45,8 +45,7 @@ async function main() {
   await runCommand(`npx hardhat verify ${provider.address} ${nounsDescriptor} ${localNounsDescriptor.address} ${nounsSeeder} ${localseeder.address} --network ${network.name} &`);
 
   const addresses3 = `export const addresses = {\n` + `  localNounsProvider:"${provider.address}",\n` + `}\n`;
-  await writeFile(`../src/utils/addresses/localNounsProvider_${network.name}.ts`, addresses3, () => {});
-  
+  await writeFile(`../src/utils/addresses/localNounsProvider_${network.name}.ts`, addresses3, () => { });
 
   const factoryToken = await ethers.getContractFactory('LocalNounsToken');
   const token = await factoryToken.deploy(provider.address, minter.address);
@@ -55,7 +54,18 @@ async function main() {
   await runCommand(`npx hardhat verify ${token.address} ${provider.address} ${minter.address} --network ${network.name} &`);
 
   const addresses4 = `export const addresses = {\n` + `  localNounsToken:"${token.address}",\n` + `}\n`;
-  await writeFile(`../src/utils/addresses/localNounsToken_${network.name}.ts`, addresses4, () => {});
+  await writeFile(`../src/utils/addresses/localNounsToken_${network.name}.ts`, addresses4, () => { });
+
+  const factoryMinter = await ethers.getContractFactory('LocalNounsMinter');
+  const minterContract = await factoryMinter.deploy(token.address);
+  await minterContract.deployed();
+  console.log(`##LocalNounsMinter="${minterContract.address}"`);
+  await runCommand(`npx hardhat verify ${minterContract.address} ${token.address} --network ${network.name} &`);
+
+  const addresses5 = `export const addresses = {\n` + `  localNounsMinter:"${minterContract.address}",\n` + `}\n`;
+  await writeFile(`../src/utils/addresses/localNounsMinter_${network.name}.ts`, addresses5, () => { });
+
+  await token.setMinter(minterContract.address);
 
 }
 

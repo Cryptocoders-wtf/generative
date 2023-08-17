@@ -87,6 +87,7 @@ import { addresses as localSeeder_mumbai } from "./addresses/localseeder_mumbai"
 import { addresses as localNounsDescriptor_mumbai } from "./addresses/localNounsDescriptor_mumbai";
 import { addresses as localProvider_mumbai } from "./addresses/localNounsProvider_mumbai";
 import { addresses as localNounsToken_mumbai } from "./addresses/localNounsToken_mumbai";
+import { addresses as localNounsMinter_mumbai } from "./addresses/localNounsMinter_mumbai";
 
 export interface Addresses {
   [key: string]: { [key: string]: string };
@@ -314,14 +315,22 @@ export const addresses: Addresses = {
 
   localSeeder: {
     mumbai: localSeeder_mumbai.localseeder,
+    localhost: localSeeder_mumbai.localseeder,
   },
   localNounsDescriptor: {
     mumbai: localNounsDescriptor_mumbai.localNounsDescriptor,
+    localhost: localNounsDescriptor_mumbai.localNounsDescriptor,
   },
   localProvider: {
     mumbai: localProvider_mumbai.localNounsProvider,
+    localhost: localProvider_mumbai.localNounsProvider,
   },
   localNounsToken: {
     mumbai: localNounsToken_mumbai.localNounsToken,
+    localhost: localNounsToken_mumbai.localNounsToken,
+  },
+  localNounsMinter: {
+    mumbai: localNounsMinter_mumbai.localNounsMinter,
+    localhost: localNounsMinter_mumbai.localNounsMinter,
   },
 };
