@@ -68,6 +68,10 @@ contract LocalNounsToken is ProviderTokenA1, ILocalNounsToken {
     return _nextTokenId() - 1;
   }
 
+  function mint() public payable override returns (uint256 tokenId) {
+    revert('Cannot use this function');
+  }
+
   function setMinter(address _minter) public onlyOwner {
     minter = _minter;
   }
