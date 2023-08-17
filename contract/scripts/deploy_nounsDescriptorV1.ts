@@ -1,6 +1,7 @@
 import { ethers, network } from 'hardhat';
 import { exec } from 'child_process';
 import addresses from '@nouns/sdk/dist/contract/addresses.json';
+import { writeFile } from 'fs';
 
 // const nftDescriptor: string = network.name == 'goerli' ? addresses[5].nftDescriptor : addresses[1].nftDescriptor;
 // const nftDescriptor: string = '0x1881c541E9d83880008B3720de0E537C34052ecf'; // mumbai
@@ -15,11 +16,17 @@ async function main() {
   console.log(`##nounsSeeder="${nounsSeeder.address}"`);
   await runCommand(`npx hardhat verify ${nounsSeeder.address} --network ${network.name} &`);
 
+  const addresses = `export const addresses = {\n` + `  nounsSeeder:"${nounsSeeder.address}",\n` + `}\n`;
+  await writeFile(`../src/utils/addresses/nounsSeeder_${network.name}.ts`, addresses, () => { });
+
   const factoryNFTDescriptor = await ethers.getContractFactory('NFTDescriptor');
   const nftDescriptor = await factoryNFTDescriptor.deploy();
   await nftDescriptor.deployed();
   console.log(`##nftDescriptor="${nftDescriptor.address}"`);
   await runCommand(`npx hardhat verify ${nftDescriptor.address} --network ${network.name} &`);
+
+  const addresses2 = `export const addresses = {\n` + `  nftDescriptor:"${nftDescriptor.address}",\n` + `}\n`;
+  await writeFile(`../src/utils/addresses/nftDescriptor_${network.name}.ts`, addresses2, () => { });
 
   const factoryNounsDescriptor = await ethers.getContractFactory('NounsDescriptor', {
     libraries: {
@@ -30,6 +37,9 @@ async function main() {
   await nounsDescriptor.deployed();
   console.log(`##nounsDescriptor="${nounsDescriptor.address}"`);
   await runCommand(`npx hardhat verify ${nounsDescriptor.address} --network ${network.name} &`);
+
+  const addresses3 = `export const addresses = {\n` + `  nounsDescriptor:"${nounsDescriptor.address}",\n` + `}\n`;
+  await writeFile(`../src/utils/addresses/nounsDescriptor_${network.name}.ts`, addresses3, () => { });
 
 }
 
