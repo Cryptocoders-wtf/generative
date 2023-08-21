@@ -34,4 +34,12 @@ contract LocalNounsMinter is Ownable {
   function mintSelectedPrefecture(uint256 _prefectureId) public payable returns (uint256 tokenId) {
     return token.mintSelectedPrefecture(msg.sender, _prefectureId);
   }
+
+  function mintSelectedPrefectureBatch(
+    uint256[] memory _prefectureId,
+    uint256[] memory _amount
+  ) public payable returns (uint256 tokenId) {
+
+    return token.mintSelectedPrefectureBatch(msg.sender, _prefectureId, _amount);
+  }
 }

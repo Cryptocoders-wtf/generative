@@ -154,11 +154,9 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   }
 
   function mint(uint256 prefectureId, uint256 _assetId) external returns (uint256) {
-    if (nextTokenId == _assetId) {
-      seeds[_assetId] = generateSeed(prefectureId, _assetId);
-      tokenIdToPrefectureId[_assetId] = prefectureId;
-      nextTokenId++;
-    }
+    seeds[_assetId] = generateSeed(prefectureId, _assetId);
+    tokenIdToPrefectureId[_assetId] = prefectureId;
+    nextTokenId++;
 
     return _assetId;
   }

@@ -33,7 +33,7 @@ async function main() {
   const localToken = new ethers.Contract(localTokenAddress, localTokenABI, wallet);
   const localMinter = new ethers.Contract(localMinterAddress, localMinterABI, wallet);
 
-  if (false) {
+  if (true) {
     // set Palette
     console.log(`set Palette start`);
     await localNounsDescriptor.addManyColorsToPalette(0, palette);
@@ -61,15 +61,15 @@ async function main() {
 
   }
 
-  for (var i: number = 1; i <= 1; i++) {
-    try {
-      await localMinter.functions['mintSelectedPrefecture(uint256)'](ethers.BigNumber.from(String(i)), { value: ethers.utils.parseEther('0.000001') });
+  // for (var i: number = 1; i <= 47; i++) {
+  //   try {
+  //     await localMinter.functions['mintSelectedPrefecture(uint256)'](ethers.BigNumber.from(String(i)), { value: ethers.utils.parseEther('0.000001') });
 
-      console.log(`mint [`, i, `]`);
-    } catch (error) {
-      console.error(error);
-    };
-  }
+  //     console.log(`mint [`, i, `]`);
+  //   } catch (error) {
+  //     console.error(error);
+  //   };
+  // }
 
   // console.log(`write file start`);
   // const index = 0;
