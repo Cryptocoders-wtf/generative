@@ -72,6 +72,26 @@ contract LocalNounsToken is ProviderTokenA1, ILocalNounsToken {
     return _nextTokenId() - 1;
   }
 
+  function mintSelectedPrefectureBatch(
+    address _to,
+    uint256[] memory _prefectureId,
+    uint256[] memory _amount
+  ) public virtual returns (uint256 tokenId) {
+    require(msg.sender == minter, 'Sender is not the minter');
+    require(_prefectureId.length == _amount.length, 'parametars length are different');
+
+    uint256 amount = 0;
+    for (uint256 i = 0; i < _prefectureId.length; i++) {
+      for (uint256 j = 0; j < _amount[i]; j++) {
+        assetProvider2.mint(_prefectureId[i], _nextTokenId() + amount++);
+      }
+    }
+
+    _safeMint(_to, amount);
+
+    return _nextTokenId() - 1;
+  }
+
   function mint() public payable override returns (uint256 tokenId) {
     revert('Cannot use this function');
   }
