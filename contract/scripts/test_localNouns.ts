@@ -34,7 +34,8 @@ async function main() {
 
   console.log("localToken:", localTokenAddress);
 
-  for (var i: number = 1; i <= 47; i++) {
+  for (var i: number = 101; i <= 147; i++) {
+  // for (var i: number = 1; i <= 47; i++) {
     try {
       await localMinter.functions['mintSelectedPrefecture(uint256)'](ethers.BigNumber.from(String(i)), { value: ethers.utils.parseEther('0.000001') });
 
