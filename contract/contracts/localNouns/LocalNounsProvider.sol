@@ -148,8 +148,12 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   }
 
   function generateTraits(uint256 _assetId) external view override returns (string memory traits) {
+    uint256 headPartsId = seeds[_assetId].head;
+    uint256 accessoryPartsId = seeds[_assetId].accessory;
     traits = string(
-      abi.encodePacked('{"trait_type": "prefecture" , "value":"', prefectureName[tokenIdToPrefectureId[_assetId]], '"}')
+      abi.encodePacked('{"trait_type": "prefecture" , "value":"', prefectureName[tokenIdToPrefectureId[_assetId]], '"}',
+      ',{"trait_type": "head" , "value":"', localDescriptor.headName(headPartsId), '"}',
+      ',{"trait_type": "accessory" , "value":"', localDescriptor.accessoryName(accessoryPartsId), '"}')
     );
   }
 

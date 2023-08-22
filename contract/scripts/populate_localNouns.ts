@@ -21,7 +21,7 @@ const localTokenAddress = addresses.localNounsToken[network.name];
 const localMinterAddress = addresses.localNounsMinter[network.name];
 
 async function main() {
-  
+
   // const privateKey = process.env.PRIVATE_KEY !== undefined ? process.env.PRIVATE_KEY : '';
   // const wallet = new ethers.Wallet(privateKey, ethers.provider);
   const [wallet] = await ethers.getSigners(); // localhost
@@ -43,8 +43,8 @@ async function main() {
     console.log(`set Accessories start`);
     const accessoryChunk = chunkArrayByPrefectureId(images.accessories);
     for (const chunk of accessoryChunk) {
-      const prefectureId = chunk[0].filename.split('-')[0];
-      await localNounsDescriptor.addManyAccessories(prefectureId, chunk.map(({ data }) => data));
+      const prefectureId = chunk[0].prefectureId;
+      await localNounsDescriptor.addManyAccessories(prefectureId, chunk.map(({ data }) => data), chunk.map(({ filename }) => filename));
       // console.log("chunk:", prefectureId, chunk);
     }
     console.log(`set Accessories end`);
@@ -53,8 +53,8 @@ async function main() {
     console.log(`set Heads start`);
     const headChunk = chunkArrayByPrefectureId(images.heads);
     for (const chunk of headChunk) {
-      const prefectureId = chunk[0].filename.split('-')[0];
-      await localNounsDescriptor.addManyHeads(prefectureId, chunk.map(({ data }) => data));
+      const prefectureId = chunk[0].prefectureId;
+      await localNounsDescriptor.addManyHeads(prefectureId, chunk.map(({ data }) => data), chunk.map(({ filename }) => filename));
       // console.log("chunk:", prefectureId, chunk);
     }
     console.log(`set Heads end`);
@@ -88,6 +88,7 @@ main().catch(error => {
 });
 
 interface ImageData {
+  prefectureId: string;
   filename: string;
   data: string;
 }
@@ -102,8 +103,20 @@ function chunkArrayByPrefectureId(imagedata: ImageData[]): ImageData[][] {
       continue;
     }
 
-    let id = imagedata[i].filename.split('-')[0];
+    let filename = imagedata[i].filename.split('-');
+    let id = filename[0];
+    imagedata[i].prefectureId = id;
 
+    // filenameの抽出 ex)"35-yamaguchi-white -snake-accessories" -> "white-snake"
+    let name = '';
+    for (var j = 2; j < filename.length - 1; j++) {
+      if (name.length > 0) {
+        name += '-';
+      }
+      name += filename[j].trim();
+    }
+    imagedata[i].filename = name;
+    console.log("imagedata[i].filename", imagedata[i].filename);
     if (!map.has(id)) {
       map.set(id, []);
     }
