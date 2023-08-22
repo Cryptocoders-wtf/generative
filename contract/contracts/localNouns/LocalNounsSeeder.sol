@@ -29,10 +29,10 @@ contract LocalNounsSeeder is ILocalNounsSeeder {
             keccak256(abi.encodePacked(blockhash(block.number - 1), nounId))
         );
 
-        uint256 accessoryCount = descriptor.accessoryCountInPrefecture(prefectureId);
+        uint256 accessoryCount = descriptor.accessoryCountInPrefecture(prefectureId % 100); // 1,2桁目：都道府県番号、3桁目以降：バージョン番号
         uint256 headCount = descriptor.headCountInPrefecture(prefectureId);
 
-        uint256 accesoryPartId = descriptor.accessoryInPrefecture(prefectureId, (pseudorandomness >> 96) % accessoryCount);
+        uint256 accesoryPartId = descriptor.accessoryInPrefecture(prefectureId % 100, (pseudorandomness >> 96) % accessoryCount);
         uint256 headPartId = descriptor.headInPrefecture(prefectureId, (pseudorandomness >> 144) % headCount);
 
         return Seed({
