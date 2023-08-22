@@ -159,7 +159,7 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
 
   function mint(uint256 prefectureId, uint256 _assetId) external returns (uint256) {
     seeds[_assetId] = generateSeed(prefectureId, _assetId);
-    tokenIdToPrefectureId[_assetId] = prefectureId;
+    tokenIdToPrefectureId[_assetId] = prefectureId % 100; // 1,2桁目：都道府県番号、3桁目以降：バージョン番号
     nextTokenId++;
 
     return _assetId;
