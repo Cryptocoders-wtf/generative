@@ -53,9 +53,13 @@ interface INounsDescriptor is INounsDescriptorMinimal {
 
     function accessoryCountInPrefecture(uint256 prefectureId) external view returns (uint256);
 
+    function accessoryName(uint256 partsId) external view returns (string memory);
+    
     function headCount() external view override returns (uint256);
 
     function headCountInPrefecture(uint256 prefectureId) external view returns (uint256);
+
+    function headName(uint256 partsId) external view returns (string memory);
 
     function glassesCount() external view override returns (uint256);
 
@@ -65,9 +69,9 @@ interface INounsDescriptor is INounsDescriptorMinimal {
 
     function addManyBodies(bytes[] calldata bodies) external;
 
-    function addManyAccessories(uint256 prefectureId, bytes[] calldata accessories) external;
+    function addManyAccessories(uint256 prefectureId, bytes[] calldata accessories, string[] calldata name) external;
 
-    function addManyHeads(uint256 prefectureId, bytes[] calldata heads) external;
+    function addManyHeads(uint256 prefectureId, bytes[] calldata heads, string[] calldata name) external;
 
     function addManyGlasses(bytes[] calldata glasses) external;
 
@@ -77,9 +81,9 @@ interface INounsDescriptor is INounsDescriptorMinimal {
 
     function addBody(bytes calldata body) external;
 
-    function addAccessory(uint256 prefectureId, bytes calldata accessory) external;
+    function addAccessory(uint256 prefectureId, bytes calldata accessory, string calldata name) external;
 
-    function addHead(uint256 prefectureId, bytes calldata head) external;
+    function addHead(uint256 prefectureId, bytes calldata head, string calldata name) external;
 
     function addGlasses(bytes calldata glasses) external;
 
