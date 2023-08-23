@@ -81,14 +81,14 @@ contract LocalNounsToken is ProviderTokenA1, ILocalNounsToken {
     require(_prefectureId.length == _amount.length, 'parametars length are different');
     require(_prefectureId.length > 0, 'parametars length is zero');
 
-    uint256 amount = 0;
+    uint256 counter = 0;
     for (uint256 i = 0; i < _prefectureId.length; i++) {
       for (uint256 j = 0; j < _amount[i]; j++) {
-        assetProvider2.mint(_prefectureId[i], _nextTokenId() + amount++);
+        assetProvider2.mint(_prefectureId[i], _nextTokenId() + counter++);
       }
     }
 
-    _safeMint(_to, amount);
+    _safeMint(_to, counter);
 
     return _nextTokenId() - 1;
   }
