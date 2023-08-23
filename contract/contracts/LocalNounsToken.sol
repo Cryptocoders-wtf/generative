@@ -18,11 +18,14 @@ contract LocalNounsToken is ProviderTokenA1, ILocalNounsToken {
   IAssetProviderExMint public assetProvider2;
   address public minter;
 
-  constructor(IAssetProviderExMint _assetProvider, address _minter) ProviderTokenA1(_assetProvider, 'Local Nouns', 'Local Nouns') {
+  constructor(
+    IAssetProviderExMint _assetProvider,
+    address _minter
+  ) ProviderTokenA1(_assetProvider, 'Local Nouns', 'Local Nouns') {
     description = 'Local Nouns Token.';
     assetProvider2 = _assetProvider;
     // mintPrice = 1e13; // 0.001
-    mintPrice = 0; 
+    mintPrice = 0;
     mintLimit = 5000;
     minter = _minter;
   }
@@ -60,10 +63,31 @@ contract LocalNounsToken is ProviderTokenA1, ILocalNounsToken {
       );
   }
 
-  function mintSelectedPrefecture(uint256 prefectureId) public virtual returns (uint256 tokenId) {
+  function mintSelectedPrefecture(address _to, uint256 _prefectureId) public virtual returns (uint256 tokenId) {
     require(msg.sender == minter, 'Sender is not the minter');
-    assetProvider2.mint(prefectureId, _nextTokenId());
-    super.mint();
+    assetProvider2.mint(_prefectureId, _nextTokenId());
+
+    _safeMint(_to, 1);
+
+    return _nextTokenId() - 1;
+  }
+
+  function mintSelectedPrefectureBatch(
+    address _to,
+    uint256[] memory _prefectureId,
+    uint256[] memory _amount
+  ) public virtual returns (uint256 tokenId) {
+    require(msg.sender == minter, 'Sender is not the minter');
+    require(_prefectureId.length == _amount.length, 'parametars length are different');
+
+    uint256 amount = 0;
+    for (uint256 i = 0; i < _prefectureId.length; i++) {
+      for (uint256 j = 0; j < _amount[i]; j++) {
+        assetProvider2.mint(_prefectureId[i], _nextTokenId() + amount++);
+      }
+    }
+
+    _safeMint(_to, amount);
 
     return _nextTokenId() - 1;
   }

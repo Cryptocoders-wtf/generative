@@ -148,17 +148,31 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   }
 
   function generateTraits(uint256 _assetId) external view override returns (string memory traits) {
+    uint256 headPartsId = seeds[_assetId].head;
+    uint256 accessoryPartsId = seeds[_assetId].accessory;
     traits = string(
-      abi.encodePacked('{"trait_type": "prefecture" , "value":"', prefectureName[tokenIdToPrefectureId[_assetId]], '"}')
+      abi.encodePacked(
+        '{"trait_type": "prefecture" , "value":"',
+        prefectureName[tokenIdToPrefectureId[_assetId]],
+        '"}',
+        ',{"trait_type": "head" , "value":"',
+        localDescriptor.headName(headPartsId),
+        '"}',
+        ',{"trait_type": "accessory" , "value":"',
+        localDescriptor.accessoryName(accessoryPartsId),
+        '"}'
+      )
     );
   }
 
   function mint(uint256 prefectureId, uint256 _assetId) external returns (uint256) {
-    if (nextTokenId == _assetId) {
-      seeds[_assetId] = generateSeed(prefectureId, _assetId);
-      tokenIdToPrefectureId[_assetId] = prefectureId;
-      nextTokenId++;
+    // 末尾2桁が00の場合は都道府県をランダムに決定する
+    if (prefectureId % 100 == 0) {
+      prefectureId = ((block.number * _assetId) % 46) + 1;
     }
+    seeds[_assetId] = generateSeed(prefectureId, _assetId);
+    tokenIdToPrefectureId[_assetId] = prefectureId % 100; // 1,2桁目：都道府県番号、3桁目以降：バージョン番号
+    nextTokenId++;
 
     return _assetId;
   }
