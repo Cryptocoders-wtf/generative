@@ -79,6 +79,7 @@ contract LocalNounsToken is ProviderTokenA1, ILocalNounsToken {
   ) public virtual returns (uint256 tokenId) {
     require(msg.sender == minter, 'Sender is not the minter');
     require(_prefectureId.length == _amount.length, 'parametars length are different');
+    require(_prefectureId.length > 0, 'parametars length is zero');
 
     uint256 amount = 0;
     for (uint256 i = 0; i < _prefectureId.length; i++) {
