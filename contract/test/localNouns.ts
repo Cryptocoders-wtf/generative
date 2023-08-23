@@ -69,8 +69,8 @@ describe('mint functions', function () {
 
     it('batch mint', async function () {
 
-        //Aomori,Iwate,ランダムを、2個,3個ずつ、user2にmint
-        await minter.connect(user2).functions.mintSelectedPrefectureBatch([2, 3, 0], [1, 2, 3]);
+        //Aomori,Iwate(バージョン指定),ランダム,ランダム(バージョン指定)を、2個,3個ずつ、user2にmint
+        await minter.connect(user2).functions.mintSelectedPrefectureBatch([2, 103, 0, 100], [1, 1, 2, 2]);
 
         // user2に合計6個ミントされる
         const [balance] = await token.functions.balanceOf(user2.address);
