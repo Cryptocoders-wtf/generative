@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 /*
- * Created by Isamu Arimoto (@isamua)
+ * Created by @eiba
  */
 
 pragma solidity ^0.8.6;
