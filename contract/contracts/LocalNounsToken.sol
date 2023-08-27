@@ -7,12 +7,12 @@
 pragma solidity ^0.8.6;
 
 import '@openzeppelin/contracts/utils/Strings.sol';
-import './libs/ProviderTokenA1.sol';
+import './libs/ProviderTokenA2.sol';
 import { INounsSeeder } from './localNouns/interfaces/INounsSeeder.sol';
 import './localNouns/interfaces/IAssetProviderExMint.sol';
 import './localNouns/interfaces/ILocalNounsToken.sol';
 
-contract LocalNounsToken is ProviderTokenA1, ILocalNounsToken {
+contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   using Strings for uint256;
 
   IAssetProviderExMint public assetProvider2;
@@ -21,7 +21,7 @@ contract LocalNounsToken is ProviderTokenA1, ILocalNounsToken {
   constructor(
     IAssetProviderExMint _assetProvider,
     address _minter
-  ) ProviderTokenA1(_assetProvider, 'Local Nouns', 'Local Nouns') {
+  ) ProviderTokenA2(_assetProvider, 'Local Nouns', 'Local Nouns') {
     description = 'Local Nouns Token.';
     assetProvider2 = _assetProvider;
     // mintPrice = 1e13; // 0.001
