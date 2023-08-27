@@ -1,15 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-/**
- * This is a part of an effort to update ERC271 so that the sales transaction
- * becomes decentralized and trustless, which makes it possible to enforce
- * royalities without relying on marketplaces.
- *
- * Please see "https://hackmd.io/@snakajima/BJqG3fkSo" for details.
- *
- * Created by Satoshi Nakajima (@snakajima)
- */
-
 pragma solidity ^0.8.6;
 
 import './ERC721AP2PTradable.sol';
