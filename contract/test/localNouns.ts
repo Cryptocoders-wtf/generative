@@ -3,7 +3,7 @@ import { ethers, network, SignerWithAddress, Contract } from "hardhat";
 import { addresses } from '../../src/utils/addresses';
 import { ethers } from 'ethers';
 
-let owner: SignerWithAddress, user1: SignerWithAddress, user2: SignerWithAddress;
+let owner: SignerWithAddress, user1: SignerWithAddress, user2: SignerWithAddress, admin: SignerWithAddress;
 let token: Contract, minter: Contract, provider: Contract;
 
 const nounsDescriptorAddress = addresses.nounsDescriptor[network.name];
@@ -21,23 +21,23 @@ before(async () => {
         # npx hardhat run scripts/populate_localNouns.ts
      */
 
-    [owner, user1, user2] = await ethers.getSigners();
+    [owner, user1, user2, admin] = await ethers.getSigners();
 
     const factoryProvider = await ethers.getContractFactory('LocalNounsProvider');
     provider = await factoryProvider.deploy(
         nounsDescriptorAddress, localNounsDescriptorAddress, nounsSeederAddress, localSeederAddress);
     await provider.deployed();
-    console.log(`##LocalNounsProvider="${provider.address}"`);
+    // console.log(`##LocalNounsProvider="${provider.address}"`);
 
     const factoryToken = await ethers.getContractFactory('LocalNounsToken');
     token = await factoryToken.deploy(provider.address, owner.address);
     await token.deployed();
-    console.log(`##LocalNounsToken="${token.address}"`);
+    // console.log(`##LocalNounsToken="${token.address}"`);
 
     const factoryMinter = await ethers.getContractFactory('LocalNounsMinter');
     minter = await factoryMinter.deploy(token.address);
     await minter.deployed();
-    console.log(`##LocalNounsMinter="${minter.address}"`);
+    // console.log(`##LocalNounsMinter="${minter.address}"`);
 
     await token.setMinter(minter.address);
 
@@ -104,14 +104,191 @@ describe('mint functions', function () {
         // expect(traits4).to.equal('{"trait_type": "prefecture" , "value":"Miyagi"}');
         // expect(traits5).to.equal('{"trait_type": "prefecture" , "value":"Miyagi"}');
         // expect(traits6).to.equal('{"trait_type": "prefecture" , "value":"Miyagi"}');
-        console.log(traits1);
-        console.log(traits2);
-        console.log(traits3);
-        console.log(traits4);
-        console.log(traits5);
-        console.log(traits6);
+        // console.log(traits1);
+        // console.log(traits2);
+        // console.log(traits3);
+        // console.log(traits4);
+        // console.log(traits5);
+        // console.log(traits6);
 
         const [totalSupply] = await token.functions.totalSupply();
         expect(totalSupply.toNumber()).to.equal(7);
     });
+});
+
+describe('P2P', function () {
+    let tx, result, tokenId1: number;
+    const zeroAddress = '0x0000000000000000000000000000000000000000';
+    const price = ethers.BigNumber.from('1000000000000000');
+
+    it('not on sale', async function () {
+        await minter.connect(user1).functions.mintSelectedPrefectureBatch([10], [1]);
+        result = await token.totalSupply();
+        tokenId1 = result.toNumber() - 1;
+
+        // セールなし
+        await expect(token.connect(user2).purchase(tokenId1, user2.address, zeroAddress)).revertedWith('Token is not on sale');
+    });
+
+    it('SetPrice', async function () {
+        await expect(token.connect(user2).setPriceOf(tokenId1, price)).revertedWith('Only the onwer can set the price');
+        await token.connect(user1).setPriceOf(tokenId1, price);
+        result = await token.getPriceOf(tokenId1);
+        expect(result.toNumber()).equal(price);
+
+        await expect(token.connect(user2).purchase(tokenId1, user2.address, zeroAddress)).revertedWith('Not enough fund');
+
+    });
+
+    it('Purchase', async function () {
+        await expect(token.connect(user2).purchase(tokenId1, user2.address, zeroAddress)).revertedWith('Not enough fund');
+
+        const balance1 = await ethers.provider.getBalance(user1.address);
+        const balanceT = await ethers.provider.getBalance(owner.address);
+
+        await token.connect(user2).purchase(tokenId1, user2.address, zeroAddress, { value: price });
+        result = await token.ownerOf(tokenId1);
+        expect(result).equal(user2.address);
+
+        const balance12 = await ethers.provider.getBalance(user1.address);
+        expect(balance12.sub(balance1)).equal(price.div(20).mul(19)); // 95%
+        const balanceT2 = await ethers.provider.getBalance(owner.address);
+        expect(balanceT2.sub(balanceT)).equal(price.div(20).mul(1)); // 5%
+
+    });
+
+    it('Attempt to setprice/buy by user1', async function () {
+        await expect(token.connect(user1).purchase(0, user2.address, zeroAddress, { value: price })).revertedWith('Token is not on sale');
+        await expect(token.connect(user1).setPriceOf(tokenId1, price)).revertedWith('Only the onwer can set the price');
+    });
+});
+
+describe('P2PTradable', function () {
+    let result, tx, err, balance, tokenId1: number, tokenId2: number;
+
+    it('mint for test', async function () {
+        // for user1
+        await minter.connect(user1).functions.mintSelectedPrefectureBatch([5], [1]);
+        result = await token.totalSupply();
+        tokenId1 = result.toNumber() - 1;
+
+        // for user2
+        await minter.connect(user2).functions.mintSelectedPrefectureBatch([10], [1]);
+        result = await token.totalSupply();
+        tokenId2 = result.toNumber() - 1;
+
+    });
+
+    it('Attempt to super functions', async function () {
+        await expect(token.connect(user2).executeTrade(tokenId2, tokenId1)).revertedWith('Cannot use this function');
+
+        await expect(token.connect(user2).putTrade(tokenId1, true)).revertedWith('Cannot use this function');
+
+    });
+
+    it('Attempt to trade non-tradable token', async function () {
+        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1)).revertedWith('TargetTokenId is not on trade');
+    });
+
+    it('Attempt to execute trade non-owner token', async function () {
+        await expect(token.connect(user2).executeTradeLocalNoun(tokenId1, tokenId2)).revertedWith('Only the onwer can trade');
+    });
+
+    it('Attempt to put trade non-owner token', async function () {
+        await expect(token.connect(user2).putTradeLocalNoun(tokenId1, [])).revertedWith('Only the onwer can trade');
+    });
+
+    it('incorrect prefecutre id', async function () {
+        await expect(token.connect(user2).putTradeLocalNoun(tokenId1, [0])).revertedWith('incorrect prefecutre id');
+        await expect(token.connect(user2).putTradeLocalNoun(tokenId1, [48])).revertedWith('incorrect prefecutre id');
+    });
+
+    it('put trade', async function () {
+        // 希望都道府県外のトークンと交換しようとする
+        await token.connect(user1).putTradeLocalNoun(tokenId1, [1, 11, 12]);
+        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1)).revertedWith('unmatch to the wants list');
+
+        result = await token.connect(user1).getTradePrefectureFor(tokenId1);
+        expect(result.length).equal(3);
+        expect(result[0].toNumber()).equal(1);
+        expect(result[1].toNumber()).equal(11);
+        expect(result[2].toNumber()).equal(12);
+
+        await token.connect(user1).putTradeLocalNoun(tokenId1, [10, 11, 12]);
+        result = await token.connect(user1).trades(tokenId1);
+        expect(result).equal(true);
+
+        tx = await token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1);
+        await tx.wait();
+        result = await token.connect(user1).trades(tokenId1);
+        expect(result).equal(false);  //トレードリストから解除
+
+        result = await token.connect(user1).ownerOf(tokenId1);
+        expect(result).equal(user2.address);
+
+        result = await token.connect(user1).ownerOf(tokenId2);
+        expect(result).equal(user1.address);
+    });
+
+    it('put trade(都道府県指定なし)', async function () {
+        // for user1
+        await minter.connect(user1).functions.mintSelectedPrefectureBatch([10], [1]);
+        result = await token.totalSupply();
+        tokenId1 = result.toNumber() - 1;
+
+        // for user2
+        await minter.connect(user2).functions.mintSelectedPrefectureBatch([10], [1]);
+        result = await token.totalSupply();
+        tokenId2 = result.toNumber() - 1;
+
+        // 希望都道府県なしでトレードリストに出す
+        await token.connect(user1).putTradeLocalNoun(tokenId1, []);
+
+        result = await token.connect(user1).trades(tokenId1);
+        expect(result).equal(true);
+
+        result = await token.connect(user1).getTradePrefectureFor(tokenId1);
+        expect(result.length).equal(0);
+
+        tx = await token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1);
+        await tx.wait();
+        result = await token.connect(user1).trades(tokenId1);
+        expect(result).equal(false);  //トレードリストから解除
+
+        result = await token.connect(user1).ownerOf(tokenId1);
+        expect(result).equal(user2.address);
+
+        result = await token.connect(user1).ownerOf(tokenId2);
+        expect(result).equal(user1.address);
+    });
+
+    it('cancel trade', async function () {
+        // for user1
+        await minter.connect(user1).functions.mintSelectedPrefectureBatch([10], [1]);
+        result = await token.totalSupply();
+        tokenId1 = result.toNumber() - 1;
+
+        // for user2
+        await minter.connect(user2).functions.mintSelectedPrefectureBatch([10], [1]);
+        result = await token.totalSupply();
+        tokenId2 = result.toNumber() - 1;
+
+        // 希望都道府県なしでトレードリストに出す
+        await token.connect(user1).putTradeLocalNoun(tokenId1, []);
+
+        result = await token.connect(user1).trades(tokenId1);
+        expect(result).equal(true);
+
+        // オーなー以外がキャンセルしようとする
+        await expect(token.connect(user2).cancelTradeLocalNoun(tokenId1)).revertedWith('Only the onwer can trade');
+
+        // オーなーがキャンセルする
+        await token.connect(user1).cancelTradeLocalNoun(tokenId1);
+        result = await token.connect(user1).trades(tokenId1);
+        expect(result).equal(false);  //トレードリストから解除
+
+        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1)).revertedWith('TargetTokenId is not on trade');
+
+    });
+
 });

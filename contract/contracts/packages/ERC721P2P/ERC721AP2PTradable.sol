@@ -18,13 +18,13 @@ abstract contract ERC721AP2PTradable is IERC721P2PTradableCore, ERC721AP2P {
     return interfaceId == type(IERC721P2PTradableCore).interfaceId || super.supportsInterface(interfaceId);
   }
 
-  function putTrade(uint256 _tokenId, bool _isOnTrade) external override {
+  function putTrade(uint256 _tokenId, bool _isOnTrade) public virtual {
     require(ownerOf(_tokenId) == msg.sender, 'Only the onwer can trade');
     trades[_tokenId] = _isOnTrade;
     emit PutTrade(_tokenId, _isOnTrade);
   }
 
-  function executeTrade(uint256 _myTokenId, uint256 _targetTokenId) external override {
+  function executeTrade(uint256 _myTokenId, uint256 _targetTokenId) public virtual {
     require(ownerOf(_myTokenId) == msg.sender, 'Only the onwer can trade');
     require(trades[_targetTokenId] == true, 'TargetTokenId is not on trade');
 
@@ -35,7 +35,12 @@ abstract contract ERC721AP2PTradable is IERC721P2PTradableCore, ERC721AP2P {
   }
 
   // transfer時はセール、トレード解除
-  function _beforeTokenTransfers(address from, address to, uint256 startTokenId, uint256 quantity) internal override {
+  function _beforeTokenTransfers(
+    address from,
+    address to,
+    uint256 startTokenId,
+    uint256 quantity
+  ) internal virtual override {
     trades[startTokenId] = false; // not trade any more
     prices[startTokenId] = 0; // not on sale any more
     super._beforeTokenTransfers(from, to, startTokenId, quantity);
