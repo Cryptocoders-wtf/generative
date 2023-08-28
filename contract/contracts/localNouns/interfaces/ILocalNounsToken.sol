@@ -27,4 +27,10 @@ interface ILocalNounsToken {
   ) external returns (uint256 tokenId);
 
   function setMinter(address _minter) external;
+
+  // Fires when the owner puts the trade
+  event PutTradePrefecture(uint256 indexed tokenId, uint256[] _prefectures);
+
+  // Fires when the owner cancel the trade
+  event CancelTradePrefecture(uint256 indexed tokenId);
 }
