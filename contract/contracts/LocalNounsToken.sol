@@ -109,6 +109,10 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     administratorsAddress = _admin;
   }
 
+  /**
+   * @param _tokenId the token id for put on the trade list.
+   * @param _prefectures prefectures that you want to trade. if you don't want specific prefecture, you don't need to set.
+   */
   function putTradeLocalNoun(uint256 _tokenId, uint256[] memory _prefectures) public {
     for (uint256 i = 0; i < _prefectures.length; i++) {
       require(_prefectures[i] > 0 && _prefectures[i] <= 47, 'incorrect prefecutre id');
@@ -134,6 +138,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   }
 
   function executeTradeLocalNoun(uint256 _myTokenId, uint256 _targetTokenId) public {
+    // tradePrefectureがない場合は、希望都道府県がないためチェック不要
     if (tradePrefecture[_targetTokenId].length > 0) {
       uint256 myTokenIdPrefecture = assetProvider2.getPrefectureId(_myTokenId);
       bool isIncludesList = false;
