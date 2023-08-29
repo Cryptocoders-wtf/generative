@@ -177,4 +177,8 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
 
     return _assetId;
   }
+
+  function getPrefectureId(uint256 _tokenId) external override returns (uint256) {
+    return tokenIdToPrefectureId[_tokenId];
+  }
 }
