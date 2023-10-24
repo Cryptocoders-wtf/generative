@@ -67,12 +67,16 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
       );
   }
 
-  function mintSelectedPrefecture(address _to, uint256 _prefectureId) public virtual returns (uint256 tokenId) {
+  function mintSelectedPrefecture(
+    address _to,
+    uint256 _prefectureId,
+    uint256 _amount
+  ) public virtual returns (uint256 tokenId) {
     require(msg.sender == minter, 'Sender is not the minter');
-    assetProvider2.mint(_prefectureId, _nextTokenId());
-
-    _safeMint(_to, 1);
-
+    for (uint256 i = 0; i < _amount; i++) {
+      assetProvider2.mint(_prefectureId, _nextTokenId());
+    }
+    _safeMint(_to, _amount);
     return _nextTokenId() - 1;
   }
 

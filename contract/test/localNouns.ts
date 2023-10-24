@@ -3,7 +3,7 @@ import { ethers, network, SignerWithAddress, Contract } from "hardhat";
 import { addresses } from '../../src/utils/addresses';
 import { ethers } from 'ethers';
 
-let owner: SignerWithAddress, user1: SignerWithAddress, user2: SignerWithAddress, admin: SignerWithAddress;
+let owner: SignerWithAddress, user1: SignerWithAddress, user2: SignerWithAddress, user3: SignerWithAddress, admin: SignerWithAddress;
 let token: Contract, minter: Contract, provider: Contract;
 
 const nounsDescriptorAddress = addresses.nounsDescriptor[network.name];
@@ -21,7 +21,7 @@ before(async () => {
         # npx hardhat run scripts/populate_localNouns.ts
      */
 
-    [owner, user1, user2, admin] = await ethers.getSigners();
+    [owner, user1, user2, user3, admin] = await ethers.getSigners();
 
     const factoryProvider = await ethers.getContractFactory('LocalNounsProvider');
     provider = await factoryProvider.deploy(
@@ -45,17 +45,32 @@ before(async () => {
 
 describe('mint functions', function () {
     let result, tx;
+
     it('mint from non-minter', async function () {
         await expect(token.connect(user1).functions.mint())
             .revertedWith('Cannot use this function');
 
-        await expect(token.connect(user1).functions.mintSelectedPrefecture(user1.address, 1))
+        await expect(token.connect(user1).functions.mintSelectedPrefecture(user1.address, 1, 1))
             .revertedWith('Sender is not the minter');
 
     });
 
+    it('mint at lock phaze', async function () {
+
+        const [phaze] = await minter.functions.phase();
+        expect(phaze).to.equal(0); // Lock
+
+        await expect(minter.connect(user1).functions.mintSelectedPrefecture(1, 1))
+            .revertedWith('Sale is locked');
+
+        await minter.connect(owner).functions.setPhase(2);
+        const [phaze2] = await minter.functions.phase();
+        expect(phaze2).to.equal(2); // PublicSale
+
+    });
+
     it('mint from minter', async function () {
-        await minter.connect(user1).functions.mintSelectedPrefecture(1);
+        await minter.connect(user1).functions.mintSelectedPrefecture(1,1);
 
         const [balance] = await token.functions.balanceOf(user1.address);
         expect(balance.toNumber()).to.equal(1); // user1は1つ保持
@@ -67,53 +82,77 @@ describe('mint functions', function () {
         expect(totalSupply.toNumber()).to.equal(1); // tokenId=1
     });
 
-    it('batch mint', async function () {
+    it('multiple mint', async function () {
 
-        //Aomori,Iwate(バージョン指定),ランダム,ランダム(バージョン指定)を、2個,3個ずつ、user2にmint
-        await minter.connect(user2).functions.mintSelectedPrefectureBatch([2, 103, 0, 100], [1, 1, 2, 2]);
+        const [balance0] = await token.functions.balanceOf(user3.address);
+        await minter.connect(user3).functions.mintSelectedPrefecture(1,3);
 
-        // user2に合計6個ミントされる
-        const [balance] = await token.functions.balanceOf(user2.address);
-        expect(balance.toNumber()).to.equal(1 + 2 + 3);
+        const [balance] = await token.functions.balanceOf(user3.address);
 
-        const [owner1] = await token.functions.ownerOf(1);
-        const [owner2] = await token.functions.ownerOf(2);
-        const [owner3] = await token.functions.ownerOf(3);
-        const [owner4] = await token.functions.ownerOf(4);
-        const [owner5] = await token.functions.ownerOf(5);
-        const [owner6] = await token.functions.ownerOf(6);
+        expect(balance.toNumber()).to.equal(3); // user3は3つ追加
 
-        expect(owner1).to.equal(user2.address);
-        expect(owner2).to.equal(user2.address);
-        expect(owner3).to.equal(user2.address);
-        expect(owner4).to.equal(user2.address);
-        expect(owner5).to.equal(user2.address);
-        expect(owner6).to.equal(user2.address);
+        const [owner0] = await token.functions.ownerOf(1);
+        expect(owner0).to.equal(user3.address);
 
-        // Traitsに指定した都道府県名が設定される
-        const [traits1] = await provider.functions.generateTraits(1);
-        const [traits2] = await provider.functions.generateTraits(2);
-        const [traits3] = await provider.functions.generateTraits(3);
-        const [traits4] = await provider.functions.generateTraits(4);
-        const [traits5] = await provider.functions.generateTraits(5);
-        const [traits6] = await provider.functions.generateTraits(6);
-        // head,accessoryがランダムなので除外
-        // expect(traits1).to.equal('{"trait_type": "prefecture" , "value":"Aomori"}');
-        // expect(traits2).to.equal('{"trait_type": "prefecture" , "value":"Iwate"}');
-        // expect(traits3).to.equal('{"trait_type": "prefecture" , "value":"Iwate"}');
-        // expect(traits4).to.equal('{"trait_type": "prefecture" , "value":"Miyagi"}');
-        // expect(traits5).to.equal('{"trait_type": "prefecture" , "value":"Miyagi"}');
-        // expect(traits6).to.equal('{"trait_type": "prefecture" , "value":"Miyagi"}');
-        // console.log(traits1);
-        // console.log(traits2);
-        // console.log(traits3);
-        // console.log(traits4);
-        // console.log(traits5);
-        // console.log(traits6);
+        const [owner1] = await token.functions.ownerOf(2);
+        expect(owner1).to.equal(user3.address);
+
+        const [owner2] = await token.functions.ownerOf(3);
+        expect(owner2).to.equal(user3.address);
 
         const [totalSupply] = await token.functions.totalSupply();
-        expect(totalSupply.toNumber()).to.equal(7);
+        expect(totalSupply.toNumber()).to.equal(4); // tokenId=1
     });
+
+    // バッチミントは削除
+    // it('batch mint', async function () {
+
+    //     //Aomori,Iwate(バージョン指定),ランダム,ランダム(バージョン指定)を、2個,3個ずつ、user2にmint
+    //     // await minter.connect(user2).functions.mintSelectedPrefectureBatch([2, 103, 0, 100], [1, 1, 2, 2]);
+    //     await minter.connect(user2).functions.mintSelectedPrefectureBatch([2, 3, 0, 0], [1, 1, 2, 2]);  // バージョン未登録なのでバージョン指定なし
+
+    //     // user2に合計6個ミントされる
+    //     const [balance] = await token.functions.balanceOf(user2.address);
+    //     expect(balance.toNumber()).to.equal(1 + 2 + 3);
+
+    //     const [owner1] = await token.functions.ownerOf(1);
+    //     const [owner2] = await token.functions.ownerOf(2);
+    //     const [owner3] = await token.functions.ownerOf(3);
+    //     const [owner4] = await token.functions.ownerOf(4);
+    //     const [owner5] = await token.functions.ownerOf(5);
+    //     const [owner6] = await token.functions.ownerOf(6);
+
+    //     expect(owner1).to.equal(user2.address);
+    //     expect(owner2).to.equal(user2.address);
+    //     expect(owner3).to.equal(user2.address);
+    //     expect(owner4).to.equal(user2.address);
+    //     expect(owner5).to.equal(user2.address);
+    //     expect(owner6).to.equal(user2.address);
+
+    //     // Traitsに指定した都道府県名が設定される
+    //     const [traits1] = await provider.functions.generateTraits(1);
+    //     const [traits2] = await provider.functions.generateTraits(2);
+    //     const [traits3] = await provider.functions.generateTraits(3);
+    //     const [traits4] = await provider.functions.generateTraits(4);
+    //     const [traits5] = await provider.functions.generateTraits(5);
+    //     const [traits6] = await provider.functions.generateTraits(6);
+    //     // head,accessoryがランダムなので除外
+    //     // expect(traits1).to.equal('{"trait_type": "prefecture" , "value":"Aomori"}');
+    //     // expect(traits2).to.equal('{"trait_type": "prefecture" , "value":"Iwate"}');
+    //     // expect(traits3).to.equal('{"trait_type": "prefecture" , "value":"Iwate"}');
+    //     // expect(traits4).to.equal('{"trait_type": "prefecture" , "value":"Miyagi"}');
+    //     // expect(traits5).to.equal('{"trait_type": "prefecture" , "value":"Miyagi"}');
+    //     // expect(traits6).to.equal('{"trait_type": "prefecture" , "value":"Miyagi"}');
+    //     // console.log(traits1);
+    //     // console.log(traits2);
+    //     // console.log(traits3);
+    //     // console.log(traits4);
+    //     // console.log(traits5);
+    //     // console.log(traits6);
+
+    //     const [totalSupply] = await token.functions.totalSupply();
+    //     expect(totalSupply.toNumber()).to.equal(7);
+    // });
 });
 
 describe('P2P', function () {
@@ -122,7 +161,7 @@ describe('P2P', function () {
     const price = ethers.BigNumber.from('1000000000000000');
 
     it('not on sale', async function () {
-        await minter.connect(user1).functions.mintSelectedPrefectureBatch([10], [1]);
+        await minter.connect(user1).functions.mintSelectedPrefecture(10, 1);
         result = await token.totalSupply();
         tokenId1 = result.toNumber() - 1;
 
@@ -168,12 +207,12 @@ describe('P2PTradable', function () {
 
     it('mint for test', async function () {
         // for user1
-        await minter.connect(user1).functions.mintSelectedPrefectureBatch([5], [1]);
+        await minter.connect(user1).functions.mintSelectedPrefecture(5, 1);
         result = await token.totalSupply();
         tokenId1 = result.toNumber() - 1;
 
         // for user2
-        await minter.connect(user2).functions.mintSelectedPrefectureBatch([10], [1]);
+        await minter.connect(user2).functions.mintSelectedPrefecture(10, 1);
         result = await token.totalSupply();
         tokenId2 = result.toNumber() - 1;
 
@@ -232,12 +271,12 @@ describe('P2PTradable', function () {
 
     it('put trade(都道府県指定なし)', async function () {
         // for user1
-        await minter.connect(user1).functions.mintSelectedPrefectureBatch([10], [1]);
+        await minter.connect(user1).functions.mintSelectedPrefecture(10, 1);
         result = await token.totalSupply();
         tokenId1 = result.toNumber() - 1;
 
         // for user2
-        await minter.connect(user2).functions.mintSelectedPrefectureBatch([10], [1]);
+        await minter.connect(user2).functions.mintSelectedPrefecture(10, 1);
         result = await token.totalSupply();
         tokenId2 = result.toNumber() - 1;
 
@@ -264,12 +303,12 @@ describe('P2PTradable', function () {
 
     it('cancel trade', async function () {
         // for user1
-        await minter.connect(user1).functions.mintSelectedPrefectureBatch([10], [1]);
+        await minter.connect(user1).functions.mintSelectedPrefecture(10, 1);
         result = await token.totalSupply();
         tokenId1 = result.toNumber() - 1;
 
         // for user2
-        await minter.connect(user2).functions.mintSelectedPrefectureBatch([10], [1]);
+        await minter.connect(user2).functions.mintSelectedPrefecture(10, 1);
         result = await token.totalSupply();
         tokenId2 = result.toNumber() - 1;
 
