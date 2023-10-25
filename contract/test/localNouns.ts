@@ -83,7 +83,9 @@ describe('mint functions', function () {
     });
 
     it('mint from minter', async function () {
-        await minter.connect(user1).functions.mintSelectedPrefecture(1, 1);
+
+        const txParams = { value: ethers.utils.parseUnits("0.001", "ether") };
+        await minter.connect(user1).functions.mintSelectedPrefecture(0, 1,txParams);
 
         const [balance] = await token.functions.balanceOf(user1.address);
         expect(balance.toNumber()).to.equal(1); // user1は1つ保持
@@ -98,7 +100,9 @@ describe('mint functions', function () {
     it('multiple mint', async function () {
 
         const [balance0] = await token.functions.balanceOf(user3.address);
-        await minter.connect(user3).functions.mintSelectedPrefecture(1, 3);
+
+        const txParams = { value: ethers.utils.parseUnits("0.009", "ether") };
+        await minter.connect(user3).functions.mintSelectedPrefecture(1, 3, txParams);
 
         const [balance] = await token.functions.balanceOf(user3.address);
 
@@ -123,21 +127,40 @@ describe('mint functions', function () {
         const [phaze] = await minter.functions.phase();
         expect(phaze).to.equal(1); // PreSale
 
-        await expect(minter.connect(user4).functions.mintSelectedPrefecture(1, 1))
+        const txParams = { value: ethers.utils.parseUnits("0.009", "ether") };
+        await expect(minter.connect(user4).functions.mintSelectedPrefecture(1, 1, txParams))
             .revertedWith('TokenGate token is needed');
 
         // sampleTokenをミント 
         await sampleToken.connect(user4).functions.mint();
 
-        await minter.connect(user4).functions.mintSelectedPrefecture(1, 3);
+        await minter.connect(user4).functions.mintSelectedPrefecture(1, 3, txParams);
 
         const [balance] = await token.functions.balanceOf(user4.address);
 
-        expect(balance.toNumber()).to.equal(3); // user3は3つ追加
+        expect(balance.toNumber()).to.equal(3); // user4は3つ追加
 
         await minter.connect(owner).functions.setPhase(2);
         const [phaze2] = await minter.functions.phase();
         expect(phaze2).to.equal(2); // PublicSale
+
+    });
+
+    it('Send eth', async function () {
+
+        await minter.connect(owner).functions.setPhase(2);
+        const [phaze] = await minter.functions.phase();
+        expect(phaze).to.equal(2); // PreSale
+
+        // 都道府県指定 OKパターンは'multiple mint'テストで実施
+        const txParams = { value: ethers.utils.parseUnits("0.0059", "ether") };
+        await expect(minter.connect(user4).functions.mintSelectedPrefecture(1, 2, txParams))
+            .revertedWith('Must send the mint price');
+
+        // 都道府県指定なし OKパターンは'mint from minter'テストで実施
+        const txParams2 = { value: ethers.utils.parseUnits("0.0019", "ether") };
+        await expect(minter.connect(user4).functions.mintSelectedPrefecture(0, 2, txParams2))
+            .revertedWith('Must send the mint price');
 
     });
 
@@ -198,7 +221,9 @@ describe('P2P', function () {
     const price = ethers.BigNumber.from('1000000000000000');
 
     it('not on sale', async function () {
-        await minter.connect(user1).functions.mintSelectedPrefecture(10, 1);
+
+        const txParams = { value: ethers.utils.parseUnits("0.003", "ether") };
+        await minter.connect(user1).functions.mintSelectedPrefecture(10, 1, txParams);
         result = await token.totalSupply();
         tokenId1 = result.toNumber() - 1;
 
@@ -244,12 +269,13 @@ describe('P2PTradable', function () {
 
     it('mint for test', async function () {
         // for user1
-        await minter.connect(user1).functions.mintSelectedPrefecture(5, 1);
+        const txParams = { value: ethers.utils.parseUnits("0.003", "ether") };
+        await minter.connect(user1).functions.mintSelectedPrefecture(5, 1, txParams);
         result = await token.totalSupply();
         tokenId1 = result.toNumber() - 1;
 
         // for user2
-        await minter.connect(user2).functions.mintSelectedPrefecture(10, 1);
+        await minter.connect(user2).functions.mintSelectedPrefecture(10, 1, txParams);
         result = await token.totalSupply();
         tokenId2 = result.toNumber() - 1;
 
@@ -308,12 +334,13 @@ describe('P2PTradable', function () {
 
     it('put trade(都道府県指定なし)', async function () {
         // for user1
-        await minter.connect(user1).functions.mintSelectedPrefecture(10, 1);
+        const txParams = { value: ethers.utils.parseUnits("0.003", "ether") };
+        await minter.connect(user1).functions.mintSelectedPrefecture(10, 1, txParams);
         result = await token.totalSupply();
         tokenId1 = result.toNumber() - 1;
 
         // for user2
-        await minter.connect(user2).functions.mintSelectedPrefecture(10, 1);
+        await minter.connect(user2).functions.mintSelectedPrefecture(10, 1, txParams);
         result = await token.totalSupply();
         tokenId2 = result.toNumber() - 1;
 
@@ -340,12 +367,13 @@ describe('P2PTradable', function () {
 
     it('cancel trade', async function () {
         // for user1
-        await minter.connect(user1).functions.mintSelectedPrefecture(10, 1);
+        const txParams = { value: ethers.utils.parseUnits("0.003", "ether") };
+        await minter.connect(user1).functions.mintSelectedPrefecture(10, 1, txParams);
         result = await token.totalSupply();
         tokenId1 = result.toNumber() - 1;
 
         // for user2
-        await minter.connect(user2).functions.mintSelectedPrefecture(10, 1);
+        await minter.connect(user2).functions.mintSelectedPrefecture(10, 1, txParams);
         result = await token.totalSupply();
         tokenId2 = result.toNumber() - 1;
 
