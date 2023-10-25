@@ -11,7 +11,7 @@ import '@openzeppelin/contracts/token/ERC721/IERC721.sol';
 import '../interfaces/ITokenGate.sol';
 
 contract AssetTokenGate is Ownable, ITokenGate {
-  IERC721[] whitelist;
+  IERC721[] public whitelist;
 
   function setWhitelist(IERC721[] memory _whitelist) external onlyOwner {
     whitelist = _whitelist;
