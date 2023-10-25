@@ -28,7 +28,7 @@ contract LocalNounsMinter is Ownable {
   uint256 public mintPriceForSpecified = 0.03 ether;
   uint256 public mintPriceForNotSpecified = 0.01 ether;
 
-  uint256 public constant mintMax = 1200;
+  uint256 public constant mintMax = 1500;
 
   mapping(address => uint256) public preferentialPurchacedCount;
 
@@ -72,8 +72,9 @@ contract LocalNounsMinter is Ownable {
     if (phase == SalePhase.Locked) {
       revert('Sale is locked');
     } else if (phase == SalePhase.PreSale) {
-      require(tokenGate.balanceOf(msg.sender) > 0);
+      require(tokenGate.balanceOf(msg.sender) > 0, 'TokenGate token is needed');
     }
+
     return token.mintSelectedPrefecture(msg.sender, _prefectureId, _amount);
   }
 
