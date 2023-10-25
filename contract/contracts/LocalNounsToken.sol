@@ -74,12 +74,11 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   ) public virtual returns (uint256 tokenId) {
     require(msg.sender == minter, 'Sender is not the minter');
     for (uint256 i = 0; i < _amount; i++) {
-      assetProvider2.mint(_prefectureId, _nextTokenId());
+      assetProvider2.mint(_prefectureId, _nextTokenId() + i);
     }
     _safeMint(_to, _amount);
     return _nextTokenId() - 1;
   }
-
 
   function mint() public payable override returns (uint256 tokenId) {
     revert('Cannot use this function');
