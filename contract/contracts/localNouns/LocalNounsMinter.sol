@@ -19,9 +19,11 @@ pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import './interfaces/ILocalNounsToken.sol';
+import '../interfaces/ITokenGate.sol';
 
 contract LocalNounsMinter is Ownable {
   ILocalNounsToken public token;
+  ITokenGate public immutable tokenGate;
 
   uint256 public mintPriceForSpecified = 0.03 ether;
   uint256 public mintPriceForNotSpecified = 0.01 ether;
@@ -40,9 +42,10 @@ contract LocalNounsMinter is Ownable {
 
   address public administratorsAddress; // 運営ウォレット
 
-  constructor(ILocalNounsToken _token) {
+  constructor(ILocalNounsToken _token, ITokenGate _tokenGate) {
     token = _token;
     administratorsAddress = msg.sender;
+    tokenGate = _tokenGate;
   }
 
   function setLocalNounsToken(ILocalNounsToken _token) external onlyOwner {
@@ -66,7 +69,11 @@ contract LocalNounsMinter is Ownable {
   }
 
   function mintSelectedPrefecture(uint256 _prefectureId, uint256 _amount) public payable returns (uint256 tokenId) {
-    require(phase != SalePhase.Locked, 'Sale is locked');
+    if (phase == SalePhase.Locked) {
+      revert('Sale is locked');
+    } else if (phase == SalePhase.PreSale) {
+      require(tokenGate.balanceOf(msg.sender) > 0);
+    }
     return token.mintSelectedPrefecture(msg.sender, _prefectureId, _amount);
   }
 
