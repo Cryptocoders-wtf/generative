@@ -25,8 +25,8 @@ contract LocalNounsMinter is Ownable {
   ILocalNounsToken public token;
   ITokenGate public immutable tokenGate;
 
-  uint256 public mintPriceForSpecified = 0.03 ether;
-  uint256 public mintPriceForNotSpecified = 0.01 ether;
+  uint256 public mintPriceForSpecified = 0.003 ether;
+  uint256 public mintPriceForNotSpecified = 0.001 ether;
 
   uint256 public constant mintMax = 1500;
 
@@ -74,6 +74,14 @@ contract LocalNounsMinter is Ownable {
     } else if (phase == SalePhase.PreSale) {
       require(tokenGate.balanceOf(msg.sender) > 0, 'TokenGate token is needed');
     }
+    
+    uint256 mintPrice;
+    if(_prefectureId == 0){
+      mintPrice = mintPriceForNotSpecified;
+    }else{
+      mintPrice = mintPriceForSpecified;
+    }
+    require(msg.value >= mintPrice * _amount, 'Must send the mint price');
 
     return token.mintSelectedPrefecture(msg.sender, _prefectureId, _amount);
   }
