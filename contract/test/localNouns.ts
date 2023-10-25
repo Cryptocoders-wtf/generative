@@ -4,7 +4,7 @@ import { addresses } from '../../src/utils/addresses';
 import { ethers } from 'ethers';
 
 let owner: SignerWithAddress, user1: SignerWithAddress, user2: SignerWithAddress, user3: SignerWithAddress, admin: SignerWithAddress;
-let token: Contract, minter: Contract, provider: Contract;
+let token: Contract, minter: Contract, provider: Contract, tokenGate: Contract;
 
 const nounsDescriptorAddress = addresses.nounsDescriptor[network.name];
 const localNounsDescriptorAddress = addresses.localNounsDescriptor[network.name];
@@ -23,6 +23,11 @@ before(async () => {
 
     [owner, user1, user2, user3, admin] = await ethers.getSigners();
 
+    const factoryTokenGate = await ethers.getContractFactory('AssetTokenGate');
+    tokenGate = await factoryTokenGate.deploy();
+    await tokenGate.deployed();
+    // console.log(`##LocalNounsProvider="${provider.address}"`);
+
     const factoryProvider = await ethers.getContractFactory('LocalNounsProvider');
     provider = await factoryProvider.deploy(
         nounsDescriptorAddress, localNounsDescriptorAddress, nounsSeederAddress, localSeederAddress);
@@ -35,7 +40,7 @@ before(async () => {
     // console.log(`##LocalNounsToken="${token.address}"`);
 
     const factoryMinter = await ethers.getContractFactory('LocalNounsMinter');
-    minter = await factoryMinter.deploy(token.address);
+    minter = await factoryMinter.deploy(token.address, tokenGate.address);
     await minter.deployed();
     // console.log(`##LocalNounsMinter="${minter.address}"`);
 
