@@ -26,3 +26,4 @@ pnpm-debug.log*
 *~
 
 contract/contracts/fonts/font.sol
+src/utils/addresses/*_localhost.ts
