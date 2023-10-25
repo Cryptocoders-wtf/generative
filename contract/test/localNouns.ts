@@ -2,14 +2,16 @@ import { expect } from 'chai';
 import { ethers, network, SignerWithAddress, Contract } from "hardhat";
 import { addresses } from '../../src/utils/addresses';
 import { ethers } from 'ethers';
+import { abi as sampleTokenAbi } from "../artifacts/contracts/sampleToken.sol/sampleToken";
 
-let owner: SignerWithAddress, user1: SignerWithAddress, user2: SignerWithAddress, user3: SignerWithAddress, admin: SignerWithAddress;
-let token: Contract, minter: Contract, provider: Contract, tokenGate: Contract;
+let owner: SignerWithAddress, user1: SignerWithAddress, user2: SignerWithAddress, user3: SignerWithAddress, user4: SignerWithAddress, admin: SignerWithAddress;
+let token: Contract, minter: Contract, provider: Contract, tokenGate: Contract, sampleToken: Contract;
 
 const nounsDescriptorAddress = addresses.nounsDescriptor[network.name];
 const localNounsDescriptorAddress = addresses.localNounsDescriptor[network.name];
 const nounsSeederAddress = addresses.nounsSeeder[network.name];
 const localSeederAddress = addresses.localSeeder[network.name];
+const sampleTokenAddress = addresses.sampleToken[network.name];
 
 before(async () => {
     /* `npx hardhat node`実行後、このスクリプトを実行する前に、Nouns,LocalNounsの関連するコントラクトを
@@ -19,14 +21,14 @@ before(async () => {
         # npx hardhat run scripts/populate_nounsV1.ts
         # npx hardhat run scripts/deploy_localNouns.ts
         # npx hardhat run scripts/populate_localNouns.ts
+        # npx hardhat run scripts/deploy_sample.ts
      */
 
-    [owner, user1, user2, user3, admin] = await ethers.getSigners();
+    [owner, user1, user2, user3, user4, admin] = await ethers.getSigners();
 
     const factoryTokenGate = await ethers.getContractFactory('AssetTokenGate');
     tokenGate = await factoryTokenGate.deploy();
     await tokenGate.deployed();
-    // console.log(`##LocalNounsProvider="${provider.address}"`);
 
     const factoryProvider = await ethers.getContractFactory('LocalNounsProvider');
     provider = await factoryProvider.deploy(
@@ -45,6 +47,12 @@ before(async () => {
     // console.log(`##LocalNounsMinter="${minter.address}"`);
 
     await token.setMinter(minter.address);
+
+    // sampleTokenのコントラクト定義
+    sampleToken = await ethers.getContractAt(sampleTokenAbi, sampleTokenAddress);
+
+    // tokenGateにsampleTokenをセット
+    await tokenGate.setWhitelist([sampleToken.address]);
 
 });
 
@@ -75,7 +83,7 @@ describe('mint functions', function () {
     });
 
     it('mint from minter', async function () {
-        await minter.connect(user1).functions.mintSelectedPrefecture(1,1);
+        await minter.connect(user1).functions.mintSelectedPrefecture(1, 1);
 
         const [balance] = await token.functions.balanceOf(user1.address);
         expect(balance.toNumber()).to.equal(1); // user1は1つ保持
@@ -90,7 +98,7 @@ describe('mint functions', function () {
     it('multiple mint', async function () {
 
         const [balance0] = await token.functions.balanceOf(user3.address);
-        await minter.connect(user3).functions.mintSelectedPrefecture(1,3);
+        await minter.connect(user3).functions.mintSelectedPrefecture(1, 3);
 
         const [balance] = await token.functions.balanceOf(user3.address);
 
@@ -107,6 +115,30 @@ describe('mint functions', function () {
 
         const [totalSupply] = await token.functions.totalSupply();
         expect(totalSupply.toNumber()).to.equal(4); // tokenId=1
+    });
+
+    it('tokenGate', async function () {
+
+        await minter.connect(owner).functions.setPhase(1);
+        const [phaze] = await minter.functions.phase();
+        expect(phaze).to.equal(1); // PreSale
+
+        await expect(minter.connect(user4).functions.mintSelectedPrefecture(1, 1))
+            .revertedWith('TokenGate token is needed');
+
+        // sampleTokenをミント 
+        await sampleToken.connect(user4).functions.mint();
+
+        await minter.connect(user4).functions.mintSelectedPrefecture(1, 3);
+
+        const [balance] = await token.functions.balanceOf(user4.address);
+
+        expect(balance.toNumber()).to.equal(3); // user3は3つ追加
+
+        await minter.connect(owner).functions.setPhase(2);
+        const [phaze2] = await minter.functions.phase();
+        expect(phaze2).to.equal(2); // PublicSale
+
     });
 
     // バッチミントは削除
