@@ -73,6 +73,8 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     uint256 _amount
   ) public virtual returns (uint256 tokenId) {
     require(msg.sender == minter, 'Sender is not the minter');
+    require(_prefectureId % 100 <= 47, 'Invalid prefectureId');
+
     for (uint256 i = 0; i < _amount; i++) {
       assetProvider2.mint(_prefectureId, _nextTokenId() + i);
     }
