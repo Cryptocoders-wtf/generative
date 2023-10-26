@@ -27,9 +27,8 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   ) ProviderTokenA2(_assetProvider, 'Local Nouns', 'Local Nouns') {
     description = 'Local Nouns Token.';
     assetProvider2 = _assetProvider;
-    // mintPrice = 1e13; // 0.001
-    mintPrice = 0;
-    mintLimit = 5000;
+    // mintPrice = 1e13; // 0.001   ※ mintPriceは Minterコントラクトで制御するため使用しない
+    // mintLimit = 5000;            ※ mintLimitは Minterコントラクトで制御するため使用しない
     minter = _minter;
     administratorsAddress = msg.sender;
   }
