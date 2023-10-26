@@ -82,6 +82,14 @@ describe('mint functions', function () {
 
     });
 
+    it('Invalid prefectureId', async function () {
+
+        // OKパターンは別テストで実施
+        const txParams = { value: ethers.utils.parseUnits("0.003", "ether") };
+        await expect(minter.connect(user4).functions.mintSelectedPrefecture(48, 1, txParams))
+            .revertedWith('Invalid prefectureId');
+    });
+
     it('mint from minter', async function () {
 
         const txParams = { value: ethers.utils.parseUnits("0.001", "ether") };
@@ -184,6 +192,7 @@ describe('mint functions', function () {
             .revertedWith('Must send the mint price');
 
     });
+});
 
 describe('P2P', function () {
     let tx, result, tokenId1: number;
