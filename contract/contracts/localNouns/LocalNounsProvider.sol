@@ -173,7 +173,7 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     }
 
     seeds[_assetId] = generateSeed(prefectureId, _assetId);
-    uint256 prefectureId = prefectureId % 100; // 1,2桁目：都道府県番号、3桁目以降：バージョン番号
+    uint256 prefectureId = prefectureId % 100; // 下2桁：都道府県番号、下3桁より上位：バージョン番号
     tokenIdToPrefectureId[_assetId] = prefectureId;
     mintNumberPerPrefecture[prefectureId]++;
     nextTokenId++;
