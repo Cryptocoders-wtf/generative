@@ -4,7 +4,7 @@ import { addresses } from '../../src/utils/addresses';
 import { ethers } from 'ethers';
 import { abi as sampleTokenAbi } from "../artifacts/contracts/sampleToken.sol/sampleToken";
 
-let owner: SignerWithAddress, user1: SignerWithAddress, user2: SignerWithAddress, user3: SignerWithAddress, user4: SignerWithAddress, admin: SignerWithAddress;
+let owner: SignerWithAddress, user1: SignerWithAddress, user2: SignerWithAddress, user3: SignerWithAddress, user4: SignerWithAddress, user5: SignerWithAddress, admin: SignerWithAddress;
 let token: Contract, minter: Contract, provider: Contract, tokenGate: Contract, sampleToken: Contract;
 
 const nounsDescriptorAddress = addresses.nounsDescriptor[network.name];
@@ -24,7 +24,7 @@ before(async () => {
         # npx hardhat run scripts/deploy_sample.ts
      */
 
-    [owner, user1, user2, user3, user4, admin] = await ethers.getSigners();
+    [owner, user1, user2, user3, user4, user5, admin] = await ethers.getSigners();
 
     const factoryTokenGate = await ethers.getContractFactory('AssetTokenGate');
     tokenGate = await factoryTokenGate.deploy();
@@ -208,6 +208,30 @@ describe('P2P', function () {
 
         // セールなし
         await expect(token.connect(user2).purchase(tokenId1, user2.address, zeroAddress)).revertedWith('Token is not on sale');
+    });
+
+    it('Over the mint limit', async function () {
+
+        // mintMaxに現在の発行数+1をセット
+        const [totalSupply] = await token.functions.totalSupply();
+        await minter.functions.setMintMax(totalSupply.toNumber()+1);
+        const [mintMax] = await minter.functions.mintMax();
+        expect(mintMax.toNumber()).to.equal(totalSupply.toNumber()+1);
+
+        const txParams = { value: ethers.utils.parseUnits("0.006", "ether") };
+        await expect(minter.connect(user5).functions.mintSelectedPrefecture(47, 2, txParams))
+            .revertedWith('Over the mint limit');
+
+        // 一つだけならOK
+        const txParams2 = { value: ethers.utils.parseUnits("0.003", "ether") };
+        await minter.connect(user5).functions.mintSelectedPrefecture(47, 1,txParams2);
+
+        const [balance] = await token.functions.balanceOf(user5.address);
+        expect(balance.toNumber()).to.equal(1); // user1は1つ保持
+
+        await minter.functions.setMintMax(1500);
+        const [mintMax2] = await minter.functions.mintMax();
+        expect(mintMax2.toNumber()).to.equal(1500);
     });
 
     it('SetPrice', async function () {

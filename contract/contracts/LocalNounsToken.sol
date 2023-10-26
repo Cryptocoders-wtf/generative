@@ -171,4 +171,9 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     (bool sent, ) = payable(administratorsAddress).call{ value: address(this).balance }('');
     require(sent, 'failed to move fund to administratorsAddress contract');
   }
+  
+  // iLocalNounsTokenでERC721のtotalSupplyを使用したいけど、二重継承でエラーになるので個別関数を準備
+  function totalSupply2() public view returns (uint256) {
+    return super.totalSupply();
+  }
 }
