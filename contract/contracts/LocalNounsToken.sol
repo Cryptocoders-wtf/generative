@@ -66,6 +66,12 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
       );
   }
 
+  /**
+   都道府県番号を指定してミントします。
+   都道府県番号の下2桁=0を指定すると都道府県がランダムで選択されます。
+   都道府県番号の下3桁目以降はバージョン番号です。
+   ミント価格、ミント上限数は、Minterコントラクト側で制御するため、継承元のmintPrice, mintLimitは使用しません。
+   */
   function mintSelectedPrefecture(
     address _to,
     uint256 _prefectureId,
