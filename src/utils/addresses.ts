@@ -183,6 +183,9 @@ export const addresses: Addresses = {
     goerli: sample_goerli.providerAddress,
     localhost: sample_localhost.providerAddress,
   },
+  sampleToken: {
+    localhost: sample_localhost.sampleToken,
+  },
   assetStore: {
     goerli: store_goerli.storeAddress,
     mainnet: store_mainnet.storeAddress,

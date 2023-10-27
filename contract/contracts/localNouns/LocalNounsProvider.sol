@@ -32,6 +32,7 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   mapping(uint256 => INounsSeeder.Seed) public seeds;
   mapping(uint256 => uint256) public tokenIdToPrefectureId;
   mapping(uint256 => string) public prefectureName;
+  mapping(uint256 => uint256) public mintNumberPerPrefecture; // 都道府県ごとのミント数
 
   constructor(
     INounsDescriptor _descriptor,
@@ -172,7 +173,9 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     }
 
     seeds[_assetId] = generateSeed(prefectureId, _assetId);
-    tokenIdToPrefectureId[_assetId] = prefectureId % 100; // 1,2桁目：都道府県番号、3桁目以降：バージョン番号
+    uint256 prefectureId = prefectureId % 100; // 下2桁：都道府県番号、下3桁より上位：バージョン番号
+    tokenIdToPrefectureId[_assetId] = prefectureId;
+    mintNumberPerPrefecture[prefectureId]++;
     nextTokenId++;
 
     return _assetId;

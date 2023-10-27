@@ -27,9 +27,8 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   ) ProviderTokenA2(_assetProvider, 'Local Nouns', 'Local Nouns') {
     description = 'Local Nouns Token.';
     assetProvider2 = _assetProvider;
-    // mintPrice = 1e13; // 0.001
-    mintPrice = 0;
-    mintLimit = 5000;
+    // mintPrice = 1e13; // 0.001   ※ mintPriceは Minterコントラクトで制御するため使用しない
+    // mintLimit = 5000;            ※ mintLimitは Minterコントラクトで制御するため使用しない
     minter = _minter;
     administratorsAddress = msg.sender;
   }
@@ -67,33 +66,24 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
       );
   }
 
-  function mintSelectedPrefecture(address _to, uint256 _prefectureId) public virtual returns (uint256 tokenId) {
-    require(msg.sender == minter, 'Sender is not the minter');
-    assetProvider2.mint(_prefectureId, _nextTokenId());
-
-    _safeMint(_to, 1);
-
-    return _nextTokenId() - 1;
-  }
-
-  function mintSelectedPrefectureBatch(
+  /**
+   都道府県番号を指定してミントします。
+   都道府県番号の下2桁=0を指定すると都道府県がランダムで選択されます。
+   都道府県番号の下3桁目以降はバージョン番号です。
+   ミント価格、ミント上限数は、Minterコントラクト側で制御するため、継承元のmintPrice, mintLimitは使用しません。
+   */
+  function mintSelectedPrefecture(
     address _to,
-    uint256[] memory _prefectureId,
-    uint256[] memory _amount
+    uint256 _prefectureId,
+    uint256 _amount
   ) public virtual returns (uint256 tokenId) {
     require(msg.sender == minter, 'Sender is not the minter');
-    require(_prefectureId.length == _amount.length, 'parametars length are different');
-    require(_prefectureId.length > 0, 'parametars length is zero');
+    require(_prefectureId % 100 <= 47, 'Invalid prefectureId');
 
-    uint256 counter = 0;
-    for (uint256 i = 0; i < _prefectureId.length; i++) {
-      for (uint256 j = 0; j < _amount[i]; j++) {
-        assetProvider2.mint(_prefectureId[i], _nextTokenId() + counter++);
-      }
+    for (uint256 i = 0; i < _amount; i++) {
+      assetProvider2.mint(_prefectureId, _nextTokenId() + i);
     }
-
-    _safeMint(_to, counter);
-
+    _safeMint(_to, _amount);
     return _nextTokenId() - 1;
   }
 
@@ -109,6 +99,10 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     administratorsAddress = _admin;
   }
 
+  /**
+   * @param _tokenId the token id for put on the trade list.
+   * @param _prefectures prefectures that you want to trade. if you don't want specific prefecture, you don't need to set.
+   */
   function putTradeLocalNoun(uint256 _tokenId, uint256[] memory _prefectures) public {
     for (uint256 i = 0; i < _prefectures.length; i++) {
       require(_prefectures[i] > 0 && _prefectures[i] <= 47, 'incorrect prefecutre id');
@@ -134,6 +128,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   }
 
   function executeTradeLocalNoun(uint256 _myTokenId, uint256 _targetTokenId) public {
+    // tradePrefectureがない場合は、希望都道府県がないためチェック不要
     if (tradePrefecture[_targetTokenId].length > 0) {
       uint256 myTokenIdPrefecture = assetProvider2.getPrefectureId(_myTokenId);
       bool isIncludesList = false;
@@ -175,5 +170,10 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     require(administratorsAddress != address(0), "administratorsAddress shouldn't be 0");
     (bool sent, ) = payable(administratorsAddress).call{ value: address(this).balance }('');
     require(sent, 'failed to move fund to administratorsAddress contract');
+  }
+  
+  // iLocalNounsTokenでERC721のtotalSupplyを使用したいけど、二重継承でエラーになるので個別関数を準備
+  function totalSupply2() public view returns (uint256) {
+    return super.totalSupply();
   }
 }
