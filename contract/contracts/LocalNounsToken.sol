@@ -77,13 +77,27 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     uint256 _prefectureId,
     uint256 _amount
   ) public virtual returns (uint256 tokenId) {
-    require(msg.sender == minter, 'Sender is not the minter');
+    require(msg.sender == minter || msg.sender == owner(), 'Sender is not minter nor owner');
     require(_prefectureId % 100 <= 47, 'Invalid prefectureId');
 
     for (uint256 i = 0; i < _amount; i++) {
       assetProvider2.mint(_prefectureId, _nextTokenId() + i);
     }
     _safeMint(_to, _amount);
+    return _nextTokenId() - 1;
+  }
+
+  function ownerMint(
+    address[] memory _to,
+    uint256[] memory _prefectureId,
+    uint256[] memory _amount
+  ) public onlyOwner returns (uint256 tokenId) {
+    // 引数の整合性チェック
+    require(_to.length == _prefectureId.length && _to.length == _amount.length, 'Invalid Arrays length');
+
+    for (uint256 i; i < _to.length; i++) {
+      mintSelectedPrefecture(_to[i], _prefectureId[i], _amount[i]);
+    }
     return _nextTokenId() - 1;
   }
 
@@ -171,7 +185,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     (bool sent, ) = payable(administratorsAddress).call{ value: address(this).balance }('');
     require(sent, 'failed to move fund to administratorsAddress contract');
   }
-  
+
   // iLocalNounsTokenでERC721のtotalSupplyを使用したいけど、二重継承でエラーになるので個別関数を準備
   function totalSupply2() public view returns (uint256) {
     return super.totalSupply();

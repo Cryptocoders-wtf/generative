@@ -64,7 +64,10 @@ describe('mint functions', function () {
             .revertedWith('Cannot use this function');
 
         await expect(token.connect(user1).functions.mintSelectedPrefecture(user1.address, 1, 1))
-            .revertedWith('Sender is not the minter');
+            .revertedWith('Sender is not minter nor owner');
+
+            await expect(token.connect(user1).functions.ownerMint([user1.address], [1], [1]))
+            .revertedWith('Ownable: caller is not the owner');
 
     });
 
@@ -150,6 +153,29 @@ describe('mint functions', function () {
 
     });
 
+    it('owner mint', async function () {
+
+        const [balance3] = await token.functions.balanceOf(user3.address);
+        const [balance4] = await token.functions.balanceOf(user4.address);
+        const [balance5] = await token.functions.balanceOf(user5.address);
+        const [totalSupply] = await token.functions.totalSupply();
+
+        const txParams = { value: 0 };
+        await token.connect(owner).functions.ownerMint([user3.address, user4.address, user5.address],[16,17,18],[1,2,3], txParams);
+
+        const [balance3a] = await token.functions.balanceOf(user3.address);
+        const [balance4a] = await token.functions.balanceOf(user4.address);
+        const [balance5a] = await token.functions.balanceOf(user5.address);
+
+        expect(balance3a.toNumber()).to.equal(balance3.toNumber() + 1);
+        expect(balance4a.toNumber()).to.equal(balance4.toNumber() + 2);
+        expect(balance5a.toNumber()).to.equal(balance5.toNumber() + 3);
+
+        const [totalSupplya] = await token.functions.totalSupply();
+        expect(totalSupplya.toNumber()).to.equal(totalSupply.toNumber() + 6);
+
+    });
+
     it('tokenGate', async function () {
 
         await minter.connect(owner).functions.setPhase(1);
@@ -192,6 +218,7 @@ describe('mint functions', function () {
             .revertedWith('Must send the mint price');
 
     });
+    
 });
 
 describe('P2P', function () {
@@ -223,11 +250,12 @@ describe('P2P', function () {
             .revertedWith('Over the mint limit');
 
         // 一つだけならOK
+        const [balance] = await token.functions.balanceOf(user5.address);
         const txParams2 = { value: ethers.utils.parseUnits("0.003", "ether") };
         await minter.connect(user5).functions.mintSelectedPrefecture(47, 1,txParams2);
 
-        const [balance] = await token.functions.balanceOf(user5.address);
-        expect(balance.toNumber()).to.equal(1); // user1は1つ保持
+        const [balancea] = await token.functions.balanceOf(user5.address);
+        expect(balancea.toNumber()).to.equal(balance.toNumber() + 1); // user1は1つ保持
 
         await minter.functions.setMintMax(1500);
         const [mintMax2] = await minter.functions.mintMax();
