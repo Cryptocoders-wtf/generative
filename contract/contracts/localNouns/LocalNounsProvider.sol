@@ -37,8 +37,8 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   uint256 totalPrefectureRatio;
 
   uint256[5] ratioRank = [5, 4, 3, 3, 2];
-  uint256[5] acumulationRatioRank = [5, 9, 12, 15, 17];
-  uint256 acumulationRatioRankTotal = 17;
+  uint256[5] acumulationRatioRank = [5, 9, 12, 15, 17]; // ratioRankの積み上げ
+  uint256 acumulationRatioRankTotal = 17; // sum(ratioRank)
   mapping(uint256 => uint256[]) public prefectureRatio;
 
   constructor(
