@@ -13,6 +13,8 @@ const nounsSeederAddress = addresses.nounsSeeder[network.name];
 const localSeederAddress = addresses.localSeeder[network.name];
 const sampleTokenAddress = addresses.sampleToken[network.name];
 
+const zeroAddress = '0x0000000000000000000000000000000000000000';
+
 before(async () => {
     /* `npx hardhat node`実行後、このスクリプトを実行する前に、Nouns,LocalNounsの関連するコントラクトを
      * デプロイする必要があります。(一度実行すると、node停止までは再実施する必要なし)
@@ -61,10 +63,10 @@ describe('mint functions', function () {
 
     it('mint from non-minter', async function () {
         await expect(token.connect(user1).functions.mint())
-            .revertedWith('Cannot use this function');
+            .revertedWith('Cannot use');
 
         await expect(token.connect(user1).functions.mintSelectedPrefecture(user1.address, 1, 1))
-            .revertedWith('Sender is not minter nor owner');
+            .revertedWith('Invalid sender');
 
         await expect(token.connect(user1).functions.ownerMint([user1.address], [1], [1]))
             .revertedWith('Ownable: caller is not the owner');
@@ -108,7 +110,7 @@ describe('mint functions', function () {
         expect(totalSupply.toNumber()).to.equal(1); // tokenId=1
 
         const [traits1] = await provider.functions.generateTraits(0);
-        console.log('mint from minter', traits1);
+        // console.log('mint from minter', traits1);
 
     });
 
@@ -140,9 +142,9 @@ describe('mint functions', function () {
         const [traits2] = await provider.functions.generateTraits(2);
         const [traits3] = await provider.functions.generateTraits(3);
         // head,accessoryがランダムなので県のみチェック(head,accessoryは目視)
-        console.log('multiple mint', traits1);
-        console.log('multiple mint', traits2);
-        console.log('multiple mint', traits3);
+        // console.log('multiple mint', traits1);
+        // console.log('multiple mint', traits2);
+        // console.log('multiple mint', traits3);
         expect(traits1.includes('{"trait_type": "prefecture" , "value":"Toyama"}')).to.equal(true);
         expect(traits2.includes('{"trait_type": "prefecture" , "value":"Toyama"}')).to.equal(true);
         expect(traits3.includes('{"trait_type": "prefecture" , "value":"Toyama"}')).to.equal(true);
@@ -183,17 +185,19 @@ describe('mint functions', function () {
         expect(phaze).to.equal(1); // PreSale
 
         const txParams = { value: ethers.utils.parseUnits("0.09", "ether") };
+        // この後でSampleTokenをmintするので、node起動後の1回目しか正常に動作しない
         await expect(minter.connect(user4).functions.mintSelectedPrefecture(1, 1, txParams))
             .revertedWith('TokenGate token is needed');
 
         // sampleTokenをミント 
         await sampleToken.connect(user4).functions.mint();
 
+        const [balance] = await token.functions.balanceOf(user4.address);
         await minter.connect(user4).functions.mintSelectedPrefecture(1, 3, txParams);
 
-        const [balance] = await token.functions.balanceOf(user4.address);
+        const [balance2] = await token.functions.balanceOf(user4.address);
 
-        expect(balance.toNumber()).to.equal(3); // user4は3つ追加
+        expect(balance2.toNumber() - balance.toNumber()).to.equal(3); // user4は3つ追加
 
         await minter.connect(owner).functions.setPhase(2);
         const [phaze2] = await minter.functions.phase();
@@ -244,7 +248,6 @@ describe('determinePrefectureId', function () {
 
 describe('P2P', function () {
     let tx, result, tokenId1: number;
-    const zeroAddress = '0x0000000000000000000000000000000000000000';
     const price = ethers.BigNumber.from('1000000000000000');
 
     it('not on sale', async function () {
@@ -343,9 +346,9 @@ describe('P2PTradable', function () {
     });
 
     it('Attempt to super functions', async function () {
-        await expect(token.connect(user2).executeTrade(tokenId2, tokenId1)).revertedWith('Cannot use this function');
+        await expect(token.connect(user2).executeTrade(tokenId2, tokenId1)).revertedWith('Cannot use');
 
-        await expect(token.connect(user2).putTrade(tokenId1, true)).revertedWith('Cannot use this function');
+        await expect(token.connect(user2).putTrade(tokenId1, true)).revertedWith('Cannot use');
 
     });
 
@@ -358,17 +361,17 @@ describe('P2PTradable', function () {
     });
 
     it('Attempt to put trade non-owner token', async function () {
-        await expect(token.connect(user2).putTradeLocalNoun(tokenId1, [])).revertedWith('Only the onwer can trade');
+        await expect(token.connect(user2).putTradeLocalNoun(tokenId1, [], zeroAddress)).revertedWith('Only the onwer can trade');
     });
 
     it('incorrect prefecutre id', async function () {
-        await expect(token.connect(user2).putTradeLocalNoun(tokenId1, [0])).revertedWith('incorrect prefecutre id');
-        await expect(token.connect(user2).putTradeLocalNoun(tokenId1, [48])).revertedWith('incorrect prefecutre id');
+        await expect(token.connect(user2).putTradeLocalNoun(tokenId1, [0], zeroAddress)).revertedWith('incorrect prefecutre id');
+        await expect(token.connect(user2).putTradeLocalNoun(tokenId1, [48], zeroAddress)).revertedWith('incorrect prefecutre id');
     });
 
     it('put trade', async function () {
         // 希望都道府県外のトークンと交換しようとする
-        await token.connect(user1).putTradeLocalNoun(tokenId1, [1, 11, 12]);
+        await token.connect(user1).putTradeLocalNoun(tokenId1, [1, 11, 12], zeroAddress);
         await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams)).revertedWith('unmatch to the wants list');
 
         result = await token.connect(user1).getTradePrefectureFor(tokenId1);
@@ -377,7 +380,7 @@ describe('P2PTradable', function () {
         expect(result[1].toNumber()).equal(11);
         expect(result[2].toNumber()).equal(12);
 
-        await token.connect(user1).putTradeLocalNoun(tokenId1, [10, 11, 12]);
+        await token.connect(user1).putTradeLocalNoun(tokenId1, [10, 11, 12], zeroAddress);
         result = await token.connect(user1).trades(tokenId1);
         expect(result).equal(true);
 
@@ -386,7 +389,7 @@ describe('P2PTradable', function () {
         const balanceD = await ethers.provider.getBalance(developper.address);
 
         const txParams2 = { value: ethers.utils.parseUnits("0.0029", "ether") };
-        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams2)).revertedWith('Must send the royalty');    
+        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams2)).revertedWith('Insufficial royalty');    
 
         tx = await token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams);
         await tx.wait();
@@ -420,7 +423,7 @@ describe('P2PTradable', function () {
         tokenId2 = result.toNumber() - 1;
 
         // 希望都道府県なしでトレードリストに出す
-        await token.connect(user1).putTradeLocalNoun(tokenId1, []);
+        await token.connect(user1).putTradeLocalNoun(tokenId1, [], zeroAddress);
 
         result = await token.connect(user1).trades(tokenId1);
         expect(result).equal(true);
@@ -428,6 +431,43 @@ describe('P2PTradable', function () {
         result = await token.connect(user1).getTradePrefectureFor(tokenId1);
         expect(result.length).equal(0);
 
+        tx = await token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams);
+        await tx.wait();
+        result = await token.connect(user1).trades(tokenId1);
+        expect(result).equal(false);  //トレードリストから解除
+
+        result = await token.connect(user1).ownerOf(tokenId1);
+        expect(result).equal(user2.address);
+
+        result = await token.connect(user1).ownerOf(tokenId2);
+        expect(result).equal(user1.address);
+    });
+
+    it('put trade(トレード先アドレス指定)', async function () {
+        // for user1
+        const txParams = { value: ethers.utils.parseUnits("0.03", "ether") };
+        await minter.connect(user1).functions.mintSelectedPrefecture(10, 1, txParams);
+        result = await token.totalSupply();
+        tokenId1 = result.toNumber() - 1;
+
+        // for user2
+        await minter.connect(user2).functions.mintSelectedPrefecture(10, 1, txParams);
+        result = await token.totalSupply();
+        tokenId2 = result.toNumber() - 1;
+
+        // ユーザ2のアドレス指定でトレードリストに出す
+        await token.connect(user1).putTradeLocalNoun(tokenId1, [], user2.address);
+
+        result = await token.connect(user1).trades(tokenId1);
+        expect(result).equal(true);
+
+        result = await token.connect(user1).tradeAddress(tokenId1);
+        expect(result).equal(user2.address);
+
+        // ユーザ3がトレードしようとする　→ 失敗
+        await expect(token.connect(user3).executeTradeLocalNoun(tokenId2, tokenId1, txParams)).revertedWith('Limited address can trade');
+
+        // ユーザ2がトレードしようとする　→ 成功
         tx = await token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams);
         await tx.wait();
         result = await token.connect(user1).trades(tokenId1);
@@ -453,7 +493,7 @@ describe('P2PTradable', function () {
         tokenId2 = result.toNumber() - 1;
 
         // 希望都道府県なしでトレードリストに出す
-        await token.connect(user1).putTradeLocalNoun(tokenId1, []);
+        await token.connect(user1).putTradeLocalNoun(tokenId1, [], zeroAddress);
 
         result = await token.connect(user1).trades(tokenId1);
         expect(result).equal(true);
