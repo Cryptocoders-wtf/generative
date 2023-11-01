@@ -112,6 +112,7 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
       acumurationRatioRankTotal += ratioRank[i];
       acumurationRatioRank[i] = acumurationRatioRankTotal;
     }
+
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -231,4 +232,41 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   function getPrefectureId(uint256 _tokenId) external override returns (uint256) {
     return tokenIdToPrefectureId[_tokenId];
   }
+=======
+  function generateSeed(uint256 prefectureId, uint256 _assetId) internal view returns (INounsSeeder.Seed memory mixedSeed) {
+      INounsSeeder.Seed memory seed1 = seeder.generateSeed(_assetId, descriptor);
+      ILocalNounsSeeder.Seed memory seed2 = localSeader.generateSeed(prefectureId, _assetId, localDescriptor);
+
+      mixedSeed = INounsSeeder.Seed({
+          background: seed1.background,
+          body: seed1.body,
+          accessory: seed2.accessory,
+          head: seed2.head,
+          glasses: seed1.glasses
+      });
+
+  }
+  function generateSVGPart(uint256 _assetId) public view override returns (string memory svgPart, string memory tag) {
+      // INounsSeeder.Seed memory seed = generateSeed(_assetId);
+      INounsSeeder.Seed memory seed = seeds[_assetId];
+      svgPart = localDescriptor.generateSVGImage(seed);
+
+      // generateSVGImage
+      tag = string("");
+      // svgPart = string("");
+  }
+
+  function generateTraits(uint256 _assetId) external pure override returns (string memory traits) {
+    // nothing to return
+  }
+
+  function mint(uint256 prefectureId, uint256 _assetId) external returns (uint256) {
+      if (nextTokenId == _assetId) {
+         seeds[_assetId] = generateSeed(prefectureId, _assetId);
+         nextTokenId ++;
+      }
+      
+     return _assetId;
+  }
+
 }

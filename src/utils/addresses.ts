@@ -110,6 +110,7 @@ export const addresses: Addresses = {
   },
   messageSplatter: {
     goerli: message_splatter_goerli.messageSplatterToken,
+
   },
   messageStore: {
     localhost: messagestore2_localhost.messageStore,
@@ -125,6 +126,7 @@ export const addresses: Addresses = {
     localhost: messagetoken_localhost.messageToken,
     goerli: messagetoken_goerli.messageToken,
     mumbai: messagetoken_mumbai.messageToken,
+
   },
   svgHelper: {
     goerli: splatter_goerli.svgHelperAddress,

@@ -7,6 +7,7 @@
 pragma solidity ^0.8.6;
 
 import '@openzeppelin/contracts/utils/Strings.sol';
+
 import './libs/ProviderTokenA2.sol';
 import { INounsSeeder } from './localNouns/interfaces/INounsSeeder.sol';
 import './localNouns/interfaces/IAssetProviderExMint.sol';
@@ -189,5 +190,6 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   // iLocalNounsTokenでERC721のtotalSupplyを使用したいけど、二重継承でエラーになるので個別関数を準備
   function totalSupply2() public view returns (uint256) {
     return super.totalSupply();
+
   }
 }
