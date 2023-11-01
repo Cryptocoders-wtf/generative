@@ -244,6 +244,26 @@ describe('determinePrefectureId', function () {
 
         await provider.connect(owner).functions.setRandomValueForTest(false);
     });
+
+    it('mint all prefecture', async function () {
+
+        const txParams = { value: ethers.utils.parseUnits("0.03", "ether") };
+
+        // 全ての都道府県が１以上出現する
+        for (var i = 0; i < 47; i++) {
+            // ミント前の都道府県ごとのカウント
+            const [mintNumberPerPrefecture] = await provider.functions.mintNumberPerPrefecture(i + 1);
+
+            console.log("mint all prefecture", i + 1);
+            await minter.connect(user1).functions.mintSelectedPrefecture(i + 1, 1, txParams);
+
+            // ミント後の都道府県ごとのカウント
+            const [mintNumberPerPrefecture2] = await provider.functions.mintNumberPerPrefecture(i + 1);
+
+            expect(mintNumberPerPrefecture2.sub(mintNumberPerPrefecture).toNumber(), "prefectureId:" + (i + 1)).to.equal(1);
+        }
+
+    });
 });
 
 describe('P2P', function () {
@@ -389,7 +409,7 @@ describe('P2PTradable', function () {
         const balanceD = await ethers.provider.getBalance(developper.address);
 
         const txParams2 = { value: ethers.utils.parseUnits("0.0029", "ether") };
-        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams2)).revertedWith('Insufficial royalty');    
+        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams2)).revertedWith('Insufficial royalty');
 
         tx = await token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams);
         await tx.wait();
