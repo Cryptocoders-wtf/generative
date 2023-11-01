@@ -10,51 +10,8 @@ pragma solidity ^0.8.6;
 import './IERC721P2P.sol';
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import './erc721a/extensions/ERC721AQueryable.sol';
-import './opensea/DefaultOperatorFilterer.sol';
 
-// From https://github.com/ProjectOpenSea/operator-filter-registry/blob/main/src/example/ExampleERC721.sol
-abstract contract ERC721WithOperatorFilter is ERC721A, DefaultOperatorFilterer {
-  function setApprovalForAll(
-    address operator,
-    bool approved
-  ) public virtual override onlyAllowedOperatorApproval(operator) {
-    super.setApprovalForAll(operator, approved);
-  }
-
-  function approve(
-    address operator,
-    uint256 tokenId
-  ) public payable virtual override onlyAllowedOperatorApproval(operator) {
-    super.approve(operator, tokenId);
-  }
-
-  function transferFrom(
-    address from,
-    address to,
-    uint256 tokenId
-  ) public payable virtual override onlyAllowedOperator(from) {
-    super.transferFrom(from, to, tokenId);
-  }
-
-  function safeTransferFrom(
-    address from,
-    address to,
-    uint256 tokenId
-  ) public payable virtual override onlyAllowedOperator(from) {
-    super.safeTransferFrom(from, to, tokenId);
-  }
-
-  function safeTransferFrom(
-    address from,
-    address to,
-    uint256 tokenId,
-    bytes memory data
-  ) public payable virtual override onlyAllowedOperator(from) {
-    super.safeTransferFrom(from, to, tokenId, data);
-  }
-}
-
-abstract contract ERC721AP2P is IERC721P2PCore, ERC721WithOperatorFilter, Ownable {
+abstract contract ERC721AP2P is IERC721P2PCore, ERC721A, Ownable {
   mapping(uint256 => uint256) prices;
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -64,6 +21,7 @@ abstract contract ERC721AP2P is IERC721P2PCore, ERC721WithOperatorFilter, Ownabl
   function setPriceOf(uint256 _tokenId, uint256 _price) public override {
     require(ownerOf(_tokenId) == msg.sender, 'Only the onwer can set the price');
     prices[_tokenId] = _price;
+    emit SetPrice(_tokenId, _price);
   }
 
   function getPriceOf(uint256 _tokenId) external view override returns (uint256) {

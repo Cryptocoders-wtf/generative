@@ -71,6 +71,31 @@ import { addresses as dynamic_goerli } from "./addresses/dynamic_goerli";
 import { addresses as dynamic_localhost } from "./addresses/dynamic_localhost";
 import { addresses as message_pnouns_goerli } from "./addresses/message_pnouns_goerli";
 import { addresses as message_splatter_goerli } from "./addresses/message_splatter_goerli";
+import { addresses as messagestore2_goerli } from "./addresses/messagestore2_goerli";
+import { addresses as messagestore2_localhost } from "./addresses/messagestore2_localhost";
+import { addresses as messagestore2_mumbai } from "./addresses/messagestore2_mumbai";
+import { addresses as messageprovider_goerli } from "./addresses/messageprovider_goerli";
+import { addresses as messageprovider_localhost } from "./addresses/messageprovider_localhost";
+import { addresses as messageprovider_mumbai } from "./addresses/messageprovider_mumbai";
+import { addresses as messagetoken_goerli } from "./addresses/messagetoken_goerli";
+import { addresses as messagetoken_localhost } from "./addresses/messagetoken_localhost";
+import { addresses as messagetoken_mumbai } from "./addresses/messagetoken_mumbai";
+import { addresses as nounsDescriptor_mumbai } from "./addresses/nounsDescriptor_mumbai";
+import { addresses as nounsDescriptor_localhost } from "./addresses/nounsDescriptor_localhost";
+import { addresses as nounsSeeder_mumbai } from "./addresses/nounsSeeder_mumbai";
+import { addresses as nounsSeeder_localhost } from "./addresses/nounsSeeder_localhost";
+import { addresses as nftDescriptor_mumbai } from "./addresses/nftDescriptor_mumbai";
+import { addresses as nftDescriptor_localhost } from "./addresses/nftDescriptor_localhost";
+import { addresses as localSeeder_mumbai } from "./addresses/localseeder_mumbai";
+import { addresses as localSeeder_localhost } from "./addresses/localseeder_localhost";
+import { addresses as localNounsDescriptor_mumbai } from "./addresses/localNounsDescriptor_mumbai";
+import { addresses as localNounsDescriptor_localhost } from "./addresses/localNounsDescriptor_localhost";
+import { addresses as localProvider_mumbai } from "./addresses/localNounsProvider_mumbai";
+import { addresses as localProvider_localhost } from "./addresses/localNounsProvider_localhost";
+import { addresses as localNounsToken_mumbai } from "./addresses/localNounsToken_mumbai";
+import { addresses as localNounsToken_localhost } from "./addresses/localNounsToken_localhost";
+import { addresses as localNounsMinter_mumbai } from "./addresses/localNounsMinter_mumbai";
+import { addresses as localNounsMinter_localhost } from "./addresses/localNounsMinter_localhost";
 
 export interface Addresses {
   [key: string]: { [key: string]: string };
@@ -85,6 +110,23 @@ export const addresses: Addresses = {
   },
   messageSplatter: {
     goerli: message_splatter_goerli.messageSplatterToken,
+
+  },
+  messageStore: {
+    localhost: messagestore2_localhost.messageStore,
+    goerli: messagestore2_goerli.messageStore,
+    mumbai: messagestore2_mumbai.messageStore,
+  },
+  messageProvider: {
+    localhost: messageprovider_localhost.messageProvider,
+    goerli: messageprovider_goerli.messageProvider,
+    mumbai: messageprovider_mumbai.messageProvider,
+  },
+  messageToken: {
+    localhost: messagetoken_localhost.messageToken,
+    goerli: messagetoken_goerli.messageToken,
+    mumbai: messagetoken_mumbai.messageToken,
+
   },
   svgHelper: {
     goerli: splatter_goerli.svgHelperAddress,
@@ -142,6 +184,9 @@ export const addresses: Addresses = {
   sample: {
     goerli: sample_goerli.providerAddress,
     localhost: sample_localhost.providerAddress,
+  },
+  sampleToken: {
+    localhost: sample_localhost.sampleToken,
   },
   assetStore: {
     goerli: store_goerli.storeAddress,
@@ -270,5 +315,38 @@ export const addresses: Addresses = {
     localhost: dynamic_mainnet.tokenGate, // already deployed on mainnet!
     mainnet: dynamic_mainnet.tokenGate,
     goerli: dynamic_goerli.tokenGate,
+  },
+  nounsDescriptor: {
+    mumbai: nounsDescriptor_mumbai.nounsDescriptor,
+    localhost: nounsDescriptor_localhost.nounsDescriptor,
+  },
+  nounsSeeder: {
+    mumbai: nounsSeeder_mumbai.nounsSeeder,
+    localhost: nounsSeeder_localhost.nounsSeeder,
+  },
+  nftDescriptor: {
+    mumbai: nftDescriptor_mumbai.nftDescriptor,
+    localhost: nftDescriptor_localhost.nftDescriptor,
+  },
+
+  localSeeder: {
+    mumbai: localSeeder_mumbai.localseeder,
+    localhost: localSeeder_localhost.localseeder,
+  },
+  localNounsDescriptor: {
+    mumbai: localNounsDescriptor_mumbai.localNounsDescriptor,
+    localhost: localNounsDescriptor_localhost.localNounsDescriptor,
+  },
+  localProvider: {
+    mumbai: localProvider_mumbai.localNounsProvider,
+    localhost: localProvider_localhost.localNounsProvider,
+  },
+  localNounsToken: {
+    mumbai: localNounsToken_mumbai.localNounsToken,
+    localhost: localNounsToken_localhost.localNounsToken,
+  },
+  localNounsMinter: {
+    mumbai: localNounsMinter_mumbai.localNounsMinter,
+    localhost: localNounsMinter_localhost.localNounsMinter,
   },
 };

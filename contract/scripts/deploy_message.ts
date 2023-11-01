@@ -23,9 +23,10 @@ async function main() {
   console.log("factorySVGStore.deploy");
   console.log(network.name);
   // const store = await factorySVGStore.deploy(addresses.londrina_solid[network.name]); // font.
+  const store = await factorySVGStore.deploy(addresses.noto_sans[network.name]); // font.
 
   // for mainnet forking
-  const store = await factorySVGStore.deploy("0x980aAc123617e2B2ea407081Ceb72d5854BAa3D1"); // font.
+  // const store = await factorySVGStore.deploy("0x980aAc123617e2B2ea407081Ceb72d5854BAa3D1"); // font.
 
   console.log("wait");
   await store.deployed();
