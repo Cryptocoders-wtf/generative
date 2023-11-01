@@ -184,18 +184,18 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     );
   }
 
-  uint256 randomValueForTest = 0;
+  bool randomValueForTest = false;
 
-  function setRandomValueForTest(uint256 _randomValue) public onlyOwner {
-    randomValueForTest = _randomValue;
+  function setRandomValueForTest(bool _test) public onlyOwner {
+    randomValueForTest = _test;
   }
 
   // テスト用にpublic
-  function determinePrefectureId(uint256 _assetId) public returns (uint256) {
+  function determinePrefectureId(uint256 _assetId) public view returns (uint256) {
     uint256 randomValue;
-    if (randomValueForTest > 0) {
+    if (randomValueForTest) {
       // For TEST
-      randomValue = randomValueForTest;
+      randomValue = _assetId;
     } else {
       // ブロック番号とアセット番号から計算した値 -> ランダム値
       randomValue = uint256(keccak256(abi.encodePacked(block.timestamp, _assetId)));
