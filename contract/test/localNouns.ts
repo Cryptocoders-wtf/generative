@@ -4,7 +4,7 @@ import { addresses } from '../../src/utils/addresses';
 import { ethers } from 'ethers';
 import { abi as sampleTokenAbi } from "../artifacts/contracts/sampleToken.sol/sampleToken";
 
-let owner: SignerWithAddress, user1: SignerWithAddress, user2: SignerWithAddress, user3: SignerWithAddress, user4: SignerWithAddress, user5: SignerWithAddress, admin: SignerWithAddress;
+let owner: SignerWithAddress, user1: SignerWithAddress, user2: SignerWithAddress, user3: SignerWithAddress, user4: SignerWithAddress, user5: SignerWithAddress, admin: SignerWithAddress, developper: SignerWithAddress;
 let token: Contract, minter: Contract, provider: Contract, tokenGate: Contract, sampleToken: Contract;
 
 const nounsDescriptorAddress = addresses.nounsDescriptor[network.name];
@@ -24,7 +24,7 @@ before(async () => {
         # npx hardhat run scripts/deploy_sample.ts
      */
 
-    [owner, user1, user2, user3, user4, user5, admin] = await ethers.getSigners();
+    [owner, user1, user2, user3, user4, user5, admin, developper] = await ethers.getSigners();
 
     const factoryTokenGate = await ethers.getContractFactory('AssetTokenGate');
     tokenGate = await factoryTokenGate.deploy();
@@ -296,17 +296,25 @@ describe('P2P', function () {
     it('Purchase', async function () {
         await expect(token.connect(user2).purchase(tokenId1, user2.address, zeroAddress)).revertedWith('Not enough fund');
 
+        await token.connect(owner).setAdministratorsAddress(admin.address);
+        await token.connect(owner).setDeveloppersAddress(developper.address);
+
+        result = await token.ownerOf(tokenId1);
+
         const balance1 = await ethers.provider.getBalance(user1.address);
-        const balanceT = await ethers.provider.getBalance(owner.address);
+        const balanceA = await ethers.provider.getBalance(admin.address);
+        const balanceD = await ethers.provider.getBalance(developper.address);
 
         await token.connect(user2).purchase(tokenId1, user2.address, zeroAddress, { value: price });
         result = await token.ownerOf(tokenId1);
         expect(result).equal(user2.address);
 
         const balance12 = await ethers.provider.getBalance(user1.address);
-        expect(balance12.sub(balance1)).equal(price.div(20).mul(19)); // 95%
-        const balanceT2 = await ethers.provider.getBalance(owner.address);
-        expect(balanceT2.sub(balanceT)).equal(price.div(20).mul(1)); // 5%
+        expect(balance12.sub(balance1)).equal(price.div(20).mul(18)); // 90%
+        const balanceA2 = await ethers.provider.getBalance(admin.address);
+        expect(balanceA2.sub(balanceA)).equal(price.div(20).mul(1)); // 5%
+        const balanceD2 = await ethers.provider.getBalance(developper.address);
+        expect(balanceD2.sub(balanceD)).equal(price.div(20).mul(1)); // 5%
 
     });
 
