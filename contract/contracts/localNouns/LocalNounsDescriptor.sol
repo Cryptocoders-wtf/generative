@@ -433,5 +433,4 @@ contract LocalNounsDescriptor is INounsDescriptor, Ownable {
     _parts[3] = descriptor.glasses(seed.glasses);
     return _parts;
   }
-
 }
