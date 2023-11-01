@@ -37,8 +37,8 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   uint256 totalPrefectureRatio;
 
   uint256[5] ratioRank = [5, 4, 3, 3, 2];
-  uint256[5] acumulationRatioRank;
-  uint256 acumulationRatioRankTotal;
+  uint256[5] acumulationRatioRank = [5, 9, 12, 15, 17];
+  uint256 acumulationRatioRankTotal = 17;
   mapping(uint256 => uint256[]) public prefectureRatio;
 
   constructor(
@@ -107,11 +107,6 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     prefectureRatio[2] = [9, 33, 7, 24, 43, 46, 47, 25, 35];
     prefectureRatio[3] = [29, 38, 42, 2, 3, 17, 44, 45, 6, 16];
     prefectureRatio[4] = [37, 5, 30, 19, 41, 18, 36, 39, 32, 31];
-
-    for (uint256 i = 0; i < ratioRank.length; i++) {
-      acumulationRatioRankTotal += ratioRank[i];
-      acumulationRatioRank[i] = acumulationRatioRankTotal;
-    }
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
