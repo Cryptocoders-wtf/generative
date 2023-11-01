@@ -160,13 +160,6 @@ describe('mint functions', function () {
         const [balance5] = await token.functions.balanceOf(user5.address);
         const [totalSupply] = await token.functions.totalSupply();
 
-        // for (var i = 1; i <= 47; i++) {
-        //     const [mintNumberPerPrefecture] = await provider.functions.mintNumberPerPrefecture(i);
-        //     if (mintNumberPerPrefecture > 0) {
-        //         console.log("bf:mintNumberPerPrefecture", i, mintNumberPerPrefecture);
-        //     }
-        // }
-
         const txParams = { value: 0 };
         await token.connect(owner).functions.ownerMint([user3.address, user4.address, user5.address], [3, 5, 0], [1, 2, 20], txParams);
 
@@ -180,13 +173,6 @@ describe('mint functions', function () {
 
         const [totalSupplya] = await token.functions.totalSupply();
         expect(totalSupplya.toNumber()).to.equal(totalSupply.toNumber() + 23);
-
-        // for (var i = 1; i <= 47; i++) {
-        //     const [mintNumberPerPrefecture] = await provider.functions.mintNumberPerPrefecture(i);
-        //     if (mintNumberPerPrefecture > 0) {
-        //         console.log("af:mintNumberPerPrefecture", i, mintNumberPerPrefecture);
-        //     }
-        // }
 
     });
 
@@ -243,7 +229,7 @@ describe('determinePrefectureId', function () {
 
         for (var i = 0; i < 300; i++) {
             const [prefectureId] = await provider.connect(owner).functions.determinePrefectureId(i);
-            prefectureCount[prefectureId.toNumber()-1]++;
+            prefectureCount[prefectureId.toNumber() - 1]++;
         }
 
         // 全ての都道府県が１以上出現する
