@@ -22,6 +22,8 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   address public administratorsAddress; // 運営ウォレット
   address public developpersAddress; // 開発者ウォレット
 
+  uint256 public tradeRoyalty = 0.003 ether; // P2Pトレードのロイヤリティ
+
   constructor(
     IAssetProviderExMint _assetProvider,
     address _minter
@@ -147,7 +149,9 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     emit CancelTradePrefecture(_tokenId);
   }
 
-  function executeTradeLocalNoun(uint256 _myTokenId, uint256 _targetTokenId) public {
+  function executeTradeLocalNoun(uint256 _myTokenId, uint256 _targetTokenId) public payable {
+    require(msg.value >= tradeRoyalty, 'Must send the royalty');
+
     // tradePrefectureがない場合は、希望都道府県がないためチェック不要
     if (tradePrefecture[_targetTokenId].length > 0) {
       uint256 myTokenIdPrefecture = assetProvider2.getPrefectureId(_myTokenId);
@@ -162,6 +166,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     }
 
     super.executeTrade(_myTokenId, _targetTokenId);
+    _processTradeRoyalty(msg.value);
   }
 
   function putTrade(uint256 _tokenId, bool _isOnTrade) public override {
@@ -179,16 +184,28 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     super._beforeTokenTransfers(from, to, startTokenId, quantity);
   }
 
+  function setTradeRoyalty(uint256 _royalty) public onlyOwner {
+    tradeRoyalty = _royalty;
+  }
+
   // pay royalties to admin here
   function _processRoyalty(uint _salesPrice, uint _tokenId) internal override returns (uint256 royalty) {
     royalty = (_salesPrice * 100) / 1000; // 10.0%
 
-    (bool sent, ) = payable(administratorsAddress).call{ value: royalty/2 }('');
+    (bool sent, ) = payable(administratorsAddress).call{ value: royalty / 2 }('');
     require(sent, 'failed to move fund to administratorsAddress contract');
 
-    (bool sent2, ) = payable(developpersAddress).call{ value: royalty/2 }('');
+    (bool sent2, ) = payable(developpersAddress).call{ value: royalty / 2 }('');
     require(sent2, 'failed to move fund to developpersAddress contract');
+  }
 
+  // pay royalties to admin here
+  function _processTradeRoyalty(uint _royalty) internal returns (uint256 royalty) {
+    (bool sent, ) = payable(administratorsAddress).call{ value: _royalty / 2 }('');
+    require(sent, 'failed to move fund to administratorsAddress contract');
+
+    (bool sent2, ) = payable(developpersAddress).call{ value: _royalty - _royalty / 2 }('');
+    require(sent2, 'failed to move fund to developpersAddress contract');
   }
 
   function withdraw() external payable onlyOwner {
