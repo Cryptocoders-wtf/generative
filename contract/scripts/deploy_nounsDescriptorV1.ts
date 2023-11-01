@@ -1,6 +1,7 @@
 import { ethers, network } from 'hardhat';
 import { exec } from 'child_process';
 import addresses from '@nouns/sdk/dist/contract/addresses.json';
+
 import { writeFile } from 'fs';
 
 // const nftDescriptor: string = network.name == 'goerli' ? addresses[5].nftDescriptor : addresses[1].nftDescriptor;

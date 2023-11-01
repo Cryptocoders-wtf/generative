@@ -33,6 +33,13 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   mapping(uint256 => uint256) public tokenIdToPrefectureId;
   mapping(uint256 => string) public prefectureName;
   mapping(uint256 => uint256) public mintNumberPerPrefecture; // 都道府県ごとのミント数
+  // mapping(uint256 => uint256) public prefectureRatio; // ランダムミント時に決定される都道府県の割合
+  uint256 totalPrefectureRatio;
+
+  uint256[5] ratioRank = [5, 4, 3, 3, 2];
+  uint256[5] acumulationRatioRank = [5, 9, 12, 15, 17]; // ratioRankの積み上げ
+  uint256 acumulationRatioRankTotal = 17; // sum(ratioRank)
+  mapping(uint256 => uint256[]) public prefectureRatio;
 
   constructor(
     INounsDescriptor _descriptor,
@@ -94,6 +101,12 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     prefectureName[45] = 'Miyazaki';
     prefectureName[46] = 'Kagoshima';
     prefectureName[47] = 'Okinawa';
+
+    prefectureRatio[0] = [13, 14, 27, 23, 11, 12, 28, 1, 40];
+    prefectureRatio[1] = [22, 8, 34, 26, 4, 15, 20, 21, 10];
+    prefectureRatio[2] = [9, 33, 7, 24, 43, 46, 47, 25, 35];
+    prefectureRatio[3] = [29, 38, 42, 2, 3, 17, 44, 45, 6, 16];
+    prefectureRatio[4] = [37, 5, 30, 19, 41, 18, 36, 39, 32, 31];
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
@@ -166,16 +179,45 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     );
   }
 
-  function mint(uint256 prefectureId, uint256 _assetId) external returns (uint256) {
+  bool randomValueForTest = false;
+
+  function setRandomValueForTest(bool _test) public onlyOwner {
+    randomValueForTest = _test;
+  }
+
+  // テスト用にpublic
+  function determinePrefectureId(uint256 _assetId) public view returns (uint256) {
+    uint256 randomValue;
+    if (randomValueForTest) {
+      // For TEST
+      randomValue = _assetId;
+    } else {
+      // ブロック番号とアセット番号から計算した値 -> ランダム値
+      randomValue = uint256(keccak256(abi.encodePacked(block.timestamp, _assetId)));
+    }
+
+    uint256 rank = randomValue % acumulationRatioRankTotal;
+    for (uint256 i = 0; i < acumulationRatioRank.length; i++) {
+      if (rank < acumulationRatioRank[i]) {
+        rank = i;
+        break;
+      }
+    }
+    return prefectureRatio[rank][randomValue % prefectureRatio[rank].length];
+  }
+
+  function mint(uint256 _prefectureId, uint256 _assetId) external returns (uint256) {
+    uint256 prefectureId;
     // 末尾2桁が00の場合は都道府県をランダムに決定する
-    if (prefectureId % 100 == 0) {
-      prefectureId = prefectureId + ((block.number * _assetId) % 46) + 1;
+    if (_prefectureId % 100 == 0) {
+      prefectureId = _prefectureId + determinePrefectureId(_assetId);
+    } else {
+      prefectureId = _prefectureId;
     }
 
     seeds[_assetId] = generateSeed(prefectureId, _assetId);
-    uint256 prefectureId = prefectureId % 100; // 下2桁：都道府県番号、下3桁より上位：バージョン番号
-    tokenIdToPrefectureId[_assetId] = prefectureId;
-    mintNumberPerPrefecture[prefectureId]++;
+    tokenIdToPrefectureId[_assetId] = prefectureId % 100;
+    mintNumberPerPrefecture[prefectureId % 100]++;
     nextTokenId++;
 
     return _assetId;

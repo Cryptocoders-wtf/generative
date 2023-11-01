@@ -64,7 +64,10 @@ describe('mint functions', function () {
             .revertedWith('Cannot use this function');
 
         await expect(token.connect(user1).functions.mintSelectedPrefecture(user1.address, 1, 1))
-            .revertedWith('Sender is not the minter');
+            .revertedWith('Sender is not minter nor owner');
+
+        await expect(token.connect(user1).functions.ownerMint([user1.address], [1], [1]))
+            .revertedWith('Ownable: caller is not the owner');
 
     });
 
@@ -93,7 +96,7 @@ describe('mint functions', function () {
     it('mint from minter', async function () {
 
         const txParams = { value: ethers.utils.parseUnits("0.001", "ether") };
-        await minter.connect(user1).functions.mintSelectedPrefecture(0, 1,txParams);
+        await minter.connect(user1).functions.mintSelectedPrefecture(0, 1, txParams);
 
         const [balance] = await token.functions.balanceOf(user1.address);
         expect(balance.toNumber()).to.equal(1); // user1は1つ保持
@@ -105,7 +108,7 @@ describe('mint functions', function () {
         expect(totalSupply.toNumber()).to.equal(1); // tokenId=1
 
         const [traits1] = await provider.functions.generateTraits(0);
-        console.log('mint from minter',traits1);
+        console.log('mint from minter', traits1);
 
     });
 
@@ -137,9 +140,9 @@ describe('mint functions', function () {
         const [traits2] = await provider.functions.generateTraits(2);
         const [traits3] = await provider.functions.generateTraits(3);
         // head,accessoryがランダムなので県のみチェック(head,accessoryは目視)
-        console.log('multiple mint',traits1);
-        console.log('multiple mint',traits2);
-        console.log('multiple mint',traits3);
+        console.log('multiple mint', traits1);
+        console.log('multiple mint', traits2);
+        console.log('multiple mint', traits3);
         expect(traits1.includes('{"trait_type": "prefecture" , "value":"Toyama"}')).to.equal(true);
         expect(traits2.includes('{"trait_type": "prefecture" , "value":"Toyama"}')).to.equal(true);
         expect(traits3.includes('{"trait_type": "prefecture" , "value":"Toyama"}')).to.equal(true);
@@ -147,6 +150,29 @@ describe('mint functions', function () {
         // 都道府県ごとのミント数
         const [mintNumberPerPrefecture] = await provider.functions.mintNumberPerPrefecture(16);
         expect(mintNumberPerPrefecture.toNumber()).to.equal(3); // tokenId=1
+
+    });
+
+    it('owner mint', async function () {
+
+        const [balance3] = await token.functions.balanceOf(user3.address);
+        const [balance4] = await token.functions.balanceOf(user4.address);
+        const [balance5] = await token.functions.balanceOf(user5.address);
+        const [totalSupply] = await token.functions.totalSupply();
+
+        const txParams = { value: 0 };
+        await token.connect(owner).functions.ownerMint([user3.address, user4.address, user5.address], [3, 5, 0], [1, 2, 20], txParams);
+
+        const [balance3a] = await token.functions.balanceOf(user3.address);
+        const [balance4a] = await token.functions.balanceOf(user4.address);
+        const [balance5a] = await token.functions.balanceOf(user5.address);
+
+        expect(balance3a.toNumber()).to.equal(balance3.toNumber() + 1);
+        expect(balance4a.toNumber()).to.equal(balance4.toNumber() + 2);
+        expect(balance5a.toNumber()).to.equal(balance5.toNumber() + 20);
+
+        const [totalSupplya] = await token.functions.totalSupply();
+        expect(totalSupplya.toNumber()).to.equal(totalSupply.toNumber() + 23);
 
     });
 
@@ -192,6 +218,28 @@ describe('mint functions', function () {
             .revertedWith('Must send the mint price');
 
     });
+
+});
+
+describe('determinePrefectureId', function () {
+    it('determinePrefectureId', async function () {
+
+        await provider.connect(owner).functions.setRandomValueForTest(true);
+        let prefectureCount = new Array(47).fill(0);
+
+        for (var i = 0; i < 300; i++) {
+            const [prefectureId] = await provider.connect(owner).functions.determinePrefectureId(i);
+            prefectureCount[prefectureId.toNumber() - 1]++;
+        }
+
+        // 全ての都道府県が１以上出現する
+        for (var i = 0; i < prefectureCount.length; i++) {
+            expect(prefectureCount[i]).to.greaterThan(0);
+            // console.log("prefectureId", i, prefectureCount[i]);
+        }
+
+        await provider.connect(owner).functions.setRandomValueForTest(false);
+    });
 });
 
 describe('P2P', function () {
@@ -214,20 +262,21 @@ describe('P2P', function () {
 
         // mintMaxに現在の発行数+1をセット
         const [totalSupply] = await token.functions.totalSupply();
-        await minter.functions.setMintMax(totalSupply.toNumber()+1);
+        await minter.functions.setMintMax(totalSupply.toNumber() + 1);
         const [mintMax] = await minter.functions.mintMax();
-        expect(mintMax.toNumber()).to.equal(totalSupply.toNumber()+1);
+        expect(mintMax.toNumber()).to.equal(totalSupply.toNumber() + 1);
 
         const txParams = { value: ethers.utils.parseUnits("0.006", "ether") };
         await expect(minter.connect(user5).functions.mintSelectedPrefecture(47, 2, txParams))
             .revertedWith('Over the mint limit');
 
         // 一つだけならOK
-        const txParams2 = { value: ethers.utils.parseUnits("0.003", "ether") };
-        await minter.connect(user5).functions.mintSelectedPrefecture(47, 1,txParams2);
-
         const [balance] = await token.functions.balanceOf(user5.address);
-        expect(balance.toNumber()).to.equal(1); // user1は1つ保持
+        const txParams2 = { value: ethers.utils.parseUnits("0.003", "ether") };
+        await minter.connect(user5).functions.mintSelectedPrefecture(47, 1, txParams2);
+
+        const [balancea] = await token.functions.balanceOf(user5.address);
+        expect(balancea.toNumber()).to.equal(balance.toNumber() + 1); // user1は1つ保持
 
         await minter.functions.setMintMax(1500);
         const [mintMax2] = await minter.functions.mintMax();

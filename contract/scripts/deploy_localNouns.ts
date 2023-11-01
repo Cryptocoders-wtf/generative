@@ -1,5 +1,6 @@
 import { ethers, network } from 'hardhat';
 import { exec } from 'child_process';
+
 import { writeFile } from 'fs';
 import { addresses } from '../../src/utils/addresses';
 
@@ -25,7 +26,6 @@ async function main() {
   const addresses = `export const addresses = {\n` + `  localseeder:"${localseeder.address}",\n` + `}\n`;
   await writeFile(`../src/utils/addresses/localseeder_${network.name}.ts`, addresses, () => { });
 
-
   const factoryLocalNounsDescriptor = await ethers.getContractFactory('LocalNounsDescriptor', {
     libraries: {
       NFTDescriptor: nftDescriptor,
@@ -40,7 +40,6 @@ async function main() {
 
   const addresses2 = `export const addresses = {\n` + `  localNounsDescriptor:"${localNounsDescriptor.address}",\n` + `}\n`;
   await writeFile(`../src/utils/addresses/localNounsDescriptor_${network.name}.ts`, addresses2, () => { });
-
 
   const factorySVGStore = await ethers.getContractFactory('LocalNounsProvider');
   const provider = await factorySVGStore.deploy(nounsDescriptor, localNounsDescriptor.address, nounsSeeder, localseeder.address);
