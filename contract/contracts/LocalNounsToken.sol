@@ -18,6 +18,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   IAssetProviderExMint public assetProvider2;
   address public minter;
   mapping(uint256 => uint256[]) public tradePrefecture; // トレード先指定の都道府県
+  mapping(uint256 => address) public tradeAddress; // トレード先指定のアドレス
 
   address public administratorsAddress; // 運営ウォレット
   address public developpersAddress; // 開発者ウォレット
@@ -28,10 +29,8 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     IAssetProviderExMint _assetProvider,
     address _minter
   ) ProviderTokenA2(_assetProvider, 'Local Nouns', 'Local Nouns') {
-    description = 'Local Nouns Token.';
+    description = 'Local Nouns';
     assetProvider2 = _assetProvider;
-    // mintPrice = 1e13; // 0.001   ※ mintPriceは Minterコントラクトで制御するため使用しない
-    // mintLimit = 5000;            ※ mintLimitは Minterコントラクトで制御するため使用しない
     minter = _minter;
     administratorsAddress = msg.sender;
     developpersAddress = msg.sender;
@@ -42,7 +41,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   }
 
   function tokenURI(uint256 _tokenId) public view override returns (string memory) {
-    require(_tokenId < _nextTokenId(), 'LocalNounsToken.tokenURI: nonexistent token');
+    require(_tokenId < _nextTokenId(), 'nonexistent token');
 
     (string memory svgPart, string memory tag) = assetProvider2.generateSVGPart(_tokenId);
     bytes memory image = bytes(svgPart);
@@ -81,7 +80,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     uint256 _prefectureId,
     uint256 _amount
   ) public virtual returns (uint256 tokenId) {
-    require(msg.sender == minter || msg.sender == owner(), 'Sender is not minter nor owner');
+    require(msg.sender == minter || msg.sender == owner(), 'Invalid sender');
     require(_prefectureId % 100 <= 47, 'Invalid prefectureId');
 
     for (uint256 i = 0; i < _amount; i++) {
@@ -95,7 +94,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     address[] memory _to,
     uint256[] memory _prefectureId,
     uint256[] memory _amount
-  ) public onlyOwner returns (uint256 tokenId) {
+  ) external onlyOwner returns (uint256 tokenId) {
     // 引数の整合性チェック
     require(_to.length == _prefectureId.length && _to.length == _amount.length, 'Invalid Arrays length');
 
@@ -105,11 +104,11 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     return _nextTokenId() - 1;
   }
 
-  function mint() public payable override returns (uint256 tokenId) {
-    revert('Cannot use this function');
+  function mint() public payable override returns (uint256) {
+    revert('Cannot use');
   }
 
-  function setMinter(address _minter) public onlyOwner {
+  function setMinter(address _minter) external onlyOwner {
     minter = _minter;
   }
 
@@ -124,16 +123,20 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   /**
    * @param _tokenId the token id for put on the trade list.
    * @param _prefectures prefectures that you want to trade. if you don't want specific prefecture, you don't need to set.
+   * @param _tradeAddress the address only who can trade.
    */
-  function putTradeLocalNoun(uint256 _tokenId, uint256[] memory _prefectures) public {
+  function putTradeLocalNoun(uint256 _tokenId, uint256[] memory _prefectures, address _tradeAddress) public {
     for (uint256 i = 0; i < _prefectures.length; i++) {
       require(_prefectures[i] > 0 && _prefectures[i] <= 47, 'incorrect prefecutre id');
     }
 
     super.putTrade(_tokenId, true);
     tradePrefecture[_tokenId] = _prefectures;
+    if (_tradeAddress != address(0)) {
+      tradeAddress[_tokenId] = _tradeAddress;
+    }
 
-    emit PutTradePrefecture(_tokenId, _prefectures);
+    emit PutTradePrefecture(_tokenId, _prefectures, _tradeAddress);
   }
 
   function getTradePrefectureFor(uint256 _tokenId) public view returns (uint256[] memory) {
@@ -145,12 +148,19 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
 
     uint256[] memory emptyArray;
     tradePrefecture[_tokenId] = emptyArray;
+    tradeAddress[_tokenId] = address(0);
 
     emit CancelTradePrefecture(_tokenId);
   }
 
   function executeTradeLocalNoun(uint256 _myTokenId, uint256 _targetTokenId) public payable {
-    require(msg.value >= tradeRoyalty, 'Must send the royalty');
+    require(msg.value >= tradeRoyalty, 'Insufficial royalty');
+
+    // tradeAddressがある場合はmsg.senderをチェック
+    require(
+      tradeAddress[_targetTokenId] == address(0) || msg.sender == tradeAddress[_targetTokenId],
+      'Limited address can trade'
+    );
 
     // tradePrefectureがない場合は、希望都道府県がないためチェック不要
     if (tradePrefecture[_targetTokenId].length > 0) {
@@ -169,27 +179,28 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     _processTradeRoyalty(msg.value);
   }
 
-  function putTrade(uint256 _tokenId, bool _isOnTrade) public override {
-    revert('Cannot use this function');
+  function putTrade(uint256, bool) public pure override {
+    revert('Cannot use');
   }
 
-  function executeTrade(uint256 _myTokenId, uint256 _targetTokenId) public override {
-    revert('Cannot use this function');
+  function executeTrade(uint256, uint256) public pure override {
+    revert('Cannot use');
   }
 
   // transfer時はトレード解除
   function _beforeTokenTransfers(address from, address to, uint256 startTokenId, uint256 quantity) internal override {
     uint256[] memory emptyArray;
     tradePrefecture[startTokenId] = emptyArray;
+    tradeAddress[startTokenId] = address(0);
     super._beforeTokenTransfers(from, to, startTokenId, quantity);
   }
 
-  function setTradeRoyalty(uint256 _royalty) public onlyOwner {
+  function setTradeRoyalty(uint256 _royalty) external onlyOwner {
     tradeRoyalty = _royalty;
   }
 
   // pay royalties to admin here
-  function _processRoyalty(uint _salesPrice, uint _tokenId) internal override returns (uint256 royalty) {
+  function _processRoyalty(uint _salesPrice, uint) internal override returns (uint256 royalty) {
     royalty = (_salesPrice * 100) / 1000; // 10.0%
     _sendRoyalty(royalty);
   }
@@ -201,20 +212,23 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
 
   // send royalties to admin and developper
   function _sendRoyalty(uint _royalty) internal {
-    (bool sent, ) = payable(administratorsAddress).call{ value: _royalty / 2 }('');
-    require(sent, 'failed to move fund to administratorsAddress contract');
+    uint halfRoyalty = _royalty / 2;
+    _trySendRoyalty(administratorsAddress, halfRoyalty);
+    _trySendRoyalty(developpersAddress, _royalty - halfRoyalty);
+  }
 
-    (bool sent2, ) = payable(developpersAddress).call{ value: _royalty - _royalty / 2 }('');
-    require(sent2, 'failed to move fund to developpersAddress contract');
+  function _trySendRoyalty(address to, uint amount) internal {
+    (bool sent, ) = payable(to).call{ value: amount }('');
+    require(sent, 'Failed to send');
   }
 
   function withdraw() external payable onlyOwner {
-    require(administratorsAddress != address(0), "administratorsAddress shouldn't be 0");
+    require(administratorsAddress != address(0), "Shouldn't be 0");
     (bool sent, ) = payable(administratorsAddress).call{ value: address(this).balance }('');
-    require(sent, 'failed to move fund to administratorsAddress contract');
+    require(sent, 'failed to move fund');
   }
 
-  // iLocalNounsTokenでERC721のtotalSupplyを使用したいけど、二重継承でエラーになるので個別関数を準備
+  // 二重継承でエラーになるので個別関数を準備
   function totalSupply2() public view returns (uint256) {
     return super.totalSupply();
   }
