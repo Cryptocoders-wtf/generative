@@ -37,8 +37,8 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
   uint256 totalPrefectureRatio;
 
   uint256[5] ratioRank = [5, 4, 3, 3, 2];
-  uint256[5] acumurationRatioRank;
-  uint256 acumurationRatioRankTotal;
+  uint256[5] accumulationRatioRank;
+  uint256 accumulationRatioRankTotal;
   mapping(uint256 => uint256[]) public prefectureRatio;
 
   constructor(
@@ -109,8 +109,8 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
     prefectureRatio[4] = [37, 5, 30, 19, 41, 18, 36, 39, 32, 31];
 
     for (uint256 i = 0; i < ratioRank.length; i++) {
-      acumurationRatioRankTotal += ratioRank[i];
-      acumurationRatioRank[i] = acumurationRatioRankTotal;
+      accumulationRatioRankTotal += ratioRank[i];
+      accumulationRatioRank[i] = accumulationRatioRankTotal;
     }
   }
 
@@ -201,9 +201,9 @@ contract LocalNounsProvider is IAssetProviderExMint, IERC165, Ownable {
       randomValue = uint256(keccak256(abi.encodePacked(block.timestamp, _assetId)));
     }
 
-    uint256 rank = randomValue % acumurationRatioRankTotal;
-    for (uint256 i = 0; i < acumurationRatioRank.length; i++) {
-      if (rank < acumurationRatioRank[i]) {
+    uint256 rank = randomValue % accumulationRatioRankTotal;
+    for (uint256 i = 0; i < accumulationRatioRank.length; i++) {
+      if (rank < accumulationRatioRank[i]) {
         rank = i;
         break;
       }
