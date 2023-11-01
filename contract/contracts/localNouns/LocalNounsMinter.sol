@@ -25,8 +25,8 @@ contract LocalNounsMinter is Ownable {
   ILocalNounsToken public token;
   ITokenGate public immutable tokenGate;
 
-  uint256 public mintPriceForSpecified = 0.003 ether;
-  uint256 public mintPriceForNotSpecified = 0.001 ether;
+  uint256 public mintPriceForSpecified = 0.03 ether;
+  uint256 public mintPriceForNotSpecified = 0.01 ether;
 
   uint256 public mintMax = 1500;
 
