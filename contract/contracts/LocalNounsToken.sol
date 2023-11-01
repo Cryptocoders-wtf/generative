@@ -191,16 +191,16 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   // pay royalties to admin here
   function _processRoyalty(uint _salesPrice, uint _tokenId) internal override returns (uint256 royalty) {
     royalty = (_salesPrice * 100) / 1000; // 10.0%
-
-    (bool sent, ) = payable(administratorsAddress).call{ value: royalty / 2 }('');
-    require(sent, 'failed to move fund to administratorsAddress contract');
-
-    (bool sent2, ) = payable(developpersAddress).call{ value: royalty / 2 }('');
-    require(sent2, 'failed to move fund to developpersAddress contract');
+    _sendRoyalty(royalty);
   }
 
   // pay royalties to admin here
-  function _processTradeRoyalty(uint _royalty) internal returns (uint256 royalty) {
+  function _processTradeRoyalty(uint _royalty) internal {
+    _sendRoyalty(_royalty);
+  }
+
+  // send royalties to admin and developper
+  function _sendRoyalty(uint _royalty) internal {
     (bool sent, ) = payable(administratorsAddress).call{ value: _royalty / 2 }('');
     require(sent, 'failed to move fund to administratorsAddress contract');
 
