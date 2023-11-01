@@ -20,6 +20,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   mapping(uint256 => uint256[]) public tradePrefecture; // トレード先指定の都道府県
 
   address public administratorsAddress; // 運営ウォレット
+  address public developpersAddress; // 開発者ウォレット
 
   constructor(
     IAssetProviderExMint _assetProvider,
@@ -31,6 +32,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     // mintLimit = 5000;            ※ mintLimitは Minterコントラクトで制御するため使用しない
     minter = _minter;
     administratorsAddress = msg.sender;
+    developpersAddress = msg.sender;
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns (string memory) {
@@ -113,6 +115,10 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     administratorsAddress = _admin;
   }
 
+  function setDeveloppersAddress(address _developper) external onlyOwner {
+    developpersAddress = _developper;
+  }
+
   /**
    * @param _tokenId the token id for put on the trade list.
    * @param _prefectures prefectures that you want to trade. if you don't want specific prefecture, you don't need to set.
@@ -175,9 +181,14 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
 
   // pay royalties to admin here
   function _processRoyalty(uint _salesPrice, uint _tokenId) internal override returns (uint256 royalty) {
-    royalty = (_salesPrice * 50) / 1000; // 5.0%
-    address payable payableTo = payable(administratorsAddress);
-    payableTo.transfer(royalty);
+    royalty = (_salesPrice * 100) / 1000; // 10.0%
+
+    (bool sent, ) = payable(administratorsAddress).call{ value: royalty/2 }('');
+    require(sent, 'failed to move fund to administratorsAddress contract');
+
+    (bool sent2, ) = payable(developpersAddress).call{ value: royalty/2 }('');
+    require(sent2, 'failed to move fund to developpersAddress contract');
+
   }
 
   function withdraw() external payable onlyOwner {
