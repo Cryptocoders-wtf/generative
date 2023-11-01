@@ -235,6 +235,27 @@ describe('mint functions', function () {
 
 });
 
+describe('determinePrefectureId', function () {
+    it('determinePrefectureId', async function () {
+
+        await provider.connect(owner).functions.setRandomValueForTest(true);
+        let prefectureCount = new Array(47).fill(0);
+
+        for (var i = 0; i < 300; i++) {
+            const [prefectureId] = await provider.connect(owner).functions.determinePrefectureId(i);
+            prefectureCount[prefectureId.toNumber()-1]++;
+        }
+
+        // 全ての都道府県が１以上出現する
+        for (var i = 0; i < prefectureCount.length; i++) {
+            expect(prefectureCount[i]).to.greaterThan(0);
+            // console.log("prefectureId", i, prefectureCount[i]);
+        }
+
+        await provider.connect(owner).functions.setRandomValueForTest(false);
+    });
+});
+
 describe('P2P', function () {
     let tx, result, tokenId1: number;
     const zeroAddress = '0x0000000000000000000000000000000000000000';
