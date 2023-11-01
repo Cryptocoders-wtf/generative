@@ -326,6 +326,7 @@ describe('P2P', function () {
 
 describe('P2PTradable', function () {
     let result, tx, err, balance, tokenId1: number, tokenId2: number;
+    const txParams = { value: ethers.utils.parseUnits("0.003", "ether") };
 
     it('mint for test', async function () {
         // for user1
@@ -349,11 +350,11 @@ describe('P2PTradable', function () {
     });
 
     it('Attempt to trade non-tradable token', async function () {
-        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1)).revertedWith('TargetTokenId is not on trade');
+        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams)).revertedWith('TargetTokenId is not on trade');
     });
 
     it('Attempt to execute trade non-owner token', async function () {
-        await expect(token.connect(user2).executeTradeLocalNoun(tokenId1, tokenId2)).revertedWith('Only the onwer can trade');
+        await expect(token.connect(user2).executeTradeLocalNoun(tokenId1, tokenId2, txParams)).revertedWith('Only the onwer can trade');
     });
 
     it('Attempt to put trade non-owner token', async function () {
@@ -368,7 +369,7 @@ describe('P2PTradable', function () {
     it('put trade', async function () {
         // 希望都道府県外のトークンと交換しようとする
         await token.connect(user1).putTradeLocalNoun(tokenId1, [1, 11, 12]);
-        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1)).revertedWith('unmatch to the wants list');
+        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams)).revertedWith('unmatch to the wants list');
 
         result = await token.connect(user1).getTradePrefectureFor(tokenId1);
         expect(result.length).equal(3);
@@ -380,7 +381,14 @@ describe('P2PTradable', function () {
         result = await token.connect(user1).trades(tokenId1);
         expect(result).equal(true);
 
-        tx = await token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1);
+        // 実行前の保持ETH
+        const balanceA = await ethers.provider.getBalance(admin.address);
+        const balanceD = await ethers.provider.getBalance(developper.address);
+
+        const txParams2 = { value: ethers.utils.parseUnits("0.0029", "ether") };
+        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams2)).revertedWith('Must send the royalty');    
+
+        tx = await token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams);
         await tx.wait();
         result = await token.connect(user1).trades(tokenId1);
         expect(result).equal(false);  //トレードリストから解除
@@ -390,6 +398,13 @@ describe('P2PTradable', function () {
 
         result = await token.connect(user1).ownerOf(tokenId2);
         expect(result).equal(user1.address);
+
+        // 実行後の保持ETH
+        const balanceA2 = await ethers.provider.getBalance(admin.address);
+        const balanceD2 = await ethers.provider.getBalance(developper.address);
+        expect(balanceA2.sub(balanceA)).to.equal(ethers.utils.parseUnits("0.0015", "ether"));
+        expect(balanceD2.sub(balanceD)).to.equal(ethers.utils.parseUnits("0.0015", "ether"));
+
     });
 
     it('put trade(都道府県指定なし)', async function () {
@@ -413,7 +428,7 @@ describe('P2PTradable', function () {
         result = await token.connect(user1).getTradePrefectureFor(tokenId1);
         expect(result.length).equal(0);
 
-        tx = await token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1);
+        tx = await token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams);
         await tx.wait();
         result = await token.connect(user1).trades(tokenId1);
         expect(result).equal(false);  //トレードリストから解除
@@ -451,7 +466,7 @@ describe('P2PTradable', function () {
         result = await token.connect(user1).trades(tokenId1);
         expect(result).equal(false);  //トレードリストから解除
 
-        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1)).revertedWith('TargetTokenId is not on trade');
+        await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams)).revertedWith('TargetTokenId is not on trade');
 
     });
 
