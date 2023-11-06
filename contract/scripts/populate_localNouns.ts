@@ -4,7 +4,7 @@ import { addresses } from '../../src/utils/addresses';
 
 const nounsDescriptor = addresses.nounsDescriptor[network.name];
 
-import { images, palette } from "../test/image-local-data";
+import { images, palette,bgcolors } from "../test/image-local-data";
 import { abi as localSeederABI } from "../artifacts/contracts/localNouns/LocalNounsSeeder.sol/LocalNounsSeeder";
 import { abi as localNounsDescriptorABI } from "../artifacts/contracts/localNouns/LocalNounsDescriptor.sol/LocalNounsDescriptor";
 import { abi as localProviderABI } from "../artifacts/contracts/localNouns/LocalNounsProvider.sol/LocalNounsProvider";
@@ -34,6 +34,12 @@ async function main() {
   const localMinter = new ethers.Contract(localMinterAddress, localMinterABI, wallet);
 
   if (true) {
+
+    // set Background
+    console.log(`set backgrounds start`);
+    await localNounsDescriptor.addManyBackgrounds(bgcolors);
+    console.log(`set backgrounds end`);
+
     // set Palette
     console.log(`set Palette start`);
     await localNounsDescriptor.addManyColorsToPalette(0, palette);
