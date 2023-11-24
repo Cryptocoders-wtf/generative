@@ -17,6 +17,8 @@ async function main() {
   await tokenGate.deployed();
   console.log(`##tokenGate="${tokenGate.address}"`);
   await runCommand(`npx hardhat verify ${tokenGate.address} --network ${network.name} &`);
+  const addresses0 = `export const addresses = {\n` + `  tokenGate:"${tokenGate.address}",\n` + `}\n`;
+  await writeFile(`../src/utils/addresses/tokenGate_${network.name}.ts`, addresses0, () => { });
 
   const factorySeeder = await ethers.getContractFactory('LocalNounsSeeder');
   const localseeder = await factorySeeder.deploy();
