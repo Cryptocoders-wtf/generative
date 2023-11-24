@@ -22,6 +22,8 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
 
   address public administratorsAddress; // 運営ウォレット
   address public developpersAddress; // 開発者ウォレット
+  bool public canSetApproval = false; // setApprovalForAll, approveの可否
+
 
   uint256 public tradeRoyalty = 0.003 ether; // P2Pトレードのロイヤリティ
 
@@ -112,6 +114,10 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     minter = _minter;
   }
 
+  function setCanSetAproval(bool _canSetApproval) external onlyOwner {
+    canSetApproval = _canSetApproval;
+  }
+  
   function setAdministratorsAddress(address _admin) external onlyOwner {
     administratorsAddress = _admin;
   }
@@ -231,5 +237,19 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   // 二重継承でエラーになるので個別関数を準備
   function totalSupply2() public view returns (uint256) {
     return super.totalSupply();
+  }
+
+  // 誰もがトークンを承認できないようにする
+  function setApprovalForAll(address operator, bool approved) public override {
+    // revert( 'Not allowed to set approval for all');
+    require(canSetApproval, 'Not allowed to set approval for all');
+    super.setApprovalForAll(operator, approved);
+  }
+
+  // 特定のトークンの承認も不可能にする
+  function approve(address to, uint256 tokenId) public payable override {
+    // revert('Not allowed to approve');
+    require(canSetApproval, 'Not allowed to approve');
+    super.approve(to, tokenId);
   }
 }
