@@ -22,8 +22,12 @@ before(async () => {
         # npx hardhat run scripts/deploy_nounsDescriptorV1.ts
         # npx hardhat run scripts/populate_nounsV1.ts
         # npx hardhat run scripts/deploy_localNouns.ts
-        # npx hardhat run scripts/populate_localNouns.ts
+        # npx hardhat run scripts/populate_localNouns_dummy.ts
         # npx hardhat run scripts/deploy_sample.ts
+
+        note: `npx hardhat node`実行時にJavaScript heap out of memory が発生した場合は環境変数で使用メモリを指定する
+        export NODE_OPTIONS=--max-old-space-size=4096
+
      */
 
     [owner, user1, user2, user3, user4, user5, admin, developper] = await ethers.getSigners();
@@ -142,9 +146,9 @@ describe('mint functions', function () {
         const [traits2] = await provider.functions.generateTraits(2);
         const [traits3] = await provider.functions.generateTraits(3);
         // head,accessoryがランダムなので県のみチェック(head,accessoryは目視)
-        // console.log('multiple mint', traits1);
-        // console.log('multiple mint', traits2);
-        // console.log('multiple mint', traits3);
+        console.log('multiple mint', traits1);
+        console.log('multiple mint', traits2);
+        console.log('multiple mint', traits3);
         expect(traits1.includes('{"trait_type": "prefecture" , "value":"Toyama"}')).to.equal(true);
         expect(traits2.includes('{"trait_type": "prefecture" , "value":"Toyama"}')).to.equal(true);
         expect(traits3.includes('{"trait_type": "prefecture" , "value":"Toyama"}')).to.equal(true);
@@ -228,10 +232,9 @@ describe('mint functions', function () {
 describe('determinePrefectureId', function () {
     it('determinePrefectureId', async function () {
 
-        await provider.connect(owner).functions.setRandomValueForTest(true);
         let prefectureCount = new Array(47).fill(0);
 
-        for (var i = 0; i < 300; i++) {
+        for (var i = 0; i < 1500; i++) {
             const [prefectureId] = await provider.connect(owner).functions.determinePrefectureId(i);
             prefectureCount[prefectureId.toNumber() - 1]++;
         }
@@ -239,10 +242,9 @@ describe('determinePrefectureId', function () {
         // 全ての都道府県が１以上出現する
         for (var i = 0; i < prefectureCount.length; i++) {
             expect(prefectureCount[i]).to.greaterThan(0);
-            // console.log("prefectureId", i, prefectureCount[i]);
+            console.log("prefectureId", i+1, prefectureCount[i], prefectureCount[i]/1500*100 + '%');
         }
 
-        await provider.connect(owner).functions.setRandomValueForTest(false);
     });
 
     it('mint all prefecture', async function () {
