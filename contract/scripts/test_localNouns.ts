@@ -21,9 +21,14 @@ const localMinterAddress = addresses.localNounsMinter[network.name];
 
 async function main() {
 
-  // const privateKey = process.env.PRIVATE_KEY !== undefined ? process.env.PRIVATE_KEY : '';
-  // const wallet = new ethers.Wallet(privateKey, ethers.provider);
-  const [wallet] = await ethers.getSigners(); // localhost
+  let wallet;
+  if(network.name == 'localhost'){
+    [wallet] = await ethers.getSigners(); // localhost
+  }else{
+    const privateKey = process.env.PRIVATE_KEY !== undefined ? process.env.PRIVATE_KEY : '';
+    wallet = new ethers.Wallet(privateKey, ethers.provider);
+
+  }
 
   // ethers.Contract オブジェクトのインスタンスを作成
   const localSeeder = new ethers.Contract(localSeederAddress, localSeederABI, wallet);
@@ -34,15 +39,18 @@ async function main() {
 
   console.log("localToken:", localTokenAddress);
 
-  for (var i: number = 101; i <= 147; i++) {
-  // for (var i: number = 1; i <= 47; i++) {
+  for (var i: number = 3; i <= 3; i++) {
     try {
-      await localMinter.functions['mintSelectedPrefecture(uint256)'](ethers.BigNumber.from(String(i)), { value: ethers.utils.parseEther('0.000001') });
+      await localToken.functions['ownerMint']([wallet.address], [ethers.BigNumber.from( String(i))], [5]);
+      // await localToken.functions['ownerMint'](['0xECbCBAF0515757C48af10BEC8E70d6A4EbE479D6'], [ethers.BigNumber.from( String(i))], [10]);
+
+      // const [svgPart] = await localProvider.generateSVGPart(i);
+      // console.log(svgPart);
 
       console.log(`mint [`, i, `]`);
     } catch (error) {
       console.log(`mint error [`, i, `]`);
-      // console.error(error);
+      // console.error(error);  
     };
   }
 
@@ -61,41 +69,3 @@ main().catch(error => {
   console.error(error);
   process.exitCode = 1;
 });
-
-interface ImageData {
-  prefectureId: string;
-  filename: string;
-  data: string;
-}
-
-function chunkArrayByPrefectureId(imagedata: ImageData[]): ImageData[][] {
-  let map = new Map<string, ImageData[]>();
-
-  for (let i = 0; i < imagedata.length; i++) {
-    // dataが空っぽはスキップ
-    if (imagedata[i].data === undefined) {
-      console.error("not define data:", imagedata[i].filename);
-      continue;
-    }
-
-    let filename = imagedata[i].filename.split('-');
-    let id = filename[0];
-    imagedata[i].prefectureId = id;
-
-    // filenameの抽出 ex)"35-yamaguchi-white -snake-accessories" -> "white-snake"
-    let name = '';
-    for (var j = 2; j < filename.length - 1; j++) {
-      if (name.length > 0) {
-        name += '-';
-      }
-      name += filename[j].trim();
-    }
-    imagedata[i].filename = name;
-    console.log("imagedata[i].filename", imagedata[i].filename);
-    if (!map.has(id)) {
-      map.set(id, []);
-    }
-    map.get(id)!.push(imagedata[i]);
-  }
-  return Array.from(map.values());
-}
