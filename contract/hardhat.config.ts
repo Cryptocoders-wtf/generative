@@ -12,7 +12,19 @@ const getUrl = () => {
 };
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.17",
+  solidity: {
+    version: "0.8.17",
+    settings: {
+      optimizer: {
+        enabled: true,
+        details: {
+          yulDetails: {
+            optimizerSteps: "u",
+          },
+        },
+      },
+    }
+  },
   defaultNetwork: "localhost",
   networks: {
     polygon: {
