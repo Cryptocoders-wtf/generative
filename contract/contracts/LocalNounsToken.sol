@@ -24,7 +24,6 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   address public developpersAddress; // 開発者ウォレット
   bool public canSetApproval = false; // setApprovalForAll, approveの可否
 
-
   uint256 public tradeRoyalty = 0.003 ether; // P2Pトレードのロイヤリティ
 
   constructor(
@@ -85,10 +84,14 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     require(msg.sender == minter || msg.sender == owner(), 'Invalid sender');
     require(_prefectureId % 100 <= 47, 'Invalid prefectureId');
 
-    for (uint256 i = 0; i < _amount; i++) {
-      assetProvider2.mint(_prefectureId, _nextTokenId() + i);
-    }
+    // リエントランシー対策のため状態変更を先に実施
     _safeMint(_to, _amount);
+
+    uint256 startTokenId = _nextTokenId() - _amount;
+
+    for (uint256 i = 0; i < _amount; i++) {
+      assetProvider2.mint(_prefectureId, startTokenId + i);
+    }
     return _nextTokenId() - 1;
   }
 
@@ -117,7 +120,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   function setCanSetAproval(bool _canSetApproval) external onlyOwner {
     canSetApproval = _canSetApproval;
   }
-  
+
   function setAdministratorsAddress(address _admin) external onlyOwner {
     administratorsAddress = _admin;
   }
