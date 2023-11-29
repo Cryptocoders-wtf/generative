@@ -20,11 +20,13 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   mapping(uint256 => uint256[]) public tradePrefecture; // トレード先指定の都道府県
   mapping(uint256 => address) public tradeAddress; // トレード先指定のアドレス
 
-  address public administratorsAddress; // 運営ウォレット
-  address public developpersAddress; // 開発者ウォレット
+  address[] public royaltyAddresses; // ロイヤリティ送信先ウォレット
+  mapping(address => uint256) public royaltyRatio; // ロイヤリティ送信先ウォレットごとの割合
+  uint256 royaltyRatioTotal; // royaltyRatioの合計(割戻用)
   bool public canSetApproval = false; // setApprovalForAll, approveの可否
 
   uint256 public tradeRoyalty = 0.003 ether; // P2Pトレードのロイヤリティ
+  uint256 public salesRoyaltyBasisPoint = 1000; // P2Pセールのロイヤリティ、購入価格の10%
 
   constructor(
     IAssetProviderExMint _assetProvider,
@@ -33,8 +35,11 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     description = 'Local Nouns';
     assetProvider2 = _assetProvider;
     minter = _minter;
-    administratorsAddress = msg.sender;
-    developpersAddress = msg.sender;
+
+    // ロイヤリティ送信先(コンストラクタではデプロイアドレス100%)
+    royaltyAddresses = [msg.sender];
+    royaltyRatio[msg.sender] = 1;
+    royaltyRatioTotal = 1;
   }
 
   function tokenName(uint256 _tokenId) internal pure override returns (string memory) {
@@ -121,12 +126,16 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     canSetApproval = _canSetApproval;
   }
 
-  function setAdministratorsAddress(address _admin) external onlyOwner {
-    administratorsAddress = _admin;
-  }
+  function setRoyaltyAddresses(address[] memory _addr, uint256[] memory ratio) external onlyOwner {
+    // 引数の整合性チェック
+    require(_addr.length == ratio.length, 'Invalid Arrays length');
+    royaltyAddresses = _addr;
+    royaltyRatioTotal = 0;
 
-  function setDeveloppersAddress(address _developper) external onlyOwner {
-    developpersAddress = _developper;
+    for (uint256 i = 0; i < _addr.length; i++) {
+      royaltyRatio[_addr[i]] = ratio[i];
+      royaltyRatioTotal += ratio[i];
+    }
   }
 
   /**
@@ -208,9 +217,14 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     tradeRoyalty = _royalty;
   }
 
+  function setSalesRoyaltyBasisPoint(uint256 _bp) external onlyOwner {
+    salesRoyaltyBasisPoint = _bp;
+  }
+
   // pay royalties to admin here
   function _processRoyalty(uint _salesPrice, uint) internal override returns (uint256 royalty) {
-    royalty = (_salesPrice * 100) / 1000; // 10.0%
+    // royalty = (_salesPrice * 100) / 1000; // 10.0%
+    royalty = (_salesPrice * salesRoyaltyBasisPoint) / 10000;
     _sendRoyalty(royalty);
   }
 
@@ -221,9 +235,9 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
 
   // send royalties to admin and developper
   function _sendRoyalty(uint _royalty) internal {
-    uint halfRoyalty = _royalty / 2;
-    _trySendRoyalty(administratorsAddress, halfRoyalty);
-    _trySendRoyalty(developpersAddress, _royalty - halfRoyalty);
+    for (uint256 i = 0; i < royaltyAddresses.length; i++) {
+      _trySendRoyalty(royaltyAddresses[i], (_royalty * royaltyRatio[royaltyAddresses[i]]) / royaltyRatioTotal);
+    }
   }
 
   function _trySendRoyalty(address to, uint amount) internal {
@@ -232,9 +246,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   }
 
   function withdraw() external payable onlyOwner {
-    require(administratorsAddress != address(0), "Shouldn't be 0");
-    (bool sent, ) = payable(administratorsAddress).call{ value: address(this).balance }('');
-    require(sent, 'failed to move fund');
+    _sendRoyalty(address(this).balance);
   }
 
   // 二重継承でエラーになるので個別関数を準備
