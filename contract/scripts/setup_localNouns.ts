@@ -28,13 +28,35 @@ async function main() {
   const localToken = new ethers.Contract(localTokenAddress, localTokenABI, wallet);
 
   // tokengateに設定
-  const nfts = [
-    "0x898a7dBFdDf13962dF089FBC8F069Fa7CE92cDBb", // NDJ-PFP
-    "0x866648Ef4Dd51e857cA05ea200eD5D5D0c6f93Ce", // NDJ-POAP
-    "0x09d53609a3709BBc1206B9Aa8C54DC71625e31aC", // Nounish CNP
-    "0x4bE962499cE295b1ed180F923bf9c73b6357DE80"  // pNouns
+  if (network.name == 'mumbai') {
+    const nfts = [
+      "0x9f3aBc7b9f17Fb58a367bdA86e6129a2F5849942"  // TEST用
+    ];
+    await tokenGate.functions['setWhitelist'](nfts);
+  } else {
+    const nfts = [
+      "0x898a7dBFdDf13962dF089FBC8F069Fa7CE92cDBb", // NDJ-PFP
+      "0x866648Ef4Dd51e857cA05ea200eD5D5D0c6f93Ce", // NDJ-POAP
+      "0x09d53609a3709BBc1206B9Aa8C54DC71625e31aC", // Nounish CNP
+      "0x4bE962499cE295b1ed180F923bf9c73b6357DE80"  // pNouns
+    ];
+    await tokenGate.functions['setWhitelist'](nfts);
+  }
+
+  // ロイヤリティ設定
+  const rolyaltyAddresses = [
+    '0xA0B9D89F6d17658EAA71fC0b916fCCB248340382', // eiba
+    '0x52A76a606AC925f7113B4CC8605Fe6bCad431EbB', // takumi(仮)
+    '0x35e5664686475Fe0Fb05300a1708B3C7243F916e', // deynao(仮)
+    '0x2072C081C77A476c28d4B2e0F86ED8A789BD8078'  // udon(仮)
   ];
-  await tokenGate.functions['setWhitelist'](nfts);
+  const rolyaltyRatio = [
+    5, // eiba
+    2, // takumi
+    2, // deynao
+    1  // udon
+  ];
+  await localToken.functions['setRoyaltyAddresses'](rolyaltyAddresses, rolyaltyRatio);
 
   // 運営用初期ミント
   // 300体を都道府県割合で運用へミント
