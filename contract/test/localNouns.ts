@@ -249,7 +249,8 @@ describe('determinePrefectureId', function () {
 
     it('mint all prefecture', async function () {
 
-        const txParams = { value: ethers.utils.parseUnits("0.03", "ether") };
+        await minter.connect(owner).functions.setPhase(2);
+        const txParams = { value: ethers.utils.parseUnits("0.3", "ether") };
 
         // 全ての都道府県が１以上出現する
         for (var i = 0; i < 47; i++) {
@@ -257,15 +258,15 @@ describe('determinePrefectureId', function () {
             const [mintNumberPerPrefecture] = await provider.functions.mintNumberPerPrefecture(i + 1);
 
             console.log("mint all prefecture", i + 1);
-            await minter.connect(user1).functions.mintSelectedPrefecture(i + 1, 1, txParams);
+            await minter.connect(user1).functions.mintSelectedPrefecture(i + 1, 5, txParams);
 
             // ミント後の都道府県ごとのカウント
             const [mintNumberPerPrefecture2] = await provider.functions.mintNumberPerPrefecture(i + 1);
 
-            expect(mintNumberPerPrefecture2.sub(mintNumberPerPrefecture).toNumber(), "prefectureId:" + (i + 1)).to.equal(1);
+            expect(mintNumberPerPrefecture2.sub(mintNumberPerPrefecture).toNumber(), "prefectureId:" + (i + 1)).to.equal(5);
         }
 
-    });
+    }).timeout(600000); // タイムアウトを60秒に設定
 });
 
 describe('P2P', function () {
@@ -321,8 +322,9 @@ describe('P2P', function () {
     it('Purchase', async function () {
         await expect(token.connect(user2).purchase(tokenId1, user2.address, zeroAddress)).revertedWith('Not enough fund');
 
-        await token.connect(owner).setAdministratorsAddress(admin.address);
-        await token.connect(owner).setDeveloppersAddress(developper.address);
+        // await token.connect(owner).setAdministratorsAddress(admin.address);
+        // await token.connect(owner).setDeveloppersAddress(developper.address);
+        await token.connect(owner).setRoyaltyAddresses([developper.address,admin.address],[3,1]);
 
         result = await token.ownerOf(tokenId1);
 
@@ -335,11 +337,11 @@ describe('P2P', function () {
         expect(result).equal(user2.address);
 
         const balance12 = await ethers.provider.getBalance(user1.address);
-        expect(balance12.sub(balance1)).equal(price.div(20).mul(18)); // 90%
+        expect(balance12.sub(balance1)).equal(price.div(40).mul(36)); // 90%
         const balanceA2 = await ethers.provider.getBalance(admin.address);
-        expect(balanceA2.sub(balanceA)).equal(price.div(20).mul(1)); // 5%
+        expect(balanceA2.sub(balanceA)).equal(price.div(40).mul(1)); // 5%
         const balanceD2 = await ethers.provider.getBalance(developper.address);
-        expect(balanceD2.sub(balanceD)).equal(price.div(20).mul(1)); // 5%
+        expect(balanceD2.sub(balanceD)).equal(price.div(40).mul(3)); // 15%
 
     });
 
@@ -392,6 +394,9 @@ describe('P2PTradable', function () {
     });
 
     it('put trade', async function () {
+        
+        await token.connect(owner).setRoyaltyAddresses([developper.address,admin.address],[1,1]);
+
         // 希望都道府県外のトークンと交換しようとする
         await token.connect(user1).putTradeLocalNoun(tokenId1, [1, 11, 12], zeroAddress);
         await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams)).revertedWith('unmatch to the wants list');
