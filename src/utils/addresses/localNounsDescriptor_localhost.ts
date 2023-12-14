@@ -1,3 +1,3 @@
 export const addresses = {
-  localNounsDescriptor:"0x51A1ceB83B83F1985a81C295d1fF28Afef186E02",
+  localNounsDescriptor:"0xDC11f7E700A4c898AE5CAddB1082cFfa76512aDD",
 }
