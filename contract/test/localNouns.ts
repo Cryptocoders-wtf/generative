@@ -22,11 +22,14 @@ before(async () => {
         # npx hardhat run scripts/deploy_nounsDescriptorV1.ts
         # npx hardhat run scripts/populate_nounsV1.ts
         # npx hardhat run scripts/deploy_localNouns.ts
-        # npx hardhat run scripts/populate_localNouns_dummy.ts
+        # npx hardhat run scripts/populate_localNouns.ts
         # npx hardhat run scripts/deploy_sample.ts
 
         note: `npx hardhat node`実行時にJavaScript heap out of memory が発生した場合は環境変数で使用メモリを指定する
         export NODE_OPTIONS=--max-old-space-size=4096
+
+        # テスト実行
+        # npx hardhat test test/localNouns.ts
 
      */
 
