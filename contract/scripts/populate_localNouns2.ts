@@ -36,14 +36,16 @@ async function main() {
   const localToken = new ethers.Contract(localTokenAddress, localTokenABI, wallet);
   const localMinter = new ethers.Contract(localMinterAddress, localMinterABI, wallet);
 
+  let tx;
   if (true) {
     // set Heads
     console.log(`set Heads start`);
     const headChunk = chunkArrayByPrefectureId(images.heads);
     for (const chunk of headChunk) {
       const prefectureId = chunk[0].prefectureId;
-      await localNounsDescriptor.addManyHeads(prefectureId, chunk.map(({ data }) => data), chunk.map(({ filename }) => filename));
+      tx = await localNounsDescriptor.addManyHeads(prefectureId, chunk.map(({ data }) => data), chunk.map(({ filename }) => filename));
       // console.log("chunk:", prefectureId, chunk);
+      console.log(prefectureId,tx.hash);
     }
     console.log(`set Heads end`);
 
