@@ -1,4 +1,4 @@
-import * as dotenv from "dotenv";
+// import * as dotenv from "dotenv";
 import { ethers, network } from 'hardhat';
 import { addresses } from '../../src/utils/addresses';
 
@@ -6,8 +6,6 @@ const nounsDescriptor = addresses.nounsDescriptor[network.name];
 
 import { abi as localTokenABI } from "../artifacts/contracts/LocalNounsToken.sol/LocalNounsToken";
 import { abi as tokenGateABI } from "../artifacts/contracts/libs/AssetTokenGate.sol/AssetTokenGate";
-
-dotenv.config();
 
 const localTokenAddress = addresses.localNounsToken[network.name];
 const tokenGateAddress = addresses.tokenGate[network.name];
@@ -27,12 +25,13 @@ async function main() {
   const tokenGate = new ethers.Contract(tokenGateAddress, tokenGateABI, wallet);
   const localToken = new ethers.Contract(localTokenAddress, localTokenABI, wallet);
 
+  let tx;
   // tokengateに設定
   if (network.name == 'mumbai') {
     const nfts = [
       "0x9f3aBc7b9f17Fb58a367bdA86e6129a2F5849942"  // TEST用
     ];
-    await tokenGate.functions['setWhitelist'](nfts);
+    tx = await tokenGate.functions['setWhitelist'](nfts);
   } else {
     const nfts = [
       "0x898a7dBFdDf13962dF089FBC8F069Fa7CE92cDBb", // NDJ-PFP
@@ -40,8 +39,9 @@ async function main() {
       "0x09d53609a3709BBc1206B9Aa8C54DC71625e31aC", // Nounish CNP
       "0x4bE962499cE295b1ed180F923bf9c73b6357DE80"  // pNouns
     ];
-    await tokenGate.functions['setWhitelist'](nfts);
+    tx = await tokenGate.functions['setWhitelist'](nfts);
   }
+  console.log("tokengate設定", tx.hash);
 
   // ロイヤリティ設定
   const rolyaltyAddresses = [
@@ -56,7 +56,8 @@ async function main() {
     2, // deynao
     1  // udon
   ];
-  await localToken.functions['setRoyaltyAddresses'](rolyaltyAddresses, rolyaltyRatio);
+  tx = await localToken.functions['setRoyaltyAddresses'](rolyaltyAddresses, rolyaltyRatio);
+  console.log("ロイヤリティ設定", tx.hash);
 
   // 運営用初期ミント
   // 300体を都道府県割合で運用へミント
@@ -112,13 +113,18 @@ async function main() {
 
   for (var i = 0; i < mintNumForPrefecture.length; i++) {
     try {
-      await localToken.functions['ownerMint']([wallet.address], [mintNumForPrefecture[i][0]], [mintNumForPrefecture[i][1]]);
-      console.log("mint:", mintNumForPrefecture[i]);
+      tx = await localToken.functions['ownerMint']([wallet.address], [mintNumForPrefecture[i][0]], [mintNumForPrefecture[i][1]]);
+      console.log("mint:", mintNumForPrefecture[i], tx.hash);
     } catch (error) {
-      console.log("mint error:", mintNumForPrefecture[i]);
+      console.log("mint error:", mintNumForPrefecture[i], tx.hash);
       // console.error(error);  
     };
+    await sleep(1000); // 1秒待機
   }
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 main().catch(error => {
