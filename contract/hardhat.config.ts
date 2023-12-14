@@ -37,7 +37,7 @@ const config: HardhatUserConfig = {
     mumbai: {
       // url: "https://rpc-mumbai.maticvigil.com",
       url: "https://polygon-mumbai.g.alchemy.com/v2/" + process.env.ALCHEMY_API_KEY,
-      gasMultiplier: 1.1,
+      gasMultiplier: 1.3,
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
