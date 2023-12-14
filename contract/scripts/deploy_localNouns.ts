@@ -4,7 +4,6 @@ import { writeFile } from 'fs';
 import { addresses } from '../../src/utils/addresses';
 
 const nounsDescriptor = addresses.nounsDescriptor[network.name];
-const nounsSeeder = addresses.nounsSeeder[network.name];
 const nftDescriptor = addresses.nftDescriptor[network.name];
 
 async function main() {
@@ -19,16 +18,6 @@ async function main() {
   await runCommand(`npx hardhat verify ${tokenGate.address} --network ${network.name} &`);
   const addresses0 = `export const addresses = {\n` + `  tokenGate:"${tokenGate.address}",\n` + `}\n`;
   await writeFile(`../src/utils/addresses/tokenGate_${network.name}.ts`, addresses0, () => { });
-
-  const factorySeeder = await ethers.getContractFactory('LocalNounsSeeder');
-  const localseeder = await factorySeeder.deploy();
-  await localseeder.deployed();
-  console.log(`##localseeder="${localseeder.address}"`);
-  await runCommand(`npx hardhat verify ${localseeder.address} --network ${network.name} &`);
-
-  const addresses = `export const addresses = {\n` + `  localseeder:"${localseeder.address}",\n` + `}\n`;
-  await writeFile(`../src/utils/addresses/localseeder_${network.name}.ts`, addresses, () => { });
-
 
   const factoryLocalNounsDescriptor = await ethers.getContractFactory('LocalNounsDescriptor', {
     libraries: {
@@ -46,11 +35,11 @@ async function main() {
   await writeFile(`../src/utils/addresses/localNounsDescriptor_${network.name}.ts`, addresses2, () => { });
 
 
-  const factorySVGStore = await ethers.getContractFactory('LocalNounsProvider');
-  const provider = await factorySVGStore.deploy(nounsDescriptor, localNounsDescriptor.address, nounsSeeder, localseeder.address);
+  const factoryProvider = await ethers.getContractFactory('LocalNounsProvider2');
+  const provider = await factoryProvider.deploy(nounsDescriptor, localNounsDescriptor.address);
   await provider.deployed();
   console.log(`##LocalNounsProvider="${provider.address}"`);
-  await runCommand(`npx hardhat verify ${provider.address} ${nounsDescriptor} ${localNounsDescriptor.address} ${nounsSeeder} ${localseeder.address} --network ${network.name} &`);
+  await runCommand(`npx hardhat verify ${provider.address} ${nounsDescriptor} ${localNounsDescriptor.address} --network ${network.name} &`);
 
   const addresses3 = `export const addresses = {\n` + `  localNounsProvider:"${provider.address}",\n` + `}\n`;
   await writeFile(`../src/utils/addresses/localNounsProvider_${network.name}.ts`, addresses3, () => { });
