@@ -30,4 +30,11 @@ interface ILocalNounsToken {
 
   // Fires when the owner cancel the trade
   event CancelTradePrefecture(uint256 indexed tokenId);
+
+  // Fires when the purchase executed
+  event Purchase(uint256 indexed tokenId, address _buyer);
+
+  // Fires when the trade executed
+  event ExecuteTrade(uint256 indexed targetTokenId, address _lister, uint256 indexed ownedTokenId, address _executer);
+
 }

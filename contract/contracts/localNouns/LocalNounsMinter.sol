@@ -22,6 +22,9 @@ import './interfaces/ILocalNounsToken.sol';
 import '../interfaces/ITokenGate.sol';
 
 contract LocalNounsMinter is Ownable {
+  // Fires when the purchase executed
+  event MintSelectedPrefecture(uint256 prefectureId, uint256 amount, address minter);
+
   ILocalNounsToken public token;
   ITokenGate public immutable tokenGate;
 
@@ -82,14 +85,16 @@ contract LocalNounsMinter is Ownable {
     require(token.totalSupply2() + _amount <= mintMax, 'Over the mint limit');
 
     uint256 mintPrice;
-    if(_prefectureId == 0){
+    if (_prefectureId == 0) {
       mintPrice = mintPriceForNotSpecified;
-    }else{
+    } else {
       mintPrice = mintPriceForSpecified;
     }
     require(msg.value >= mintPrice * _amount, 'Must send the mint price');
 
-    return token.mintSelectedPrefecture(msg.sender, _prefectureId, _amount);
+    tokenId = token.mintSelectedPrefecture(msg.sender, _prefectureId, _amount);
+
+    emit MintSelectedPrefecture(_prefectureId, _amount, msg.sender);
   }
 
   function withdraw() external payable onlyOwner {
