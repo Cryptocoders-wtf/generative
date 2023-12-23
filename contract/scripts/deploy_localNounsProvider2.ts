@@ -5,7 +5,8 @@ import { addresses } from '../../src/utils/addresses';
 
 const nounsDescriptor = addresses.nounsDescriptor[network.name];
 const localNounsDescriptor = addresses.localNounsDescriptor[network.name];
-const localNounsMinter = addresses.localNounsMinter[network.name];
+const localNounsMinterAddress = addresses.localNounsMinter[network.name];
+const tokenGateAddress = addresses.tokenGate[network.name];
 
 async function main() {
 
@@ -20,13 +21,25 @@ async function main() {
 
   
   const factoryToken = await ethers.getContractFactory('LocalNounsToken');
-  const token = await factoryToken.deploy(provider.address, localNounsMinter);
+  const token = await factoryToken.deploy(provider.address, localNounsMinterAddress);
   await token.deployed();
   console.log(`##LocalNounsToken="${token.address}"`);
-  await runCommand(`npx hardhat verify ${token.address} ${provider.address} ${localNounsMinter} --network ${network.name} &`);
+  await runCommand(`npx hardhat verify ${token.address} ${provider.address} ${localNounsMinterAddress} --network ${network.name} &`);
 
   const addresses4 = `export const addresses = {\n` + `  localNounsToken:"${token.address}",\n` + `}\n`;
   await writeFile(`../src/utils/addresses/localNounsToken_${network.name}.ts`, addresses4, () => { });
+
+  const factoryMinter = await ethers.getContractFactory('LocalNounsMinter');
+  const minterContract = await factoryMinter.deploy(token.address, tokenGateAddress);
+  await minterContract.deployed();
+  console.log(`##LocalNounsMinter="${minterContract.address}"`);
+  await runCommand(`npx hardhat verify ${minterContract.address} ${token.address} ${tokenGateAddress} --network ${network.name} &`);
+
+  const addresses5 = `export const addresses = {\n` + `  localNounsMinter:"${minterContract.address}",\n` + `}\n`;
+  await writeFile(`../src/utils/addresses/localNounsMinter_${network.name}.ts`, addresses5, () => { });
+
+  await token.setMinter(minterContract.address);
+
 
 }
 
