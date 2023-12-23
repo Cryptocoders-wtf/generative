@@ -260,7 +260,7 @@ describe('determinePrefectureId', function () {
             // ミント前の都道府県ごとのカウント
             const [mintNumberPerPrefecture] = await provider.functions.mintNumberPerPrefecture(i + 1);
 
-            console.log("mint all prefecture", i + 1);
+            // console.log("mint all prefecture", i + 1);
             await minter.connect(user1).functions.mintSelectedPrefecture(i + 1, 5, txParams);
 
             // ミント後の都道府県ごとのカウント
@@ -538,6 +538,100 @@ describe('P2PTradable', function () {
 
         await expect(token.connect(user2).executeTradeLocalNoun(tokenId2, tokenId1, txParams)).revertedWith('TargetTokenId is not on trade');
 
+    });
+
+});
+
+
+describe('Approval', function () {
+    let result, tx, err, balance, tokenId1: number, tokenId2: number;
+    const txParams = { value: ethers.utils.parseUnits("0.003", "ether") };
+
+    it('Approvale error', async function () {
+        await minter.connect(owner).functions.setPhase(2);
+        // for user1
+        const txParams = { value: ethers.utils.parseUnits("0.03", "ether") };
+        await minter.connect(user1).functions.mintSelectedPrefecture(5, 1, txParams);
+        result = await token.totalSupply();
+        tokenId1 = result.toNumber() - 1;
+
+        await expect(token.connect(user1).functions.setApprovalForAll(user2.address, true)).revertedWith('Not allowed to set approval for all');
+
+        await expect(token.connect(user1).functions.approve(user2.address, tokenId1)).revertedWith('Not allowed to approve');
+    });
+
+    it('setApprovalForAll', async function () {
+        await minter.connect(owner).functions.setPhase(2);
+        // for user1
+        const txParams = { value: ethers.utils.parseUnits("0.03", "ether") };
+        await minter.connect(user1).functions.mintSelectedPrefecture(5, 1, txParams);
+        result = await token.totalSupply();
+        tokenId1 = result.toNumber() - 1;
+
+        await token.connect(owner).functions.setCanSetAproval(true);
+
+        await token.connect(user1).functions.setApprovalForAll(user2.address, true);
+
+        result = await token.isApprovedForAll(user1.address, user2.address);
+
+        expect(result).equal(true); 
+
+
+    });
+
+    it('setApprovalForAllWithWhiteList', async function () {
+        await minter.connect(owner).functions.setPhase(2);
+        // for user1
+        const txParams = { value: ethers.utils.parseUnits("0.03", "ether") };
+        await minter.connect(user1).functions.mintSelectedPrefecture(5, 1, txParams);
+        result = await token.totalSupply();
+        tokenId1 = result.toNumber() - 1;
+
+        await token.connect(owner).functions.setCanSetAproval(false);
+        await token.connect(owner).functions.setApproveWhiteList(user2.address, true);
+
+        await token.connect(user1).functions.setApprovalForAll(user2.address, true);
+
+        result = await token.isApprovedForAll(user1.address, user2.address);
+
+        expect(result).equal(true); 
+    });
+
+    it('approve', async function () {
+        await minter.connect(owner).functions.setPhase(2);
+        // for user1
+        const txParams = { value: ethers.utils.parseUnits("0.03", "ether") };
+        await minter.connect(user1).functions.mintSelectedPrefecture(5, 1, txParams);
+        result = await token.totalSupply();
+        tokenId1 = result.toNumber() - 1;
+
+        await token.connect(owner).functions.setCanSetAproval(true);
+
+        await token.connect(user1).functions.approve(user2.address, tokenId1);
+
+        result = await token.getApproved(tokenId1);
+
+        expect(result).equal(user2.address); 
+
+
+    });
+
+    it('approveWithWhiteList', async function () {
+        await minter.connect(owner).functions.setPhase(2);
+        // for user1
+        const txParams = { value: ethers.utils.parseUnits("0.03", "ether") };
+        await minter.connect(user1).functions.mintSelectedPrefecture(5, 1, txParams);
+        result = await token.totalSupply();
+        tokenId1 = result.toNumber() - 1;
+
+        await token.connect(owner).functions.setCanSetAproval(false);
+        await token.connect(owner).functions.setApproveWhiteList(user2.address, true);
+
+        await token.connect(user1).functions.approve(user2.address, tokenId1);
+
+        result = await token.getApproved(tokenId1);
+
+        expect(result).equal(user2.address); 
     });
 
 });

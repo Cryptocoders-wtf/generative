@@ -28,7 +28,11 @@ abstract contract ERC721AP2P is IERC721P2PCore, ERC721A, Ownable {
     return prices[_tokenId];
   }
 
-  function purchase(uint256 _tokenId, address _buyer, address _facilitator) external payable override {
+  function purchase(uint256 _tokenId, address _buyer, address _facilitator) external payable virtual {
+    _purchase(_tokenId, _buyer, _facilitator);
+  }
+
+  function _purchase(uint256 _tokenId, address _buyer, address _facilitator) internal {
     uint256 price = prices[_tokenId];
     require(price > 0, 'Token is not on sale');
     require(msg.value >= price, 'Not enough fund');
@@ -68,5 +72,4 @@ abstract contract ERC721AP2P is IERC721P2PCore, ERC721A, Ownable {
     setPriceOf(_tokenId, _price);
     _dealer.acceptOffer(this, _tokenId, _price);
   }
-
 }

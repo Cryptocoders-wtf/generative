@@ -28,6 +28,8 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
   uint256 public tradeRoyalty = 0.003 ether; // P2Pトレードのロイヤリティ
   uint256 public salesRoyaltyBasisPoint = 1000; // P2Pセールのロイヤリティ、購入価格の10%
 
+  mapping(address => bool) public approveWhiteList; // Approveを許可するアドレスリスト
+
   constructor(
     IAssetProviderExMint _assetProvider,
     address _minter
@@ -126,6 +128,10 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
     canSetApproval = _canSetApproval;
   }
 
+  function setApproveWhiteList(address _address, bool approve) external onlyOwner {
+    approveWhiteList[_address] = approve;
+  }
+
   function setRoyaltyAddresses(address[] memory _addr, uint256[] memory ratio) external onlyOwner {
     // 引数の整合性チェック
     require(_addr.length == ratio.length, 'Invalid Arrays length');
@@ -195,6 +201,7 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
 
     super.executeTrade(_myTokenId, _targetTokenId);
     _processTradeRoyalty(msg.value);
+    emit ExecuteTrade(_targetTokenId, ownerOf(_targetTokenId), _myTokenId, ownerOf(_myTokenId));
   }
 
   function putTrade(uint256, bool) public pure override {
@@ -203,6 +210,11 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
 
   function executeTrade(uint256, uint256) public pure override {
     revert('Cannot use');
+  }
+
+  function purchase(uint256 _tokenId, address _buyer, address _facilitator) external payable override {
+    super._purchase(_tokenId, _buyer, _facilitator);
+    emit Purchase(_tokenId, _buyer);
   }
 
   // transfer時はトレード解除
@@ -256,15 +268,13 @@ contract LocalNounsToken is ProviderTokenA2, ILocalNounsToken {
 
   // 誰もがトークンを承認できないようにする
   function setApprovalForAll(address operator, bool approved) public override {
-    // revert( 'Not allowed to set approval for all');
-    require(canSetApproval, 'Not allowed to set approval for all');
+    require(canSetApproval || approveWhiteList[operator], 'Not allowed to set approval for all');
     super.setApprovalForAll(operator, approved);
   }
 
   // 特定のトークンの承認も不可能にする
   function approve(address to, uint256 tokenId) public payable override {
-    // revert('Not allowed to approve');
-    require(canSetApproval, 'Not allowed to approve');
+    require(canSetApproval || approveWhiteList[to], 'Not allowed to approve');
     super.approve(to, tokenId);
   }
 }
