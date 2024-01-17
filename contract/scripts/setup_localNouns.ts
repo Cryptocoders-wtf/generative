@@ -45,16 +45,12 @@ async function main() {
 
   // ロイヤリティ設定
   const rolyaltyAddresses = [
-    '0xA0B9D89F6d17658EAA71fC0b916fCCB248340382', // eiba
-    '0x52A76a606AC925f7113B4CC8605Fe6bCad431EbB', // takumi(仮)
-    '0x35e5664686475Fe0Fb05300a1708B3C7243F916e', // deynao(仮)
-    '0x2072C081C77A476c28d4B2e0F86ED8A789BD8078'  // udon(仮)
+    '0xA0B9D89F6d17658EAA71fC0b916fCCB248340382', // 運営
+    '0xBE5f70E61D00acFb8Ba934551103387EE9fd3dB2' // eiba
   ];
   const rolyaltyRatio = [
-    5, // eiba
-    2, // takumi
-    2, // deynao
-    1  // udon
+    5, // 運営
+    5  // eiba
   ];
   tx = await localToken.functions['setRoyaltyAddresses'](rolyaltyAddresses, rolyaltyRatio);
   console.log("ロイヤリティ設定", tx.hash);

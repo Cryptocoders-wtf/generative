@@ -5,20 +5,12 @@ import { addresses } from '../../src/utils/addresses';
 const nounsDescriptor = addresses.nounsDescriptor[network.name];
 
 import { images, palette, bgcolors } from "../test/image-local-data";
-import { abi as localSeederABI } from "../artifacts/contracts/localNouns/LocalNounsSeeder.sol/LocalNounsSeeder";
 import { abi as localNounsDescriptorABI } from "../artifacts/contracts/localNouns/LocalNounsDescriptor.sol/LocalNounsDescriptor";
-import { abi as localProviderABI } from "../artifacts/contracts/localNouns/LocalNounsProvider.sol/LocalNounsProvider";
-import { abi as localTokenABI } from "../artifacts/contracts/LocalNounsToken.sol/LocalNounsToken";
-import { abi as localMinterABI } from "../artifacts/contracts/localNouns/LocalNounsMinter.sol/LocalNounsMinter";
 
 dotenv.config();
 
 
-const localSeederAddress = addresses.localSeeder[network.name];
 const localNounsDescriptorAddress = addresses.localNounsDescriptor[network.name];
-const localProviderAddress = addresses.localProvider[network.name];
-const localTokenAddress = addresses.localNounsToken[network.name];
-const localMinterAddress = addresses.localNounsMinter[network.name];
 
 async function main() {
 
@@ -27,11 +19,7 @@ async function main() {
   const [wallet] = await ethers.getSigners(); // localhost
 
   // ethers.Contract オブジェクトのインスタンスを作成
-  const localSeeder = new ethers.Contract(localSeederAddress, localSeederABI, wallet);
   const localNounsDescriptor = new ethers.Contract(localNounsDescriptorAddress, localNounsDescriptorABI, wallet);
-  const localProvider = new ethers.Contract(localProviderAddress, localProviderABI, wallet);
-  const localToken = new ethers.Contract(localTokenAddress, localTokenABI, wallet);
-  const localMinter = new ethers.Contract(localMinterAddress, localMinterABI, wallet);
 
   let tx;
   if (true) {
@@ -67,9 +55,9 @@ async function main() {
       const prefectureId = chunk[0].prefectureId;
 
       // トランザクションエラーで再実行する場合に成功している都道府県をスキップ
-      // if (Number(prefectureId) <= 36 ) {
-      //   continue;
-      // }
+      if (Number(prefectureId) == 2 || Number(prefectureId) == 3 ) {
+        continue;
+      }
       tx = await localNounsDescriptor.addManyHeads(prefectureId, chunk.map(({ data }) => data), chunk.map(({ filename }) => filename));
       console.log("chunk:", prefectureId, tx.hash);
     }
