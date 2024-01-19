@@ -55,9 +55,9 @@ async function main() {
       const prefectureId = chunk[0].prefectureId;
 
       // トランザクションエラーで再実行する場合に成功している都道府県をスキップ
-      if (Number(prefectureId) == 2 || Number(prefectureId) == 3 ) {
-        continue;
-      }
+      // if (Number(prefectureId) == 2 || Number(prefectureId) == 3 ) {
+      //   continue;
+      // }
       tx = await localNounsDescriptor.addManyHeads(prefectureId, chunk.map(({ data }) => data), chunk.map(({ filename }) => filename));
       console.log("chunk:", prefectureId, tx.hash);
     }
