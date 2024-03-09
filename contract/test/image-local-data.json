@@ -741,12 +741,15 @@
         "filename": "29-nara-yoshinoyama-accessories",
         "data": "0x0017151b0d02e1011b02ba01ed011b01e101ed025f02e101ed025f01ba01ed015f02ba01e1011b015f015f02ba02e1011b02ba015f02e1011b02ed01ba015f"
       },
+      {
         "filename": "30-wakayama-meharizushi-accessories",
         "data": "0x0018141c0e010004e1010002e1030101e102c00101021b010102e1030101e1010002e101c001e10100"
       },
       {
         "filename": "30-wakayama-mikan-kaki-accessories",
         "data": "0x0018121a0f03c201c201e101c203c2"
+      },
+      {
         "filename": "30-wakayama-nankoume-accessories",
         "data": "0x001a151b0d024e010002a60100029c024e010002a60100029c"
       },
