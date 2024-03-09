@@ -44,8 +44,8 @@ async function main() {
   console.log("ロイヤリティ設定", tx.hash);
 
   // Minter設定
-  // tx = await localToken.setMinter(localMinter.address);
-  // console.log("Minter設定", tx.hash);
+  tx = await localToken.setMinter(localMinter.address);
+  console.log("Minter設定", tx.hash);
 
 }
 
